@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+echo "🔍 Vérification des conventions SPOFE (frontend)..."
+npm run check:conventions || {
+  echo "❌ Commit bloqué : conventions non respectées."
+  echo "💡 Correction automatique : npm run spofe:auto-fix"
+  exit 1
+}
+echo "✅ Conventions conformes. Commit autorisé."

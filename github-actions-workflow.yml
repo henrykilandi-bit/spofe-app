@@ -1,0 +1,273 @@
+name: 🔍 SILC Contract Validation & Auto-Fix
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Exécuter tous les jours à 2h du matin
+    - cron: '0 2 * * *'
+
+jobs:
+  validate-contract:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: 📥 Checkout du code
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: 📦 Installation des dépendances
+      run: |
+        npm ci
+        npm install mysql2
+        
+    - name: 🔧 Setup MySQL (XAMPP Simulation)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-server
+        sudo systemctl start mysql
+        sudo mysql -e "CREATE DATABASE IF NOT EXISTS spofe_v2_1;"
+        sudo mysql -e "CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY '';"
+        sudo mysql -e "GRANT ALL PRIVILEGES ON spofe_v2_1.* TO 'root'@'localhost';"
+        sudo mysql -e "FLUSH PRIVILEGES;"
+        
+    - name: 🗄️ Import de la structure de la base de données
+      run: |
+        if [ -f "database-backups/spofe_v2_1_structure.sql" ]; then
+          mysql spofe_v2_1 < database-backups/spofe_v2_1_structure.sql
+        else
+          echo "⚠️ Structure de la base non trouvée, utilisation de la structure par défaut"
+        fi
+        
+    - name: 🔍 Génération du contrat frontend
+      run: |
+        echo "🤖 Génération du contrat..."
+        node contract-generator.js
+        
+    - name: 📊 Analyse de la conformité
+      run: |
+        echo "📊 Analyse des violations..."
+        node silc-validator-enhanced.js --no-report --no-dashboard
+        
+    - name: 🔧 Application des auto-fixs
+      run: |
+        echo "🔧 Application des corrections automatiques..."
+        node silc-validator-enhanced.js --auto-fix --no-report --no-dashboard
+        
+    - name: 📋 Génération du rapport final
+      run: |
+        echo "📋 Génération du rapport de validation..."
+        node silc-validator-enhanced.js --auto-fix
+        
+    - name: 📊 Mise à jour du dashboard
+      run: |
+        echo "📊 Mise à jour du dashboard de conformité..."
+        cp compliance-dashboard.html docs/compliance-dashboard.html
+        cp frontend-contract.json docs/frontend-contract.json
+        
+    - name: 📱 Envoi des alertes Slack
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: |
+          🚨 **SPOFE Contract Validation Failed**
+          
+          **Repository:** ${{ github.repository }}
+          **Branch:** ${{ github.ref }}
+          **Commit:** ${{ github.sha }}
+          **Author:** ${{ github.actor }}
+          
+          **Actions Requises:**
+          - 📋 Vérifier le rapport: `silc-validation-report.json`
+          - 🔧 Corriger les violations manuelles
+          - 📊 Consulter le dashboard: `compliance-dashboard.html`
+          
+          **Détails:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+    - name: 📱 Envoi des alertes Discord
+      if: failure()
+      uses: Ilshidro/action-discord@v2
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        message: |
+          🚨 **SPOFE Contract Validation Failed**
+          
+          **Repository:** ${{ github.repository }}
+          **Branch:** ${{ github.ref }}
+          **Commit:** ${{ github.sha }}
+          **Author:** ${{ github.actor }}
+          
+          **Actions Requises:**
+          - 📋 Vérifier le rapport de validation
+          - 🔧 Corriger les violations identifiées
+          - 📊 Consulter le dashboard de conformité
+          
+          **Lien:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          
+    - name: 📊 Upload des artefacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: silc-validation-results-${{ matrix.node-version }}
+        path: |
+          frontend-contract.json
+          compliance-dashboard.html
+          silc-validation-report.json
+          dashboard-data.json
+          conformance-fix-report.json
+        retention-days: 30
+        
+    - name: 📋 Génération du résumé
+      if: always()
+      run: |
+        echo "## 📊 SILC Validation Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f "silc-validation-report.json" ]; then
+          echo "### 📈 Statistiques" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const report = JSON.parse(require('fs').readFileSync('silc-validation-report.json', 'utf8'));
+            console.log(\`- **Validations:** \${report.stats.totalValidations}\`);
+            console.log(\`- **Violations:** \${report.stats.violationsFound}\`);
+            console.log(\`- **Corrigées:** \${report.stats.violationsFixed}\`);
+            console.log(\`- **Auto-fix:** \${report.stats.autoFixApplied}\`);
+            console.log(\`- **Manuelles:** \${report.stats.manualFixRequired}\`);
+            console.log(\`- **Taux succès:** \${report.summary.autoFixRate}%\`);
+          " >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🚨 Violations Critiques" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const report = JSON.parse(require('fs').readFileSync('silc-validation-report.json', 'utf8'));
+            const critical = report.recommendations.filter(r => r.severity === 'HIGH');
+            if (critical.length > 0) {
+              critical.forEach(r => {
+                console.log(\`- **\${r.rule}:** \${r.violations} violations\`);
+                console.log(\`  - \${r.message}\`);
+              });
+            } else {
+              console.log('✅ Aucune violation critique');
+            }
+          " >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "### 📁 Artefacts" >> $GITHUB_STEP_SUMMARY
+        echo "- 📊 [Dashboard](compliance-dashboard.html)" >> $GITHUB_STEP_SUMMARY
+        echo "- 📋 [Contrat JSON](frontend-contract.json)" >> $GITHUB_STEP_SUMMARY
+        echo "- 📄 [Rapport complet](silc-validation-report.json)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        echo "### 🎯 Actions Requises" >> $GITHUB_STEP_SUMMARY
+        echo "1. 📋 Consulter le dashboard de conformité" >> $GITHUB_STEP_SUMMARY
+        echo "2. 🔧 Corriger les violations manuelles identifiées" >> $GITHUB_STEP_SUMMARY
+        echo "3. 🔄 Exécuter la validation locale avec: \`node silc-validator-enhanced.js --auto-fix\`" >> $GITHUB_STEP_SUMMARY
+        echo "4. 📊 Vérifier l'amélioration du taux de conformité" >> $GITHUB_STEP_SUMMARY
+        
+  security-scan:
+    runs-on: ubuntu-latest
+    needs: validate-contract
+    
+    steps:
+    - name: 📥 Checkout du code
+      uses: actions/checkout@v4
+      
+    - name: 🔍 Audit de sécurité npm
+      run: npm audit --audit-level moderate
+      
+    - name: 🔍 Scan de sécurité Snyk
+      uses: snyk/actions/node@master
+      continue-on-error: true
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs: validate-contract
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout du code
+      uses: actions/checkout@v4
+      
+    - name: 📊 Déploiement du dashboard sur GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        publish_branch: gh-pages
+        
+  notify-team:
+    runs-on: ubuntu-latest
+    needs: [validate-contract, security-scan]
+    if: always()
+    
+    steps:
+    - name: 📥 Checkout du code
+      uses: actions/checkout@v4
+      
+    - name: 📊 Génération du rapport d'équipe
+      run: |
+        echo "# 📊 SPOFE Team Report - $(date)" > team-report.md
+        echo "" >> team-report.md
+        
+        if [ -f "silc-validation-report.json" ]; then
+          echo "## 🔍 Validation SILC" >> team-report.md
+          node -e "
+            const report = JSON.parse(require('fs').readFileSync('silc-validation-report.json', 'utf8'));
+            console.log(\`- **Taux conformité:** \${report.summary.autoFixRate}%\`);
+            console.log(\`- **Violations totales:** \${report.stats.violationsFound}\`);
+            console.log(\`- **Corrections auto:** \${report.stats.autoFixApplied}\`);
+            console.log(\`- **Corrections manuelles:** \${report.stats.manualFixRequired}\`);
+          " >> team-report.md
+          echo "" >> team-report.md
+        fi
+        
+        echo "## 🎯 Actions Prioritaires" >> team-report.md
+        echo "1. 📋 Vérifier le dashboard de conformité" >> team-report.md
+        echo "2. 🔧 Corriger les violations critiques" >> team-report.md
+        echo "3. 📊 Améliorer le taux de conformité" >> team-report.md
+        echo "4. 🔍 Valider les corrections" >> team-report.md
+        echo "" >> team-report.md
+        
+        echo "## 📊 Métriques" >> team-report.md
+        echo "- 📈 Dashboard: [Compliance Dashboard](compliance-dashboard.html)" >> team-report.md
+        echo "- 📋 Contrat: [Frontend Contract](frontend-contract.json)" >> team-report.md
+        echo "- 📄 Rapport: [Validation Report](silc-validation-report.json)" >> team-report.md
+        
+    - name: 📱 Notification équipe Slack
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: |
+          📊 **SPOFE Validation Report**
+          
+          **Status:** ${{ job.status }}
+          **Repository:** ${{ github.repository }}
+          **Branch:** ${{ github.ref }}
+          **Commit:** ${{ github.sha }}
+          
+          **Rapport d'équipe généré**
+          
+          **Actions:**
+          - 📋 Consulter le dashboard de conformité
+          - 🔧 Corriger les violations identifiées
+          - 📊 Améliorer le taux de conformité
+          
+          **Détails:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.TEAM_SLACK_WEBHOOK_URL }}

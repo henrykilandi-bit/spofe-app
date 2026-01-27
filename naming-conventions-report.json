@@ -1,0 +1,1613 @@
+{
+  "date": "2026-01-27T16:28:51.592Z",
+  "conventions": {
+    "backend": {
+      "controllers": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -controller.js"
+      },
+      "models": {
+        "pattern": {},
+        "description": "PascalCase"
+      },
+      "routes": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -routes.js"
+      },
+      "middleware": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -middleware.js"
+      },
+      "services": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -service.js"
+      },
+      "utils": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -util.js"
+      },
+      "config": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe .config.js"
+      },
+      "dto": {
+        "pattern": {},
+        "description": "PascalCase avec suffixe Dto.js"
+      }
+    },
+    "frontend": {
+      "components": {
+        "pattern": {},
+        "description": "PascalCase pour les composants React"
+      },
+      "pages": {
+        "pattern": {},
+        "description": "kebab-case pour les pages"
+      },
+      "hooks": {
+        "pattern": {},
+        "description": "camelCase avec préfixe use"
+      },
+      "utils": {
+        "pattern": {},
+        "description": "kebab-case"
+      },
+      "services": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -service"
+      },
+      "types": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -types"
+      },
+      "constants": {
+        "pattern": {},
+        "description": "kebab-case avec suffixe -constants"
+      }
+    }
+  },
+  "results": {
+    "backend": {
+      "controllers": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "approvalsController.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "auth-advanced.controller.js.backup",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "auth.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "auth.controller.minimal.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "auth_advanced.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "businessOperations.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "chartOfAccounts.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "dashboard.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "indicators.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "init.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "journalEntries.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "objectives.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "operationTemplates.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "optimized-journal.controller.js.backup",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "optimized_journal.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "reports.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "scheduler.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "secure-journal.controller.js.backup",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "secure_journal.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "strategicAI.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "thirdParties.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          },
+          {
+            "file": "user.controller.js",
+            "expected": "kebab-case avec suffixe -controller.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-controller\\.js$/"
+          }
+        ],
+        "total": 22
+      },
+      "models": {
+        "valid": [
+          "GroupeSuperUser.js",
+          "PendingApproval.js"
+        ],
+        "invalid": [
+          {
+            "file": "accountBalance.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "appSetting.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "associations.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "auditTrail.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "businessOperation.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "businessOperationAudit.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "chartOfAccount.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "compagnie.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "consultantCompanyAccess.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "consultantGroupAssignment.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "consultingFirm.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "externalDataSource.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "firmConsultants.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "fiscalYear.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "groupeEntreprise.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "index.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "journalEntry.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "journalEntryLine.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "objectiveAction.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "operationTemplate.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "passwordResetToken.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "performanceIndicator.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "role.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "securityEvent.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "strategicObjective.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "thirdParty.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "tokenBlacklist.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "twoFactorAuth.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          },
+          {
+            "file": "user.model.js",
+            "expected": "PascalCase",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*\\.js$/"
+          }
+        ],
+        "total": 31
+      },
+      "routes": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "ai.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "api.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "approvalRoutes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "approvalsRoutes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "auth.registration.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "auth.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "auth.routes.minimal.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "auth_registration.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "banking-api.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "banking_api.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "businessOperations.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "cache-monitoring.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "cache_monitoring.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "chartOfAccounts.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "dashboard.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "groupeApprovals.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "health-check.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "health.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "health_check.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "index.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "indicators.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "journalEntries.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "logging-stats.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "logging_stats.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "metrics.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "objectives.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "optimized-journal.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "optimized_journal.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "reports.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "scheduler.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "secure-journal.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "secure_journal.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "security.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "system-supervisor.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "system_supervisor.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "thirdParties.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "user.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "websocket.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "workflow-approval.routes.js.backup",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          },
+          {
+            "file": "workflow_approval.routes.js",
+            "expected": "kebab-case avec suffixe -routes.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-routes\\.js$/"
+          }
+        ],
+        "total": 40
+      },
+      "middleware": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "advanced-rate-limiting.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "advanced-security.middleware.js.backup",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "advanced_security.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "auth.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "businessOperation.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "csrf-protection.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "error.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "fk-protection.middleware.js.backup",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "fk_protection.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "groupPermissions.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "intelligent-cache.middleware.js.backup",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "intelligent_cache.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "logging.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "metricsMiddleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "pagination-protection.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "performance.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "rateLimit.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "redis-rate-limiter.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "requestLogger.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "security.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "tokenBlacklist.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "validate.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          },
+          {
+            "file": "validation.middleware.js",
+            "expected": "kebab-case avec suffixe -middleware.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-middleware\\.js$/"
+          }
+        ],
+        "total": 23
+      },
+      "services": {
+        "valid": [
+          "csrf-service.js",
+          "winston-config-service.js"
+        ],
+        "invalid": [
+          {
+            "file": "accessLogging.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "account-lockout.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "accountLockout.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "account_lockout.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "advanced-cache.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "advanced-features.integration.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "advanced-pagination.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "advanced_cache.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "advanced_pagination.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "approvalProcessingService.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "banking-api.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "banking_api.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "cache-scheduler.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "cache.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "cache_scheduler.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "databaseBackup.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "dataRetention.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "EmailService.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "GroupApprovalService.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "index-optimization.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "index_optimization.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "query-optimization.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "query_optimization.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "roleApprovalService.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "safe-deletion.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "safe_deletion.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "security-audit.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "security-monitoring.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "security_audit.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "security_monitoring.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "system-supervisor.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "system_supervisor.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "token-manager.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "token_manager.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "UserInvitationService.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "websocket.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "workflow-approval.service.js.backup",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          },
+          {
+            "file": "workflow_approval.service.js",
+            "expected": "kebab-case avec suffixe -service.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.js$/"
+          }
+        ],
+        "total": 40
+      },
+      "utils": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "config-manager.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "connection-health.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "dtoTransformer.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "enhanced-validateEnv.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "intelligentAlerts.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "intelligentReporting.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "logger.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "logger.js.backup",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "notification-service.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "objectiveAccountingIntegration.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "passwordValidator.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "prometheus-service.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "response.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "security-validator-enhanced.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "security-validator.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "securityAudit.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "strategicAIEngine.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "system-supervisor.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "validateEnv.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          },
+          {
+            "file": "validators.js",
+            "expected": "kebab-case avec suffixe -util.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-util\\.js$/"
+          }
+        ],
+        "total": 20
+      },
+      "config": {
+        "valid": [
+          "security.config.js",
+          "swagger.config.js"
+        ],
+        "invalid": [
+          {
+            "file": "config.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "cors.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "database-categories.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "database-cli.cjs",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "database.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "featureFlags.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "foreign-key-policy.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "index-strategy.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "monitoring.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "rate-limiting-config.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "redis.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "security.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "security.schema.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "swagger-schemas.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          },
+          {
+            "file": "swagger.js",
+            "expected": "kebab-case avec suffixe .config.js",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.config\\.js$/"
+          }
+        ],
+        "total": 17
+      },
+      "dto": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "accountBalance.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "account_balance.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "approval_audit_log.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "appSetting.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "auditTrail.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "audit_trail.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "businessOperation.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "businessOperationAudit.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "chartOfAccount.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "chart_of_account.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "compagnie.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "compagnie_permission_backup.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "company.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "company_permission.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "consultantCompanyAccess.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "consultantGroupAssignment.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "consultant_company_access.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "consultingFirm.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "externalDataSource.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "firmConsultants.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "fiscalYear.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "group.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "groupeEntreprise.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "groupe_entreprise.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "groupe_super_user.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "index.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "journalEntry.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "journalEntryLine.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "journal_entry.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "journal_entry_line.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "login_audit_trail.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "objectiveAction.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "operationTemplate.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "passwordResetToken.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "password_reset_token.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "pending_role_approval.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "performanceIndicator.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "remember_token.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "role.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "role_approval_workflow.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "securityEvent.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "security_event.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "strategicObjective.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "thirdParty.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "tokenBlacklist.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "token_blacklist.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "twoFactorAuth.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          },
+          {
+            "file": "user.dto.js",
+            "expected": "PascalCase avec suffixe Dto.js",
+            "pattern": "/^[A-Z][a-zA-Z0-9]*Dto\\.js$/"
+          }
+        ],
+        "total": 48
+      }
+    },
+    "frontend": {
+      "components": {
+        "valid": [
+          "BankingIntegrationUI.jsx",
+          "ConnectionHealthMonitor.jsx",
+          "NotificationCenter.jsx",
+          "WorkflowApprovalUI.jsx"
+        ],
+        "invalid": [],
+        "total": 4
+      },
+      "pages": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "ApprovalDetail.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "ApprovalList.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "BankingConnections.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "BankReconciliation.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "ChangelogPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "CHANGELOG_INTEGRATION.txt",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "ChartOfAccounts.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "DashboardPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "FAQPage.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "FAQPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "FinancialReports.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "GuideInscription.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "GuideInscription.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "JournalEntries.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage-BACKUP.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage-BACKUP.jsx.backup",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage-FULL.jsx.backup",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage-SIMPLE.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage-SIMPLE.jsx.backup",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPageBackup.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPageFull.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "LoginPageSimple.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "MODIFICATIONS_INTEGRATION_COMPLETE.md",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage-BACKUP.jsx.bak",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage-Extended.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage-NEW.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage-NEW.jsx.bak",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage-OLD.jsx.bak",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "RegisterPage.jsx.bak",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "SimpleLoginPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "TestPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "TwoFactorAuthPage.css",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "TwoFactorAuthPage.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          },
+          {
+            "file": "Users.jsx",
+            "expected": "kebab-case pour les pages",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*\\.(jsx|tsx)$/"
+          }
+        ],
+        "total": 37
+      },
+      "hooks": {
+        "valid": [
+          "useApi.js",
+          "useAuth.js",
+          "useBanking.js",
+          "useChartOfAccounts.js",
+          "useGroupApprovals.js",
+          "useJournalEntries.js",
+          "useNotifications.js",
+          "useRegister.js",
+          "useReports.js",
+          "useSuperUser.js",
+          "useTheme.js",
+          "useThirdParties.js",
+          "useWorkflow.js"
+        ],
+        "invalid": [
+          {
+            "file": "index.js",
+            "expected": "camelCase avec préfixe use",
+            "pattern": "/^use[A-Z][a-zA-Z0-9]*\\.(js|ts)$/"
+          },
+          {
+            "file": "useRegister-NEW.js",
+            "expected": "camelCase avec préfixe use",
+            "pattern": "/^use[A-Z][a-zA-Z0-9]*\\.(js|ts)$/"
+          }
+        ],
+        "total": 15
+      },
+      "utils": {
+        "valid": [
+          "translations.js"
+        ],
+        "invalid": [],
+        "total": 1
+      },
+      "services": {
+        "valid": [],
+        "invalid": [
+          {
+            "file": "api.config.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          },
+          {
+            "file": "chartOfAccounts.service.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          },
+          {
+            "file": "dashboard.api.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          },
+          {
+            "file": "index.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          },
+          {
+            "file": "journalEntries.service.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          },
+          {
+            "file": "reports.service.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          },
+          {
+            "file": "thirdParties.service.js",
+            "expected": "kebab-case avec suffixe -service",
+            "pattern": "/^[a-z]+(?:-[a-z]+)*-service\\.(js|ts)$/"
+          }
+        ],
+        "total": 7
+      },
+      "types": {
+        "valid": [],
+        "invalid": [],
+        "total": 0
+      },
+      "constants": {
+        "valid": [],
+        "invalid": [],
+        "total": 0
+      }
+    }
+  },
+  "statistics": {
+    "backend": {
+      "total": 241,
+      "valid": 6,
+      "compliance": "2.5"
+    },
+    "frontend": {
+      "total": 64,
+      "valid": 18,
+      "compliance": "28.1"
+    },
+    "overall": {
+      "total": 305,
+      "valid": 24,
+      "compliance": "7.9"
+    }
+  }
+}

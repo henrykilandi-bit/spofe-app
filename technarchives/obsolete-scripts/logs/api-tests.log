@@ -1,0 +1,20 @@
+[2026-01-19 14:22:40.561] [INFO] Action : start | DetailMode : False | SkipTests : False
+[2026-01-19 14:22:40.885] [INFO] === Démarrage du stack ===
+[2026-01-19 14:22:41.646] [INFO] Nettoyage des ports
+[2026-01-19 14:23:53.182] [INFO] Action : test | DetailMode : False | SkipTests : False
+[2026-01-19 14:23:53.329] [INFO] === Début des tests d'endpoints ===
+[2026-01-19 14:23:53.338] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:23:55.440] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:23:57.471] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:23:59.497] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:23:59.516] [ERROR] Authentification échouée : Response status code does not indicate success: 429 (Too Many Requests).
+[2026-01-19 14:23:59.521] [ERROR] Tests terminés : pas de token
+[2026-01-19 14:24:14.335] [INFO] Action : status | DetailMode : False | SkipTests : False
+[2026-01-19 14:24:28.477] [INFO] Action : test | DetailMode : False | SkipTests : False
+[2026-01-19 14:24:28.485] [INFO] === Début des tests d'endpoints ===
+[2026-01-19 14:24:28.494] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:24:30.519] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:24:32.542] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:24:34.572] [INFO] Authentification : admin@spofe.local
+[2026-01-19 14:24:34.591] [ERROR] Authentification échouée : Response status code does not indicate success: 429 (Too Many Requests).
+[2026-01-19 14:24:34.598] [ERROR] Tests terminés : pas de token

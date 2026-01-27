@@ -1,0 +1,140 @@
+#!/bin/bash
+
+# 🎯 SPOFE v2.1 - COMMANDES ESSENTIELLES
+# Script de référence rapide post-synchronisation
+
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║        SPOFE v2.1 - SYNCHRONISATION TERMINÉE              ║"
+echo "║        Rapport: 21 janvier 2026 - Version 2.1.0           ║"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo ""
+
+echo "📊 STATUS GLOBAL:"
+echo "   ✅ NPM Dependencies: Updated (574 packages, 0 vulnérabilités)"
+echo "   ✅ Critical Files: 32/32 verified"
+echo "   ✅ Configuration: Complete"
+echo "   ✅ Imports/Exports: Fixed"
+echo "   ✅ Monitoring: Active"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "🚀 DÉMARRAGE RAPIDE"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
+echo "1️⃣  PRÉPARER LA BASE DE DONNÉES"
+echo "    ────────────────────────────"
+echo "    cd cascade"
+echo "    npm run db:init     # Créer tables (migrations)"
+echo "    npm run db:seed     # Charger données OHADA"
+echo "    npm run db:verify   # Vérifier intégrité"
+echo ""
+
+echo "2️⃣  VÉRIFIER AVANT DÉMARRAGE"
+echo "    ──────────────────────────"
+echo "    npm run monitor:critical  # 32/32 fichiers critiques"
+echo "    npm run health            # Santé API"
+echo ""
+
+echo "3️⃣  DÉMARRER APPLICATION"
+echo "    ──────────────────────"
+echo "    npm run dev          # Mode développement"
+echo "    npm start            # Mode production"
+echo "    npm run monitor:watch &  # Avec surveillance (dev)"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "📋 SCRIPTS MONITORING DISPONIBLES"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
+echo "⏱️  Vérification Immédiate:"
+echo "    npm run monitor:critical      # Rapport complet"
+echo "    npm run sync:complete         # Sync dépendances + fichiers"
+echo "    npm run db:verify             # Vérifier BD"
+echo ""
+
+echo "👁️  Surveillance Continue (Développement):"
+echo "    npm run monitor:watch         # Watch mode fichiers"
+echo ""
+
+echo "🔄 Monitoring Automat (Production):"
+echo "    npm run monitor:hourly        # Toutes les heures (background)"
+echo ""
+
+echo "🔗 Combinaison:"
+echo "    npm run sync:db:monitor       # BD + Monitoring complet"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "📁 RAPPORTS & LOGS"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
+echo "📄 Rapports Complets:"
+echo "   • RAPPORT_SYNCHRONISATION_COMPLETE_2026-01-21.md"
+echo "   • SYNC_FINAL_STATUS.md (dans cascade/)"
+echo "   • POST-SYNC_CHECKLIST.md"
+echo ""
+
+echo "📊 Logs Actuels:"
+echo "   cascade/logs/surveillance.log         # Monitoring"
+echo "   cascade/logs/sync-complete.log        # Sync complète"
+echo "   cascade/logs/sync_backend_db_ai.log   # BD sync"
+echo "   cascade/logs/combined.log             # Tous les logs"
+echo "   cascade/logs/error.log                # Erreurs"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "⚠️  POINTS IMPORTANTS"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
+echo "✅ Complété:"
+echo "   [x] Mise à jour dépendances (0 vulnérabilités)"
+echo "   [x] Correction import ES modules"
+echo "   [x] Vérification 32 fichiers critiques"
+echo "   [x] Validation configuration"
+echo "   [x] Intégration monitoring"
+echo ""
+
+echo "⏳ À Faire Avant Démarrage:"
+echo "   [ ] npm run db:init      # Créer tables"
+echo "   [ ] npm run db:seed      # Charger données"
+echo "   [ ] npm run db:verify    # Vérifier BD"
+echo "   [ ] npm run test         # Tests"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "🎯 VÉRIFICATION FINALE"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
+echo "Avant de démarrer, vérifier:"
+echo ""
+
+echo "1. Monitoring OK:"
+echo "   npm run monitor:critical"
+echo "   ├─ Doit afficher: ✅ ALL SYSTEMS GO"
+echo "   └─ Total: 32/32 passed"
+echo ""
+
+echo "2. BD OK:"
+echo "   npm run db:verify"
+echo "   ├─ Tables: >= 6 créées"
+echo "   └─ Données: OHADA chargées"
+echo ""
+
+echo "3. API OK:"
+echo "   npm run health"
+echo "   └─ Doit retourner: {\"status\":\"ok\"}"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+echo "🟢 STATUS: PRÊT À DÉMARRER"
+echo ""
+echo "Commande suggérée:"
+echo "  cd cascade && npm run db:init && npm run dev"
+echo ""
+echo "═══════════════════════════════════════════════════════════════"

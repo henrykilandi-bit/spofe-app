@@ -1,0 +1,227 @@
+{
+  "date": "2026-01-27T17:53:25.217Z",
+  "mode": "restoration",
+  "backup": {
+    "directory": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z",
+    "files": 29
+  },
+  "current": {
+    "directory": "cascade/src/models",
+    "filesBefore": 3,
+    "filesAfter": 31
+  },
+  "results": {
+    "restored": 29,
+    "errors": 0,
+    "filesToRestore": 29
+  },
+  "restoreLog": [
+    {
+      "file": "accountBalance.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\accountBalance.model.js",
+      "currentPath": "cascade\\src\\models\\accountBalance.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "appSetting.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\appSetting.model.js",
+      "currentPath": "cascade\\src\\models\\appSetting.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "associations.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\associations.js",
+      "currentPath": "cascade\\src\\models\\associations.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "auditTrail.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\auditTrail.model.js",
+      "currentPath": "cascade\\src\\models\\auditTrail.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "businessOperation.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\businessOperation.model.js",
+      "currentPath": "cascade\\src\\models\\businessOperation.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "businessOperationAudit.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\businessOperationAudit.model.js",
+      "currentPath": "cascade\\src\\models\\businessOperationAudit.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "chartOfAccount.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\chartOfAccount.model.js",
+      "currentPath": "cascade\\src\\models\\chartOfAccount.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "compagnie.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\compagnie.model.js",
+      "currentPath": "cascade\\src\\models\\compagnie.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "consultantCompanyAccess.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\consultantCompanyAccess.model.js",
+      "currentPath": "cascade\\src\\models\\consultantCompanyAccess.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "consultantGroupAssignment.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\consultantGroupAssignment.model.js",
+      "currentPath": "cascade\\src\\models\\consultantGroupAssignment.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "consultingFirm.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\consultingFirm.model.js",
+      "currentPath": "cascade\\src\\models\\consultingFirm.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "externalDataSource.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\externalDataSource.model.js",
+      "currentPath": "cascade\\src\\models\\externalDataSource.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "firmConsultants.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\firmConsultants.model.js",
+      "currentPath": "cascade\\src\\models\\firmConsultants.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "fiscalYear.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\fiscalYear.model.js",
+      "currentPath": "cascade\\src\\models\\fiscalYear.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "groupeEntreprise.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\groupeEntreprise.model.js",
+      "currentPath": "cascade\\src\\models\\groupeEntreprise.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "index.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\index.js",
+      "currentPath": "cascade\\src\\models\\index.js",
+      "hadCurrent": true
+    },
+    {
+      "file": "journalEntry.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\journalEntry.model.js",
+      "currentPath": "cascade\\src\\models\\journalEntry.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "journalEntryLine.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\journalEntryLine.model.js",
+      "currentPath": "cascade\\src\\models\\journalEntryLine.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "objectiveAction.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\objectiveAction.model.js",
+      "currentPath": "cascade\\src\\models\\objectiveAction.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "operationTemplate.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\operationTemplate.model.js",
+      "currentPath": "cascade\\src\\models\\operationTemplate.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "passwordResetToken.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\passwordResetToken.model.js",
+      "currentPath": "cascade\\src\\models\\passwordResetToken.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "performanceIndicator.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\performanceIndicator.model.js",
+      "currentPath": "cascade\\src\\models\\performanceIndicator.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "role.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\role.model.js",
+      "currentPath": "cascade\\src\\models\\role.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "securityEvent.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\securityEvent.model.js",
+      "currentPath": "cascade\\src\\models\\securityEvent.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "strategicObjective.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\strategicObjective.model.js",
+      "currentPath": "cascade\\src\\models\\strategicObjective.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "thirdParty.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\thirdParty.model.js",
+      "currentPath": "cascade\\src\\models\\thirdParty.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "tokenBlacklist.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\tokenBlacklist.model.js",
+      "currentPath": "cascade\\src\\models\\tokenBlacklist.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "twoFactorAuth.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\twoFactorAuth.model.js",
+      "currentPath": "cascade\\src\\models\\twoFactorAuth.model.js",
+      "hadCurrent": false
+    },
+    {
+      "file": "user.model.js",
+      "status": "RESTORED",
+      "backupPath": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\user.model.js",
+      "currentPath": "cascade\\src\\models\\user.model.js",
+      "hadCurrent": false
+    }
+  ],
+  "indexAnalysis": {
+    "wasRestored": true,
+    "hasAssociations": true
+  }
+}

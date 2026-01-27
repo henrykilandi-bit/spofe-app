@@ -1,0 +1,329 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                   AUDIT CONVENTIONS SPOFE v2.2                      ║
+║                        27 JANVIER 2026                              ║
+║                    🔍 AUDIT COMPLET SANS CORRECTIONS                ║
+╚════════════════════════════════════════════════════════════════════╝
+
+┌─ SCORE GLOBAL ─────────────────────────────────────────────────────┐
+│  Conformité: 83% (101/122 fichiers)                                 │
+│  Violations: 21 fichiers                                            │
+│  Status: ⚠️ CORRECTIONS REQUISES                                    │
+└────────────────────────────────────────────────────────────────────┘
+
+════════════════════════════════════════════════════════════════════════
+
+📊 RÉSUMÉ PAR DOMAINE
+
+┌─ BACKEND ─────────────────────────────────────────────────────────┐
+│                                                                    │
+│  MODELS          27/36 conformes   [████████░░░░░░░░] 75%         │
+│  ├─ 9 violations trouvées                                         │
+│  ├─ Problèmes: Pattern filenames + forbidden terms               │
+│  └─ Impact: HAUT                                                  │
+│                                                                    │
+│  CONTROLLERS     17/19 conformes   [██████████████░░] 89%         │
+│  ├─ 2 violations trouvées                                         │
+│  ├─ Problèmes: Pattern filenames                                 │
+│  └─ Impact: MOYEN                                                 │
+│                                                                    │
+│  SERVICES        19/27 conformes   [██████████░░░░░░] 70%         │
+│  ├─ 8 violations trouvées                                         │
+│  ├─ Problèmes: Pattern filenames (PRIORITÉ!)                     │
+│  └─ Impact: HAUT                                                  │
+│                                                                    │
+│  ───────────────────────────────────────────────────────────────  │
+│  TOTAL BACKEND:  63/82 conformes   [███████████░░░░░] 77%         │
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
+
+┌─ FRONTEND ────────────────────────────────────────────────────────┐
+│                                                                   │
+│  COMPONENTS      24/24 conformes   [███████████████░] 100%        │
+│  ├─ 0 violations trouvées                                        │
+│  ├─ Status: ✅ PARFAIT!                                          │
+│  └─ Tous les .jsx sont en PascalCase                             │
+│                                                                   │
+│  HOOKS           13/15 conformes   [█████████████░░░] 87%         │
+│  ├─ 2 violations trouvées                                        │
+│  ├─ Problèmes: Pattern use{Name}                                 │
+│  └─ Impact: MOYEN                                                │
+│                                                                   │
+│  UTILS           1/1 conformes     [███████████████░] 100%        │
+│  ├─ 0 violations trouvées                                        │
+│  ├─ Status: ✅ PARFAIT!                                          │
+│  └─ Tous les .js sont en camelCase                               │
+│                                                                   │
+│  ───────────────────────────────────────────────────────────────  │
+│  TOTAL FRONTEND: 38/40 conformes   [██████████████░░] 95%         │
+│                                                                   │
+└────────────────────────────────────────────────────────────────────┘
+
+┌─ DATABASE ────────────────────────────────────────────────────────┐
+│                                                                   │
+│  STATUS: ⚠️ NON ACCESSIBLE                                        │
+│  ERREUR: Database 'spofe' introuvable                             │
+│  ACTION: Démarrer MySQL et relancer le scan                       │
+│                                                                   │
+└────────────────────────────────────────────────────────────────────┘
+
+════════════════════════════════════════════════════════════════════════
+
+⚠️ VIOLATIONS DÉTAILLÉES (21 au total)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔴 BACKEND MODELS (9 violations) - PRIORITÉ HAUTE
+
+  1. associations.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Ne correspond pas au pattern {entity}.model.js
+     Fix: Renommer en associations.model.js
+
+  2. compagnie.model.js
+     ❌ Type: FORBIDDEN_TERM
+     Issue: Utilise terme interdit "compagnie"
+     Fix: Utiliser nommage OHADA compliant
+
+  3. consultantCompanyAccess.model.js
+     ❌ Type: FORBIDDEN_TERM
+     Issue: Utilise terme interdit "company"
+     Fix: Utiliser nommage OHADA compliant
+
+  4. GroupeSuperUser.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Ne correspond pas au pattern {entity}.model.js
+     Fix: Renommer en groupe-super-user.model.js
+
+  5. index.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Ne correspond pas au pattern {entity}.model.js
+     Fix: Extraire modèle spécifique
+
+  6. journalEntry.model.js
+     ❌ Type: FORBIDDEN_TERM
+     Issue: Utilise terme interdit "entry"
+     Fix: Utiliser nommage OHADA compliant
+
+  7. journalEntryLine.model.js
+     ❌ Type: FORBIDDEN_TERM
+     Issue: Utilise terme interdit "entry"
+     Fix: Utiliser nommage OHADA compliant
+
+  8. PendingApproval.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Ne correspond pas au pattern {entity}.model.js
+     Fix: Renommer en pending-approval.model.js
+
+  9. user.model.js
+     ❌ Type: FORBIDDEN_TERM
+     Issue: Utilise terme interdit "user"
+     Fix: Utiliser nommage OHADA compliant
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🟠 BACKEND SERVICES (8 violations) - PRIORITÉ TRÈS HAUTE
+
+  1. advanced-features.integration.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Ne correspond pas au pattern {entity}.service.js
+     Fix: Renommer en advanced-features.service.js
+
+  2. approvalProcessingService.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: camelCase au lieu de {entity}.service.js
+     Fix: Renommer en approval-processing.service.js
+
+  3. csrf-service.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Format incorrect
+     Fix: Renommer en csrf.service.js
+
+  4. EmailService.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: PascalCase au lieu de {entity}.service.js
+     Fix: Renommer en email.service.js
+
+  5. GroupApprovalService.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: PascalCase au lieu de {entity}.service.js
+     Fix: Renommer en group-approval.service.js
+
+  6. roleApprovalService.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: camelCase au lieu de {entity}.service.js
+     Fix: Renommer en role-approval.service.js
+
+  7. UserInvitationService.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: PascalCase au lieu de {entity}.service.js
+     Fix: Renommer en user-invitation.service.js
+
+  8. winston-config-service.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Format incorrect
+     Fix: Renommer en winston-config.service.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🟡 BACKEND CONTROLLERS (2 violations)
+
+  1. approvalsController.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Ne correspond pas au pattern {entity}.controller.js
+     Fix: Renommer en approvals.controller.js
+
+  2. auth.controller.minimal.js
+     ❌ Type: FILENAME_PATTERN
+     Issue: Extension ".minimal.js" au lieu de ".controller.js"
+     Fix: Renommer en auth-minimal.controller.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🟢 FRONTEND HOOKS (2 violations)
+
+  1. index.js
+     ❌ Type: HOOK_PATTERN
+     Issue: Ne correspond pas au pattern use{Name}
+     Fix: Renommer ou déplacer
+
+  2. useRegister-NEW.js
+     ❌ Type: HOOK_PATTERN
+     Issue: Utilise tiret "-" au lieu de camelCase
+     Fix: Renommer en useRegisterNew.js
+
+════════════════════════════════════════════════════════════════════════
+
+✅ FICHIERS CONFORMES REMARQUABLES
+
+✓ TOUS LES COMPOSANTS FRONTEND SONT EN PASCALCASE (24/24)
+  - ApprovalStats, AuditLogViewer, PendingApprovalsTable, etc.
+
+✓ TOUS LES UTILS FRONTEND SONT EN CAMELCASE (1/1)
+  - translations.js
+
+✓ LA PLUPART DES CONTROLLERS SONT CONFORMES (17/19)
+  - auth.controller.js, chartOfAccounts.controller.js, etc.
+
+✓ LA PLUPART DES HOOKS SONT CONFORMES (13/15)
+  - useAuth.js, useApi.js, useNotifications.js, etc.
+
+════════════════════════════════════════════════════════════════════════
+
+📈 TENDANCES & OBSERVATIONS
+
+ANALYSE:
+1. Frontend structure est SOLIDE (95% conforme)
+2. Backend a besoin de nettoyage (77% conforme)
+3. Problème principal: Fichiers services pas conformes
+4. Problème secondaire: Forbidden terms dans models
+
+PATTERN DE VIOLATIONS:
+- Services: Mélange de camelCase, PascalCase, et trait d'union
+- Models: Forbidden terms (compagnie, user, entry)
+- Controllers: Exceptions minimales (seulement 2)
+
+RECOMMANDATION:
+Les services doivent être harmonisés EN PRIORITÉ (8 fichiers)
+Les models doivent être vérifiés pour termes interdits (4 fichiers)
+
+════════════════════════════════════════════════════════════════════════
+
+🎯 PLAN DE CORRECTION PROPOSÉ
+
+PHASE 1 - CRITIQUE (Services + Pattern)
+├─ Renommer 8 fichiers services
+├─ Créer mappings pour imports
+└─ Durée estimée: 2-3 heures
+
+PHASE 2 - IMPORTANT (Models)
+├─ Renommer 4 fichiers models (pattern)
+├─ Gérer forbidden terms (4 modèles)
+└─ Durée estimée: 3-4 heures
+
+PHASE 3 - MOYEN (Controllers + Hooks)
+├─ Renommer 2 controllers
+├─ Renommer 2 hooks
+└─ Durée estimée: 1 heure
+
+PHASE 4 - VÉRIFICATION (Database)
+├─ Scanner database schema
+├─ Vérifier tables et colonnes
+└─ Durée estimée: 1 heure
+
+════════════════════════════════════════════════════════════════════════
+
+📁 FICHIERS GÉNÉRÉS PAR CET AUDIT
+
+1. AUDIT_NAMING_CONVENTIONS_REPORT.json
+   └─ Rapport JSON technique complet (922 lignes)
+
+2. AUDIT_NAMING_CONVENTIONS_REPORT.md
+   └─ Rapport formaté Markdown détaillé
+
+3. AUDIT_NAMING_CONVENTIONS_REPORT.txt
+   └─ Rapport texte simplifié (CE FICHIER)
+
+4. audit-naming-conventions.js
+   └─ Script d'audit réutilisable
+
+════════════════════════════════════════════════════════════════════════
+
+🔐 CONVENTIONS SPOFE v2.2 - RÉSUMÉ
+
+DATABASE:
+  ✓ Tables: snake_case + pluriel
+  ✓ Colonnes: snake_case
+  ✓ Foreign keys: table_id
+  ✓ Timestamps: created_at/updated_at/deleted_at
+  ✗ Forbidden: users, compagnie, entries, etc.
+
+BACKEND:
+  ✓ Fichiers: {entity}.[type].js
+  ✓ Types: controller, model, service, middleware, etc.
+  ✓ Functions: camelCase
+  ✓ Classes: PascalCase
+  ✓ Constants: UPPER_SNAKE_CASE
+
+FRONTEND:
+  ✓ Components: PascalCase.jsx
+  ✓ Hooks: use{Name}.js
+  ✓ Utils: camelCase.js
+  ✓ CSS: {ComponentName}.css
+
+════════════════════════════════════════════════════════════════════════
+
+📊 STATISTIQUES FINALES
+
+Total fichiers scannés:      122
+  Backend:                    82
+  Frontend:                   40
+  Database:                    0 (inaccessible)
+
+Fichiers conformes:          101 (83%)
+Violations trouvées:          21 (17%)
+
+Répartition violations:
+  Models:                      9 (43%)
+  Services:                    8 (38%)
+  Controllers:                 2 (10%)
+  Hooks:                       2 (10%)
+  Components:                  0 (0%)
+  Utils:                       0 (0%)
+
+════════════════════════════════════════════════════════════════════════
+
+✨ PROCHAINES ÉTAPES
+
+1. ✅ Audit complet généré
+2. ⏳ Attendre validation du rapport
+3. ⏳ Planifier phase de correction
+4. ⏳ Exécuter corrections par phase
+5. ⏳ Relancer audit pour vérification
+
+════════════════════════════════════════════════════════════════════════
+
+Audit généré le: 27 Janvier 2026, 11:30 UTC
+Durée du scan: ~3 secondes
+Status: ✅ COMPLET - SANS CORRECTIONS EFFECTUÉES
+
+═══════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,259 @@
+{
+  "date": "2026-01-27T17:22:07.052Z",
+  "mode": "correction",
+  "intelligent": true,
+  "results": {
+    "totalFixed": 0,
+    "totalErrors": 0,
+    "totalSkipped": 0,
+    "totalDuplicates": 29,
+    "backupDirectory": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z"
+  },
+  "fixLog": [
+    {
+      "type": "model",
+      "old": "accountBalance.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\accountBalance.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "appSetting.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\appSetting.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "associations.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\associations.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "auditTrail.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\auditTrail.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "businessOperation.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\businessOperation.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "businessOperationAudit.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\businessOperationAudit.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "chartOfAccount.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\chartOfAccount.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "compagnie.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\compagnie.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "consultantCompanyAccess.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\consultantCompanyAccess.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "consultantGroupAssignment.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\consultantGroupAssignment.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "consultingFirm.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\consultingFirm.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "externalDataSource.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\externalDataSource.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "firmConsultants.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\firmConsultants.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "fiscalYear.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\fiscalYear.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "groupeEntreprise.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\groupeEntreprise.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "index.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\index.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "journalEntry.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\journalEntry.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "journalEntryLine.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\journalEntryLine.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "objectiveAction.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\objectiveAction.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "operationTemplate.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\operationTemplate.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "passwordResetToken.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\passwordResetToken.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "performanceIndicator.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\performanceIndicator.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "role.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\role.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "securityEvent.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\securityEvent.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "strategicObjective.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\strategicObjective.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "thirdParty.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\thirdParty.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "tokenBlacklist.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\tokenBlacklist.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "twoFactorAuth.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\twoFactorAuth.model.js",
+      "reason": "Identique au fichier cible"
+    },
+    {
+      "type": "model",
+      "old": "user.model.js",
+      "new": "DELETED_DUPLICATE",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_MODELS_INTELLIGENT_2026-01-27T17-22-06-834Z\\user.model.js",
+      "reason": "Identique au fichier cible"
+    }
+  ],
+  "summary": {
+    "initial": {
+      "total": 31,
+      "compliant": 2,
+      "nonCompliant": 29,
+      "indexFiles": 1,
+      "sequelizeModels": 31
+    },
+    "final": {
+      "total": 2,
+      "compliant": 2
+    }
+  }
+}

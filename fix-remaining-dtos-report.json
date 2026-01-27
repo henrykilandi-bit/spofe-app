@@ -1,0 +1,68 @@
+{
+  "date": "2026-01-27T16:42:06.370Z",
+  "operation": "FIX_REMAINING_DTOS",
+  "contract": "SILC_v1.0",
+  "results": {
+    "totalProcessed": 10,
+    "success": 10,
+    "errors": 0,
+    "finalComplianceRate": "0.0"
+  },
+  "details": [
+    {
+      "old": "account_balance.dto.js",
+      "new": "AccountBalanceDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "audit_trail.dto.js",
+      "new": "AuditTrailDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "chart_of_account.dto.js",
+      "new": "ChartOfAccountDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "consultant_company_access.dto.js",
+      "new": "ConsultantCompanyAccessDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "groupe_entreprise.dto.js",
+      "new": "GroupeEntrepriseDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "journal_entry.dto.js",
+      "new": "JournalEntryDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "journal_entry_line.dto.js",
+      "new": "JournalEntryLineDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "password_reset_token.dto.js",
+      "new": "PasswordResetTokenDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "security_event.dto.js",
+      "new": "SecurityEventDto.js",
+      "status": "RENAMED"
+    },
+    {
+      "old": "token_blacklist.dto.js",
+      "new": "TokenBlacklistDto.js",
+      "status": "RENAMED"
+    }
+  ],
+  "finalState": {
+    "totalDtos": 0,
+    "compliant": 0,
+    "nonCompliant": 0
+  }
+}

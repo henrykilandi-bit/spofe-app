@@ -1,0 +1,23 @@
+{
+  "date": "2026-01-27T17:21:58.689Z",
+  "mode": "dry-run",
+  "intelligent": true,
+  "results": {
+    "totalFixed": 0,
+    "totalErrors": 0,
+    "totalSkipped": 0,
+    "totalDuplicates": 0,
+    "backupDirectory": null
+  },
+  "fixLog": [],
+  "summary": {
+    "initial": {
+      "total": 31,
+      "compliant": 2,
+      "nonCompliant": 29,
+      "indexFiles": 1,
+      "sequelizeModels": 31
+    },
+    "final": null
+  }
+}

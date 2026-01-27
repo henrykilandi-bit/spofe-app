@@ -1,0 +1,150 @@
+
+> spofe-frontend@1.0.0 test
+> vitest
+
+Ôû▓ [WARNING] Duplicate key "engines" in object literal [duplicate-object-key]
+
+    ../package.json:135:2:
+      135 Ôöé   "engines": {
+          ÔòÁ   ~~~~~~~~~
+
+  The original key "engines" is here:
+
+    ../package.json:14:2:
+      14 Ôöé   "engines": {
+         ÔòÁ   ~~~~~~~~~
+
+
+[1m[44m DEV [49m[22m [34mv4.0.17 [39m[90mC:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend[39m
+
+ [32mÔ£ô[39m src/__tests__/components.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9
+[90mstdout[2m | src/__tests__/App.test.jsx[2m > [22m[2mApp Component[2m > [22m[2mrenders login page when not authenticated
+[22m[39m[AuthContext] Initializing - storedToken: [33mfalse[39m storedUser: [33mfalse[39m
+
+stderr | src/__tests__/App.test.jsx > App Component > renders login page when not authenticated
+The above error occurred in the <ThemeProvider> component:
+
+    at ThemeProvider (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:81:26)
+    at ErrorBoundary (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/App.jsx:364:5)
+    at App
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+ErrorBoundary caught: TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9 {
+  componentStack: '\n' +
+    '    at ThemeProvider (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:81:26)\n' +
+    '    at ErrorBoundary (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/App.jsx:364:5)\n' +
+    '    at App'
+}
+
+TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9
+[90mstdout[2m | src/__tests__/App.test.jsx[2m > [22m[2mApp Component[2m > [22m[2mrenders main layout when authenticated
+[22m[39m[AuthContext] Initializing - storedToken: [33mfalse[39m storedUser: [33mfalse[39m
+stderr | src/__tests__/App.test.jsx > App Component > renders main layout when authenticated
+The above error occurred in the <ThemeProvider> component:
+
+    at ThemeProvider (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:81:26)
+    at ErrorBoundary (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/App.jsx:364:5)
+    at App
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+ErrorBoundary caught: TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9 {
+  componentStack: '\n' +
+    '    at ThemeProvider (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:81:26)\n' +
+    '    at ErrorBoundary (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/App.jsx:364:5)\n' +
+    '    at App'
+}
+
+
+TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9
+[90mstdout[2m | src/__tests__/App.test.jsx[2m > [22m[2mApp Component[2m > [22m[2mLogin Form[2m > [22m[2mallows user to input email and password
+[22m[39m[AuthContext] Initializing - storedToken: [33mfalse[39m storedUser: [33mfalse[39m
+
+stderr | src/__tests__/App.test.jsx > App Component > Login Form > allows user to input email and password
+The above error occurred in the <ThemeProvider> component:
+
+    at ThemeProvider (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:81:26)
+    at ErrorBoundary (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/App.jsx:364:5)
+    at App
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+ErrorBoundary caught: TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9 {
+  componentStack: '\n' +
+    '    at ThemeProvider (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:81:26)\n' +
+    '    at ErrorBoundary (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/App.jsx:364:5)\n' +
+    '    at App'
+}
+
+TypeError: window.matchMedia is not a function
+    at initializeTheme (C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:59:40)
+    at C:/Users/henry/Desktop/SPOFE-APP VERS 1.0/frontend/src/context/ThemeContext.jsx:99:5
+    at commitHookEffectListMount (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects (C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:27023:14)
+    at C:\Users\henry\Desktop\SPOFE-APP VERS 1.0\frontend\node_modules\react-dom\cjs\react-dom.development.js:26808:9
+[90mstdout[2m | src/__tests__/App.test.jsx[2m > [22m[2mApp Component[2m > [22m[2mLogin Form[2m > [22m[2mshows error message on login failure
+[22m[39m[AuthContext] Initializing - storedToken: [33mfalse[39m storedUser: [33mfalse[39m

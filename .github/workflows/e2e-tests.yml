@@ -1,0 +1,347 @@
+name: 🧪 E2E Tests & Performance
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Nightly tests
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+  CI: true
+
+jobs:
+  # Job 1: Setup et cache
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd cascade && npm ci && cd ..
+          cd frontend && npm ci && cd ..
+
+  # Job 2: Tests E2E (Chromium)
+  e2e-chromium:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd cascade && npm ci && cd ..
+          cd frontend && npm ci && cd ..
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      
+      - name: Start services
+        run: |
+          cd cascade && npm run dev &
+          cd frontend && npm run dev &
+          sleep 10
+      
+      - name: Run E2E tests (Chromium)
+        run: npx playwright test --project=chromium
+        env:
+          BASE_URL: 'http://localhost:5173'
+          API_URL: 'http://localhost:3001'
+      
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-chromium
+          path: playwright-report/
+          retention-days: 30
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-chromium
+          path: test-results/
+          retention-days: 30
+
+  # Job 3: Tests E2E (Firefox)
+  e2e-firefox:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd cascade && npm ci && cd ..
+          cd frontend && npm ci && cd ..
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps firefox
+      
+      - name: Start services
+        run: |
+          cd cascade && npm run dev &
+          cd frontend && npm run dev &
+          sleep 10
+      
+      - name: Run E2E tests (Firefox)
+        run: npx playwright test --project=firefox
+        env:
+          BASE_URL: 'http://localhost:5173'
+          API_URL: 'http://localhost:3001'
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-firefox
+          path: test-results/
+          retention-days: 30
+
+  # Job 4: Tests E2E (WebKit)
+  e2e-webkit:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd cascade && npm ci && cd ..
+          cd frontend && npm ci && cd ..
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps webkit
+      
+      - name: Start services
+        run: |
+          cd cascade && npm run dev &
+          cd frontend && npm run dev &
+          sleep 10
+      
+      - name: Run E2E tests (WebKit)
+        run: npx playwright test --project=webkit
+        env:
+          BASE_URL: 'http://localhost:5173'
+          API_URL: 'http://localhost:3001'
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-webkit
+          path: test-results/
+          retention-days: 30
+
+  # Job 5: Tests Performance
+  performance-tests:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd cascade && npm ci && cd ..
+          cd frontend && npm ci && cd ..
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      
+      - name: Start services
+        run: |
+          cd cascade && npm run dev &
+          cd frontend && npm run dev &
+          sleep 10
+      
+      - name: Run Performance tests
+        run: npx playwright test --project=performance
+        env:
+          BASE_URL: 'http://localhost:5173'
+          API_URL: 'http://localhost:3001'
+      
+      - name: Parse performance results
+        if: always()
+        run: |
+          node scripts/parse-performance.js
+      
+      - name: Upload performance results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-results
+          path: test-results/performance-results.json
+          retention-days: 90
+      
+      - name: Comment performance on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('test-results/performance-results.json', 'utf8'));
+            
+            let comment = '## 📊 Performance Test Results\n\n';
+            comment += '| Operation | Duration | Threshold | Status |\n';
+            comment += '|-----------|----------|-----------|--------|\n';
+            
+            results.forEach(r => {
+              const status = r.duration < r.threshold ? '✅' : '❌';
+              comment += `| ${r.operation} | ${r.duration}ms | ${r.threshold}ms | ${status} |\n`;
+            });
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  # Job 6: Smoke tests (rapides)
+  smoke-tests:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd cascade && npm ci && cd ..
+          cd frontend && npm ci && cd ..
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      
+      - name: Start services
+        run: |
+          cd cascade && npm run dev &
+          cd frontend && npm run dev &
+          sleep 10
+      
+      - name: Run Smoke tests
+        run: npx playwright test --project=smoke
+        env:
+          BASE_URL: 'http://localhost:5173'
+          API_URL: 'http://localhost:3001'
+
+  # Job 7: Publish results
+  publish-results:
+    needs: [e2e-chromium, e2e-firefox, e2e-webkit, performance-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: all-results
+      
+      - name: Generate summary report
+        run: |
+          node scripts/generate-test-summary.js
+      
+      - name: Publish to Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./test-report
+          cname: tests.spofe.local
+
+  # Job 8: Slack notification
+  notify:
+    needs: [e2e-chromium, e2e-firefox, e2e-webkit, performance-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Determine status
+        id: status
+        run: |
+          if [[ "${{ needs.e2e-chromium.result }}" == "success" && "${{ needs.e2e-firefox.result }}" == "success" && "${{ needs.e2e-webkit.result }}" == "success" && "${{ needs.performance-tests.result }}" == "success" ]]; then
+            echo "status=✅ All tests passed" >> $GITHUB_OUTPUT
+            echo "color=good" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Some tests failed" >> $GITHUB_OUTPUT
+            echo "color=danger" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "${{ steps.status.outputs.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*SPOFE E2E & Performance Tests*\n${{ steps.status.outputs.status }}\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>"
+                  }
+                }
+              ]
+            }

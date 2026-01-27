@@ -1,0 +1,212 @@
+{
+  "summary": {
+    "timestamp": "2026-01-27T10:46:40.544Z",
+    "totalFilesScanned": 113,
+    "conformeFiles": 83,
+    "nonConformeFiles": 30,
+    "conformityScore": "73%",
+    "nonConformeCount": 30
+  },
+  "backend": {
+    "models": [
+      {
+        "file": "associations.js",
+        "issue": "Invalid model filename pattern",
+        "expected": "{EntityName}.model.js",
+        "severity": "major"
+      },
+      {
+        "file": "GroupeSuperUser.js",
+        "issue": "Invalid model filename pattern",
+        "expected": "{EntityName}.model.js",
+        "severity": "major"
+      },
+      {
+        "file": "index.js",
+        "issue": "Invalid model filename pattern",
+        "expected": "{EntityName}.model.js",
+        "severity": "major"
+      },
+      {
+        "file": "PendingApproval.js",
+        "issue": "Invalid model filename pattern",
+        "expected": "{EntityName}.model.js",
+        "severity": "major"
+      }
+    ],
+    "controllers": [
+      {
+        "file": "approvalsController.js",
+        "issue": "Invalid controller filename",
+        "expected": "{entityName}.controller.js (camelCase)",
+        "severity": "major"
+      },
+      {
+        "file": "auth-advanced.controller.js",
+        "issue": "Invalid controller filename",
+        "expected": "{entityName}.controller.js (camelCase)",
+        "severity": "major"
+      },
+      {
+        "file": "auth.controller.minimal.js",
+        "issue": "Invalid controller filename",
+        "expected": "{entityName}.controller.js (camelCase)",
+        "severity": "major"
+      },
+      {
+        "file": "optimized-journal.controller.js",
+        "issue": "Invalid controller filename",
+        "expected": "{entityName}.controller.js (camelCase)",
+        "severity": "major"
+      },
+      {
+        "file": "secure-journal.controller.js",
+        "issue": "Invalid controller filename",
+        "expected": "{entityName}.controller.js (camelCase)",
+        "severity": "major"
+      }
+    ],
+    "services": [
+      {
+        "file": "account-lockout.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "advanced-cache.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "advanced-features.integration.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "advanced-pagination.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "banking-api.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "cache-scheduler.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "csrf-service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "EmailService.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "GroupApprovalService.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "index-optimization.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "query-optimization.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "safe-deletion.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "security-audit.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "security-monitoring.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "system-supervisor.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "token-manager.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "UserInvitationService.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "winston-config-service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      },
+      {
+        "file": "workflow-approval.service.js",
+        "issue": "Invalid service filename",
+        "expected": "{serviceName}.service.js (camelCase)",
+        "severity": "minor"
+      }
+    ],
+    "middleware": [],
+    "other": []
+  },
+  "frontend": {
+    "components": [],
+    "hooks": [
+      {
+        "file": "index.js",
+        "issue": "Invalid hook filename",
+        "expected": "use{HookName}.js (camelCase with use prefix)",
+        "severity": "major"
+      },
+      {
+        "file": "useRegister-NEW.js",
+        "issue": "Invalid hook filename",
+        "expected": "use{HookName}.js (camelCase with use prefix)",
+        "severity": "major"
+      }
+    ],
+    "utils": [],
+    "other": []
+  },
+  "database": {
+    "tables": [],
+    "columns": [],
+    "error": "Unknown database 'spofeapp'"
+  }
+}

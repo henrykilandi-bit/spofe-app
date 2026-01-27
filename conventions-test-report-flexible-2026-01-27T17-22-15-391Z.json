@@ -1,0 +1,510 @@
+{
+  "date": "2026-01-27T17:22:15.390Z",
+  "mode": "flexible",
+  "verbose": false,
+  "results": {
+    "controllers": {
+      "total": 19,
+      "compliant": 19,
+      "nonCompliant": [],
+      "exceptions": [
+        "auth-controller-minimal.js"
+      ],
+      "details": [
+        {
+          "file": "approvals-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "auth-advanced-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "auth-controller-minimal.js",
+          "isCompliant": true,
+          "isException": true,
+          "reason": "Exception autorisée"
+        },
+        {
+          "file": "auth-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "business-operations-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "chart-of-accounts-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "dashboard-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "indicators-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "init-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "journal-entries-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "objectives-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "operation-templates-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "optimized-journal-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "reports-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "scheduler-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "secure-journal-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "strategic-ai-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "third-parties-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "user-controller.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        }
+      ]
+    },
+    "models": {
+      "total": 2,
+      "compliant": 2,
+      "nonCompliant": [],
+      "exceptions": [],
+      "details": [
+        {
+          "file": "GroupeSuperUser.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "PendingApproval.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        }
+      ]
+    },
+    "pages": {
+      "total": 18,
+      "compliant": 18,
+      "nonCompliant": [],
+      "exceptions": [],
+      "details": [
+        {
+          "file": "approval-detail.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "approval-list.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "bank-reconciliation.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "banking-connections.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "changelog-page.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "chart-of-accounts.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "dashboard-page.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "financial-reports.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "guide-inscription.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "journal-entries.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "login-page-backup.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "login-page-full.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "login-page-simple.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "login-page.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "register-page-extended.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "simple-login-page.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "test-page.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "two-factor-auth-page.jsx",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        }
+      ]
+    },
+    "dtos": {
+      "total": 38,
+      "compliant": 37,
+      "nonCompliant": [
+        "index.js"
+      ],
+      "exceptions": [],
+      "details": [
+        {
+          "file": "AccountBalanceDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ApprovalAuditLogDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "AppsettingDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "AuditTrailDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "BusinessoperationauditDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "BusinessoperationDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ChartOfAccountDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "CompagnieDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "CompagniePermissionBackupDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "CompanyDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "CompanyPermissionDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ConsultantCompanyAccessDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ConsultantgroupassignmentDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ConsultingfirmDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ExternaldatasourceDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "FirmconsultantsDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "FiscalyearDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "GroupDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "GroupeEntrepriseDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "GroupeSuperUserDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "index.js",
+          "isCompliant": false,
+          "isException": false,
+          "reason": "Non conforme (flexible)"
+        },
+        {
+          "file": "JournalEntryDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "JournalEntryLineDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "LoginAuditTrailDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ObjectiveactionDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "OperationtemplateDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "PasswordResetTokenDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "PendingRoleApprovalDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "PerformanceindicatorDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "RememberTokenDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "RoleApprovalWorkflowDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "RoleDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "SecurityEventDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "StrategicobjectiveDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "ThirdpartyDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "TokenBlacklistDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "TwofactorauthDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        },
+        {
+          "file": "UserDto.js",
+          "isCompliant": true,
+          "isException": false,
+          "reason": "Conforme (flexible)"
+        }
+      ]
+    }
+  },
+  "global": {
+    "total": 77,
+    "compliant": 76,
+    "rate": "98.7"
+  }
+}

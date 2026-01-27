@@ -1,0 +1,108 @@
+{
+  "date": "2026-01-27T17:52:50.024Z",
+  "mode": "contractual-deep",
+  "indexAnalysis": {
+    "exists": false,
+    "analysis": "Fichier index.js non trouvé"
+  },
+  "results": {
+    "total": 2,
+    "compliant": {
+      "naming": 2,
+      "sequelize": 2,
+      "contract": 0
+    },
+    "nonCompliant": {
+      "naming": [],
+      "sequelize": [],
+      "contract": [
+        "GroupeSuperUser.js",
+        "PendingApproval.js"
+      ]
+    },
+    "details": [
+      {
+        "file": "GroupeSuperUser.js",
+        "fileName": "GroupeSuperUser",
+        "naming": {
+          "compliant": true,
+          "pattern": "PascalCase.js"
+        },
+        "sequelize": {
+          "compliant": true,
+          "analysis": {
+            "modelName": "GroupeSuperUser",
+            "tableName": "groupe_super_users",
+            "underscored": true,
+            "timestamps": true,
+            "paranoid": false,
+            "associations": [],
+            "hasRequiredOptions": true,
+            "isSequelizeModel": true,
+            "content": "/**\r\n * GroupeSuperUser Model\r\n * Représente la relation entre un groupe d'entreprises et ses super utilisateurs\r\n * Permet plusieurs super users par groupe (pour redondance)\r\n */\r\n\r\nmodule.exports = (sequelize, DataTypes) => {\r\n  const GroupeSuperUser = sequelize.define(\r\n    'GroupeSuperUser',\r\n    {\r\n      id: {\r\n        type: DataTypes.INTEGER,\r\n        primaryKey: true,\r\n        autoIncrement: true\r\n      },\r\n      groupe_id: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: false,\r\n        references: {\r\n          model: 'groupes_entreprises',\r\n          key: 'id'\r\n        }\r\n      },\r\n      user_id: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: false,\r\n        references: {\r\n          model: 'users',\r\n          key: 'id'\r\n        }\r\n      },\r\n      assigned_by: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: true,\r\n        references: {\r\n          model: 'users',\r\n          key: 'id'\r\n        }\r\n      },\r\n      created_at: {\r\n        type: DataTypes.DATE,\r\n        field: 'created_at'\r\n      },\r\n      updated_at: {\r\n        type: DataTypes.DATE,\r\n        field: 'updated_at'\r\n      }\r\n    },\r\n    {\r\n      sequelize,\r\n      modelName: 'GroupeSuperUser',\r\n      tableName: 'groupe_super_users',\r\n      timestamps: true,\r\n      paranoid: false,\r\n      underscored: true,\r\n      indexes: [\r\n        { fields: ['groupe_id', 'user_id'], unique: true }\r\n      ]\r\n    }\r\n  );\r\n\r\n  GroupeSuperUser.associate = (models) => {\r\n    // Super user (User model)\r\n    GroupeSuperUser.belongsTo(models.User, {\r\n      foreignKey: 'user_id',\r\n      as: 'superUser'\r\n    });\r\n\r\n    // Groupe\r\n    GroupeSuperUser.belongsTo(models.GroupeEntreprise, {\r\n      foreignKey: 'groupe_id',\r\n      as: 'groupe'\r\n    });\r\n\r\n    // Assigné par (Admin central)\r\n    GroupeSuperUser.belongsTo(models.User, {\r\n      foreignKey: 'assigned_by',\r\n      as: 'assignedByUser'\r\n    });\r\n  };\r\n\r\n  return GroupeSuperUser;\r\n};\r\n"
+          }
+        },
+        "contract": {
+          "compliant": false,
+          "hasTable": false,
+          "hasDTO": true,
+          "isUsed": true,
+          "usage": {
+            "services": [],
+            "controllers": [],
+            "total": 0
+          },
+          "dtoFile": "GroupeSuperUserDto.js"
+        }
+      },
+      {
+        "file": "PendingApproval.js",
+        "fileName": "PendingApproval",
+        "naming": {
+          "compliant": true,
+          "pattern": "PascalCase.js"
+        },
+        "sequelize": {
+          "compliant": true,
+          "analysis": {
+            "modelName": "PendingApproval",
+            "tableName": "pending_approvals",
+            "underscored": true,
+            "timestamps": true,
+            "paranoid": false,
+            "associations": [],
+            "hasRequiredOptions": true,
+            "isSequelizeModel": true,
+            "content": "/**\r\n * PendingApproval Model\r\n * Représente les inscriptions utilisateurs en attente d'approbation\r\n * par le super user du groupe concerné\r\n */\r\n\r\nmodule.exports = (sequelize, DataTypes) => {\r\n  const PendingApproval = sequelize.define(\r\n    'PendingApproval',\r\n    {\r\n      id: {\r\n        type: DataTypes.INTEGER,\r\n        primaryKey: true,\r\n        autoIncrement: true\r\n      },\r\n      user_id: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: false,\r\n        references: {\r\n          model: 'users',\r\n          key: 'id'\r\n        }\r\n      },\r\n      groupe_id: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: false,\r\n        references: {\r\n          model: 'groupes_entreprises',\r\n          key: 'id'\r\n        }\r\n      },\r\n      company_id: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: true,\r\n        references: {\r\n          model: 'compagnies',\r\n          key: 'id'\r\n        }\r\n      },\r\n      status: {\r\n        type: DataTypes.ENUM('pending', 'approved', 'rejected'),\r\n        defaultValue: 'pending',\r\n        allowNull: false\r\n      },\r\n      rejection_reason: {\r\n        type: DataTypes.TEXT,\r\n        allowNull: true\r\n      },\r\n      approved_by: {\r\n        type: DataTypes.INTEGER,\r\n        allowNull: true,\r\n        references: {\r\n          model: 'users',\r\n          key: 'id'\r\n        }\r\n      },\r\n      approved_at: {\r\n        type: DataTypes.DATE,\r\n        allowNull: true\r\n      },\r\n      created_at: {\r\n        type: DataTypes.DATE,\r\n        field: 'created_at'\r\n      },\r\n      updated_at: {\r\n        type: DataTypes.DATE,\r\n        field: 'updated_at'\r\n      }\r\n    },\r\n    {\r\n      sequelize,\r\n      modelName: 'PendingApproval',\r\n      tableName: 'pending_approvals',\r\n      timestamps: true,\r\n      paranoid: false,\r\n      underscored: true,\r\n      indexes: [\r\n        { fields: ['user_id'] },\r\n        { fields: ['groupe_id'] },\r\n        { fields: ['status'] },\r\n        { fields: ['created_at'] }\r\n      ]\r\n    }\r\n  );\r\n\r\n  PendingApproval.associate = (models) => {\r\n    // Utilisateur à approuver\r\n    PendingApproval.belongsTo(models.User, {\r\n      foreignKey: 'user_id',\r\n      as: 'user'\r\n    });\r\n\r\n    // Groupe concerné\r\n    PendingApproval.belongsTo(models.GroupeEntreprise, {\r\n      foreignKey: 'groupe_id',\r\n      as: 'groupe'\r\n    });\r\n\r\n    // Entreprise\r\n    PendingApproval.belongsTo(models.Compagnie, {\r\n      foreignKey: 'company_id',\r\n      as: 'company'\r\n    });\r\n\r\n    // Super user qui approuve/rejette\r\n    PendingApproval.belongsTo(models.User, {\r\n      foreignKey: 'approved_by',\r\n      as: 'approvedByUser'\r\n    });\r\n  };\r\n\r\n  return PendingApproval;\r\n};\r\n"
+          }
+        },
+        "contract": {
+          "compliant": false,
+          "hasTable": false,
+          "hasDTO": false,
+          "isUsed": true,
+          "usage": {
+            "services": [],
+            "controllers": [],
+            "total": 0
+          },
+          "dtoFile": null
+        }
+      }
+    ]
+  },
+  "scores": {
+    "naming": 100,
+    "sequelize": 100,
+    "contract": 0,
+    "global": 50
+  },
+  "recommendations": {
+    "critical": [],
+    "contract": [
+      "GroupeSuperUser.js",
+      "PendingApproval.js"
+    ],
+    "improvements": []
+  }
+}

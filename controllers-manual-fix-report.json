@@ -1,0 +1,144 @@
+{
+  "date": "2026-01-27T17:02:44.001Z",
+  "operation": "CONTROLLERS_MANUAL_FIX",
+  "results": {
+    "totalFixed": 19,
+    "totalErrors": 0,
+    "backupDirectory": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z"
+  },
+  "fixLog": [
+    {
+      "type": "controller",
+      "old": "approvals-controller-controller.js",
+      "new": "approvals-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\approvals-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "auth-advanced-controller-controller.js",
+      "new": "auth-advanced-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\auth-advanced-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "auth-controller-controller.js",
+      "new": "auth-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\auth-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "auth.controller.minimal-controller.js",
+      "new": "auth-controller-minimal.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\auth.controller.minimal-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "business-operations-controller-controller.js",
+      "new": "business-operations-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\business-operations-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "chart-of-accounts-controller-controller.js",
+      "new": "chart-of-accounts-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\chart-of-accounts-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "dashboard-controller-controller.js",
+      "new": "dashboard-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\dashboard-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "indicators-controller-controller.js",
+      "new": "indicators-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\indicators-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "init-controller-controller.js",
+      "new": "init-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\init-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "journal-entries-controller-controller.js",
+      "new": "journal-entries-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\journal-entries-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "objectives-controller-controller.js",
+      "new": "objectives-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\objectives-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "operation-templates-controller-controller.js",
+      "new": "operation-templates-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\operation-templates-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "optimized-journal-controller-controller.js",
+      "new": "optimized-journal-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\optimized-journal-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "reports-controller-controller.js",
+      "new": "reports-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\reports-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "scheduler-controller-controller.js",
+      "new": "scheduler-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\scheduler-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "secure-journal-controller-controller.js",
+      "new": "secure-journal-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\secure-journal-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "strategic-ai-controller-controller.js",
+      "new": "strategic-ai-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\strategic-ai-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "third-parties-controller-controller.js",
+      "new": "third-parties-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\third-parties-controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "user-controller-controller.js",
+      "new": "user-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CONTROLLERS_MANUAL_2026-01-27T17-02-43-895Z\\user-controller-controller.js"
+    }
+  ]
+}

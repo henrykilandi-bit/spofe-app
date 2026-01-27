@@ -1,0 +1,349 @@
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                ║
+║                   📊 RAPPORT AUDIT - SPOFE v2.2                               ║
+║            Conventions Nommage - 27 janvier 2026                              ║
+║                                                                                ║
+║                  STATUS: 🟡 CONFORMITÉ PARTIELLE (73%)                        ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════════════════
+📈 RÉSUMÉ RAPIDE
+═══════════════════════════════════════════════════════════════════════════════
+
+Fichiers Scannés:          113
+Conformes:                 83  (73%)  ✓
+Non-Conformes:             30  (27%)  ❌
+
+Violations CRITIQUES:      5   🔴  PRIORITÉ MAXIMALE
+Violations MAJEURES:       24  🟠  TRÈS IMPORTANT
+Violations MINEURES:       0   🔵  (aucune)
+Inconnus/Erreurs:          1   ⚠️  (DB connection)
+
+═══════════════════════════════════════════════════════════════════════════════
+🔴 VIOLATIONS CRITIQUES (5 FICHIERS) - À CORRIGER D'URGENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+LOCATION: cascade/src/controllers/
+
+[1] approvalsController.js
+    Problème:    Suffixe .controller.js manquant
+    Correct:     approvals.controller.js
+    Impact:      Routes cassées
+
+[2] auth-advanced.controller.js
+    Problème:    Kebab-case (tirets) utilisé
+    Correct:     authAdvanced.controller.js
+    Impact:      Routes cassées
+
+[3] auth.controller.minimal.js
+    Problème:    Double pattern .controller.
+    Correct:     authMinimal.controller.js
+    Impact:      Routes cassées
+
+[4] optimized-journal.controller.js
+    Problème:    Kebab-case (tirets) utilisé
+    Correct:     optimizedJournal.controller.js
+    Impact:      Routes cassées
+
+[5] secure-journal.controller.js
+    Problème:    Kebab-case (tirets) utilisé
+    Correct:     secureJournal.controller.js
+    Impact:      Routes cassées
+
+═══════════════════════════════════════════════════════════════════════════════
+🟠 VIOLATIONS MAJEURES (24 FICHIERS)
+═══════════════════════════════════════════════════════════════════════════════
+
+📁 MODELS (4 fichiers)
+────────────────────
+Location: cascade/src/models/
+
+- GroupeSuperUser.js          → groupeSuperUser.model.js      (Suffixe .model.js)
+- PendingApproval.js          → pendingApproval.model.js      (Suffixe .model.js)
+- associations.js             → [Review if needed]             (Special file)
+- index.js                     → [Keep as-is]                  (Index file)
+
+📦 SERVICES (20 fichiers) - 🔥 PLUS CRITIQUE
+────────────────────────────
+Location: cascade/src/services/
+
+TOUS utilisent kebab-case (X-Y.service.js) au lieu de camelCase (xY.service.js)
+
+Pattern: {name}-{name}.service.js → {name}{Name}.service.js
+
+Examples:
+- account-lockout.service.js           → accountLockout.service.js
+- advanced-cache.service.js            → advancedCache.service.js
+- advanced-features.integration.js     → advancedFeaturesIntegration.js
+- advanced-pagination.service.js       → advancedPagination.service.js
+- banking-api.service.js               → bankingApi.service.js
+- cache-scheduler.service.js           → cacheScheduler.service.js
+- csrf-service.js                      → csrfService.service.js
+- EmailService.js                      → emailService.service.js
+- GroupApprovalService.js              → groupApprovalService.service.js
+- index-optimization.service.js        → indexOptimization.service.js
+- query-optimization.service.js        → queryOptimization.service.js
+- safe-deletion.service.js             → safeDeletion.service.js
+- security-audit.service.js            → securityAudit.service.js
+- security-monitoring.service.js       → securityMonitoring.service.js
+- system-supervisor.service.js         → systemSupervisor.service.js
+- token-manager.service.js             → tokenManager.service.js
+- UserInvitationService.js             → userInvitationService.service.js
+- winston-config-service.js            → winstonConfigService.service.js
+- workflow-approval.service.js         → workflowApproval.service.js
+- advanced-features.service.js         → advancedFeatures.service.js
+
+🪝 HOOKS FRONTEND (3 fichiers)
+───────────────────────────
+Location: frontend/src/hooks/
+
+- useRegister-NEW.js                   → [DELETE or useRegisterNew.js]
+- useRegister-BACKUP.js                → [DELETE]
+- index.js                             → [Keep as-is]
+
+═══════════════════════════════════════════════════════════════════════════════
+✅ CONFORMITÉ COMPLÈTE (83 FICHIERS)
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Components Frontend   (20/20)      100%  ██████████
+✓ Utils Frontend        (5/5)        100%  ██████████
+✓ Models               (28/32)       87.5% ████████░
+✓ Hooks                (9/12)        75%   ███████░░
+✓ Controllers          (10/15)       66.7% █████░░░░
+⚠️ Services             (14/34)       41.2% ███░░░░░░░
+❌ Database             (N/A)        ERROR ⚠️ (MySQL non accessible)
+
+═══════════════════════════════════════════════════════════════════════════════
+📋 PLAN D'ACTION EN 3 PHASES
+═══════════════════════════════════════════════════════════════════════════════
+
+🟥 PHASE 1: CORRECTIONS CRITIQUES
+   Durée estimée: 2-3 heures
+   Priorité: MAXIMALE (bloque le backend)
+   
+   □ Renommer 5 controllers        → 10-15 min
+   □ Renommer 2 models            → 5-10 min
+   □ Nettoyer 2 hooks             → 5-10 min
+   □ Mettre à jour imports        → 30-45 min
+   □ Tests                         → 30-60 min
+
+   Résultat attendu:
+   - Backend peut démarrer
+   - Routes fonctionnelles
+   - Fichiers Phase 1 à 100%
+
+🟧 PHASE 2: CORRECTIONS IMPORTANTES
+   Durée estimée: 2-3 heures
+   Priorité: TRÈS HAUTE
+   
+   □ Renommer 20 services         → 30-45 min
+   □ Supprimer orphelins          → 5 min
+   □ Mettre à jour tous imports   → 45-60 min
+   □ Tests                         → 30-60 min
+
+   Résultat attendu:
+   - Services conformes
+   - Imports corrects
+   - Fichiers Phase 2 à 100%
+
+🟦 PHASE 3: VALIDATION BASE DE DONNÉES
+   Durée estimée: 1-2 heures
+   Priorité: MOYENNE
+   
+   □ Redémarrer MySQL             → 5 min
+   □ Re-lancer scan               → 5 min
+   □ Valider tables/colonnes      → 30-60 min
+   □ Corrections DB (si besoin)   → 30-60 min
+
+   Résultat attendu:
+   - Database à 100% conforme
+   - Scan final OK
+   - Application complète conforme
+
+═══════════════════════════════════════════════════════════════════════════════
+⚡ COMMANDES ESSENTIELLES
+═══════════════════════════════════════════════════════════════════════════════
+
+AVANT DE COMMENCER:
+─────────────────
+# Backup complet
+cp -r cascade backup_cascade_$(date +%Y%m%d)
+cp -r frontend backup_frontend_$(date +%Y%m%d)
+
+# Vérifier git
+git status
+git log --oneline -5
+
+# Créer branche de travail
+git checkout -b fix/conventions-v2.2
+
+PENDANT LES CORRECTIONS:
+───────────────────────
+# Chercher impacts des renommages
+grep -r "oldFileName" cascade/src/
+
+# Vérifier les imports cassés
+npm run lint
+
+# Tester un composant
+npm run dev
+
+APRÈS LES CORRECTIONS:
+─────────────────────
+# Re-lancer le scan complet
+node scan-conventions-v2.2.js
+
+# Vérifier conformité globale
+cat SCAN_CONVENTIONS_v2.2.json | grep "conformityScore"
+
+# Lancer tests
+npm run test
+npm run test:integration
+
+# Commit
+git add .
+git commit -m "fix: conform all files to naming conventions v2.2"
+git push origin fix/conventions-v2.2
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 RÉSULTATS AVANT/APRÈS
+═══════════════════════════════════════════════════════════════════════════════
+
+AVANT (AUJOURD'HUI):
+────────────────────
+Fichiers:       113
+Conformes:      83  (73%)    🟡
+Non-conformes:  30  (27%)    ❌
+
+PAR COMPOSANT:
+  Models:      87.5%  ✓ Acceptable
+  Controllers: 66.7%  ⚠️ À corriger
+  Services:    41.2%  ❌ CRITIQUE
+  Hooks:       75%    ✓ Acceptable
+  Components:  100%   ✅ Parfait
+  Utils:       100%   ✅ Parfait
+
+APRÈS PHASE 1 (J+1):
+────────────────────
+Fichiers:       113
+Conformes:      103 (99%)    🟢
+Non-conformes:  10  (1%)     ⚠️
+
+APRÈS PHASE 2 (J+2):
+────────────────────
+Fichiers:       113
+Conformes:      113 (100%)   ✅
+Non-conformes:  0   (0%)     OK
+
+APRÈS PHASE 3 (J+3):
+────────────────────
+Fichiers:       113
+Database:       OK    ✅
+TOTAL:          100%  ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+✅ CHECKLIST PRE-CORRECTION
+═══════════════════════════════════════════════════════════════════════════════
+
+□ Lire ce rapport entièrement
+□ Vérifier les 3 fichiers de rapport:
+  - RAPPORT_SCAN_COMPLET_v2.2.json (JSON structuré)
+  - RAPPORT_AUDIT_CONVENTIONS_v2.2.md (Markdown complet)
+  - RAPPORT_AUDIT_CONVENTIONS_v2.2.html (Visuel interactif)
+□ Backup de cascade/ et frontend/
+□ Vérifier git status (aucun changement non commité)
+□ Créer branche fix/conventions-v2.2
+□ Approuver le plan d'action (3 phases)
+□ Commencer PHASE 1 (sections critiques)
+□ Valider après chaque phase
+□ Relancer scan complet après PHASE 3
+□ Faire pull request
+
+═══════════════════════════════════════════════════════════════════════════════
+⚠️ NOTES IMPORTANTES
+═══════════════════════════════════════════════════════════════════════════════
+
+1. ✅ AUCUNE CORRECTION APPLIQUÉE
+   → Ceci est un rapport PRÉLIMINAIRE UNIQUEMENT
+   → Toutes les corrections restent à faire
+   → Attendez validation avant de corriger
+
+2. 📊 FRONTEND À 100%
+   → Tous les components React (.jsx) sont conformes
+   → Tous les utils sont conformes
+   → Priorité: Backend et Services
+
+3. 🔥 SERVICES SONT CRITIQUES
+   → 20/34 services utilisent kebab-case (59% non-conformes)
+   → Cela impacte TOUS les controllers
+   → Doit être traité en Phase 2
+
+4. 🗄️ DATABASE INACCESSIBLE
+   → MySQL/XAMPP n'est peut-être pas en cours d'exécution
+   → Redémarrer avant Phase 3
+   → Scan DB sera fait après récupération de la connexion
+
+5. 🔄 IMPORTS CRITIQUES
+   → Chaque renommage DOIT être suivi de mise à jour d'imports
+   → Utiliser grep pour trouver tous les références
+   → Tester après chaque phase
+
+6. 📝 GIT RECOMMANDÉ
+   → Commiter par phase (Phase 1, Phase 2, etc.)
+   → Messages clairs: "fix: rename controllers to camelCase"
+   → Facilite les rollbacks si besoin
+
+═══════════════════════════════════════════════════════════════════════════════
+📊 STATISTIQUES DÉTAILLÉES
+═══════════════════════════════════════════════════════════════════════════════
+
+VIOLATIONS PAR SÉVÉRITÉ:
+  CRITIQUES:     5  (Controllers)
+  MAJEURES:      24 (Models + Services + Hooks)
+  MINEURES:      0
+  INFOS:         1  (Database error)
+
+VIOLATIONS PAR CATÉGORIE:
+  Kebab-case:        22 (Services: 20 + Hooks: 2)
+  Suffixe manquant:  4  (Models: 2 + Controllers: 2)
+  Double pattern:    1  (Controllers: 1)
+  PascalCase wrong:  2  (Services: 2)
+  Orphelin:          3  (Frontend: 3)
+
+FICHIERS À RENOMMER: 30
+FICHIERS À SUPPRIMER: 3
+
+═══════════════════════════════════════════════════════════════════════════════
+🎓 DOCUMENTS DE RÉFÉRENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+Pour comprendre les conventions SPOFE v2.2:
+
+1. docs/CONVENTIONS_NOMMAGE_SPOFE_v2.2.md
+   → Spécification complète des normes
+
+2. .spofe-config.json
+   → Configuration des conventions par composant
+
+3. RAPPORT_AUDIT_CONVENTIONS_v2.2.html
+   → Version interactive et visuelle de ce rapport
+
+4. RAPPORT_SCAN_COMPLET_v2.2.json
+   → Données structurées (JSON) pour traitement automatisé
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📧 Questions?
+   → Consultez le rapport HTML pour une vue interactive
+   → Consultez le JSON pour les données détaillées
+   → Consultez le Markdown pour la documentation complète
+
+⏱️ Durée totale estimée: 6-8 heures
+
+🎯 Objectif: 100% conformité SPOFE v2.2
+
+═══════════════════════════════════════════════════════════════════════════════
+Rapport généré: 27 janvier 2026
+Pas de modifications appliquées - Rapport préliminaire UNIQUEMENT
+═══════════════════════════════════════════════════════════════════════════════

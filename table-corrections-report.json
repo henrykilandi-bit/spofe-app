@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-01-27T10:31:57.246Z",
+  "corrections": [
+    "compagnie_permissions → company_permissions",
+    "consultant_firm_assignments → consulting_firm_assignments",
+    "consultant_group_summary → consultant_group_summaries"
+  ],
+  "status": "completed"
+}

@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-01-27T16:01:13.165Z",
+  "version": "SPOFE v2.2",
+  "operation": "Enhanced Auto-Fix Rules",
+  "stats": {
+    "rulesEnhanced": 3,
+    "violationsFixed": 156,
+    "endpointsMapped": 0,
+    "typesInferred": 0,
+    "structuresCorrected": 0,
+    "errors": 1
+  },
+  "results": {
+    "rulesEnhanced": 3,
+    "violationsFixed": 156,
+    "successRate": "5200.00"
+  },
+  "recommendations": [
+    {
+      "type": "Auto-Fix Success",
+      "message": "156 violations corrigées automatiquement",
+      "action": "Valider les corrections et exécuter les tests"
+    },
+    {
+      "type": "Errors",
+      "message": "1 erreurs rencontrées",
+      "action": "Vérifier les logs et corriger manuellement"
+    }
+  ]
+}

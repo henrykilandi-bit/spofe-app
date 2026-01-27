@@ -1,0 +1,38 @@
+LISTE DES TABLES DE LA BASE DE DONNÉES
+(déjà présente dans le SQL)
+4.1 Tables Métier Principales
+1. plans_comptables - Plans (OHADA, PCG, IFRS...)
+2. classes_comptables - Classes 1-9
+3. comptes - Arbre hiérarchique des comptes
+4. entreprises - Entreprises clientes
+5. exercices_comptables - Exercices par entreprise
+6. journaux - Journaux (ACH, VTE, BQ, CAISSE...)
+7. ecritures - En-têtes écritures
+8. lignes_ecriture - Lignes débit/crédit
+9. tiers - Clients/fournisseurs
+10. banques - Comptes bancaires
+4.2 Tables de Gestion
+11. utilisateurs - Utilisateurs système
+12. roles - Rôles et permissions
+13. user_roles - Association utilisateurs-rôles
+14. utilisateurs_entreprises - Droits par entreprise
+15. sequences - Numérotation thread-safe
+4.3 Tables Fonctionnelles
+16. mapping_plans_comptables - Correspondances entre plans
+17. rapprochements_bancaires - Rapprochements
+18. budgets - Budgets prévisionnels
+19. logs_audit - Audit trail complet
+4.4 Relations Clés
+text
+entreprises 1???N exercices_comptables
+entreprises 1???N journaux
+entreprises 1???N tiers
+entreprises 1???N ecritures
+exercices_comptables 1???N ecritures
+journaux 1???N ecritures
+ecritures 1???N lignes_ecriture
+comptes 1???N lignes_ecriture
+tiers 0..1???N lignes_ecriture
+plans_comptables 1???N classes_comptables
+plans_comptables 1???N comptes
+

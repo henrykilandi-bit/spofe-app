@@ -1,0 +1,1551 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { 
+  UserPlus, Mail, Lock, User, CheckCircle, 
+  XCircle, AlertCircle, Loader2 
+} from 'lucide-react';
+import './RegisterPage.css';
+import { useNotifications } from '../hooks/useNotifications';
+
+/**
+ * RegisterPage - Page d'inscription intelligente pour SPOFE v2.1
+ * Features: Validation temps réel, vérification email, intégration groupe
+ */
+
+// Fonction pour obtenir la région selon le pays
+const getRegionByCountry = (countryCode) => {
+  const regions = {
+    'SN': 'Afrique de l\'Ouest (WAEMU)',
+    'ML': 'Afrique de l\'Ouest (WAEMU)',
+    'CI': 'Afrique de l\'Ouest (WAEMU)',
+    'BF': 'Afrique de l\'Ouest (WAEMU)',
+    'NE': 'Afrique de l\'Ouest (WAEMU)',
+    'TG': 'Afrique de l\'Ouest (WAEMU)',
+    'BJ': 'Afrique de l\'Ouest (WAEMU)',
+    'GM': 'Afrique de l\'Ouest (WAEMU)',
+    'GW': 'Afrique de l\'Ouest (WAEMU)',
+    'LR': 'Afrique de l\'Ouest',
+    'CD': 'Afrique Centrale (RDC)',
+    'CM': 'Afrique Centrale',
+    'CG': 'Afrique Centrale',
+    'GQ': 'Afrique Centrale',
+    'GA': 'Afrique Centrale',
+    'TD': 'Afrique Centrale',
+    'ZA': 'Afrique Australe',
+    'EG': 'Afrique du Nord',
+    'MA': 'Afrique du Nord',
+    'TN': 'Afrique du Nord',
+    'DZ': 'Afrique du Nord',
+    'FR': 'Europe de l\'Ouest',
+    'BE': 'Europe de l\'Ouest',
+    'NL': 'Europe de l\'Ouest',
+    'DE': 'Europe de l\'Ouest',
+    'GB': 'Europe du Nord',
+    'SE': 'Europe du Nord',
+    'NO': 'Europe du Nord',
+    'DK': 'Europe du Nord',
+    'RU': 'Europe de l\'Est',
+    'UA': 'Europe de l\'Est',
+    'PL': 'Europe de l\'Est',
+    'RO': 'Europe de l\'Est',
+    'US': 'Amérique du Nord',
+    'CA': 'Amérique du Nord',
+    'MX': 'Amérique Centrale',
+    'BR': 'Amérique du Sud',
+    'AR': 'Amérique du Sud',
+    'CL': 'Amérique du Sud',
+    'CN': 'Asie de l\'Est',
+    'JP': 'Asie de l\'Est',
+    'KR': 'Asie de l\'Est',
+    'IN': 'Asie du Sud',
+    'PK': 'Asie du Sud',
+    'BD': 'Asie du Sud',
+    'TH': 'Asie du Sud-Est',
+    'VN': 'Asie du Sud-Est',
+    'ID': 'Asie du Sud-Est',
+    'PH': 'Asie du Sud-Est',
+    'SG': 'Asie du Sud-Est',
+    'MY': 'Asie du Sud-Est',
+    'AU': 'Océanie',
+    'NZ': 'Océanie',
+    'AE': 'Asie Occidentale',
+    'SA': 'Asie Occidentale',
+    'QA': 'Asie Occidentale',
+    'TR': 'Asie Occidentale',
+    'IL': 'Asie Occidentale'
+  };
+  return regions[countryCode] || 'Région inconnue';
+};
+
+// Liste complète des pays du monde
+const PAYS_LIST = [
+  { code: 'AF', name: 'Afghanistan' },
+  { code: 'AL', name: 'Albanie' },
+  { code: 'DZ', name: 'Algérie' },
+  { code: 'AD', name: 'Andorre' },
+  { code: 'AO', name: 'Angola' },
+  { code: 'AG', name: 'Antigua-et-Barbuda' },
+  { code: 'AR', name: 'Argentine' },
+  { code: 'AM', name: 'Arménie' },
+  { code: 'AU', name: 'Australie' },
+  { code: 'AT', name: 'Autriche' },
+  { code: 'AZ', name: 'Azerbaïdjan' },
+  { code: 'BS', name: 'Bahamas' },
+  { code: 'BH', name: 'Bahreïn' },
+  { code: 'BD', name: 'Bangladesh' },
+  { code: 'BB', name: 'Barbade' },
+  { code: 'BY', name: 'Biélorussie' },
+  { code: 'BE', name: 'Belgique' },
+  { code: 'BZ', name: 'Belize' },
+  { code: 'BJ', name: 'Bénin' },
+  { code: 'BT', name: 'Bhoutan' },
+  { code: 'BO', name: 'Bolivie' },
+  { code: 'BA', name: 'Bosnie-Herzégovine' },
+  { code: 'BW', name: 'Botswana' },
+  { code: 'BR', name: 'Brésil' },
+  { code: 'BN', name: 'Brunei' },
+  { code: 'BG', name: 'Bulgarie' },
+  { code: 'BF', name: 'Burkina Faso' },
+  { code: 'BI', name: 'Burundi' },
+  { code: 'KH', name: 'Cambodge' },
+  { code: 'CM', name: 'Cameroun' },
+  { code: 'CA', name: 'Canada' },
+  { code: 'CV', name: 'Cap-Vert' },
+  { code: 'CZ', name: 'Tchéquie' },
+  { code: 'CL', name: 'Chili' },
+  { code: 'CN', name: 'Chine' },
+  { code: 'CY', name: 'Chypre' },
+  { code: 'CO', name: 'Colombie' },
+  { code: 'KM', name: 'Comores' },
+  { code: 'KP', name: 'Corée du Nord' },
+  { code: 'KR', name: 'Corée du Sud' },
+  { code: 'CR', name: 'Costa Rica' },
+  { code: 'HR', name: 'Croatie' },
+  { code: 'CU', name: 'Cuba' },
+  { code: 'CD', name: 'République Démocratique du Congo (RDC)' },
+  { code: 'DK', name: 'Danemark' },
+  { code: 'DJ', name: 'Djibouti' },
+  { code: 'DM', name: 'Dominique' },
+  { code: 'EG', name: 'Égypte' },
+  { code: 'AE', name: 'Émirats Arabes Unis' },
+  { code: 'EC', name: 'Équateur' },
+  { code: 'ER', name: 'Érythrée' },
+  { code: 'ES', name: 'Espagne' },
+  { code: 'EE', name: 'Estonie' },
+  { code: 'US', name: 'États-Unis' },
+  { code: 'ET', name: 'Éthiopie' },
+  { code: 'FJ', name: 'Fidji' },
+  { code: 'FI', name: 'Finlande' },
+  { code: 'FR', name: 'France' },
+  { code: 'GA', name: 'Gabon' },
+  { code: 'GM', name: 'Gambie' },
+  { code: 'GE', name: 'Géorgie' },
+  { code: 'GH', name: 'Ghana' },
+  { code: 'GI', name: 'Gibraltar' },
+  { code: 'GR', name: 'Grèce' },
+  { code: 'GD', name: 'Grenade' },
+  { code: 'GL', name: 'Groenland' },
+  { code: 'GP', name: 'Guadeloupe' },
+  { code: 'GU', name: 'Guam' },
+  { code: 'GT', name: 'Guatemala' },
+  { code: 'GG', name: 'Guernesey' },
+  { code: 'GN', name: 'Guinée' },
+  { code: 'GW', name: 'Guinée-Bissau' },
+  { code: 'GQ', name: 'Guinée équatoriale' },
+  { code: 'GY', name: 'Guyana' },
+  { code: 'HT', name: 'Haïti' },
+  { code: 'HN', name: 'Honduras' },
+  { code: 'HK', name: 'Hong Kong' },
+  { code: 'HU', name: 'Hongrie' },
+  { code: 'IL', name: 'Israël' },
+  { code: 'IT', name: 'Italie' },
+  { code: 'CI', name: 'Côte d\'Ivoire' },
+  { code: 'JM', name: 'Jamaïque' },
+  { code: 'JP', name: 'Japon' },
+  { code: 'JE', name: 'Jersey' },
+  { code: 'JO', name: 'Jordanie' },
+  { code: 'KZ', name: 'Kazakhstan' },
+  { code: 'KE', name: 'Kenya' },
+  { code: 'KG', name: 'Kirghizistan' },
+  { code: 'KI', name: 'Kiribati' },
+  { code: 'XK', name: 'Kosovo' },
+  { code: 'KW', name: 'Koweït' },
+  { code: 'LA', name: 'Laos' },
+  { code: 'LS', name: 'Lesotho' },
+  { code: 'LV', name: 'Lettonie' },
+  { code: 'LB', name: 'Liban' },
+  { code: 'LR', name: 'Liberia' },
+  { code: 'LY', name: 'Libye' },
+  { code: 'LI', name: 'Liechtenstein' },
+  { code: 'LT', name: 'Lituanie' },
+  { code: 'LU', name: 'Luxembourg' },
+  { code: 'MO', name: 'Macao' },
+  { code: 'MG', name: 'Madagascar' },
+  { code: 'MY', name: 'Malaisie' },
+  { code: 'MW', name: 'Malawi' },
+  { code: 'MV', name: 'Maldives' },
+  { code: 'ML', name: 'Mali' },
+  { code: 'MT', name: 'Malte' },
+  { code: 'MP', name: 'Îles Mariannes du Nord' },
+  { code: 'MA', name: 'Maroc' },
+  { code: 'MQ', name: 'Martinique' },
+  { code: 'MU', name: 'Maurice' },
+  { code: 'MR', name: 'Mauritanie' },
+  { code: 'YT', name: 'Mayotte' },
+  { code: 'MX', name: 'Mexique' },
+  { code: 'FM', name: 'Micronésie' },
+  { code: 'MD', name: 'Moldavie' },
+  { code: 'MC', name: 'Monaco' },
+  { code: 'MN', name: 'Mongolie' },
+  { code: 'ME', name: 'Monténégro' },
+  { code: 'MS', name: 'Montserrat' },
+  { code: 'MZ', name: 'Mozambique' },
+  { code: 'MM', name: 'Myanmar' },
+  { code: 'NA', name: 'Namibie' },
+  { code: 'NR', name: 'Nauru' },
+  { code: 'NP', name: 'Népal' },
+  { code: 'NI', name: 'Nicaragua' },
+  { code: 'NE', name: 'Niger' },
+  { code: 'NG', name: 'Nigéria' },
+  { code: 'NU', name: 'Niue' },
+  { code: 'NF', name: 'Île Norfolk' },
+  { code: 'NO', name: 'Norvège' },
+  { code: 'NZ', name: 'Nouvelle-Zélande' },
+  { code: 'OM', name: 'Oman' },
+  { code: 'UG', name: 'Ouganda' },
+  { code: 'UZ', name: 'Ouzbékistan' },
+  { code: 'PK', name: 'Pakistan' },
+  { code: 'PW', name: 'Palaos' },
+  { code: 'PS', name: 'Palestine' },
+  { code: 'PA', name: 'Panama' },
+  { code: 'PG', name: 'Papouasie-Nouvelle-Guinée' },
+  { code: 'PY', name: 'Paraguay' },
+  { code: 'NL', name: 'Pays-Bas' },
+  { code: 'PE', name: 'Pérou' },
+  { code: 'PH', name: 'Philippines' },
+  { code: 'PN', name: 'Îles Pitcairn' },
+  { code: 'PL', name: 'Pologne' },
+  { code: 'PF', name: 'Polynésie française' },
+  { code: 'PR', name: 'Porto Rico' },
+  { code: 'PT', name: 'Portugal' },
+  { code: 'QA', name: 'Qatar' },
+  { code: 'RE', name: 'Réunion' },
+  { code: 'RO', name: 'Roumanie' },
+  { code: 'GB', name: 'Royaume-Uni' },
+  { code: 'RU', name: 'Russie' },
+  { code: 'RW', name: 'Rwanda' },
+  { code: 'SH', name: 'Sainte-Hélène' },
+  { code: 'KN', name: 'Saint-Christophe-et-Niévès' },
+  { code: 'LC', name: 'Sainte-Lucie' },
+  { code: 'PM', name: 'Saint-Pierre-et-Miquelon' },
+  { code: 'VC', name: 'Saint-Vincent-et-les-Grenadines' },
+  { code: 'SM', name: 'Saint-Marin' },
+  { code: 'ST', name: 'Sao Tomé-et-Principe' },
+  { code: 'SA', name: 'Arabie Saoudite' },
+  { code: 'SN', name: 'Sénégal' },
+  { code: 'RS', name: 'Serbie' },
+  { code: 'SC', name: 'Seychelles' },
+  { code: 'SL', name: 'Sierra Leone' },
+  { code: 'SG', name: 'Singapour' },
+  { code: 'SK', name: 'Slovaquie' },
+  { code: 'SI', name: 'Slovénie' },
+  { code: 'SB', name: 'Îles Salomon' },
+  { code: 'SO', name: 'Somalie' },
+  { code: 'SD', name: 'Soudan' },
+  { code: 'SS', name: 'Soudan du Sud' },
+  { code: 'SE', name: 'Suède' },
+  { code: 'CH', name: 'Suisse' },
+  { code: 'SR', name: 'Suriname' },
+  { code: 'SJ', name: 'Svalbard et Jan Mayen' },
+  { code: 'SZ', name: 'Eswatini' },
+  { code: 'SY', name: 'Syrie' },
+  { code: 'TW', name: 'Taïwan' },
+  { code: 'TJ', name: 'Tadjikistan' },
+  { code: 'TZ', name: 'Tanzanie' },
+  { code: 'TD', name: 'Tchad' },
+  { code: 'TF', name: 'Terres australes françaises' },
+  { code: 'TH', name: 'Thaïlande' },
+  { code: 'TL', name: 'Timor oriental' },
+  { code: 'TG', name: 'Togo' },
+  { code: 'TK', name: 'Tokelau' },
+  { code: 'TO', name: 'Tonga' },
+  { code: 'TT', name: 'Trinité-et-Tobago' },
+  { code: 'TN', name: 'Tunisie' },
+  { code: 'TM', name: 'Turkménistan' },
+  { code: 'TC', name: 'Îles Turques-et-Caïques' },
+  { code: 'TR', name: 'Turquie' },
+  { code: 'TV', name: 'Tuvalu' },
+  { code: 'UA', name: 'Ukraine' },
+  { code: 'UR', name: 'Uruguai' },
+  { code: 'VU', name: 'Vanuatu' },
+  { code: 'VA', name: 'Cité du Vatican' },
+  { code: 'VE', name: 'Vénézuéla' },
+  { code: 'VN', name: 'Viêtnam' },
+  { code: 'VG', name: 'Îles Vierges britanniques' },
+  { code: 'VI', name: 'Îles Vierges des États-Unis' },
+  { code: 'WF', name: 'Wallis-et-Futuna' },
+  { code: 'YE', name: 'Yémen' },
+  { code: 'ZM', name: 'Zambie' },
+  { code: 'ZW', name: 'Zimbabwe' }
+];
+
+const RegisterPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { addNotification } = useNotifications();
+  
+  // Récupération des paramètres d'URL
+  const queryParams = new URLSearchParams(location.search);
+  const invitedEmail = queryParams.get('email') || '';
+  const groupeId = queryParams.get('groupeId') ? parseInt(queryParams.get('groupeId')) : null;
+  const invitationToken = queryParams.get('token') || '';
+
+  // ============ ÉTATS ============
+  const [formData, setFormData] = useState({
+    email: invitedEmail,
+    username: '',
+    password: '',
+    confirmPassword: '',
+    prenom: '',
+    nom: '',
+    telephone: '',
+    role: 'utilisateur', // NEW: Default role
+    adresse: '', // NEW: Consultant field - Adresse
+    pays: '', // NEW: Consultant field - Pays
+    specialites: '', // NEW: Consultant field
+    tarif_horaire: '', // NEW: Consultant field
+    experience_years: '', // NEW: Consultant field
+    type_consultant: '', // NEW: Super consultant field - Type (coach, mentor, etc.)
+    groupeId: groupeId,
+    invitationToken: invitationToken
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [usernameChecking, setUsernameChecking] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [emailAvailable, setEmailAvailable] = useState(null);
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [step, setStep] = useState(1); // 1: Informations de base, 2: Informations personnelles
+  const [groupeInfo, setGroupeInfo] = useState(null);
+
+  // ============ EFFETS ============
+  
+  // Charger les informations du groupe si groupeId présent
+  useEffect(() => {
+    if (groupeId) {
+      fetchGroupeInfo(groupeId);
+    }
+  }, [groupeId]);
+
+  // Vérifier si c'est une invitation
+  useEffect(() => {
+    if (invitationToken && invitedEmail) {
+      validateInvitation(invitationToken, invitedEmail);
+    }
+  }, [invitationToken, invitedEmail]);
+
+  // ============ FONCTIONS ============
+
+  /**
+   * Valider une invitation
+   */
+  const validateInvitation = async (token, email) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/validate-invitation`,
+        {
+          params: { token, email }
+        }
+      );
+      
+      if (response.data.valid) {
+        addNotification({ 
+          type: 'success', 
+          title: 'Invitation valide !', 
+          message: 'Veuillez compléter votre inscription.' 
+        });
+      }
+    } catch (error) {
+      addNotification({ 
+        type: 'error', 
+        title: 'Invitation invalide', 
+        message: 'Invitation invalide ou expirée' 
+      });
+      navigate('/login');
+    }
+  };
+
+  /**
+   * Récupérer les informations du groupe
+   */
+  const fetchGroupeInfo = async (id) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/groupes/${id}` 
+      );
+      setGroupeInfo(response.data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des informations du groupe:', error);
+    }
+  };
+
+  /**
+   * Vérifier disponibilité email en temps réel
+   */
+  const checkEmailAvailability = async (email) => {
+    if (!email || email.length < 5 || !email.includes('@')) {
+      setEmailAvailable(null);
+      return;
+    }
+
+    setEmailChecking(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/check-email/${encodeURIComponent(email)}` 
+      );
+      setEmailAvailable(response.data.available);
+      if (!response.data.available) {
+        setErrors(prev => ({
+          ...prev,
+          email: 'Cet email est déjà utilisé'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.email;
+          return newErrors;
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification de l\'email:', error);
+      setEmailAvailable(null);
+    } finally {
+      setEmailChecking(false);
+    }
+  };
+
+  /**
+   * Vérifier disponibilité username en temps réel
+   */
+  const checkUsernameAvailability = async (username) => {
+    if (!username || username.length < 3) {
+      setUsernameAvailable(null);
+      return;
+    }
+
+    setUsernameChecking(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/check-username/${encodeURIComponent(username)}` 
+      );
+      setUsernameAvailable(response.data.available);
+      if (!response.data.available) {
+        setErrors(prev => ({
+          ...prev,
+          username: 'Ce nom d\'utilisateur est déjà pris'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.username;
+          return newErrors;
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification du nom d\'utilisateur:', error);
+      setUsernameAvailable(null);
+    } finally {
+      setUsernameChecking(false);
+    }
+  };
+
+  /**
+   * Calculer la force du mot de passe
+   */
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    
+    // Longueur minimale
+    if (password.length >= 8) strength += 25;
+    
+    // Contient des minuscules
+    if (/[a-z]/.test(password)) strength += 25;
+    
+    // Contient des majuscules
+    if (/[A-Z]/.test(password)) strength += 25;
+    
+    // Contient des chiffres ou caractères spéciaux
+    if (/[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password)) strength += 25;
+    
+    setPasswordStrength(strength);
+  };
+
+  /**
+   * Gestion des changements de formulaire
+   */
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Validation en temps réel
+    const newErrors = { ...errors };
+    
+    switch (name) {
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          newErrors.email = 'Format d\'email invalide';
+        } else {
+          delete newErrors.email;
+          // Debounce pour vérification email
+          setTimeout(() => checkEmailAvailability(value), 500);
+        }
+        break;
+        
+      case 'username':
+        if (value.length < 3) {
+          newErrors.username = 'Minimum 3 caractères';
+        } else if (value.length > 30) {
+          newErrors.username = 'Maximum 30 caractères';
+        } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+          newErrors.username = 'Lettres, chiffres et underscore uniquement';
+        } else {
+          delete newErrors.username;
+          // Debounce pour vérification username
+          setTimeout(() => checkUsernameAvailability(value), 500);
+        }
+        break;
+        
+      case 'password':
+        calculatePasswordStrength(value);
+        if (value.length < 8) {
+          newErrors.password = 'Minimum 8 caractères';
+        } else {
+          delete newErrors.password;
+        }
+        // Vérifier confirmation
+        if (formData.confirmPassword && value !== formData.confirmPassword) {
+          newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+        } else {
+          delete newErrors.confirmPassword;
+        }
+        break;
+        
+      case 'confirmPassword':
+        if (value !== formData.password) {
+          newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+        } else {
+          delete newErrors.confirmPassword;
+        }
+        break;
+        
+      case 'prenom':
+        if (!value.trim()) {
+          newErrors.prenom = 'Prénom requis';
+        } else {
+          delete newErrors.prenom;
+        }
+        break;
+        
+      case 'nom':
+        if (!value.trim()) {
+          newErrors.nom = 'Nom requis';
+        } else {
+          delete newErrors.nom;
+        }
+        break;
+        
+      case 'telephone':
+        const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
+        if (value && !phoneRegex.test(value)) {
+          newErrors.telephone = 'Format de téléphone invalide';
+        } else {
+          delete newErrors.telephone;
+        }
+        break;
+        
+      // NEW: Role field
+      case 'role':
+        delete newErrors.role;
+        break;
+        
+      // NEW: SIRET field (consultant)
+      case 'siret':
+        const siretRegex = /^[0-9]{14}$/;
+        if (value && !siretRegex.test(value)) {
+          newErrors.siret = 'SIRET doit contenir 14 chiffres';
+        } else {
+          delete newErrors.siret;
+        }
+        break;
+        
+      // NEW: Specialites field (consultant)
+      case 'specialites':
+        if (value && value.length > 500) {
+          newErrors.specialites = 'Maximum 500 caractères';
+        } else {
+          delete newErrors.specialites;
+        }
+        break;
+        
+      // NEW: Tarif horaire field (consultant)
+      case 'tarif_horaire':
+        const tarifValue = parseFloat(value);
+        if (value && (isNaN(tarifValue) || tarifValue < 0)) {
+          newErrors.tarif_horaire = 'Tarif doit être un nombre positif';
+        } else {
+          delete newErrors.tarif_horaire;
+        }
+        break;
+        
+      // NEW: Experience years field (consultant)
+      case 'experience_years':
+        const yearsValue = parseInt(value);
+        if (value && (isNaN(yearsValue) || yearsValue < 0 || yearsValue > 80)) {
+          newErrors.experience_years = 'Expérience doit être entre 0 et 80 ans';
+        } else {
+          delete newErrors.experience_years;
+        }
+        break;
+        
+      // NEW: Type consultant field (consultant and super consultant)
+      case 'type_consultant':
+        if ((formData.role === 'consultant' || formData.role === 'super_consultant') && !value) {
+          newErrors.type_consultant = 'Type de consultant requis';
+        } else {
+          delete newErrors.type_consultant;
+        }
+        break;
+    }
+    
+    setErrors(newErrors);
+  };
+
+  /**
+   * Validation du formulaire
+   */
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email
+    if (!formData.email) {
+      newErrors.email = 'Email requis';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Format d\'email invalide';
+    } else if (emailAvailable === false) {
+      newErrors.email = 'Cet email est déjà utilisé';
+    }
+    
+    // Username
+    if (!formData.username) {
+      newErrors.username = 'Nom d\'utilisateur requis';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Minimum 3 caractères';
+    } else if (usernameAvailable === false) {
+      newErrors.username = 'Ce nom d\'utilisateur est déjà pris';
+    }
+    
+    // Password
+    if (!formData.password) {
+      newErrors.password = 'Mot de passe requis';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Minimum 8 caractères';
+    }
+    
+    // Confirm Password
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Confirmation du mot de passe requise';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+    }
+    
+    // Prénom et Nom
+    if (!formData.prenom.trim()) {
+      newErrors.prenom = 'Prénom requis';
+    }
+    if (!formData.nom.trim()) {
+      newErrors.nom = 'Nom requis';
+    }
+    
+    // NEW: Role validation
+    if (!formData.role) {
+      newErrors.role = 'Rôle requis';
+    }
+    
+    // NEW: Consultant fields validation (conditional)
+    if (formData.role === 'consultant') {
+      if (!formData.siret) {
+        newErrors.siret = 'SIRET requis pour les consultants';
+      } else if (!/^[0-9]{14}$/.test(formData.siret)) {
+        newErrors.siret = 'SIRET doit contenir 14 chiffres';
+      }
+      
+      if (!formData.specialites) {
+        newErrors.specialites = 'Spécialités requises';
+      } else if (formData.specialites.length > 500) {
+        newErrors.specialites = 'Maximum 500 caractères';
+      }
+      
+      if (!formData.tarif_horaire) {
+        newErrors.tarif_horaire = 'Tarif horaire requis';
+      } else if (isNaN(parseFloat(formData.tarif_horaire)) || parseFloat(formData.tarif_horaire) < 0) {
+        newErrors.tarif_horaire = 'Tarif doit être un nombre positif';
+      }
+      
+      if (formData.experience_years && (isNaN(parseInt(formData.experience_years)) || 
+          parseInt(formData.experience_years) < 0 || parseInt(formData.experience_years) > 80)) {
+        newErrors.experience_years = 'Expérience doit être entre 0 et 80 ans';
+      }
+      
+      // Validation pour Consultant et Super Consultant - type_consultant requis
+      if ((formData.role === 'consultant' || formData.role === 'super_consultant') && !formData.type_consultant) {
+        newErrors.type_consultant = 'Type de consultant requis';
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  /**
+   * Soumission du formulaire
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      addNotification({ 
+        type: 'error', 
+        title: 'Formulaire invalide', 
+        message: 'Veuillez corriger les erreurs dans le formulaire' 
+      });
+      return;
+    }
+
+    if (emailAvailable === false || usernameAvailable === false) {
+      addNotification({ 
+        type: 'error', 
+        title: 'Disponibilité', 
+        message: 'Email ou nom d\'utilisateur déjà utilisé' 
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const payload = {
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+        prenom: formData.prenom,
+        nom: formData.nom,
+        telephone: formData.telephone || null,
+        role: formData.role, // NEW: Send role to backend
+        // NEW: Add consultant fields if role is consultant or super_consultant
+        ...(formData.role === 'consultant' && {
+          adresse: formData.adresse || null,
+          pays: formData.pays || null,
+          specialites: formData.specialites || null,
+          tarif_horaire: parseFloat(formData.tarif_horaire) || null,
+          experience_years: formData.experience_years ? parseInt(formData.experience_years) : null
+        }),
+        ...(formData.role === 'super_consultant' && {
+          adresse: formData.adresse || null,
+          pays: formData.pays || null,
+          specialites: formData.specialites || null,
+          tarif_horaire: parseFloat(formData.tarif_horaire) || null,
+          experience_years: formData.experience_years ? parseInt(formData.experience_years) : null,
+          type_consultant: formData.type_consultant || null
+        }),
+        groupeId: formData.groupeId,
+        invitationToken: formData.invitationToken || null
+      };
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/register`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 15000
+        }
+      );
+
+      const { user, requiresApproval, message } = response.data;
+
+      if (requiresApproval) {
+        // NEW: Personalized message based on role
+        const roleMessages = {
+          consultant: 'Votre demande d\'adhésion en tant que consultant a été soumise pour approbation. Un administrateur examinera votre profil et vos qualifications.',
+          super_utilisateur: 'Votre demande d\'accès en tant que super utilisateur a été soumise pour approbation.',
+          utilisateur: 'Votre inscription a été soumise pour approbation par un administrateur.'
+        };
+        
+        addNotification({ 
+          type: 'info', 
+          title: 'Inscription soumise !', 
+          message: roleMessages[formData.role] || 'En attente d\'approbation par un administrateur.' 
+        });
+        navigate('/login', {
+          state: {
+            message: 'Votre compte est en attente d\'approbation. Vous recevrez un email lorsque votre compte sera activé.',
+            email: formData.email
+          }
+        });
+      } else {
+        // NEW: Personalized success message based on role
+        const roleSuccessMessages = {
+          consultant: 'Bienvenue ! Votre profil consultant a été créé avec succès.',
+          super_utilisateur: 'Bienvenue ! Vous avez accès à tous les outils de gestion.',
+          utilisateur: 'Bienvenue ! Votre compte a été créé avec succès.'
+        };
+        
+        addNotification({ 
+          type: 'success', 
+          title: 'Inscription réussie !', 
+          message: roleSuccessMessages[formData.role] || 'Vous pouvez maintenant vous connecter.' 
+        });
+        navigate('/login', {
+          state: {
+            message: 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.',
+            email: formData.email
+          }
+        });
+      }
+
+      // Log pour audit
+      console.log('Nouvel utilisateur inscrit:', {
+        userId: user.id,
+        email: user.email,
+        groupeId: user.groupeId,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      
+      let errorMessage = 'Erreur lors de l\'inscription';
+      
+      if (error.response) {
+        if (error.response.data.errors) {
+          const serverErrors = error.response.data.errors;
+          setErrors(serverErrors);
+          errorMessage = 'Veuillez corriger les erreurs ci-dessous';
+        } else if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (error.request) {
+        errorMessage = 'Impossible de contacter le serveur. Vérifiez votre connexion.';
+      }
+      
+      addNotification({ 
+        type: 'error', 
+        title: 'Erreur d\'inscription', 
+        message: errorMessage 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /**
+   * Passer à l'étape suivante
+   */
+  const goToNextStep = () => {
+    // Valider étape 1
+    const step1Errors = {};
+    if (!formData.email) step1Errors.email = 'Email requis';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) step1Errors.email = 'Format invalide';
+    else if (emailAvailable === false) step1Errors.email = 'Email déjà utilisé';
+    
+    if (!formData.username) step1Errors.username = 'Nom d\'utilisateur requis';
+    else if (formData.username.length < 3) step1Errors.username = 'Minimum 3 caractères';
+    else if (usernameAvailable === false) step1Errors.username = 'Nom déjà utilisé';
+    
+    if (!formData.password) step1Errors.password = 'Mot de passe requis';
+    else if (formData.password.length < 8) step1Errors.password = 'Minimum 8 caractères';
+    
+    if (!formData.confirmPassword) step1Errors.confirmPassword = 'Confirmation requise';
+    else if (formData.password !== formData.confirmPassword) step1Errors.confirmPassword = 'Mots de passe différents';
+    
+    if (Object.keys(step1Errors).length > 0) {
+      setErrors(step1Errors);
+      addNotification({ 
+        type: 'error', 
+        title: 'Formulaire incomplet', 
+        message: 'Veuillez compléter correctement les informations de base' 
+      });
+      return;
+    }
+    
+    setStep(2);
+  };
+
+  /**
+   * Revenir à l'étape précédente
+   */
+  const goToPreviousStep = () => {
+    setStep(1);
+  };
+
+  /**
+   * Obtenir la couleur de force du mot de passe
+   */
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength <= 25) return '#ef4444'; // red
+    if (passwordStrength <= 50) return '#f59e0b'; // amber
+    if (passwordStrength <= 75) return '#3b82f6'; // blue
+    return '#10b981'; // green
+  };
+
+  // ============ RENDU ============
+  return (
+    <div className="register-page">
+      {/* Header */}
+      <header className="register-header">
+        <div className="header-content">
+          <div className="logo-section">
+            <UserPlus size={32} className="logo-icon" />
+            <h1 className="app-title">SPOFE v2.1</h1>
+          </div>
+          <div className="progress-indicator">
+            <div className="step">
+              <div className={`step-circle ${step >= 1 ? 'active' : ''}`}>1</div>
+              <span className="step-label">Compte</span>
+            </div>
+            <div className="step-connector"></div>
+            <div className="step">
+              <div className={`step-circle ${step >= 2 ? 'active' : ''}`}>2</div>
+              <span className="step-label">Profil</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="register-main">
+        <div className="register-container">
+          {/* Carte d'inscription */}
+          <div className="register-card">
+            <div className="card-header">
+              <h2>Créer votre compte</h2>
+              <p className="card-subtitle">
+                Rejoignez SPOFE et gérez votre comptabilité efficacement
+              </p>
+            </div>
+
+            {/* Bannière invitation */}
+            {invitationToken && (
+              <div className="invitation-banner success">
+                <CheckCircle size={20} />
+                <span>Vous avez été invité à rejoindre la plateforme</span>
+              </div>
+            )}
+
+            {/* Informations groupe */}
+            {groupeInfo && (
+              <div className="groupe-banner info">
+                <AlertCircle size={20} />
+                <div>
+                  <strong>Groupe :</strong> {groupeInfo.nom}
+                  {groupeInfo.description && (
+                    <p className="groupe-description">{groupeInfo.description}</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="register-form">
+              {/* Étape 1: Informations de base */}
+              {step === 1 && (
+                <div className="form-step">
+                  <h3 className="step-title">Informations de connexion</h3>
+                  
+                  {/* Champ Email */}
+                  <div className="form-group">
+                    <label htmlFor="email" className="form-label">
+                      <Mail size={16} />
+                      <span>Adresse email *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="exemple@entreprise.com"
+                        disabled={loading || !!invitedEmail}
+                        className={`form-input ${errors.email ? 'error' : ''} ${emailAvailable ? 'success' : ''}`}
+                        autoComplete="email"
+                      />
+                      <div className="input-status">
+                        {emailChecking && <Loader2 size={16} className="spinner" />}
+                        {emailAvailable === true && <CheckCircle size={16} className="success-icon" />}
+                        {emailAvailable === false && <XCircle size={16} className="error-icon" />}
+                      </div>
+                    </div>
+                    {errors.email && <div className="error-message">{errors.email}</div>}
+                    {formData.email && !errors.email && !emailChecking && emailAvailable === null && (
+                      <div className="hint">Vérification en cours...</div>
+                    )}
+                  </div>
+
+                  {/* Champ Username */}
+                  <div className="form-group">
+                    <label htmlFor="username" className="form-label">
+                      <User size={16} />
+                      <span>Nom d'utilisateur *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleInputChange}
+                        placeholder="john_doe"
+                        disabled={loading}
+                        className={`form-input ${errors.username ? 'error' : ''} ${usernameAvailable ? 'success' : ''}`}
+                        autoComplete="username"
+                        minLength="3"
+                        maxLength="30"
+                      />
+                      <div className="input-status">
+                        {usernameChecking && <Loader2 size={16} className="spinner" />}
+                        {usernameAvailable === true && <CheckCircle size={16} className="success-icon" />}
+                        {usernameAvailable === false && <XCircle size={16} className="error-icon" />}
+                      </div>
+                    </div>
+                    {errors.username && <div className="error-message">{errors.username}</div>}
+                    <div className="hint">3-30 caractères (lettres, chiffres, underscore)</div>
+                  </div>
+
+                  {/* Champ Password */}
+                  <div className="form-group">
+                    <label htmlFor="password" className="form-label">
+                      <Lock size={16} />
+                      <span>Mot de passe *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Minimum 8 caractères"
+                        disabled={loading}
+                        className={`form-input ${errors.password ? 'error' : ''}`}
+                        autoComplete="new-password"
+                        minLength="8"
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? '👁️‍🗨️' : '👁️'}
+                      </button>
+                    </div>
+                    {errors.password && <div className="error-message">{errors.password}</div>}
+                    
+                    {/* Indicateur de force du mot de passe */}
+                    {formData.password && (
+                      <div className="password-strength">
+                        <div className="strength-label">
+                          Force du mot de passe:
+                          <span style={{ color: getPasswordStrengthColor() }}>
+                            {passwordStrength <= 25 ? ' Faible' : 
+                             passwordStrength <= 50 ? ' Moyen' : 
+                             passwordStrength <= 75 ? ' Bon' : ' Fort'}
+                          </span>
+                        </div>
+                        <div className="strength-bar">
+                          <div 
+                            className="strength-fill"
+                            style={{
+                              width: `${passwordStrength}%`,
+                              backgroundColor: getPasswordStrengthColor()
+                            }}
+                          ></div>
+                        </div>
+                        <div className="strength-hints">
+                          {formData.password.length < 8 && '• Minimum 8 caractères\n'}
+                          {!/[a-z]/.test(formData.password) && '• Minuscules (a-z)\n'}
+                          {!/[A-Z]/.test(formData.password) && '• Majuscules (A-Z)\n'}
+                          {!/[0-9]/.test(formData.password) && !/[^A-Za-z0-9]/.test(formData.password) && '• Chiffres ou caractères spéciaux'}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Champ Confirm Password */}
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword" className="form-label">
+                      <Lock size={16} />
+                      <span>Confirmer le mot de passe *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        placeholder="Retapez votre mot de passe"
+                        disabled={loading}
+                        className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
+                        autoComplete="new-password"
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? '👁️‍🗨️' : '👁️'}
+                      </button>
+                    </div>
+                    {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
+                    {formData.password && formData.confirmPassword && 
+                     formData.password === formData.confirmPassword && (
+                      <div className="success-message">
+                        <CheckCircle size={14} /> Les mots de passe correspondent
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bouton suivant */}
+                  <div className="form-actions">
+                    <button
+                      type="button"
+                      onClick={goToNextStep}
+                      disabled={loading}
+                      className="btn btn-primary btn-next"
+                    >
+                      Suivant →
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Étape 2: Informations personnelles */}
+              {step === 2 && (
+                <div className="form-step">
+                  <h3 className="step-title">Informations personnelles</h3>
+                  
+                  {/* NEW: Sélecteur de Rôle */}
+                  <div className="form-group">
+                    <label htmlFor="role" className="form-label">
+                      <User size={16} />
+                      <span>Profil utilisateur *</span>
+                    </label>
+                    <div className="role-selector-wrapper">
+                      <select
+                        id="role"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleInputChange}
+                        disabled={loading}
+                        className={`form-input role-selector ${errors.role ? 'error' : ''}`}
+                      >
+                        <option value="">-- Sélectionner un profil --</option>
+                        <option value="utilisateur">Utilisateur (Admin compagnies)</option>
+                        <option value="super_utilisateur">Super Utilisateur (Admin groupe)</option>
+                        <option value="consultant">Consultant (Bailleurs, Associés)</option>
+                        <option value="super_consultant">Super Consultant (Coaches, Auditeurs)</option>
+                      </select>
+                      {/* NEW: Role badge indicator */}
+                      {formData.role && (
+                        <div className={`role-badge role-${formData.role}`}>
+                          {formData.role === 'consultant' && '💼 Consultant'}
+                          {formData.role === 'super_consultant' && '🎓 Super Consultant'}
+                          {formData.role === 'super_utilisateur' && '👑 Super Utilisateur'}
+                          {formData.role === 'utilisateur' && '👤 Utilisateur'}
+                        </div>
+                      )}
+                    </div>
+                    {errors.role && <div className="error-message">{errors.role}</div>}
+                    <div className="hint">
+                      {formData.role === 'consultant' && 'Accès en lecture aux dashboards'}
+                      {formData.role === 'super_consultant' && 'Accès complet aux infos des entreprises'}
+                      {formData.role === 'super_utilisateur' && 'Gestion complète du groupe'}
+                      {formData.role === 'utilisateur' && 'Gestion de votre compagnie'}
+                    </div>
+                  </div>
+                  
+                  {/* Champs Prénom et Nom */}
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="prenom" className="form-label">
+                        <span>Prénom *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="prenom"
+                        name="prenom"
+                        value={formData.prenom}
+                        onChange={handleInputChange}
+                        placeholder="Jean"
+                        disabled={loading}
+                        className={`form-input ${errors.prenom ? 'error' : ''}`}
+                        autoComplete="given-name"
+                      />
+                      {errors.prenom && <div className="error-message">{errors.prenom}</div>}
+                    </div>
+                    
+                    <div className="form-group">
+                      <label htmlFor="nom" className="form-label">
+                        <span>Nom *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="nom"
+                        name="nom"
+                        value={formData.nom}
+                        onChange={handleInputChange}
+                        placeholder="Dupont"
+                        disabled={loading}
+                        className={`form-input ${errors.nom ? 'error' : ''}`}
+                        autoComplete="family-name"
+                      />
+                      {errors.nom && <div className="error-message">{errors.nom}</div>}
+                    </div>
+                  </div>
+
+                  {/* Champ Téléphone */}
+                  <div className="form-group">
+                    <label htmlFor="telephone" className="form-label">
+                      <span>Téléphone</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="telephone"
+                      name="telephone"
+                      value={formData.telephone}
+                      onChange={handleInputChange}
+                      placeholder="+221 77 123 45 67"
+                      disabled={loading}
+                      className={`form-input ${errors.telephone ? 'error' : ''}`}
+                      autoComplete="tel"
+                    />
+                    {errors.telephone && <div className="error-message">{errors.telephone}</div>}
+                    <div className="hint">Optionnel - Format international recommandé</div>
+                  </div>
+
+                  {/* NEW: Champs Consultant - Affichage conditionnel */}
+                  {(formData.role === 'consultant' || formData.role === 'super_consultant') && (
+                    <div className="consultant-fields-section">
+                      <div className="section-header">
+                        <h4>Coordonnées Professionnelles</h4>
+                        <p className="section-subtitle">Complétez vos informations de contact</p>
+                      </div>
+                      
+                      {/* Adresse */}
+                      <div className="form-group">
+                        <label htmlFor="adresse" className="form-label">
+                          <span>Adresse *</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="adresse"
+                          name="adresse"
+                          value={formData.adresse}
+                          onChange={handleInputChange}
+                          placeholder="Ex: 123 Rue de la Paix, Dakar"
+                          disabled={loading}
+                          className={`form-input ${errors.adresse ? 'error' : ''}`}
+                        />
+                        {errors.adresse && <div className="error-message">{errors.adresse}</div>}
+                        <div className="hint">Votre adresse complète</div>
+                      </div>
+
+                      {/* Pays */}
+                      <div className="form-group">
+                        <label htmlFor="pays" className="form-label">
+                          <span>Pays *</span>
+                        </label>
+                        <select
+                          id="pays"
+                          name="pays"
+                          value={formData.pays}
+                          onChange={handleInputChange}
+                          disabled={loading}
+                          className={`form-input ${errors.pays ? 'error' : ''}`}
+                        >
+                          <option value="">-- Sélectionner un pays --</option>
+                          {PAYS_LIST.map(pays => (
+                            <option key={pays.code} value={pays.code}>{pays.name}</option>
+                          ))}
+                        </select>
+                        {errors.pays && <div className="error-message">{errors.pays}</div>}
+                        {formData.pays && <div className="hint">{getRegionByCountry(formData.pays)}</div>}
+                      </div>
+                      
+                      {/* Spécialités */}
+                      <div className="form-group">
+                        <label htmlFor="specialites" className="form-label">
+                          <span>Spécialités *</span>
+                        </label>
+                        <textarea
+                          id="specialites"
+                          name="specialites"
+                          value={formData.specialites}
+                          onChange={handleInputChange}
+                          placeholder="Ex: Comptabilité générale, audit interne, conseils fiscaux, etc."
+                          disabled={loading}
+                          className={`form-input form-textarea ${errors.specialites ? 'error' : ''}`}
+                          rows="3"
+                          maxLength="500"
+                        />
+                        {errors.specialites && <div className="error-message">{errors.specialites}</div>}
+                        <div className="hint">{formData.specialites.length}/500 caractères</div>
+                      </div>
+                      
+                      {/* Tarif horaire */}
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label htmlFor="tarif_horaire" className="form-label">
+                            <span>Tarif horaire *</span>
+                          </label>
+                          <input
+                            type="number"
+                            id="tarif_horaire"
+                            name="tarif_horaire"
+                            value={formData.tarif_horaire}
+                            onChange={handleInputChange}
+                            placeholder="50000"
+                            disabled={loading}
+                            className={`form-input ${errors.tarif_horaire ? 'error' : ''}`}
+                            min="0"
+                            step="1000"
+                          />
+                          {errors.tarif_horaire && <div className="error-message">{errors.tarif_horaire}</div>}
+                          <div className="hint">Tarif par heure</div>
+                        </div>
+                        
+                        {/* Expérience */}
+                        <div className="form-group">
+                          <label htmlFor="experience_years" className="form-label">
+                            <span>Expérience (années)</span>
+                          </label>
+                          <input
+                            type="number"
+                            id="experience_years"
+                            name="experience_years"
+                            value={formData.experience_years}
+                            onChange={handleInputChange}
+                            placeholder="5"
+                            disabled={loading}
+                            className={`form-input ${errors.experience_years ? 'error' : ''}`}
+                            min="0"
+                            max="80"
+                          />
+                          {errors.experience_years && <div className="error-message">{errors.experience_years}</div>}
+                          <div className="hint">Années d\'expérience professionnelle</div>
+                        </div>
+                      </div>
+                      
+                      {/* NEW: Type de consultant pour Consultant et Super Consultant */}
+                      <div className="form-group">
+                        <label htmlFor="type_consultant" className="form-label">
+                          <span>Type de {formData.role === 'super_consultant' ? 'super ' : ''}consultant *</span>
+                        </label>
+                        <select
+                          id="type_consultant"
+                          name="type_consultant"
+                          value={formData.type_consultant}
+                          onChange={handleInputChange}
+                          disabled={loading}
+                          className={`form-input ${errors.type_consultant ? 'error' : ''}`}
+                        >
+                          <option value="">-- Sélectionner un type --</option>
+                          {formData.role === 'consultant' && (
+                            <>
+                              <option value="bailleur">Bailleur</option>
+                              <option value="investisseur">Investisseur</option>
+                              <option value="associe">Associé</option>
+                              <option value="actionnaire">Actionnaire</option>
+                              <option value="autre">Autre</option>
+                            </>
+                          )}
+                          {formData.role === 'super_consultant' && (
+                            <>
+                              <option value="coach">Coach d'affaires</option>
+                              <option value="mentor">Mentor</option>
+                              <option value="auditeur">Auditeur</option>
+                              <option value="cabinet_comptable">Cabinet comptable</option>
+                              <option value="conseil_fiscal">Conseil fiscal</option>
+                              <option value="expert_comptable">Expert-comptable</option>
+                              <option value="autre">Autre</option>
+                            </>
+                          )}
+                        </select>
+                        {errors.type_consultant && <div className="error-message">{errors.type_consultant}</div>}
+                        <div className="hint">Précisez votre profil, etc.</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Note sur les approbations */}
+                  {formData.groupeId && (
+                    <div className="approval-note info">
+                      <AlertCircle size={18} />
+                      <div>
+                        <strong>Note importante :</strong> Votre inscription devra être approuvée 
+                        par un administrateur du groupe. Vous recevrez un email de confirmation 
+                        une fois votre compte activé.
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* NEW: Role-based approval message */}
+                  {!formData.groupeId && (
+                    <div className="approval-note info">
+                      <AlertCircle size={18} />
+                      <div>
+                        <strong>À savoir :</strong>
+                        {formData.role === 'consultant' && ' En tant que consultant, votre demande sera examinée par les administrateurs qui vérifieront vos qualifications et votre expérience.'}
+                        {formData.role === 'super_utilisateur' && ' L\'accès super utilisateur doit être approuvé par les administrateurs du système.'}
+                        {formData.role === 'utilisateur' && ' Votre compte sera approuvé rapidement pour vous permettre d\'accéder aux outils comptables.'}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="form-actions">
+                    <button
+                      type="button"
+                      onClick={goToPreviousStep}
+                      disabled={loading}
+                      className="btn btn-secondary"
+                    >
+                      ← Retour
+                    </button>
+                    
+                    <button
+                      type="submit"
+                      disabled={loading || Object.keys(errors).length > 0}
+                      className="btn btn-primary btn-submit"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 size={18} className="spinner" />
+                          <span>Création du compte...</span>
+                        </>
+                      ) : (
+                        <>
+                          <UserPlus size={18} />
+                          <span>Créer mon compte</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </form>
+
+            {/* Liens de navigation */}
+            <div className="register-footer">
+              <p className="footer-text">
+                Vous avez déjà un compte ?{' '}
+                <Link to="/login" className="login-link">
+                  Se connecter
+                </Link>
+              </p>
+              <p className="footer-hint">
+                En créant un compte, vous acceptez nos{' '}
+                <a href="/terms" className="link">Conditions d'utilisation</a> et notre{' '}
+                <a href="/privacy" className="link">Politique de confidentialité</a>
+              </p>
+            </div>
+          </div>
+
+          {/* Section Fonctionnalités */}
+          <div className="modifications-section">
+            <h3 className="modifications-title">✨ Fonctionnalités</h3>
+            
+            <div className="modifications-grid">
+              <div className="modification-item">
+                <div className="mod-icon">👤</div>
+                <h4>Sélecteur de Rôle</h4>
+                <p>Choisissez votre rôle : Utilisateur, Consultant ou Super Utilisateur</p>
+              </div>
+              
+              <div className="modification-item">
+                <div className="mod-icon">💼</div>
+                <h4>Profil Consultant</h4>
+                <p>Complétez vos informations professionnelles (SIRET, spécialités, tarif)</p>
+              </div>
+              
+              <div className="modification-item">
+                <div className="mod-icon">🔐</div>
+                <h4>Validation Avancée</h4>
+                <p>Validation temps réel intelligente selon votre profil</p>
+              </div>
+              
+              <div className="modification-item">
+                <div className="mod-icon">⚡</div>
+                <h4>Workflow Amélioré</h4>
+                <p>Système d'approbation adapté à votre rôle</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section informative */}
+          <div className="info-section">
+            <div className="info-card">
+              <div className="info-icon security">
+                <Lock size={24} />
+              </div>
+              <h3>Sécurité maximale</h3>
+              <p>Vos données sont chiffrées et protégées selon les standards bancaires</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-icon compliance">
+                <CheckCircle size={24} />
+              </div>
+              <h3>Conforme OHADA</h3>
+              <p>Respect strict du plan comptable OHADA pour la zone WAEMU</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-icon support">
+                <AlertCircle size={24} />
+              </div>
+              <h3>Support dédié</h3>
+              <p>Équipe technique disponible pour vous accompagner</p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="register-page-footer">
+        <div className="footer-content">
+          <p className="copyright">
+            © 2026 SPOFE v2.1 - Développé par <strong>Entreprises Performantes</strong>
+          </p>
+          <div className="footer-links">
+            <a href="/about">À propos</a>
+            <a href="/contact">Contact</a>
+            <a href="/help">Aide</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default RegisterPage;

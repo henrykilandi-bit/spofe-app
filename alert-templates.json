@@ -1,0 +1,271 @@
+{
+  "low_compliance": {
+    "slack": {
+      "title": "⚠️ Taux de conformité bas",
+      "color": "warning",
+      "text": "Le taux de conformité du contrat SPOFE est descendu en dessous du seuil acceptable.",
+      "fields": [
+        {
+          "title": "Taux actuel",
+          "value": "{{complianceRate}}%",
+          "short": true
+        },
+        {
+          "title": "Violations",
+          "value": "{{violations}}",
+          "short": true
+        },
+        {
+          "title": "Seuil",
+          "value": "80%",
+          "short": true
+        },
+        {
+          "title": "Action requise",
+          "value": "Vérifier les violations et appliquer les corrections nécessaires",
+          "short": false
+        }
+      ],
+      "actions": [
+        {
+          "type": "button",
+          "text": "Voir le Dashboard",
+          "url": "{{dashboardUrl}}"
+        },
+        {
+          "type": "button",
+          "text": "Voir le Rapport",
+          "url": "{{reportUrl}}"
+        }
+      ]
+    },
+    "discord": {
+      "title": "⚠️ Taux de conformité bas",
+      "description": "Le taux de conformité du contrat SPOFE est descendu en dessous du seuil acceptable.",
+      "color": 16776960,
+      "fields": [
+        {
+          "name": "Taux actuel",
+          "value": "{{complianceRate}}%",
+          "inline": true
+        },
+        {
+          "name": "Violations",
+          "value": "{{violations}}",
+          "inline": true
+        },
+        {
+          "name": "Seuil",
+          "value": "80%",
+          "inline": true
+        },
+        {
+          "name": "Action requise",
+          "value": "Vérifier les violations et appliquer les corrections nécessaires"
+        }
+      ]
+    },
+    "email": {
+      "subject": "⚠️ Alert: Low Compliance Rate - SPOFE",
+      "html": "\n              <h2>⚠️ Taux de conformité bas</h2>\n              <p>Le taux de conformité du contrat SPOFE est descendu en dessous du seuil acceptable.</p>\n              \n              <h3>Détails:</h3>\n              <ul>\n                <li><strong>Taux actuel:</strong> {{complianceRate}}%</li>\n                <li><strong>Violations:</strong> {{violations}}</li>\n                <li><strong>Seuil:</strong> 80%</li>\n                <li><strong>Détection:</strong> {{timestamp}}</li>\n              </ul>\n              \n              <h3>Action requise:</h3>\n              <p>Vérifier les violations et appliquer les corrections nécessaires.</p>\n              \n              <p>\n                <a href=\"{{dashboardUrl}}\">Voir le Dashboard</a> | \n                <a href=\"{{reportUrl}}\">Voir le Rapport</a>\n              </p>\n            "
+    }
+  },
+  "critical_compliance": {
+    "slack": {
+      "title": "🚨 ALERTE CRITIQUE - Conformité",
+      "color": "danger",
+      "text": "Le taux de conformité du contrat SPOFE est critique ! Action immédiate requise.",
+      "fields": [
+        {
+          "title": "Taux actuel",
+          "value": "{{complianceRate}}%",
+          "short": true
+        },
+        {
+          "title": "Violations",
+          "value": "{{violations}}",
+          "short": true
+        },
+        {
+          "title": "Impact",
+          "value": "Risque élevé pour la production",
+          "short": true
+        },
+        {
+          "title": "Action IMMÉDIATE",
+          "value": "Intervenir maintenant pour corriger les violations critiques",
+          "short": false
+        }
+      ]
+    },
+    "discord": {
+      "title": "🚨 ALERTE CRITIQUE - Conformité",
+      "description": "Le taux de conformité du contrat SPOFE est critique ! Action immédiate requise.",
+      "color": 16711680,
+      "fields": [
+        {
+          "name": "Taux actuel",
+          "value": "{{complianceRate}}%",
+          "inline": true
+        },
+        {
+          "name": "Violations",
+          "value": "{{violations}}",
+          "inline": true
+        },
+        {
+          "name": "Impact",
+          "value": "Risque élevé pour la production",
+          "inline": true
+        }
+      ]
+    },
+    "email": {
+      "subject": "🚨 CRITICAL ALERT - Compliance Rate - SPOFE",
+      "html": "\n              <h2>🚨 ALERTE CRITIQUE - Conformité</h2>\n              <p><strong>Le taux de conformité du contrat SPOFE est critique ! Action immédiate requise.</strong></p>\n              \n              <h3>Détails:</h3>\n              <ul>\n                <li><strong>Taux actuel:</strong> {{complianceRate}}%</li>\n                <li><strong>Violations:</strong> {{violations}}</li>\n                <li><strong>Impact:</strong> Risque élevé pour la production</li>\n                <li><strong>Détection:</strong> {{timestamp}}</li>\n              </ul>\n              \n              <h3><strong>ACTION IMMÉDIATE REQUISE:</strong></h3>\n              <p>Intervenir maintenant pour corriger les violations critiques.</p>\n              \n              <p>\n                <a href=\"{{dashboardUrl}}\">Voir le Dashboard</a> | \n                <a href=\"{{reportUrl}}\">Voir le Rapport</a>\n              </p>\n            "
+    }
+  },
+  "violation_spike": {
+    "slack": {
+      "title": "📈 Pic de violations détecté",
+      "color": "warning",
+      "text": "Une augmentation significative des violations a été détectée.",
+      "fields": [
+        {
+          "title": "Violations actuelles",
+          "value": "{{violations}}",
+          "short": true
+        },
+        {
+          "title": "Précédemment",
+          "value": "{{previousViolations}}",
+          "short": true
+        },
+        {
+          "title": "Augmentation",
+          "value": "+{{increasePercentage}}%",
+          "short": true
+        }
+      ]
+    },
+    "discord": {
+      "title": "📈 Pic de violations détecté",
+      "description": "Une augmentation significative des violations a été détectée.",
+      "color": 16776960,
+      "fields": [
+        {
+          "name": "Violations actuelles",
+          "value": "{{violations}}",
+          "inline": true
+        },
+        {
+          "name": "Précédemment",
+          "value": "{{previousViolations}}",
+          "inline": true
+        },
+        {
+          "name": "Augmentation",
+          "value": "+{{increasePercentage}}%",
+          "inline": true
+        }
+      ]
+    }
+  },
+  "service_down": {
+    "slack": {
+      "title": "🔴 Service indisponible",
+      "color": "danger",
+      "text": "Le service SPOFE est actuellement indisponible.",
+      "fields": [
+        {
+          "title": "Service",
+          "value": "{{serviceName}}",
+          "short": true
+        },
+        {
+          "title": "Statut",
+          "value": "DOWN",
+          "short": true
+        },
+        {
+          "title": "Durée",
+          "value": "{{downtime}}",
+          "short": true
+        },
+        {
+          "title": "Action",
+          "value": "Vérifier l'état du service et redémarrer si nécessaire",
+          "short": false
+        }
+      ]
+    },
+    "discord": {
+      "title": "🔴 Service indisponible",
+      "description": "Le service SPOFE est actuellement indisponible.",
+      "color": 16711680,
+      "fields": [
+        {
+          "name": "Service",
+          "value": "{{serviceName}}",
+          "inline": true
+        },
+        {
+          "name": "Statut",
+          "value": "DOWN",
+          "inline": true
+        },
+        {
+          "name": "Durée",
+          "value": "{{downtime}}",
+          "inline": true
+        }
+      ]
+    }
+  },
+  "improvement_detected": {
+    "slack": {
+      "title": "✅ Amélioration détectée",
+      "color": "good",
+      "text": "Une amélioration significative du taux de conformité a été détectée.",
+      "fields": [
+        {
+          "title": "Taux actuel",
+          "value": "{{complianceRate}}%",
+          "short": true
+        },
+        {
+          "title": "Précédemment",
+          "value": "{{previousComplianceRate}}%",
+          "short": true
+        },
+        {
+          "title": "Amélioration",
+          "value": "+{{improvement}}%",
+          "short": true
+        }
+      ]
+    },
+    "discord": {
+      "title": "✅ Amélioration détectée",
+      "description": "Une amélioration significative du taux de conformité a été détectée.",
+      "color": 65280,
+      "fields": [
+        {
+          "name": "Taux actuel",
+          "value": "{{complianceRate}}%",
+          "inline": true
+        },
+        {
+          "name": "Précédemment",
+          "value": "{{previousComplianceRate}}%",
+          "inline": true
+        },
+        {
+          "name": "Amélioration",
+          "value": "+{{improvement}}%",
+          "inline": true
+        }
+      ]
+    }
+  }
+}

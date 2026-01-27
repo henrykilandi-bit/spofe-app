@@ -1,0 +1,57 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Logs
+logs/
+*.log
+
+# Tests
+coverage/
+test-results/
+playwright-report/
+*.test.js
+*.spec.js
+__tests__/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Build artifacts
+dist/
+build/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database files
+*.sql
+*.sqlite
+*.db
+
+# Backup files
+*.backup
+*.bak

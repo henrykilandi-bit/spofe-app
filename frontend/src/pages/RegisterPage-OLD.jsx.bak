@@ -1,0 +1,353 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { 
+  UserPlus, Mail, Lock, User, CheckCircle, 
+  XCircle, AlertCircle, Loader2 
+} from 'lucide-react';
+import './RegisterPage.css';
+import { useNotifications } from '../hooks/useNotifications';
+
+const RegisterPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { addNotification } = useNotifications();
+  
+  // Récupération des paramètres d'URL
+  const queryParams = new URLSearchParams(location.search);
+  const invitedEmail = queryParams.get('email') || '';
+  const groupeId = queryParams.get('groupeId') ? parseInt(queryParams.get('groupeId')) : null;
+  const invitationToken = queryParams.get('token') || '';
+
+  // ============ ÉTATS ============
+  const [formData, setFormData] = useState({
+    email: invitedEmail,
+    username: '',
+    password: '',
+    confirmPassword: '',
+    prenom: '',
+    nom: '',
+    telephone: '',
+    groupeId: groupeId,
+    invitationToken: invitationToken
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [usernameChecking, setUsernameChecking] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [emailAvailable, setEmailAvailable] = useState(null);
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [step, setStep] = useState(1); // 1: Informations de base, 2: Informations personnelles
+  const [groupeInfo, setGroupeInfo] = useState(null);
+
+  // Vérifier disponibilité email
+  const checkEmailAvailability = async (email) => {
+    if (!email || !email.includes('@')) {
+      setEmailAvailable(null);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/auth/check-email/${encodeURIComponent(email)}`
+      );
+      setEmailAvailable(response.data.data.available);
+    } catch (error) {
+      console.error('Error checking email:', error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Vérifier email en temps réel
+    if (name === 'email') {
+      const debounceTimer = setTimeout(() => checkEmailAvailability(value), 300);
+      return () => clearTimeout(debounceTimer);
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = [];
+
+    if (!formData.email || !formData.email.includes('@')) {
+      newErrors.push('Email invalide');
+    }
+
+    if (!emailAvailable) {
+      newErrors.push('Cet email est déjà utilisé');
+    }
+
+    if (!formData.username || formData.username.length < 3) {
+      newErrors.push('Nom d\'utilisateur minimum 3 caractères');
+    }
+
+    if (!formData.password || formData.password.length < 8) {
+      newErrors.push('Mot de passe minimum 8 caractères');
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.push('Les mots de passe ne correspondent pas');
+    }
+
+    if (!formData.prenom) {
+      newErrors.push('Prénom requis');
+    }
+
+    if (!formData.nom) {
+      newErrors.push('Nom requis');
+    }
+
+    return newErrors;
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setLoading(true);
+    setErrors([]);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/api/auth/register',
+        {
+          email: formData.email,
+          username: formData.username,
+          password: formData.password,
+          prenom: formData.prenom,
+          nom: formData.nom,
+          groupeId: formData.groupeId
+        }
+      );
+
+      // Succès
+      if (response.data.data.requiresApproval) {
+        // Rediriger avec message d'approbation en attente
+        navigate('/login', {
+          state: {
+            message: 'Inscription réussie! En attente d\'approbation d\'un administrateur.',
+            type: 'info'
+          }
+        });
+      } else {
+        // Rediriger vers login avec message succès
+        navigate('/login', {
+          state: {
+            message: 'Inscription réussie! Vous pouvez maintenant vous connecter.',
+            type: 'success',
+            email: formData.email
+          }
+        });
+      }
+    } catch (err) {
+      const errorMessages = err.response?.data?.errors || ['Erreur lors de l\'inscription'];
+      setErrors(Array.isArray(errorMessages) ? errorMessages : [errorMessages]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="register-container">
+      <div className="register-card">
+        <div className="register-header">
+          <h1>Créer un Compte</h1>
+          <p className="register-subtitle">
+            Bienvenue dans SPOFE v2.1
+          </p>
+        </div>
+
+        <form onSubmit={handleRegister} className="register-form">
+          {/* Messages d'erreur */}
+          {errors.length > 0 && (
+            <div className="error-messages">
+              {errors.map((err, index) => (
+                <div key={index} className="error-item">
+                  <span className="error-icon">⚠️</span>
+                  <span>{err}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Champ Email */}
+          <div className="form-group">
+            <label htmlFor="email">Email *</label>
+            <div className="input-wrapper">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="votre.email@example.com"
+                disabled={loading}
+                className={`form-input ${emailAvailable === false ? 'input-error' : emailAvailable === true ? 'input-success' : ''}`}
+              />
+              {emailAvailable === true && <span className="availability-icon">✓</span>}
+              {emailAvailable === false && <span className="availability-icon error">✗</span>}
+            </div>
+            {emailAvailable === false && (
+              <p className="field-error">Cet email est déjà utilisé</p>
+            )}
+          </div>
+
+          {/* Champ Nom d'utilisateur */}
+          <div className="form-group">
+            <label htmlFor="username">Nom d'utilisateur *</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              placeholder="monnom"
+              disabled={loading}
+              className="form-input"
+              minLength="3"
+              maxLength="30"
+            />
+            <p className="field-hint">3-30 caractères alphanumériques</p>
+          </div>
+
+          {/* Champs Prénom et Nom */}
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="prenom">Prénom *</label>
+              <input
+                type="text"
+                id="prenom"
+                name="prenom"
+                value={formData.prenom}
+                onChange={handleInputChange}
+                placeholder="Jean"
+                disabled={loading}
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="nom">Nom *</label>
+              <input
+                type="text"
+                id="nom"
+                name="nom"
+                value={formData.nom}
+                onChange={handleInputChange}
+                placeholder="Dupont"
+                disabled={loading}
+                className="form-input"
+              />
+            </div>
+          </div>
+
+          {/* Champ Mot de passe */}
+          <div className="form-group">
+            <label htmlFor="password">Mot de passe *</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Minimum 8 caractères"
+              disabled={loading}
+              className="form-input"
+              minLength="8"
+            />
+            <p className="field-hint">Minimum 8 caractères avec majuscules et chiffres recommandés</p>
+          </div>
+
+          {/* Champ Confirmation mot de passe */}
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirmer mot de passe *</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              placeholder="Confirmez votre mot de passe"
+              disabled={loading}
+              className="form-input"
+            />
+          </div>
+
+          {/* Afficher groupe si fourni */}
+          {formData.groupeId && (
+            <div className="group-info">
+              <p>Vous allez être ajouté au groupe sélectionné en attente d'approbation.</p>
+            </div>
+          )}
+
+          {/* Bouton d'inscription */}
+          <button
+            type="submit"
+            disabled={loading || emailAvailable === false}
+            className={`register-button ${loading ? 'loading' : ''}`}
+          >
+            {loading ? (
+              <>
+                <span className="spinner"></span>
+                Inscription en cours...
+              </>
+            ) : (
+              'Créer mon compte'
+            )}
+          </button>
+
+          {/* Lien retour login */}
+          <div className="register-footer">
+            <p>
+              Vous avez déjà un compte?{' '}
+              <a href="/login" className="login-link">
+                Se connecter
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      {/* Informations complémentaires */}
+      <div className="register-info">
+        <div className="info-card">
+          <h3>🔐 Sécurité</h3>
+          <p>Vos données sont protégées par un chiffrement de haute qualité.</p>
+        </div>
+        <div className="info-card">
+          <h3>⚡ Rapide</h3>
+          <p>Inscription simple en quelques clics seulement.</p>
+        </div>
+        <div className="info-card">
+          <h3>✓ Fiable</h3>
+          <p>SPOFE v2.1 est la solution de confiance pour votre comptabilité.</p>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="register-footer-final">
+        <p className="footer-text">
+          Développé par <strong>Entreprises Performantes</strong>
+        </p>
+        <p className="footer-year">
+          SPOFE 2026
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default RegisterPage;

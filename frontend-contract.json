@@ -1,0 +1,2407 @@
+{
+  "version": "SPOFE v2.2",
+  "timestamp": "2026-01-27T16:02:31.842Z",
+  "endpoints": {
+    "POST:/objectives/:id/ai/predict": {
+      "method": "POST",
+      "route": "/objectives/:id/ai/predict",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:id/ai/correlations": {
+      "method": "GET",
+      "route": "/objectives/:id/ai/correlations",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:id/ai/anomalies": {
+      "method": "GET",
+      "route": "/objectives/:id/ai/anomalies",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:id/ai/insights": {
+      "method": "GET",
+      "route": "/objectives/:id/ai/insights",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/:id/ai/optimize-resources": {
+      "method": "POST",
+      "route": "/objectives/:id/ai/optimize-resources",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/ai/generate-smart": {
+      "method": "POST",
+      "route": "/objectives/ai/generate-smart",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/ai/report-strategic": {
+      "method": "POST",
+      "route": "/objectives/ai/report-strategic",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/ai/report-benchmark": {
+      "method": "POST",
+      "route": "/objectives/ai/report-benchmark",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/ai/batch-analysis": {
+      "method": "POST",
+      "route": "/objectives/ai/batch-analysis",
+      "file": "cascade\\src\\routes\\ai.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/profile": {
+      "method": "GET",
+      "route": "/profile",
+      "file": "cascade\\src\\routes\\api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/admin": {
+      "method": "GET",
+      "route": "/admin",
+      "file": "cascade\\src\\routes\\api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/pending": {
+      "method": "GET",
+      "route": "/pending",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": {
+        "name": "pending_role_approval",
+        "file": "cascade\\src\\dto\\pending_role_approval.dto.js",
+        "properties": {
+          "id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "user_data": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "requested_role": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "approver_role": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "status": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "requires_group": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "requires_company": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "requested_by": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "approved_by": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "approval_date": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "rejection_reason": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "created_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "updated_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          }
+        },
+        "propertyCount": 13
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/approve/:requestId": {
+      "method": "POST",
+      "route": "/approve/:requestId",
+      "file": "cascade\\src\\routes\\approvalRoutes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/reject/:requestId": {
+      "method": "POST",
+      "route": "/reject/:requestId",
+      "file": "cascade\\src\\routes\\approvalRoutes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/stats": {
+      "method": "GET",
+      "route": "/stats",
+      "file": "cascade\\src\\routes\\websocket.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/cleanup": {
+      "method": "POST",
+      "route": "/cleanup",
+      "file": "cascade\\src\\routes\\cache_monitoring.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/breakdown/status": {
+      "method": "GET",
+      "route": "/breakdown/status",
+      "file": "cascade\\src\\routes\\approvalsRoutes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/approve": {
+      "method": "POST",
+      "route": "/:id/approve",
+      "file": "cascade\\src\\routes\\approvalsRoutes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/reject": {
+      "method": "POST",
+      "route": "/:id/reject",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/request-changes": {
+      "method": "POST",
+      "route": "/:id/request-changes",
+      "file": "cascade\\src\\routes\\approvalsRoutes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/audit-logs": {
+      "method": "GET",
+      "route": "/audit-logs",
+      "file": "cascade\\src\\routes\\approvalsRoutes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/register": {
+      "method": "POST",
+      "route": "/register",
+      "file": "cascade\\src\\routes\\auth_registration.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/login": {
+      "method": "POST",
+      "route": "/login",
+      "file": "cascade\\src\\routes\\auth.routes.minimal.js",
+      "dto": {
+        "name": "login_audit_trail",
+        "file": "cascade\\src\\dto\\login_audit_trail.dto.js",
+        "properties": {
+          "id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "user_id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "email": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "ip_address": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "user_agent": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "login_status": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "failure_reason": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "two_factor_required": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "session_token": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "remember_token_used": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "login_attempts_before": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "created_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          }
+        },
+        "propertyCount": 12
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/logout": {
+      "method": "POST",
+      "route": "/logout",
+      "file": "cascade\\src\\routes\\auth.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/refresh-token": {
+      "method": "POST",
+      "route": "/refresh-token",
+      "file": "cascade\\src\\routes\\auth.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/forgot-password": {
+      "method": "POST",
+      "route": "/forgot-password",
+      "file": "cascade\\src\\routes\\auth.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/reset-password": {
+      "method": "POST",
+      "route": "/reset-password",
+      "file": "cascade\\src\\routes\\auth.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/me": {
+      "method": "GET",
+      "route": "/me",
+      "file": "cascade\\src\\routes\\auth.routes.js",
+      "dto": {
+        "name": "remember_token",
+        "file": "cascade\\src\\dto\\remember_token.dto.js",
+        "properties": {
+          "id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "user_id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "token": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "expires_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "last_used_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "ip_address": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "user_agent": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "is_active": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "created_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          }
+        },
+        "propertyCount": 9
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "GET:/check-email/:email": {
+      "method": "GET",
+      "route": "/check-email/:email",
+      "file": "cascade\\src\\routes\\auth_registration.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/check-username/:username": {
+      "method": "GET",
+      "route": "/check-username/:username",
+      "file": "cascade\\src\\routes\\auth.routes.js",
+      "dto": {
+        "name": "user",
+        "file": "cascade\\src\\dto\\user.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/accept-invitation": {
+      "method": "POST",
+      "route": "/accept-invitation",
+      "file": "cascade\\src\\routes\\auth_registration.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/registration-status/:email": {
+      "method": "GET",
+      "route": "/registration-status/:email",
+      "file": "cascade\\src\\routes\\auth_registration.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/invite-user": {
+      "method": "POST",
+      "route": "/invite-user",
+      "file": "cascade\\src\\routes\\auth_registration.routes.js",
+      "dto": {
+        "name": "user",
+        "file": "cascade\\src\\dto\\user.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "GET:/accounts/:bankId": {
+      "method": "GET",
+      "route": "/accounts/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/transactions/:bankId/:accountId": {
+      "method": "GET",
+      "route": "/transactions/:bankId/:accountId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/reconcile/:bankId/:accountId": {
+      "method": "POST",
+      "route": "/reconcile/:bankId/:accountId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/sync/:bankId": {
+      "method": "POST",
+      "route": "/sync/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/webhooks/:bankId": {
+      "method": "POST",
+      "route": "/webhooks/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/sync-history/:bankId": {
+      "method": "GET",
+      "route": "/sync-history/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/reconciliation-history/:bankId/:accountId": {
+      "method": "GET",
+      "route": "/reconciliation-history/:bankId/:accountId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/banks": {
+      "method": "POST",
+      "route": "/banks",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PUT:/banks/:bankId": {
+      "method": "PUT",
+      "route": "/banks/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "DELETE:/banks/:bankId": {
+      "method": "DELETE",
+      "route": "/banks/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/test-connection/:bankId": {
+      "method": "POST",
+      "route": "/test-connection/:bankId",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/banks": {
+      "method": "GET",
+      "route": "/banks",
+      "file": "cascade\\src\\routes\\banking_api.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/": {
+      "method": "GET",
+      "route": "/",
+      "file": "cascade\\src\\routes\\user.routes.js",
+      "dto": {
+        "name": "user",
+        "file": "cascade\\src\\dto\\user.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "GET:/:id": {
+      "method": "GET",
+      "route": "/:id",
+      "file": "cascade\\src\\routes\\user.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/": {
+      "method": "POST",
+      "route": "/",
+      "file": "cascade\\src\\routes\\thirdParties.routes.js",
+      "dto": {
+        "name": "user",
+        "file": "cascade\\src\\dto\\user.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "PATCH:/:id": {
+      "method": "PATCH",
+      "route": "/:id",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/submit": {
+      "method": "POST",
+      "route": "/:id/submit",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/validate": {
+      "method": "POST",
+      "route": "/:id/validate",
+      "file": "cascade\\src\\routes\\journalEntries.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "DELETE:/:id": {
+      "method": "DELETE",
+      "route": "/:id",
+      "file": "cascade\\src\\routes\\user.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/templates": {
+      "method": "GET",
+      "route": "/templates",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/templates/:id": {
+      "method": "GET",
+      "route": "/templates/:id",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/templates": {
+      "method": "POST",
+      "route": "/templates",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PATCH:/templates/:id": {
+      "method": "PATCH",
+      "route": "/templates/:id",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PATCH:/templates/:id/toggle": {
+      "method": "PATCH",
+      "route": "/templates/:id/toggle",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "DELETE:/templates/:id": {
+      "method": "DELETE",
+      "route": "/templates/:id",
+      "file": "cascade\\src\\routes\\businessOperations.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/health": {
+      "method": "GET",
+      "route": "/health",
+      "file": "cascade\\src\\routes\\scheduler.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/memory": {
+      "method": "GET",
+      "route": "/memory",
+      "file": "cascade\\src\\routes\\cache_monitoring.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/info": {
+      "method": "GET",
+      "route": "/info",
+      "file": "cascade\\src\\routes\\cache_monitoring.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/invalidate": {
+      "method": "POST",
+      "route": "/invalidate",
+      "file": "cascade\\src\\routes\\cache_monitoring.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/clear": {
+      "method": "POST",
+      "route": "/clear",
+      "file": "cascade\\src\\routes\\cache_monitoring.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/diagnostic": {
+      "method": "GET",
+      "route": "/diagnostic",
+      "file": "cascade\\src\\routes\\cache_monitoring.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/seed": {
+      "method": "POST",
+      "route": "/seed",
+      "file": "cascade\\src\\routes\\chartOfAccounts.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/search": {
+      "method": "GET",
+      "route": "/search",
+      "file": "cascade\\src\\routes\\thirdParties.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PUT:/:id": {
+      "method": "PUT",
+      "route": "/:id",
+      "file": "cascade\\src\\routes\\user.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/summary": {
+      "method": "GET",
+      "route": "/summary",
+      "file": "cascade\\src\\routes\\metrics.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/activity": {
+      "method": "GET",
+      "route": "/activity",
+      "file": "cascade\\src\\routes\\dashboard.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/groups/:groupe_id/pending-approvals": {
+      "method": "GET",
+      "route": "/groups/:groupe_id/pending-approvals",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": {
+        "name": "group",
+        "file": "cascade\\src\\dto\\group.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/pending-approvals/:approvalId/approve": {
+      "method": "POST",
+      "route": "/pending-approvals/:approvalId/approve",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/pending-approvals/:approvalId/reject": {
+      "method": "POST",
+      "route": "/pending-approvals/:approvalId/reject",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/groups/:groupe_id/approval-stats": {
+      "method": "GET",
+      "route": "/groups/:groupe_id/approval-stats",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": {
+        "name": "group",
+        "file": "cascade\\src\\dto\\group.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/groups/:groupe_id/super-users": {
+      "method": "POST",
+      "route": "/groups/:groupe_id/super-users",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": {
+        "name": "group",
+        "file": "cascade\\src\\dto\\group.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "GET:/groups/:groupe_id/super-users": {
+      "method": "GET",
+      "route": "/groups/:groupe_id/super-users",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": {
+        "name": "group",
+        "file": "cascade\\src\\dto\\group.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "DELETE:/groups/:groupe_id/super-users/:user_id": {
+      "method": "DELETE",
+      "route": "/groups/:groupe_id/super-users/:user_id",
+      "file": "cascade\\src\\routes\\groupeApprovals.routes.js",
+      "dto": {
+        "name": "group",
+        "file": "cascade\\src\\dto\\group.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "GET:/status": {
+      "method": "GET",
+      "route": "/status",
+      "file": "cascade\\src\\routes\\system_supervisor.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/detailed": {
+      "method": "GET",
+      "route": "/detailed",
+      "file": "cascade\\src\\routes\\health_check.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/database": {
+      "method": "GET",
+      "route": "/database",
+      "file": "cascade\\src\\routes\\health_check.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/cache": {
+      "method": "GET",
+      "route": "/cache",
+      "file": "cascade\\src\\routes\\health_check.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/api": {
+      "method": "GET",
+      "route": "/api",
+      "file": "cascade\\src\\routes\\health_check.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/metrics": {
+      "method": "GET",
+      "route": "/metrics",
+      "file": "cascade\\src\\routes\\health_check.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/test-notifications": {
+      "method": "POST",
+      "route": "/test-notifications",
+      "file": "cascade\\src\\routes\\health_check.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/:id/indicators": {
+      "method": "POST",
+      "route": "/objectives/:id/indicators",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:id/indicators": {
+      "method": "GET",
+      "route": "/objectives/:id/indicators",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:objectiveId/indicators/:indicatorId": {
+      "method": "GET",
+      "route": "/objectives/:objectiveId/indicators/:indicatorId",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PATCH:/objectives/:objectiveId/indicators/:indicatorId": {
+      "method": "PATCH",
+      "route": "/objectives/:objectiveId/indicators/:indicatorId",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "DELETE:/objectives/:objectiveId/indicators/:indicatorId": {
+      "method": "DELETE",
+      "route": "/objectives/:objectiveId/indicators/:indicatorId",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/objectives/:objectiveId/indicators/:indicatorId/record": {
+      "method": "POST",
+      "route": "/objectives/:objectiveId/indicators/:indicatorId/record",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:objectiveId/indicators/:indicatorId/status": {
+      "method": "GET",
+      "route": "/objectives/:objectiveId/indicators/:indicatorId/status",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/objectives/:objectiveId/indicators/:indicatorId/history": {
+      "method": "GET",
+      "route": "/objectives/:objectiveId/indicators/:indicatorId/history",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/bulk-record": {
+      "method": "POST",
+      "route": "/bulk-record",
+      "file": "cascade\\src\\routes\\indicators.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/breakdown": {
+      "method": "GET",
+      "route": "/breakdown",
+      "file": "cascade\\src\\routes\\logging_stats.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/reset-stats": {
+      "method": "POST",
+      "route": "/reset-stats",
+      "file": "cascade\\src\\routes\\logging_stats.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/test-all-levels": {
+      "method": "POST",
+      "route": "/test-all-levels",
+      "file": "cascade\\src\\routes\\logging_stats.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/prometheus": {
+      "method": "GET",
+      "route": "/prometheus",
+      "file": "cascade\\src\\routes\\metrics.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/restore": {
+      "method": "POST",
+      "route": "/:id/restore",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/:id/progress": {
+      "method": "GET",
+      "route": "/:id/progress",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/actions": {
+      "method": "POST",
+      "route": "/:id/actions",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/accounting/link": {
+      "method": "POST",
+      "route": "/:id/accounting/link",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/:id/accounting/impact": {
+      "method": "GET",
+      "route": "/:id/accounting/impact",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/:id/accounting/variance": {
+      "method": "GET",
+      "route": "/:id/accounting/variance",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/batch/progression": {
+      "method": "POST",
+      "route": "/batch/progression",
+      "file": "cascade\\src\\routes\\objectives.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/journal-entries": {
+      "method": "GET",
+      "route": "/journal-entries",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/journal-entries/:id": {
+      "method": "GET",
+      "route": "/journal-entries/:id",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/journal-entries/report/:periode": {
+      "method": "GET",
+      "route": "/journal-entries/report/:periode",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/account-balances": {
+      "method": "GET",
+      "route": "/account-balances",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/account-journal/:accountId": {
+      "method": "GET",
+      "route": "/account-journal/:accountId",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/diagnostic/query-performance": {
+      "method": "GET",
+      "route": "/diagnostic/query-performance",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/diagnostic/reset-stats": {
+      "method": "POST",
+      "route": "/diagnostic/reset-stats",
+      "file": "cascade\\src\\routes\\optimized_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/balance": {
+      "method": "GET",
+      "route": "/balance",
+      "file": "cascade\\src\\routes\\reports.routes.js",
+      "dto": {
+        "name": "account_balance",
+        "file": "cascade\\src\\dto\\account_balance.dto.js",
+        "properties": {
+          "id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "numero_compte_id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "periode": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "solde_debit": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "solde_credit": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "created_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "updated_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "deleted_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          }
+        },
+        "propertyCount": 8
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "GET:/balance-auxiliary": {
+      "method": "GET",
+      "route": "/balance-auxiliary",
+      "file": "cascade\\src\\routes\\reports.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/general-ledger": {
+      "method": "GET",
+      "route": "/general-ledger",
+      "file": "cascade\\src\\routes\\reports.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/income-statement": {
+      "method": "GET",
+      "route": "/income-statement",
+      "file": "cascade\\src\\routes\\reports.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/balance-sheet": {
+      "method": "GET",
+      "route": "/balance-sheet",
+      "file": "cascade\\src\\routes\\reports.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/tasks": {
+      "method": "GET",
+      "route": "/tasks",
+      "file": "cascade\\src\\routes\\scheduler.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/trigger/:taskName": {
+      "method": "POST",
+      "route": "/trigger/:taskName",
+      "file": "cascade\\src\\routes\\scheduler.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/entries": {
+      "method": "GET",
+      "route": "/entries",
+      "file": "cascade\\src\\routes\\secure_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/entries/:id": {
+      "method": "GET",
+      "route": "/entries/:id",
+      "file": "cascade\\src\\routes\\secure_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/export": {
+      "method": "GET",
+      "route": "/export",
+      "file": "cascade\\src\\routes\\secure_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/stats/reset": {
+      "method": "POST",
+      "route": "/stats/reset",
+      "file": "cascade\\src\\routes\\secure_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/documentation": {
+      "method": "GET",
+      "route": "/documentation",
+      "file": "cascade\\src\\routes\\secure_journal.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/audit": {
+      "method": "GET",
+      "route": "/audit",
+      "file": "cascade\\src\\routes\\security.routes.js",
+      "dto": {
+        "name": "login_audit_trail",
+        "file": "cascade\\src\\dto\\login_audit_trail.dto.js",
+        "properties": {
+          "id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "user_id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "email": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "ip_address": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "user_agent": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "login_status": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "failure_reason": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "two_factor_required": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "session_token": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "remember_token_used": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "login_attempts_before": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "created_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          }
+        },
+        "propertyCount": 12
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/run": {
+      "method": "POST",
+      "route": "/run",
+      "file": "cascade\\src\\routes\\system_supervisor.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:id/block": {
+      "method": "POST",
+      "route": "/:id/block",
+      "file": "cascade\\src\\routes\\thirdParties.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/change-password": {
+      "method": "POST",
+      "route": "/change-password",
+      "file": "cascade\\src\\routes\\user.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/token": {
+      "method": "POST",
+      "route": "/token",
+      "file": "cascade\\src\\routes\\websocket.routes.js",
+      "dto": {
+        "name": "token_blacklist",
+        "file": "cascade\\src\\dto\\token_blacklist.dto.js",
+        "properties": {
+          "id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "user_id": {
+            "type": "'number'",
+            "required": true,
+            "description": ""
+          },
+          "token": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "expires_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "created_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          },
+          "updated_at": {
+            "type": "'string'",
+            "required": true,
+            "description": ""
+          }
+        },
+        "propertyCount": 6
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/notify": {
+      "method": "POST",
+      "route": "/notify",
+      "file": "cascade\\src\\routes\\websocket.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/notify-user": {
+      "method": "POST",
+      "route": "/notify-user",
+      "file": "cascade\\src\\routes\\websocket.routes.js",
+      "dto": {
+        "name": "user",
+        "file": "cascade\\src\\dto\\user.dto.js",
+        "properties": {},
+        "propertyCount": 0
+      },
+      "compliant": true,
+      "lastValidated": "2026-01-27T16:02:32.089Z"
+    },
+    "POST:/notify-room": {
+      "method": "POST",
+      "route": "/notify-room",
+      "file": "cascade\\src\\routes\\websocket.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/configs": {
+      "method": "POST",
+      "route": "/configs",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/start": {
+      "method": "POST",
+      "route": "/start",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:workflowInstanceId/approve": {
+      "method": "POST",
+      "route": "/:workflowInstanceId/approve",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:workflowInstanceId/reject": {
+      "method": "POST",
+      "route": "/:workflowInstanceId/reject",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "POST:/:workflowInstanceId/request-changes": {
+      "method": "POST",
+      "route": "/:workflowInstanceId/request-changes",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/history/:entityType/:entityId": {
+      "method": "GET",
+      "route": "/history/:entityType/:entityId",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/:workflowInstanceId": {
+      "method": "GET",
+      "route": "/:workflowInstanceId",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/configs": {
+      "method": "GET",
+      "route": "/configs",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PUT:/configs/:configId": {
+      "method": "PUT",
+      "route": "/configs/:configId",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "PATCH:/configs/:configId/toggle": {
+      "method": "PATCH",
+      "route": "/configs/:configId/toggle",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    },
+    "GET:/stats/overview": {
+      "method": "GET",
+      "route": "/stats/overview",
+      "file": "cascade\\src\\routes\\workflow_approval.routes.js",
+      "dto": null,
+      "compliant": false,
+      "lastValidated": null
+    }
+  },
+  "compliance": {
+    "totalEndpoints": 141,
+    "compliantEndpoints": 16,
+    "complianceRate": "11.35",
+    "violations": [
+      {
+        "endpoint": "POST:/objectives/:id/ai/predict",
+        "method": "POST",
+        "route": "/objectives/:id/ai/predict",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:id/ai/correlations",
+        "method": "GET",
+        "route": "/objectives/:id/ai/correlations",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:id/ai/anomalies",
+        "method": "GET",
+        "route": "/objectives/:id/ai/anomalies",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:id/ai/insights",
+        "method": "GET",
+        "route": "/objectives/:id/ai/insights",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/:id/ai/optimize-resources",
+        "method": "POST",
+        "route": "/objectives/:id/ai/optimize-resources",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/ai/generate-smart",
+        "method": "POST",
+        "route": "/objectives/ai/generate-smart",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/ai/report-strategic",
+        "method": "POST",
+        "route": "/objectives/ai/report-strategic",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/ai/report-benchmark",
+        "method": "POST",
+        "route": "/objectives/ai/report-benchmark",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/ai/batch-analysis",
+        "method": "POST",
+        "route": "/objectives/ai/batch-analysis",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/profile",
+        "method": "GET",
+        "route": "/profile",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/admin",
+        "method": "GET",
+        "route": "/admin",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/approve/:requestId",
+        "method": "POST",
+        "route": "/approve/:requestId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/reject/:requestId",
+        "method": "POST",
+        "route": "/reject/:requestId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/stats",
+        "method": "GET",
+        "route": "/stats",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/cleanup",
+        "method": "POST",
+        "route": "/cleanup",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/breakdown/status",
+        "method": "GET",
+        "route": "/breakdown/status",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/approve",
+        "method": "POST",
+        "route": "/:id/approve",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/reject",
+        "method": "POST",
+        "route": "/:id/reject",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/request-changes",
+        "method": "POST",
+        "route": "/:id/request-changes",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/audit-logs",
+        "method": "GET",
+        "route": "/audit-logs",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/register",
+        "method": "POST",
+        "route": "/register",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/logout",
+        "method": "POST",
+        "route": "/logout",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/refresh-token",
+        "method": "POST",
+        "route": "/refresh-token",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/forgot-password",
+        "method": "POST",
+        "route": "/forgot-password",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/reset-password",
+        "method": "POST",
+        "route": "/reset-password",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/check-email/:email",
+        "method": "GET",
+        "route": "/check-email/:email",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/accept-invitation",
+        "method": "POST",
+        "route": "/accept-invitation",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/registration-status/:email",
+        "method": "GET",
+        "route": "/registration-status/:email",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/accounts/:bankId",
+        "method": "GET",
+        "route": "/accounts/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/transactions/:bankId/:accountId",
+        "method": "GET",
+        "route": "/transactions/:bankId/:accountId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/reconcile/:bankId/:accountId",
+        "method": "POST",
+        "route": "/reconcile/:bankId/:accountId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/sync/:bankId",
+        "method": "POST",
+        "route": "/sync/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/webhooks/:bankId",
+        "method": "POST",
+        "route": "/webhooks/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/sync-history/:bankId",
+        "method": "GET",
+        "route": "/sync-history/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/reconciliation-history/:bankId/:accountId",
+        "method": "GET",
+        "route": "/reconciliation-history/:bankId/:accountId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/banks",
+        "method": "POST",
+        "route": "/banks",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PUT:/banks/:bankId",
+        "method": "PUT",
+        "route": "/banks/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "DELETE:/banks/:bankId",
+        "method": "DELETE",
+        "route": "/banks/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/test-connection/:bankId",
+        "method": "POST",
+        "route": "/test-connection/:bankId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/banks",
+        "method": "GET",
+        "route": "/banks",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/:id",
+        "method": "GET",
+        "route": "/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PATCH:/:id",
+        "method": "PATCH",
+        "route": "/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/submit",
+        "method": "POST",
+        "route": "/:id/submit",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/validate",
+        "method": "POST",
+        "route": "/:id/validate",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "DELETE:/:id",
+        "method": "DELETE",
+        "route": "/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/templates",
+        "method": "GET",
+        "route": "/templates",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/templates/:id",
+        "method": "GET",
+        "route": "/templates/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/templates",
+        "method": "POST",
+        "route": "/templates",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PATCH:/templates/:id",
+        "method": "PATCH",
+        "route": "/templates/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PATCH:/templates/:id/toggle",
+        "method": "PATCH",
+        "route": "/templates/:id/toggle",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "DELETE:/templates/:id",
+        "method": "DELETE",
+        "route": "/templates/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/health",
+        "method": "GET",
+        "route": "/health",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/memory",
+        "method": "GET",
+        "route": "/memory",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/info",
+        "method": "GET",
+        "route": "/info",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/invalidate",
+        "method": "POST",
+        "route": "/invalidate",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/clear",
+        "method": "POST",
+        "route": "/clear",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/diagnostic",
+        "method": "GET",
+        "route": "/diagnostic",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/seed",
+        "method": "POST",
+        "route": "/seed",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/search",
+        "method": "GET",
+        "route": "/search",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PUT:/:id",
+        "method": "PUT",
+        "route": "/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/summary",
+        "method": "GET",
+        "route": "/summary",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/activity",
+        "method": "GET",
+        "route": "/activity",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/pending-approvals/:approvalId/approve",
+        "method": "POST",
+        "route": "/pending-approvals/:approvalId/approve",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/pending-approvals/:approvalId/reject",
+        "method": "POST",
+        "route": "/pending-approvals/:approvalId/reject",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/status",
+        "method": "GET",
+        "route": "/status",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/detailed",
+        "method": "GET",
+        "route": "/detailed",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/database",
+        "method": "GET",
+        "route": "/database",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/cache",
+        "method": "GET",
+        "route": "/cache",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/api",
+        "method": "GET",
+        "route": "/api",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/metrics",
+        "method": "GET",
+        "route": "/metrics",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/test-notifications",
+        "method": "POST",
+        "route": "/test-notifications",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/:id/indicators",
+        "method": "POST",
+        "route": "/objectives/:id/indicators",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:id/indicators",
+        "method": "GET",
+        "route": "/objectives/:id/indicators",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId",
+        "method": "GET",
+        "route": "/objectives/:objectiveId/indicators/:indicatorId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PATCH:/objectives/:objectiveId/indicators/:indicatorId",
+        "method": "PATCH",
+        "route": "/objectives/:objectiveId/indicators/:indicatorId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "DELETE:/objectives/:objectiveId/indicators/:indicatorId",
+        "method": "DELETE",
+        "route": "/objectives/:objectiveId/indicators/:indicatorId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/objectives/:objectiveId/indicators/:indicatorId/record",
+        "method": "POST",
+        "route": "/objectives/:objectiveId/indicators/:indicatorId/record",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId/status",
+        "method": "GET",
+        "route": "/objectives/:objectiveId/indicators/:indicatorId/status",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId/history",
+        "method": "GET",
+        "route": "/objectives/:objectiveId/indicators/:indicatorId/history",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/bulk-record",
+        "method": "POST",
+        "route": "/bulk-record",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/breakdown",
+        "method": "GET",
+        "route": "/breakdown",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/reset-stats",
+        "method": "POST",
+        "route": "/reset-stats",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/test-all-levels",
+        "method": "POST",
+        "route": "/test-all-levels",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/prometheus",
+        "method": "GET",
+        "route": "/prometheus",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/restore",
+        "method": "POST",
+        "route": "/:id/restore",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/:id/progress",
+        "method": "GET",
+        "route": "/:id/progress",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/actions",
+        "method": "POST",
+        "route": "/:id/actions",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/accounting/link",
+        "method": "POST",
+        "route": "/:id/accounting/link",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/:id/accounting/impact",
+        "method": "GET",
+        "route": "/:id/accounting/impact",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/:id/accounting/variance",
+        "method": "GET",
+        "route": "/:id/accounting/variance",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/batch/progression",
+        "method": "POST",
+        "route": "/batch/progression",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/journal-entries",
+        "method": "GET",
+        "route": "/journal-entries",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/journal-entries/:id",
+        "method": "GET",
+        "route": "/journal-entries/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/journal-entries/report/:periode",
+        "method": "GET",
+        "route": "/journal-entries/report/:periode",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/account-balances",
+        "method": "GET",
+        "route": "/account-balances",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/account-journal/:accountId",
+        "method": "GET",
+        "route": "/account-journal/:accountId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/diagnostic/query-performance",
+        "method": "GET",
+        "route": "/diagnostic/query-performance",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/diagnostic/reset-stats",
+        "method": "POST",
+        "route": "/diagnostic/reset-stats",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/balance-auxiliary",
+        "method": "GET",
+        "route": "/balance-auxiliary",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/general-ledger",
+        "method": "GET",
+        "route": "/general-ledger",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/income-statement",
+        "method": "GET",
+        "route": "/income-statement",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/balance-sheet",
+        "method": "GET",
+        "route": "/balance-sheet",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/tasks",
+        "method": "GET",
+        "route": "/tasks",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/trigger/:taskName",
+        "method": "POST",
+        "route": "/trigger/:taskName",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/entries",
+        "method": "GET",
+        "route": "/entries",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/entries/:id",
+        "method": "GET",
+        "route": "/entries/:id",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/export",
+        "method": "GET",
+        "route": "/export",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/stats/reset",
+        "method": "POST",
+        "route": "/stats/reset",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/documentation",
+        "method": "GET",
+        "route": "/documentation",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/run",
+        "method": "POST",
+        "route": "/run",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:id/block",
+        "method": "POST",
+        "route": "/:id/block",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/change-password",
+        "method": "POST",
+        "route": "/change-password",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/notify",
+        "method": "POST",
+        "route": "/notify",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/notify-room",
+        "method": "POST",
+        "route": "/notify-room",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/configs",
+        "method": "POST",
+        "route": "/configs",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/start",
+        "method": "POST",
+        "route": "/start",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:workflowInstanceId/approve",
+        "method": "POST",
+        "route": "/:workflowInstanceId/approve",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:workflowInstanceId/reject",
+        "method": "POST",
+        "route": "/:workflowInstanceId/reject",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "POST:/:workflowInstanceId/request-changes",
+        "method": "POST",
+        "route": "/:workflowInstanceId/request-changes",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/history/:entityType/:entityId",
+        "method": "GET",
+        "route": "/history/:entityType/:entityId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/:workflowInstanceId",
+        "method": "GET",
+        "route": "/:workflowInstanceId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/configs",
+        "method": "GET",
+        "route": "/configs",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PUT:/configs/:configId",
+        "method": "PUT",
+        "route": "/configs/:configId",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "PATCH:/configs/:configId/toggle",
+        "method": "PATCH",
+        "route": "/configs/:configId/toggle",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      },
+      {
+        "endpoint": "GET:/stats/overview",
+        "method": "GET",
+        "route": "/stats/overview",
+        "reason": "DTO manquant ou invalide",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "metadata": {
+    "generatedBy": "contract-generator.js",
+    "rule": "un endpoint = un DTO",
+    "silcValidator": true
+  }
+}

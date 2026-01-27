@@ -1,0 +1,2 @@
+#!/bin/sh
+node cascade/src/scripts/audit/audit_files_spofe_v2.1_AI.js

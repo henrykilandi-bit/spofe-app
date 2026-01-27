@@ -1,0 +1,86 @@
+[
+  {
+    "file": "ARCHITECTURE_SURVEILLANCE_2SCRIPTS.md",
+    "moved_to": "02_CONFIGURATION_ET_SCRIPTS",
+    "hash": "934f6d7891a29c6555f6d1b0138cf0e7691636be950076089a9a9de9cd8fb4e1",
+    "moved_at": "2026-01-21T09:58:32.254Z"
+  },
+  {
+    "file": "DEPLOYMENT_CHECKLIST.md",
+    "moved_to": "05_LOGS_ET_AUDITS",
+    "hash": "0a458c1aa2b1ece83ae96e0f9c7751c8ed2bb9ca66f6658d746f7eed6d08b6b3",
+    "moved_at": "2026-01-21T09:58:32.259Z"
+  },
+  {
+    "file": "POST-SYNC_CHECKLIST.md",
+    "moved_to": "05_LOGS_ET_AUDITS",
+    "hash": "5bd4593c10ee91db0cf6fe4e6690c25ed158f64976a2369af6750c2de71b156b",
+    "moved_at": "2026-01-21T09:58:32.268Z"
+  },
+  {
+    "file": "RAPPORT_SYNCHRONISATION_COMPLETE_2026-01-21.md",
+    "moved_to": "01_ANALYSE_ET_DIAGNOSTICS",
+    "hash": "0a9626a843661eb4a19742eb2ebba2d0d2f71f6c4480ed5b79a14b9a9e5d10f1",
+    "moved_at": "2026-01-21T09:58:32.270Z"
+  },
+  {
+    "file": "README_AUDIT_AUTOMATIQUE.md",
+    "moved_to": "05_LOGS_ET_AUDITS",
+    "hash": "a19e889cd2c001db777511c41821d0e18346dfa312acd81dda92f5891db026d6",
+    "moved_at": "2026-01-21T09:58:32.273Z"
+  },
+  {
+    "file": "SPOFE_V2.1_MONITORING_CONSOLIDATED_REPORT.md",
+    "moved_to": "05_LOGS_ET_AUDITS",
+    "hash": "3b9b6fc7ccf75a9a90e6aa2d73bb3c0153dea8878d930e08c5cdfd1a5da4963c",
+    "moved_at": "2026-01-21T09:58:32.277Z"
+  },
+  {
+    "file": "DEPLOYMENT_GUIDE_v2.1.md",
+    "moved_to": "05_LOGS_ET_AUDITS",
+    "hash": "c7391be2618f6f14283d5ea3c4ae2c8203dbb679565fcbd5621bb6dc3610ac56",
+    "moved_at": "2026-01-21T10:01:19.944Z"
+  },
+  {
+    "file": "FICHIERS_CRITIQUES_A_SURVEILLER.md",
+    "moved_to": "01_ANALYSE_ET_DIAGNOSTICS",
+    "hash": "a4e4878dd7b6e0202d67fee8722d68f71f42d9dfcef1a0ca9eefdc745bf4e5ad",
+    "moved_at": "2026-01-21T10:01:19.946Z"
+  },
+  {
+    "file": "FINAL_IMPLEMENTATION_SUMMARY.md",
+    "moved_to": "03_ARCHITECTURE_TECHNIQUE",
+    "hash": "5c6fb327fd40d18c362886a502c74db224e20ab7672c0577147f09e1ec361fbc",
+    "moved_at": "2026-01-21T10:01:19.950Z"
+  },
+  {
+    "file": "GUIDE_IMPLEMENTATION_SURVEILLANCE.md",
+    "moved_to": "01_ANALYSE_ET_DIAGNOSTICS",
+    "hash": "238365ead8070de502243c8e9b3c1f5212a1fc2c4a25908e7841fdeff2963c48",
+    "moved_at": "2026-01-21T10:01:19.954Z"
+  },
+  {
+    "file": "INDEX_SURVEILLANCE.md",
+    "moved_to": "01_ANALYSE_ET_DIAGNOSTICS",
+    "hash": "9fb4173578c2c52ca7705bf94d8064f0ef0afaa773272563f2a9a0ef011ca233",
+    "moved_at": "2026-01-21T10:01:19.957Z"
+  },
+  {
+    "file": "RESUME_SURVEILLANCE.md",
+    "moved_to": "01_ANALYSE_ET_DIAGNOSTICS",
+    "hash": "6ba3ad44a598384812ce96fb1a19361e992fb0786d6a5391d6d7a3d0014473f0",
+    "moved_at": "2026-01-21T10:01:19.962Z"
+  },
+  {
+    "file": "SURVEILLANCE_1PAGE_RESUME.md",
+    "moved_to": "01_ANALYSE_ET_DIAGNOSTICS",
+    "hash": "fb1705e93980657873dbd053a880eac0b843c52373d31590788e09fbdbf7ebe3",
+    "moved_at": "2026-01-21T10:01:19.965Z"
+  },
+  {
+    "file": "VERIFICATION_FINALE.md",
+    "moved_to": "05_LOGS_ET_AUDITS",
+    "hash": "b10c3813a42e1b57dfe827df14310b948ecdee16e4f711a7657e5a7078bafb9e",
+    "moved_at": "2026-01-21T10:01:19.967Z"
+  }
+]

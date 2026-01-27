@@ -1,0 +1,369 @@
+name: E2E & Load Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 2 * * *'  # Nightly run at 2 AM
+
+jobs:
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: spofe_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'cascade/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: cascade
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: cascade
+        run: npx playwright install --with-deps
+
+      - name: Setup database
+        working-directory: cascade
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_test
+          NODE_ENV: test
+        run: |
+          npm run db:clean
+          npm run db:setup
+          npm run seed
+
+      - name: Start application
+        working-directory: cascade
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_test
+          NODE_ENV: test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key
+          BASE_URL: http://localhost:3001
+        run: npm run start:test &
+        timeout-minutes: 2
+
+      - name: Wait for app to start
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3001/api/health > /dev/null 2>&1; then
+              echo "✓ App is ready"
+              exit 0
+            fi
+            echo "Waiting for app... ($i/30)"
+            sleep 2
+          done
+          echo "✗ App failed to start"
+          exit 1
+
+      - name: Run E2E tests
+        working-directory: cascade
+        env:
+          BASE_URL: http://localhost:3001
+          NODE_ENV: test
+        run: |
+          npm run e2e:setup
+          npm run e2e:ci
+
+      - name: Upload E2E report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-reports
+          path: cascade/e2e-reports/
+          retention-days: 30
+
+      - name: Comment PR with E2E results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const reportPath = 'cascade/e2e-reports/json/report.json';
+            
+            if (fs.existsSync(reportPath)) {
+              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+              const stats = report[0]?.stats || {};
+              
+              const comment = `
+## ✅ E2E Test Results
+- **Tests Run**: ${stats.tests || 0}
+- **Passes**: ${stats.passes || 0}
+- **Failures**: ${stats.failures || 0}
+- **Skipped**: ${stats.skipped || 0}
+- **Duration**: ${stats.duration || 'N/A'}ms
+
+[View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              `;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+
+  load-tests:
+    name: Load Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'schedule'
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: spofe_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'cascade/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: cascade
+        run: npm ci
+
+      - name: Setup k6 and Artillery
+        run: |
+          echo "Installing k6..."
+          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3232A
+          echo "deb https://dl.k6.io/deb main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+          
+          echo "Installing Artillery..."
+          npm install -g artillery
+
+      - name: Setup database
+        working-directory: cascade
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_test
+          NODE_ENV: test
+        run: |
+          npm run db:clean
+          npm run db:setup
+          npm run seed
+
+      - name: Start application
+        working-directory: cascade
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_test
+          NODE_ENV: test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key
+          BASE_URL: http://localhost:3001
+        run: npm run start:test &
+        timeout-minutes: 2
+
+      - name: Wait for app to start
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3001/api/health > /dev/null 2>&1; then
+              echo "✓ App is ready"
+              exit 0
+            fi
+            echo "Waiting for app... ($i/30)"
+            sleep 2
+          done
+          echo "✗ App failed to start"
+          exit 1
+
+      - name: Run k6 load tests
+        working-directory: cascade
+        env:
+          BASE_URL: http://localhost:3001
+          NODE_ENV: test
+        run: |
+          mkdir -p load-test-reports
+          echo "Running k6 auth scenario..."
+          k6 run --out json=load-test-reports/k6-auth.json --tag scenario:auth load-tests/k6-scenarios.js -e SCENARIO=auth
+          echo "Running k6 entries scenario..."
+          k6 run --out json=load-test-reports/k6-entries.json --tag scenario:entries load-tests/k6-scenarios.js -e SCENARIO=entries
+          echo "Running k6 mixed scenario..."
+          k6 run --out json=load-test-reports/k6-mixed.json --tag scenario:mixed load-tests/k6-scenarios.js -e SCENARIO=mixed
+
+      - name: Run Artillery load tests
+        working-directory: cascade
+        env:
+          BASE_URL: http://localhost:3001
+          NODE_ENV: test
+        run: |
+          artillery run load-tests/artillery-config.yml \
+                     --output load-test-reports/artillery-report.json \
+                     --target http://localhost:3001
+
+      - name: Generate load test reports
+        working-directory: cascade
+        if: always()
+        run: |
+          artillery report load-test-reports/artillery-report.json \
+                        --output load-test-reports/artillery-report.html
+
+      - name: Upload load test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-test-reports
+          path: cascade/load-test-reports/
+          retention-days: 30
+
+      - name: Parse k6 results
+        if: always()
+        working-directory: cascade
+        run: |
+          echo "## Load Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### K6 Tests" >> $GITHUB_STEP_SUMMARY
+          for file in load-test-reports/k6-*.json; do
+            if [ -f "$file" ]; then
+              scenario=$(basename "$file" .json)
+              echo "- **$scenario**: ✓ Completed" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artillery Tests" >> $GITHUB_STEP_SUMMARY
+          if [ -f "load-test-reports/artillery-report.json" ]; then
+            echo "- **Artillery stress test**: ✓ Completed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'cascade/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: cascade
+        run: npm ci
+
+      - name: Run security audit
+        working-directory: cascade
+        run: npm audit --production || true
+
+      - name: Run ESLint
+        working-directory: cascade
+        run: npm run lint || true
+
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          path: 'cascade'
+          format: 'JSON'
+          args: >
+            --enableExperimental
+            --enableVulnerability
+
+  results:
+    name: Test Results Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [e2e-tests, load-tests]
+    
+    steps:
+      - name: Download E2E reports
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: e2e-reports
+          path: reports/e2e
+
+      - name: Download load test reports
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: load-test-reports
+          path: reports/load-tests
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          echo "## ✅ Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **E2E Tests**: ${{ needs.e2e-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Load Tests**: ${{ needs.load-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Reports Generated" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 E2E Reports" >> $GITHUB_STEP_SUMMARY
+          echo "- 📈 K6 Load Test Reports" >> $GITHUB_STEP_SUMMARY
+          echo "- 📉 Artillery Stress Test Reports" >> $GITHUB_STEP_SUMMARY

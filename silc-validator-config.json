@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "rules": {
+    "endpoint-dto-mapping": {
+      "description": "Un endpoint doit avoir un DTO correspondant",
+      "severity": "HIGH",
+      "autoFix": false
+    },
+    "dto-property-validation": {
+      "description": "Les propriétés du DTO doivent être typées",
+      "severity": "MEDIUM",
+      "autoFix": true
+    },
+    "naming-convention": {
+      "description": "Convention de nommage cohérente",
+      "severity": "LOW",
+      "autoFix": true
+    }
+  },
+  "contractPath": "./frontend-contract.json",
+  "dashboardPath": "./compliance-dashboard.html"
+}

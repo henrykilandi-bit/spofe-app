@@ -1,0 +1,82 @@
+2. CAHIER UI - Standards d'Interface
+2.1 Composants Réutilisables
+Header Navigation
+figma
+- Logo SPOFE + Plan actuel
+- Menu entreprise (sélecteur)
+- Menu utilisateur (profile, déconnexion)
+- Recherche globale
+- Notifications (badge)
+Sidebar Principale
+figma
+Navigation hiérarchique :
+- Tableau de bord
+- Saisie comptable
+- Grand livre
+- Balance
+- Bilan/Compte de résultat
+- Tiers (clients/fournisseurs)
+- Banque/rapprochements
+- Budgets
+- Administration
+- Audit/Logs
+Cards Informatives
+figma
+Variantes :
+1. Card statistique (chiffres)
+2. Card action (bouton primaire)
+3. Card statut (badge coloré)
+4. Card détail (expandable)
+Tables Data
+figma
+Fonctionnalités :
+- Tri par colonne
+- Filtrage dynamique
+- Pagination (50 lignes/page)
+- Actions inline
+- Export CSV/Excel
+- Sélection multiple
+Modals
+figma
+Types :
+1. Modal simple (confirmation)
+2. Modal formulaire (saisie)
+3. Modal plein écran (détails)
+4. Modal workflow (étapes)
+2.2 États Visuels
+Statuts Comptables
+* Brouillon : ? Gris (#9CA3AF)
+* Validée : ?? Bleu (#3B82F6)
+* Lettrée : ?? Vert (#10B981)
+* Clôturée : ? Noir (#374151)
+Statuts Exercices
+* Brouillon : ?
+* Ouvert : ??
+* Clôturé : ??
+* Archivé : ?
+Badges Types
+* Compte Actif : ?? "Actif"
+* Compte Passif : ?? "Passif"
+* Compte Charge : ?? "Charge"
+* Compte Produit : ?? "Produit"
+* Compte Mixte : ?? "Mixte"
+2.3 Patterns d'Interaction
+Saisie Écriture
+figma
+Workflow en 3 étapes :
+1. En-tête (journal, date, libellé)
+2. Lignes (compte, débit/crédit, tiers)
+3. Validation (équilibre vérifié)
+Navigation Hiérarchique
+figma
+Arborescence des comptes :
+- Expand/collapse des niveaux
+- Breadcrumb hiérarchique
+- Recherche dans l'arbre
+- Filtre par type/classe
+Validation en Cascade
+figma
+État dépendant :
+- Écriture ? validée ? lettrable ? clôturable
+- Exercice ? ouvert ? clôturable ? archivé
+

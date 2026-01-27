@@ -1,0 +1,169 @@
+{
+  "date": "2026-01-27T16:55:51.505Z",
+  "operation": "CRITICAL_ISSUES_FIX",
+  "results": {
+    "totalFixed": 20,
+    "totalErrors": 0,
+    "updatedImports": 0,
+    "backupDirectory": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z"
+  },
+  "fixLog": [
+    {
+      "type": "controller",
+      "old": "approvalsController-controller.js",
+      "new": "approvals-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\approvalsController-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "auth.controller-controller.js",
+      "new": "auth-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\auth.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "auth_advanced.controller-controller.js",
+      "new": "auth-advanced-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\auth_advanced.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "businessOperations.controller-controller.js",
+      "new": "business-operations-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\businessOperations.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "chartOfAccounts.controller-controller.js",
+      "new": "chart-of-accounts-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\chartOfAccounts.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "dashboard.controller-controller.js",
+      "new": "dashboard-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\dashboard.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "indicators.controller-controller.js",
+      "new": "indicators-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\indicators.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "init.controller-controller.js",
+      "new": "init-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\init.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "journalEntries.controller-controller.js",
+      "new": "journal-entries-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\journalEntries.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "objectives.controller-controller.js",
+      "new": "objectives-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\objectives.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "operationTemplates.controller-controller.js",
+      "new": "operation-templates-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\operationTemplates.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "optimized_journal.controller-controller.js",
+      "new": "optimized-journal-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\optimized_journal.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "reports.controller-controller.js",
+      "new": "reports-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\reports.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "scheduler.controller-controller.js",
+      "new": "scheduler-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\scheduler.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "secure_journal.controller-controller.js",
+      "new": "secure-journal-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\secure_journal.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "strategicAI.controller-controller.js",
+      "new": "strategic-ai-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\strategicAI.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "thirdParties.controller-controller.js",
+      "new": "third-parties-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\thirdParties.controller-controller.js"
+    },
+    {
+      "type": "controller",
+      "old": "user.controller-controller.js",
+      "new": "user-controller-controller.js",
+      "status": "FIXED",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\user.controller-controller.js"
+    },
+    {
+      "type": "page",
+      "old": "faqpage.jsx",
+      "new": "DELETED",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\faqpage.jsx",
+      "reason": "Identique à l'original"
+    },
+    {
+      "type": "page",
+      "old": "users.jsx",
+      "new": "DELETED",
+      "status": "DELETED_DUPLICATE",
+      "backup": "BACKUP_CRITICAL_FIX_2026-01-27T16-55-51-183Z\\users.jsx",
+      "reason": "Identique à l'original"
+    }
+  ],
+  "finalStats": {
+    "controllers": {
+      "total": 19,
+      "compliant": 19
+    },
+    "models": {
+      "total": 31,
+      "compliant": 2
+    },
+    "pages": {
+      "total": 18,
+      "compliant": 18
+    }
+  },
+  "globalComplianceRate": "57.4"
+}

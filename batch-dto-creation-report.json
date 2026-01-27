@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-01-27T15:57:33.181Z",
+  "version": "SPOFE v2.2",
+  "operation": "Batch DTO Creation",
+  "stats": {
+    "totalEndpoints": 0,
+    "dtosExisting": 3,
+    "dtosToCreate": 15,
+    "dtosCreated": 15,
+    "propertiesGenerated": 141,
+    "errors": 0
+  },
+  "results": {
+    "dtosCreated": 15,
+    "propertiesGenerated": 141,
+    "successRate": "100.00"
+  },
+  "recommendations": [
+    {
+      "type": "DTOs Created",
+      "message": "15 DTOs créés avec succès",
+      "action": "Valider les DTOs générés et tester les endpoints associés"
+    },
+    {
+      "type": "Properties",
+      "message": "141 propriétés générées",
+      "action": "Vérifier les types et validations des propriétés"
+    }
+  ]
+}

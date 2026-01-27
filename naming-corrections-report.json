@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-01-27T10:30:47.560Z",
+  "dryRun": false,
+  "results": {
+    "frontend": {
+      "filesProcessed": 84,
+      "filesCorrected": 25,
+      "totalIssues": 133
+    },
+    "backend": {
+      "filesProcessed": 246,
+      "filesCorrected": 112,
+      "totalIssues": 1199
+    },
+    "duplicates": {
+      "duplicatesFound": 2,
+      "duplicatesResolved": 2
+    },
+    "summary": {
+      "totalFilesProcessed": 330,
+      "totalFilesCorrected": 137,
+      "totalIssuesResolved": 1332
+    }
+  },
+  "recommendations": [
+    "✅ Corrections de nommage appliquées avec succès",
+    "✅ Modèles dupliqués résolus",
+    "📋 Tester l'application pour valider les corrections",
+    "🔍 Vérifier les logs d'erreur potentiels",
+    "📊 Consulter le rapport détaillé pour plus d'informations",
+    "🔄 Effectuer un commit des changements après validation"
+  ]
+}

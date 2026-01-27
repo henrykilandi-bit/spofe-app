@@ -1,0 +1,67 @@
+PARCOURS UTILISATEURS
+5.1 Parcours Comptable Principal
+Parcours : Saisie & Validation Écriture
+text
+Étape 1: Connexion ? Sélection entreprise
+Étape 2: Navigation "Saisie" ? "Nouvelle écriture"
+Étape 3: Choix journal (ACH, VTE, BQ...)
+Étape 4: Saisie en-tête (date, libellé, pièce)
+Étape 5: Ajout lignes (compte, montant, tiers)
+Étape 6: Vérification équilibre automatique
+Étape 7: Validation ? Changement statut "Validée"
+Étape 8: Possibilité lettrage ultérieur
+Parcours : Clôture Mensuelle
+text
+Étape 1: Vérification écritures non validées
+Étape 2: Pointage comptes bancaires
+Étape 3: Lettrage comptes clients/fournisseurs
+Étape 4: Génération balance
+Étape 5: Ajustements (amortissements, provisions)
+Étape 6: Validation balance équilibrée
+Étape 7: Archivage période
+Parcours : Clôture Exercice
+text
+Étape 1: Vérification completitude exercice
+Étape 2: Calcul résultat comptable
+Étape 3: Affectation résultat
+Étape 4: Génération états financiers
+Étape 5: Validation bilan équilibré
+Étape 6: Clôture définitive
+Étape 7: Ouverture nouvel exercice
+Étape 8: Report soldes
+5.2 Parcours Gestionnaire
+Parcours : Suivi Tiers
+text
+Étape 1: Navigation "Tiers" ? Liste
+Étape 2: Filtre par type (client/fournisseur)
+Étape 3: Consultation solde
+Étape 4: Voir échéancier
+Étape 5: Émission relance si nécessaire
+Étape 6: Mise à jour informations
+Parcours : Analyse Budgétaire
+text
+Étape 1: Navigation "Budgets" ? "Suivi"
+Étape 2: Sélection exercice/compte
+Étape 3: Comparaison budget vs réalisé
+Étape 4: Analyse écarts
+Étape 5: Génération rapport
+Étape 6: Révision budget si nécessaire
+5.3 Parcours Administrateur
+Parcours : Configuration Entreprise
+text
+Étape 1: Navigation "Administration" ? "Entreprises"
+Étape 2: Création nouvelle entreprise
+Étape 3: Attribution plan comptable
+Étape 4: Configuration exercice
+Étape 5: Création journaux
+Étape 6: Attribution utilisateurs
+Étape 7: Tests configuration
+Parcours : Audit & Conformité
+text
+Étape 1: Navigation "Audit" ? "Journal"
+Étape 2: Filtrage période/action/utilisateur
+Étape 3: Consultation modifications
+Étape 4: Export pour contrôle
+Étape 5: Analyse anomalies
+Étape 6: Rapport conformité
+

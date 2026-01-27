@@ -1,0 +1,908 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { 
+  UserPlus, Mail, Lock, User, CheckCircle, 
+  XCircle, AlertCircle, Loader2 
+} from 'lucide-react';
+import './RegisterPage.css';
+import { useNotifications } from '../hooks/useNotifications';
+
+/**
+ * RegisterPage - Page d'inscription intelligente pour SPOFE v2.1
+ * Features: Validation temps réel, vérification email, intégration groupe
+ */
+const RegisterPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { addNotification } = useNotifications();
+  
+  // Récupération des paramètres d'URL
+  const queryParams = new URLSearchParams(location.search);
+  const invitedEmail = queryParams.get('email') || '';
+  const groupeId = queryParams.get('groupeId') ? parseInt(queryParams.get('groupeId')) : null;
+  const invitationToken = queryParams.get('token') || '';
+
+  // ============ ÉTATS ============
+  const [formData, setFormData] = useState({
+    email: invitedEmail,
+    username: '',
+    password: '',
+    confirmPassword: '',
+    prenom: '',
+    nom: '',
+    telephone: '',
+    groupeId: groupeId,
+    invitationToken: invitationToken
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [usernameChecking, setUsernameChecking] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [emailAvailable, setEmailAvailable] = useState(null);
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [step, setStep] = useState(1); // 1: Informations de base, 2: Informations personnelles
+  const [groupeInfo, setGroupeInfo] = useState(null);
+
+  // ============ EFFETS ============
+  
+  // Charger les informations du groupe si groupeId présent
+  useEffect(() => {
+    if (groupeId) {
+      fetchGroupeInfo(groupeId);
+    }
+  }, [groupeId]);
+
+  // Vérifier si c'est une invitation
+  useEffect(() => {
+    if (invitationToken && invitedEmail) {
+      validateInvitation(invitationToken, invitedEmail);
+    }
+  }, [invitationToken, invitedEmail]);
+
+  // ============ FONCTIONS ============
+
+  /**
+   * Valider une invitation
+   */
+  const validateInvitation = async (token, email) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/validate-invitation`,
+        {
+          params: { token, email }
+        }
+      );
+      
+      if (response.data.valid) {
+        addNotification({ 
+          type: 'success', 
+          title: 'Invitation valide !', 
+          message: 'Veuillez compléter votre inscription.' 
+        });
+      }
+    } catch (error) {
+      addNotification({ 
+        type: 'error', 
+        title: 'Invitation invalide', 
+        message: 'Invitation invalide ou expirée' 
+      });
+      navigate('/login');
+    }
+  };
+
+  /**
+   * Récupérer les informations du groupe
+   */
+  const fetchGroupeInfo = async (id) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/groupes/${id}` 
+      );
+      setGroupeInfo(response.data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des informations du groupe:', error);
+    }
+  };
+
+  /**
+   * Vérifier disponibilité email en temps réel
+   */
+  const checkEmailAvailability = async (email) => {
+    if (!email || email.length < 5 || !email.includes('@')) {
+      setEmailAvailable(null);
+      return;
+    }
+
+    setEmailChecking(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/check-email/${encodeURIComponent(email)}` 
+      );
+      setEmailAvailable(response.data.available);
+      if (!response.data.available) {
+        setErrors(prev => ({
+          ...prev,
+          email: 'Cet email est déjà utilisé'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.email;
+          return newErrors;
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification de l\'email:', error);
+      setEmailAvailable(null);
+    } finally {
+      setEmailChecking(false);
+    }
+  };
+
+  /**
+   * Vérifier disponibilité username en temps réel
+   */
+  const checkUsernameAvailability = async (username) => {
+    if (!username || username.length < 3) {
+      setUsernameAvailable(null);
+      return;
+    }
+
+    setUsernameChecking(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/check-username/${encodeURIComponent(username)}` 
+      );
+      setUsernameAvailable(response.data.available);
+      if (!response.data.available) {
+        setErrors(prev => ({
+          ...prev,
+          username: 'Ce nom d\'utilisateur est déjà pris'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.username;
+          return newErrors;
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification du nom d\'utilisateur:', error);
+      setUsernameAvailable(null);
+    } finally {
+      setUsernameChecking(false);
+    }
+  };
+
+  /**
+   * Calculer la force du mot de passe
+   */
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    
+    // Longueur minimale
+    if (password.length >= 8) strength += 25;
+    
+    // Contient des minuscules
+    if (/[a-z]/.test(password)) strength += 25;
+    
+    // Contient des majuscules
+    if (/[A-Z]/.test(password)) strength += 25;
+    
+    // Contient des chiffres ou caractères spéciaux
+    if (/[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password)) strength += 25;
+    
+    setPasswordStrength(strength);
+  };
+
+  /**
+   * Gestion des changements de formulaire
+   */
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Validation en temps réel
+    const newErrors = { ...errors };
+    
+    switch (name) {
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          newErrors.email = 'Format d\'email invalide';
+        } else {
+          delete newErrors.email;
+          // Debounce pour vérification email
+          setTimeout(() => checkEmailAvailability(value), 500);
+        }
+        break;
+        
+      case 'username':
+        if (value.length < 3) {
+          newErrors.username = 'Minimum 3 caractères';
+        } else if (value.length > 30) {
+          newErrors.username = 'Maximum 30 caractères';
+        } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+          newErrors.username = 'Lettres, chiffres et underscore uniquement';
+        } else {
+          delete newErrors.username;
+          // Debounce pour vérification username
+          setTimeout(() => checkUsernameAvailability(value), 500);
+        }
+        break;
+        
+      case 'password':
+        calculatePasswordStrength(value);
+        if (value.length < 8) {
+          newErrors.password = 'Minimum 8 caractères';
+        } else {
+          delete newErrors.password;
+        }
+        // Vérifier confirmation
+        if (formData.confirmPassword && value !== formData.confirmPassword) {
+          newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+        } else {
+          delete newErrors.confirmPassword;
+        }
+        break;
+        
+      case 'confirmPassword':
+        if (value !== formData.password) {
+          newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+        } else {
+          delete newErrors.confirmPassword;
+        }
+        break;
+        
+      case 'prenom':
+        if (!value.trim()) {
+          newErrors.prenom = 'Prénom requis';
+        } else {
+          delete newErrors.prenom;
+        }
+        break;
+        
+      case 'nom':
+        if (!value.trim()) {
+          newErrors.nom = 'Nom requis';
+        } else {
+          delete newErrors.nom;
+        }
+        break;
+        
+      case 'telephone':
+        const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
+        if (value && !phoneRegex.test(value)) {
+          newErrors.telephone = 'Format de téléphone invalide';
+        } else {
+          delete newErrors.telephone;
+        }
+        break;
+    }
+    
+    setErrors(newErrors);
+  };
+
+  /**
+   * Validation du formulaire
+   */
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email
+    if (!formData.email) {
+      newErrors.email = 'Email requis';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Format d\'email invalide';
+    } else if (emailAvailable === false) {
+      newErrors.email = 'Cet email est déjà utilisé';
+    }
+    
+    // Username
+    if (!formData.username) {
+      newErrors.username = 'Nom d\'utilisateur requis';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Minimum 3 caractères';
+    } else if (usernameAvailable === false) {
+      newErrors.username = 'Ce nom d\'utilisateur est déjà pris';
+    }
+    
+    // Password
+    if (!formData.password) {
+      newErrors.password = 'Mot de passe requis';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Minimum 8 caractères';
+    }
+    
+    // Confirm Password
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Confirmation du mot de passe requise';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+    }
+    
+    // Prénom et Nom
+    if (!formData.prenom.trim()) {
+      newErrors.prenom = 'Prénom requis';
+    }
+    if (!formData.nom.trim()) {
+      newErrors.nom = 'Nom requis';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  /**
+   * Soumission du formulaire
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      addNotification({ 
+        type: 'error', 
+        title: 'Formulaire invalide', 
+        message: 'Veuillez corriger les erreurs dans le formulaire' 
+      });
+      return;
+    }
+
+    if (emailAvailable === false || usernameAvailable === false) {
+      addNotification({ 
+        type: 'error', 
+        title: 'Disponibilité', 
+        message: 'Email ou nom d\'utilisateur déjà utilisé' 
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const payload = {
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+        prenom: formData.prenom,
+        nom: formData.nom,
+        telephone: formData.telephone || null,
+        groupeId: formData.groupeId,
+        invitationToken: formData.invitationToken || null
+      };
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/auth/register`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 15000
+        }
+      );
+
+      const { user, requiresApproval, message } = response.data;
+
+      if (requiresApproval) {
+        addNotification({ 
+          type: 'info', 
+          title: 'Inscription soumise !', 
+          message: 'En attente d\'approbation par un administrateur.' 
+        });
+        navigate('/login', {
+          state: {
+            message: 'Votre compte est en attente d\'approbation. Vous recevrez un email lorsque votre compte sera activé.',
+            email: formData.email
+          }
+        });
+      } else {
+        addNotification({ 
+          type: 'success', 
+          title: 'Inscription réussie !', 
+          message: 'Vous pouvez maintenant vous connecter.' 
+        });
+        navigate('/login', {
+          state: {
+            message: 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.',
+            email: formData.email
+          }
+        });
+      }
+
+      // Log pour audit
+      console.log('Nouvel utilisateur inscrit:', {
+        userId: user.id,
+        email: user.email,
+        groupeId: user.groupeId,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      
+      let errorMessage = 'Erreur lors de l\'inscription';
+      
+      if (error.response) {
+        if (error.response.data.errors) {
+          const serverErrors = error.response.data.errors;
+          setErrors(serverErrors);
+          errorMessage = 'Veuillez corriger les erreurs ci-dessous';
+        } else if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (error.request) {
+        errorMessage = 'Impossible de contacter le serveur. Vérifiez votre connexion.';
+      }
+      
+      addNotification({ 
+        type: 'error', 
+        title: 'Erreur d\'inscription', 
+        message: errorMessage 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /**
+   * Passer à l'étape suivante
+   */
+  const goToNextStep = () => {
+    // Valider étape 1
+    const step1Errors = {};
+    if (!formData.email) step1Errors.email = 'Email requis';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) step1Errors.email = 'Format invalide';
+    else if (emailAvailable === false) step1Errors.email = 'Email déjà utilisé';
+    
+    if (!formData.username) step1Errors.username = 'Nom d\'utilisateur requis';
+    else if (formData.username.length < 3) step1Errors.username = 'Minimum 3 caractères';
+    else if (usernameAvailable === false) step1Errors.username = 'Nom déjà utilisé';
+    
+    if (!formData.password) step1Errors.password = 'Mot de passe requis';
+    else if (formData.password.length < 8) step1Errors.password = 'Minimum 8 caractères';
+    
+    if (!formData.confirmPassword) step1Errors.confirmPassword = 'Confirmation requise';
+    else if (formData.password !== formData.confirmPassword) step1Errors.confirmPassword = 'Mots de passe différents';
+    
+    if (Object.keys(step1Errors).length > 0) {
+      setErrors(step1Errors);
+      addNotification({ 
+        type: 'error', 
+        title: 'Formulaire incomplet', 
+        message: 'Veuillez compléter correctement les informations de base' 
+      });
+      return;
+    }
+    
+    setStep(2);
+  };
+
+  /**
+   * Revenir à l'étape précédente
+   */
+  const goToPreviousStep = () => {
+    setStep(1);
+  };
+
+  /**
+   * Obtenir la couleur de force du mot de passe
+   */
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength <= 25) return '#ef4444'; // red
+    if (passwordStrength <= 50) return '#f59e0b'; // amber
+    if (passwordStrength <= 75) return '#3b82f6'; // blue
+    return '#10b981'; // green
+  };
+
+  // ============ RENDU ============
+  return (
+    <div className="register-page">
+      {/* Header */}
+      <header className="register-header">
+        <div className="header-content">
+          <div className="logo-section">
+            <UserPlus size={32} className="logo-icon" />
+            <h1 className="app-title">SPOFE v2.1</h1>
+          </div>
+          <div className="progress-indicator">
+            <div className="step">
+              <div className={`step-circle ${step >= 1 ? 'active' : ''}`}>1</div>
+              <span className="step-label">Compte</span>
+            </div>
+            <div className="step-connector"></div>
+            <div className="step">
+              <div className={`step-circle ${step >= 2 ? 'active' : ''}`}>2</div>
+              <span className="step-label">Profil</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="register-main">
+        <div className="register-container">
+          {/* Carte d'inscription */}
+          <div className="register-card">
+            <div className="card-header">
+              <h2>Créer votre compte</h2>
+              <p className="card-subtitle">
+                Rejoignez SPOFE et gérez votre comptabilité efficacement
+              </p>
+            </div>
+
+            {/* Bannière invitation */}
+            {invitationToken && (
+              <div className="invitation-banner success">
+                <CheckCircle size={20} />
+                <span>Vous avez été invité à rejoindre la plateforme</span>
+              </div>
+            )}
+
+            {/* Informations groupe */}
+            {groupeInfo && (
+              <div className="groupe-banner info">
+                <AlertCircle size={20} />
+                <div>
+                  <strong>Groupe :</strong> {groupeInfo.nom}
+                  {groupeInfo.description && (
+                    <p className="groupe-description">{groupeInfo.description}</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="register-form">
+              {/* Étape 1: Informations de base */}
+              {step === 1 && (
+                <div className="form-step">
+                  <h3 className="step-title">Informations de connexion</h3>
+                  
+                  {/* Champ Email */}
+                  <div className="form-group">
+                    <label htmlFor="email" className="form-label">
+                      <Mail size={16} />
+                      <span>Adresse email *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="exemple@entreprise.com"
+                        disabled={loading || !!invitedEmail}
+                        className={`form-input ${errors.email ? 'error' : ''} ${emailAvailable ? 'success' : ''}`}
+                        autoComplete="email"
+                      />
+                      <div className="input-status">
+                        {emailChecking && <Loader2 size={16} className="spinner" />}
+                        {emailAvailable === true && <CheckCircle size={16} className="success-icon" />}
+                        {emailAvailable === false && <XCircle size={16} className="error-icon" />}
+                      </div>
+                    </div>
+                    {errors.email && <div className="error-message">{errors.email}</div>}
+                    {formData.email && !errors.email && !emailChecking && emailAvailable === null && (
+                      <div className="hint">Vérification en cours...</div>
+                    )}
+                  </div>
+
+                  {/* Champ Username */}
+                  <div className="form-group">
+                    <label htmlFor="username" className="form-label">
+                      <User size={16} />
+                      <span>Nom d'utilisateur *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleInputChange}
+                        placeholder="john_doe"
+                        disabled={loading}
+                        className={`form-input ${errors.username ? 'error' : ''} ${usernameAvailable ? 'success' : ''}`}
+                        autoComplete="username"
+                        minLength="3"
+                        maxLength="30"
+                      />
+                      <div className="input-status">
+                        {usernameChecking && <Loader2 size={16} className="spinner" />}
+                        {usernameAvailable === true && <CheckCircle size={16} className="success-icon" />}
+                        {usernameAvailable === false && <XCircle size={16} className="error-icon" />}
+                      </div>
+                    </div>
+                    {errors.username && <div className="error-message">{errors.username}</div>}
+                    <div className="hint">3-30 caractères (lettres, chiffres, underscore)</div>
+                  </div>
+
+                  {/* Champ Password */}
+                  <div className="form-group">
+                    <label htmlFor="password" className="form-label">
+                      <Lock size={16} />
+                      <span>Mot de passe *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Minimum 8 caractères"
+                        disabled={loading}
+                        className={`form-input ${errors.password ? 'error' : ''}`}
+                        autoComplete="new-password"
+                        minLength="8"
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? '👁️‍🗨️' : '👁️'}
+                      </button>
+                    </div>
+                    {errors.password && <div className="error-message">{errors.password}</div>}
+                    
+                    {/* Indicateur de force du mot de passe */}
+                    {formData.password && (
+                      <div className="password-strength">
+                        <div className="strength-label">
+                          Force du mot de passe:
+                          <span style={{ color: getPasswordStrengthColor() }}>
+                            {passwordStrength <= 25 ? ' Faible' : 
+                             passwordStrength <= 50 ? ' Moyen' : 
+                             passwordStrength <= 75 ? ' Bon' : ' Fort'}
+                          </span>
+                        </div>
+                        <div className="strength-bar">
+                          <div 
+                            className="strength-fill"
+                            style={{
+                              width: `${passwordStrength}%`,
+                              backgroundColor: getPasswordStrengthColor()
+                            }}
+                          ></div>
+                        </div>
+                        <div className="strength-hints">
+                          {formData.password.length < 8 && '• Minimum 8 caractères\n'}
+                          {!/[a-z]/.test(formData.password) && '• Minuscules (a-z)\n'}
+                          {!/[A-Z]/.test(formData.password) && '• Majuscules (A-Z)\n'}
+                          {!/[0-9]/.test(formData.password) && !/[^A-Za-z0-9]/.test(formData.password) && '• Chiffres ou caractères spéciaux'}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Champ Confirm Password */}
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword" className="form-label">
+                      <Lock size={16} />
+                      <span>Confirmer le mot de passe *</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        placeholder="Retapez votre mot de passe"
+                        disabled={loading}
+                        className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
+                        autoComplete="new-password"
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? '👁️‍🗨️' : '👁️'}
+                      </button>
+                    </div>
+                    {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
+                    {formData.password && formData.confirmPassword && 
+                     formData.password === formData.confirmPassword && (
+                      <div className="success-message">
+                        <CheckCircle size={14} /> Les mots de passe correspondent
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bouton suivant */}
+                  <div className="form-actions">
+                    <button
+                      type="button"
+                      onClick={goToNextStep}
+                      disabled={loading}
+                      className="btn btn-primary btn-next"
+                    >
+                      Suivant →
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Étape 2: Informations personnelles */}
+              {step === 2 && (
+                <div className="form-step">
+                  <h3 className="step-title">Informations personnelles</h3>
+                  
+                  {/* Champs Prénom et Nom */}
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="prenom" className="form-label">
+                        <span>Prénom *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="prenom"
+                        name="prenom"
+                        value={formData.prenom}
+                        onChange={handleInputChange}
+                        placeholder="Jean"
+                        disabled={loading}
+                        className={`form-input ${errors.prenom ? 'error' : ''}`}
+                        autoComplete="given-name"
+                      />
+                      {errors.prenom && <div className="error-message">{errors.prenom}</div>}
+                    </div>
+                    
+                    <div className="form-group">
+                      <label htmlFor="nom" className="form-label">
+                        <span>Nom *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="nom"
+                        name="nom"
+                        value={formData.nom}
+                        onChange={handleInputChange}
+                        placeholder="Dupont"
+                        disabled={loading}
+                        className={`form-input ${errors.nom ? 'error' : ''}`}
+                        autoComplete="family-name"
+                      />
+                      {errors.nom && <div className="error-message">{errors.nom}</div>}
+                    </div>
+                  </div>
+
+                  {/* Champ Téléphone */}
+                  <div className="form-group">
+                    <label htmlFor="telephone" className="form-label">
+                      <span>Téléphone</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="telephone"
+                      name="telephone"
+                      value={formData.telephone}
+                      onChange={handleInputChange}
+                      placeholder="+221 77 123 45 67"
+                      disabled={loading}
+                      className={`form-input ${errors.telephone ? 'error' : ''}`}
+                      autoComplete="tel"
+                    />
+                    {errors.telephone && <div className="error-message">{errors.telephone}</div>}
+                    <div className="hint">Optionnel - Format international recommandé</div>
+                  </div>
+
+                  {/* Note sur les approbations */}
+                  {formData.groupeId && (
+                    <div className="approval-note info">
+                      <AlertCircle size={18} />
+                      <div>
+                        <strong>Note importante :</strong> Votre inscription devra être approuvée 
+                        par un administrateur du groupe. Vous recevrez un email de confirmation 
+                        une fois votre compte activé.
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="form-actions">
+                    <button
+                      type="button"
+                      onClick={goToPreviousStep}
+                      disabled={loading}
+                      className="btn btn-secondary"
+                    >
+                      ← Retour
+                    </button>
+                    
+                    <button
+                      type="submit"
+                      disabled={loading || Object.keys(errors).length > 0}
+                      className="btn btn-primary btn-submit"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 size={18} className="spinner" />
+                          <span>Création du compte...</span>
+                        </>
+                      ) : (
+                        <>
+                          <UserPlus size={18} />
+                          <span>Créer mon compte</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </form>
+
+            {/* Liens de navigation */}
+            <div className="register-footer">
+              <p className="footer-text">
+                Vous avez déjà un compte ?{' '}
+                <Link to="/login" className="login-link">
+                  Se connecter
+                </Link>
+              </p>
+              <p className="footer-hint">
+                En créant un compte, vous acceptez nos{' '}
+                <a href="/terms" className="link">Conditions d'utilisation</a> et notre{' '}
+                <a href="/privacy" className="link">Politique de confidentialité</a>
+              </p>
+            </div>
+          </div>
+
+          {/* Section informative */}
+          <div className="info-section">
+            <div className="info-card">
+              <div className="info-icon security">
+                <Lock size={24} />
+              </div>
+              <h3>Sécurité maximale</h3>
+              <p>Vos données sont chiffrées et protégées selon les standards bancaires</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-icon compliance">
+                <CheckCircle size={24} />
+              </div>
+              <h3>Conforme OHADA</h3>
+              <p>Respect strict du plan comptable OHADA pour la zone WAEMU</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-icon support">
+                <AlertCircle size={24} />
+              </div>
+              <h3>Support dédié</h3>
+              <p>Équipe technique disponible pour vous accompagner</p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="register-page-footer">
+        <div className="footer-content">
+          <p className="copyright">
+            © 2026 SPOFE v2.1 - Développé par <strong>Entreprises Performantes</strong>
+          </p>
+          <div className="footer-links">
+            <a href="/about">À propos</a>
+            <a href="/contact">Contact</a>
+            <a href="/help">Aide</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default RegisterPage;

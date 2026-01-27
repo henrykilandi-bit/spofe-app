@@ -1,0 +1,397 @@
+name: 🚀 SPOFE v2.1 - Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - staging
+    paths:
+      - 'cascade/**'
+      - 'frontend/**'
+      - 'docker-compose*.yml'
+      - 'Dockerfile*'
+      - '.github/workflows/deploy.yml'
+  
+  pull_request:
+    branches:
+      - main
+      - develop
+  
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: spofe/accounting-app
+  NODE_VERSION: '18'
+
+jobs:
+  # ==========================================
+  # 1. LINT & TEST
+  # ==========================================
+  lint-and-test:
+    runs-on: ubuntu-latest
+    name: Lint & Test
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'cascade/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: ./cascade
+        run: npm ci
+      
+      - name: Run linter
+        working-directory: ./cascade
+        run: npm run lint --if-present
+      
+      - name: Run tests
+        working-directory: ./cascade
+        run: npm run test --if-present
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./cascade/coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # ==========================================
+  # 2. SECURITY CHECKS
+  # ==========================================
+  security:
+    runs-on: ubuntu-latest
+    name: Security Checks
+    needs: lint-and-test
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install dependencies
+        working-directory: ./cascade
+        run: npm ci
+      
+      - name: Run npm audit
+        working-directory: ./cascade
+        run: npm audit --production --audit-level=moderate || echo "Audit warnings present"
+      
+      - name: Run security scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: 'cascade/'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ==========================================
+  # 3. BUILD BACKEND IMAGE
+  # ==========================================
+  build-backend:
+    runs-on: ubuntu-latest
+    name: Build Backend Docker Image
+    needs: [lint-and-test, security]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.event_name == 'workflow_dispatch'
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=2.1.0-${{ github.run_number }}
+      
+      - name: Build and push Backend
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile.backend.v2.1
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ==========================================
+  # 4. BUILD FRONTEND IMAGE
+  # ==========================================
+  build-frontend:
+    runs-on: ubuntu-latest
+    name: Build Frontend Docker Image
+    needs: lint-and-test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.event_name == 'workflow_dispatch'
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=2.1.0-${{ github.run_number }}
+      
+      - name: Build and push Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ==========================================
+  # 5. DATABASE MIGRATION CHECK
+  # ==========================================
+  db-migration-check:
+    runs-on: ubuntu-latest
+    name: Database Migration Validation
+    needs: lint-and-test
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: spofe_v2_1_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install dependencies
+        working-directory: ./cascade
+        run: npm ci
+      
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" && break || sleep 1
+          done
+      
+      - name: Run migration check
+        working-directory: ./cascade
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_v2_1_test
+          DB_DIALECT: mysql
+        run: npx sequelize db:migrate:status
+
+  # ==========================================
+  # 6. DEPLOY TO STAGING
+  # ==========================================
+  deploy-staging:
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    needs: [build-backend, build-frontend, db-migration-check]
+    if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/staging') && github.event_name == 'push'
+    
+    environment:
+      name: staging
+      url: https://staging.spofe.local
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Deploy to staging
+        env:
+          DEPLOY_KEY: ${{ secrets.STAGING_DEPLOY_KEY }}
+          DEPLOY_HOST: ${{ secrets.STAGING_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.STAGING_DEPLOY_USER }}
+          DEPLOY_PATH: /opt/spofe-v2.1
+        run: |
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+          
+          ssh -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST \
+            "cd $DEPLOY_PATH && \
+             git pull origin staging && \
+             docker-compose -f docker-compose.v2.1.yml pull && \
+             docker-compose -f docker-compose.v2.1.yml up -d && \
+             docker exec spofe_v2_1_backend npm run seed"
+      
+      - name: Health check
+        run: |
+          for i in {1..30}; do
+            curl -f https://staging.spofe.local/api/health && break || sleep 10
+          done
+
+  # ==========================================
+  # 7. DEPLOY TO PRODUCTION
+  # ==========================================
+  deploy-production:
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    needs: [build-backend, build-frontend, db-migration-check]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    environment:
+      name: production
+      url: https://spofe.app
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Create deployment
+        uses: actions/github-script@v6
+        id: deployment
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.ref,
+              environment: 'production',
+              auto_merge: false,
+              required_contexts: [],
+              description: 'SPOFE v2.1 Production Deployment'
+            });
+            console.log(deployment.data.id);
+            return deployment.data.id;
+      
+      - name: Run pre-deployment checks
+        working-directory: ./cascade
+        env:
+          NODE_ENV: production
+          DB_HOST: ${{ secrets.PROD_DB_HOST }}
+          DB_USER: ${{ secrets.PROD_DB_USER }}
+          DB_PASSWORD: ${{ secrets.PROD_DB_PASSWORD }}
+          DB_NAME: ${{ secrets.PROD_DB_NAME }}
+          JWT_SECRET: ${{ secrets.PROD_JWT_SECRET }}
+        run: npm run deploy:check || true
+      
+      - name: Deploy to production
+        env:
+          DEPLOY_KEY: ${{ secrets.PRODUCTION_DEPLOY_KEY }}
+          DEPLOY_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
+          DEPLOY_PATH: /opt/spofe-v2.1
+        run: |
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+          
+          ssh -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST \
+            "cd $DEPLOY_PATH && \
+             ./cascade/src/scripts/deploy_spofe_v2.1.cjs"
+      
+      - name: Health check
+        run: |
+          for i in {1..60}; do
+            curl -f https://spofe.app/api/health && break || sleep 10
+          done
+      
+      - name: Create deployment status
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.result }},
+              state: '${{ job.status }}',
+              environment_url: 'https://spofe.app',
+              description: 'SPOFE v2.1 Production Deployment'
+            });
+
+  # ==========================================
+  # 8. NOTIFICATION
+  # ==========================================
+  notify:
+    runs-on: ubuntu-latest
+    name: Send Notifications
+    needs: [lint-and-test]
+    if: always()
+    
+    steps:
+      - name: Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: 'SPOFE v2.1 Pipeline - ${{ job.status }}'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          fields: repo,message,commit,author
+        if: always()

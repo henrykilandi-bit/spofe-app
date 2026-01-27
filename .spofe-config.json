@@ -1,0 +1,192 @@
+{
+  "version": "2.0",
+  "last_updated": "2026-01-20",
+  "maintainer": "Henry Kilandi / Entreprises Performantes [Lead Dev OHADA]",
+  "description": "Configuration officielle SPOFE - Mode Hybride Intelligent (vérification et correction automatique des conventions)",
+  
+  "mode": "hybride_intelligent",
+  "linked_conventions_file": "./docs/CONVENTIONS_NOMMAGE_SPOFE_v2.0.md",
+
+  "naming": {
+    "language": "fr",
+    "case": "snake_case",
+    "prefix_required": true,
+    "prefix_rules": {
+      "compagnies": [
+        "utilisateurs",
+        "ecritures",
+        "journaux",
+        "parametres",
+        "tiers",
+        "comptes",
+        "transactions"
+      ]
+    },
+    "forbidden_terms": [
+      "company",
+      "user",
+      "account",
+      "entry"
+    ],
+    "auto_correct": true,
+    "correction_strategy": "consult_conventions_and_apply"
+  },
+
+  "security": {
+    "jwt_expiration_hours": 8,
+    "password_policy": {
+      "min_length": 8,
+      "require_uppercase": true,
+      "require_number": true,
+      "require_special": true
+    },
+    "audit_logging": true
+  },
+
+  "database": {
+    "check_foreign_keys": true,
+    "check_unique_constraints": true,
+    "prevent_orphan_records": true,
+    "auto_sync_conventions": true
+  },
+
+  "auto_correction": {
+    "enabled": true,
+    "on_violation_detected": "attempt_fix_then_retry",
+    "max_auto_fixes": 10,
+    "backup_before_fix": true,
+    "report_path": "./logs/conventions_auto_fix.log"
+  },
+
+  "audit": {
+    "enabled": true,
+    "frequency": "weekly",
+    "report_path": "./logs/conventions_audit.log",
+    "auto_fix_minor_violations": true,
+    "compare_with_previous_audit": true
+  },
+
+  "ci_cd": {
+    "pipeline_integration": "github_actions",
+    "block_on_violation": false,
+    "commands": {
+      "lint": "npm run check:conventions",
+      "audit": "npm run spofe:audit",
+      "lock": "npm run spofe:lock",
+      "auto_fix": "npm run spofe:auto-fix"
+    }
+  },
+
+  "notifications": {
+    "on_audit_complete": true,
+    "email": "henry.kilandi@entreprises-performantes.com",
+    "slack_webhook": "",
+    "notify_on_violation": true,
+    "notify_on_fix": true
+  },
+
+  "paths": {
+    "conventions_doc": "./CONVENTIONS_NOMMAGE_SPOFE.md",
+    "logs_dir": "./logs",
+    "audit_log": "./logs/conventions_audit.log",
+    "auto_fix_log": "./logs/conventions_auto_fix.log",
+    "violations_log": "./logs/conventions_violations.log",
+    "backup_dir": "./backup_vers_1.0"
+  },
+
+  "rules": {
+    "database_tables": {
+      "case": "snake_case",
+      "plural": true,
+      "max_length": 64,
+      "allowed_chars": "[a-z0-9_]",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "database_columns": {
+      "case": "snake_case",
+      "foreign_keys": "{table}_id",
+      "primary_keys": "id",
+      "booleans": "is_.*|has_.*",
+      "timestamps": "created_at|updated_at|deleted_at"
+    },
+    "javascript_files": {
+      "controllers": "{entity}.controller.js",
+      "models": "{entity}.model.js",
+      "routes": "{entity}.routes.js",
+      "middleware": "{function}.middleware.js",
+      "validators": "{entity}.validator.js",
+      "services": "{entity}.service.js",
+      "utils": "{name}.js"
+    },
+    "javascript_functions": {
+      "case": "camelCase",
+      "pattern": "^(get|create|update|delete|list|find|is|has|check|validate)[A-Z].*$"
+    },
+    "javascript_variables": {
+      "case": "camelCase",
+      "booleans": "^(is|has|should)[A-Z].*$"
+    },
+    "constants": {
+      "case": "UPPER_SNAKE_CASE",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "api_routes": {
+      "case": "kebab-case",
+      "pattern": "^/api/[a-z]([a-z0-9-])*(/:[a-z]+)?$",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"]
+    },
+    "enums": {
+      "case": "UPPER_CASE|lowercase",
+      "examples": {
+        "roles": ["admin", "user", "viewer", "accountant"],
+        "statuses": ["DRAFT", "SUBMITTED", "APPROVED", "POSTED", "REVERSED"],
+        "types": ["CAISSE", "BANQUE", "IMMO", "STOCK", "CREANCE", "DETTE"]
+      }
+    }
+  },
+
+  "violations": {
+    "critical": [
+      "forbidden_term_used",
+      "primary_key_not_id",
+      "foreign_key_wrong_format",
+      "table_name_singular",
+      "password_stored_plain"
+    ],
+    "major": [
+      "inconsistent_case",
+      "missing_timestamps",
+      "missing_foreign_keys",
+      "orphan_records"
+    ],
+    "minor": [
+      "naming_inconsistency",
+      "missing_documentation",
+      "index_naming_wrong"
+    ]
+  },
+
+  "auto_fixes": {
+    "rename_table": true,
+    "rename_column": true,
+    "add_timestamps": true,
+    "fix_foreign_keys": true,
+    "fix_constraints": true,
+    "fix_case": true
+  },
+
+  "reporting": {
+    "format": "json|markdown|html",
+    "include_metrics": true,
+    "include_recommendations": true,
+    "include_violations": true,
+    "include_audit_trail": true
+  },
+
+  "performance": {
+    "cache_conventions": true,
+    "cache_ttl_minutes": 60,
+    "parallel_checks": true,
+    "batch_size": 100
+  }
+}

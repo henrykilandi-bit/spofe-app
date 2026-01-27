@@ -1,0 +1,260 @@
+# SPOFE v2.1 - Complete Infrastructure Stack
+# Includes: Backend, Frontend, Database, Redis, Prometheus, Grafana
+
+version: '3.9'
+
+services:
+  # ==========================================
+  # DATABASE (MySQL 8.0)
+  # ==========================================
+  mysql:
+    image: mysql:8.0.33-debian
+    container_name: spofe_v2_1_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_secure_pass}
+      MYSQL_DATABASE: ${DB_NAME:-spofe_v2_1}
+      MYSQL_USER: ${DB_USER:-spofe_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-spofe_secure_pass}
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./cascade/src/database/migrations/:/docker-entrypoint-initdb.d/:ro
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=database"
+      - "com.spofe.version=2.1"
+
+  # ==========================================
+  # REDIS CACHE
+  # ==========================================
+  redis:
+    image: redis:7.2-alpine
+    container_name: spofe_v2_1_redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_secure_pass}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=cache"
+      - "com.spofe.version=2.1"
+
+  # ==========================================
+  # BACKEND (SPOFE API)
+  # ==========================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend.v2.1
+    container_name: spofe_v2_1_backend
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3001
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      
+      # Database
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-spofe_user}
+      DB_PASSWORD: ${DB_PASSWORD:-spofe_secure_pass}
+      DB_NAME: ${DB_NAME:-spofe_v2_1}
+      DB_DIALECT: mysql
+      DB_TIMEZONE: ${DB_TIMEZONE:-+00:00}
+      
+      # JWT
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: 24h
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_REFRESH_EXPIRES_IN: 7d
+      
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_secure_pass}
+      REDIS_DB: 0
+      
+      # Security
+      RATE_LIMIT_MAX: 100
+      RATE_LIMIT_WINDOW_MS: 900000
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      
+      # Logging
+      LOG_DIR: /app/logs
+      
+    ports:
+      - "3001:3001"
+      - "9229:9229"  # Debug port
+    volumes:
+      - ./cascade/src:/app/src
+      - ./cascade/logs:/app/logs
+      - ./cascade/backups:/app/backups
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=backend"
+      - "com.spofe.version=2.1"
+
+  # ==========================================
+  # FRONTEND (Vue/Vite)
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: spofe_v2_1_frontend
+    environment:
+      VITE_API_BASE_URL: http://backend:3001/api
+      VITE_WS_URL: ws://backend:3001
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=frontend"
+      - "com.spofe.version=2.1"
+
+  # ==========================================
+  # PROMETHEUS (Metrics Collection)
+  # ==========================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: spofe_v2_1_prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=monitoring"
+      - "com.spofe.version=2.1"
+
+  # ==========================================
+  # GRAFANA (Visualization)
+  # ==========================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: spofe_v2_1_grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_SECURITY_ADMIN_USER: admin
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=monitoring"
+      - "com.spofe.version=2.1"
+
+  # ==========================================
+  # NGINX (Reverse Proxy)
+  # ==========================================
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: spofe_v2_1_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - spofe_network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "com.spofe.service=proxy"
+      - "com.spofe.version=2.1"
+
+# ==========================================
+# NETWORKS
+# ==========================================
+networks:
+  spofe_network:
+    driver: bridge
+    name: spofe_v2_1_network
+
+# ==========================================
+# VOLUMES
+# ==========================================
+volumes:
+  mysql_data:
+    name: spofe_v2_1_mysql_data
+    driver: local
+  redis_data:
+    name: spofe_v2_1_redis_data
+    driver: local
+  prometheus_data:
+    name: spofe_v2_1_prometheus_data
+    driver: local
+  grafana_data:
+    name: spofe_v2_1_grafana_data
+    driver: local

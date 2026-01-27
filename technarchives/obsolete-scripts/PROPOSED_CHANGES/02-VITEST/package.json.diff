@@ -1,0 +1,83 @@
+# Changements à appliquer dans cascade/package.json
+
+## 1. SCRIPTS À MODIFIER
+
+```diff
+"scripts": {
+-  "test": "cross-env NODE_ENV=test jest",
+-  "test:watch": "cross-env NODE_ENV=test jest --watch",
+-  "test:coverage": "cross-env NODE_ENV=test jest --coverage",
++  "test": "vitest",
++  "test:ui": "vitest --ui",
++  "test:run": "vitest run",
++  "test:coverage": "vitest run --coverage"
+}
+```
+
+## 2. DÉPENDANCES À AJOUTER
+
+```bash
+npm install -D vitest @vitest/coverage-v8
+```
+
+```json
+"devDependencies": {
+  "vitest": "^1.0.0",
+  "@vitest/coverage-v8": "^1.0.0"
+}
+```
+
+## 3. DÉPENDANCES À SUPPRIMER (Optionnel)
+
+```bash
+npm uninstall jest @types/jest babel-jest
+```
+
+```diff
+"devDependencies": {
+-  "jest": "^29.0.0",
+-  "@types/jest": "^29.0.0",
+-  "babel-jest": "^29.0.0"
+}
+```
+
+## 4. CONFIGURATION COMPLÈTE APRÈS CHANGEMENTS
+
+```json
+{
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "db:setup": "npm run db:clean && node src/scripts/db-simple-init.js",
+    "db:clean": "node src/scripts/db-clean.js",
+    "db:verify": "node src/scripts/db-verify.js"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "nodemon": "^3.0.0",
+    "eslint": "^8.0.0"
+  }
+}
+```
+
+## 5. COMMANDES NPM APRÈS MIGRATION
+
+```bash
+# Mode watch (auto re-run sur changements)
+npm run test
+
+# Run une fois (pour CI)
+npm run test:run
+
+# UI graphique interactive
+npm run test:ui
+
+# Coverage report
+npm run test:coverage
+```

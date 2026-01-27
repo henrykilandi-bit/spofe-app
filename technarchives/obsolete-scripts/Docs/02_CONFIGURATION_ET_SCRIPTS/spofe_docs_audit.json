@@ -1,0 +1,33 @@
+{
+  "version": "2.0",
+  "project": "SPOFE",
+  "mode": "AI_SYNC_HYBRID",
+  "last_sync": "2026-01-20T11:08:04.559867Z",
+  "hash_current": "initial_placeholder_hash",
+  "tables_detected": [
+    "auth_utilisateurs",
+    "org_compagnies",
+    "acc_journal_entries",
+    "acc_entry_lines",
+    "sys_app_settings"
+  ],
+  "backup_files": [
+    "docs/backups/SPOFE_V2.0_DATABASE_DOCUMENTATION_2026-01-19.md"
+  ],
+  "ai_summary": "Initialisation de la structure documentaire SPOFE v2.0 avec AI SYNC actif.",
+  "history": [
+    {
+      "timestamp": "2026-01-20T11:08:04.559878Z",
+      "action": "Initial Sync Setup",
+      "hash": "initial_placeholder_hash",
+      "tables_count": 5
+    }
+  ],
+  "meta": {
+    "created_by": "AI SYNC Engine",
+    "maintainer": "Henry Kilandi / Entreprises Performantes",
+    "file": "spofe_docs_audit.json",
+    "location": "/docs/",
+    "description": "Historique complet des synchronisations de documentation SQL et des métadonnées SPOFE v2.0."
+  }
+}

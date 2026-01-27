@@ -1,0 +1,1524 @@
+{
+  "timestamp": "2026-01-27T15:58:22.551Z",
+  "version": "SPOFE v2.2",
+  "operation": "Full Consistency Validation",
+  "results": {
+    "contractConsistency": {
+      "total": 141,
+      "valid": 6,
+      "invalid": 135,
+      "issues": [
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/:id/ai/predict",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:id/ai/correlations",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:id/ai/anomalies",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:id/ai/insights",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/:id/ai/optimize-resources",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/ai/generate-smart",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/ai/report-strategic",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/ai/report-benchmark",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/ai/batch-analysis",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/profile",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/admin",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/approve/:requestId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/reject/:requestId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/stats",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/cleanup",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/breakdown/status",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/approve",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/reject",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/request-changes",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/audit-logs",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/register",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/logout",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/refresh-token",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/forgot-password",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/reset-password",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/check-email/:email",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "GET:/check-username/:username",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/accept-invitation",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/registration-status/:email",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "POST:/invite-user",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/accounts/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/transactions/:bankId/:accountId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/reconcile/:bankId/:accountId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/sync/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/webhooks/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/sync-history/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/reconciliation-history/:bankId/:accountId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/banks",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PUT:/banks/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "DELETE:/banks/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/test-connection/:bankId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/banks",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "GET:/",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "POST:/",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PATCH:/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/submit",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/validate",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "DELETE:/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/templates",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/templates/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/templates",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PATCH:/templates/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PATCH:/templates/:id/toggle",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "DELETE:/templates/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/health",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/memory",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/info",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/invalidate",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/clear",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/diagnostic",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/seed",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/search",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PUT:/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/summary",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/activity",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "GET:/groups/:groupe_id/pending-approvals",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/pending-approvals/:approvalId/approve",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/pending-approvals/:approvalId/reject",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "GET:/groups/:groupe_id/approval-stats",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "POST:/groups/:groupe_id/super-users",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "GET:/groups/:groupe_id/super-users",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "DELETE:/groups/:groupe_id/super-users/:user_id",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/status",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/detailed",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/database",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/cache",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/api",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/metrics",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/test-notifications",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/:id/indicators",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:id/indicators",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PATCH:/objectives/:objectiveId/indicators/:indicatorId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "DELETE:/objectives/:objectiveId/indicators/:indicatorId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/objectives/:objectiveId/indicators/:indicatorId/record",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId/status",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId/history",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/bulk-record",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/breakdown",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/reset-stats",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/test-all-levels",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/prometheus",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/restore",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/:id/progress",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/actions",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/accounting/link",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/:id/accounting/impact",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/:id/accounting/variance",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/batch/progression",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/journal-entries",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/journal-entries/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/journal-entries/report/:periode",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/account-balances",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/account-journal/:accountId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/diagnostic/query-performance",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/diagnostic/reset-stats",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/balance-auxiliary",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/general-ledger",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/income-statement",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/balance-sheet",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/tasks",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/trigger/:taskName",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/entries",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/entries/:id",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/export",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/stats/reset",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/documentation",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/run",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:id/block",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/change-password",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/notify",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "empty_dto",
+          "endpoint": "POST:/notify-user",
+          "message": "DTO vide ou sans propriétés",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/notify-room",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/configs",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/start",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:workflowInstanceId/approve",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:workflowInstanceId/reject",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "POST:/:workflowInstanceId/request-changes",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/history/:entityType/:entityId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/:workflowInstanceId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/configs",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PUT:/configs/:configId",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "PATCH:/configs/:configId/toggle",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        },
+        {
+          "type": "missing_dto",
+          "endpoint": "GET:/stats/overview",
+          "message": "DTO manquant pour cet endpoint",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    "codeConsistency": {
+      "total": 141,
+      "valid": 94,
+      "invalid": 47,
+      "issues": [
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/objectives/:id/ai/predict",
+          "message": "Endpoint POST:/objectives/:id/ai/predict existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:id/ai/correlations",
+          "message": "Endpoint GET:/objectives/:id/ai/correlations existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:id/ai/anomalies",
+          "message": "Endpoint GET:/objectives/:id/ai/anomalies existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:id/ai/insights",
+          "message": "Endpoint GET:/objectives/:id/ai/insights existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/objectives/:id/ai/optimize-resources",
+          "message": "Endpoint POST:/objectives/:id/ai/optimize-resources existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/approve/:requestId",
+          "message": "Endpoint POST:/approve/:requestId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/reject/:requestId",
+          "message": "Endpoint POST:/reject/:requestId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/check-email/:email",
+          "message": "Endpoint GET:/check-email/:email existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/check-username/:username",
+          "message": "Endpoint GET:/check-username/:username existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/registration-status/:email",
+          "message": "Endpoint GET:/registration-status/:email existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/accounts/:bankId",
+          "message": "Endpoint GET:/accounts/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/transactions/:bankId/:accountId",
+          "message": "Endpoint GET:/transactions/:bankId/:accountId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/reconcile/:bankId/:accountId",
+          "message": "Endpoint POST:/reconcile/:bankId/:accountId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/sync/:bankId",
+          "message": "Endpoint POST:/sync/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/webhooks/:bankId",
+          "message": "Endpoint POST:/webhooks/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/sync-history/:bankId",
+          "message": "Endpoint GET:/sync-history/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/reconciliation-history/:bankId/:accountId",
+          "message": "Endpoint GET:/reconciliation-history/:bankId/:accountId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "PUT:/banks/:bankId",
+          "message": "Endpoint PUT:/banks/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "DELETE:/banks/:bankId",
+          "message": "Endpoint DELETE:/banks/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/test-connection/:bankId",
+          "message": "Endpoint POST:/test-connection/:bankId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/templates/:id",
+          "message": "Endpoint GET:/templates/:id existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "PATCH:/templates/:id",
+          "message": "Endpoint PATCH:/templates/:id existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "PATCH:/templates/:id/toggle",
+          "message": "Endpoint PATCH:/templates/:id/toggle existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "DELETE:/templates/:id",
+          "message": "Endpoint DELETE:/templates/:id existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/groups/:groupe_id/pending-approvals",
+          "message": "Endpoint GET:/groups/:groupe_id/pending-approvals existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/pending-approvals/:approvalId/approve",
+          "message": "Endpoint POST:/pending-approvals/:approvalId/approve existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/pending-approvals/:approvalId/reject",
+          "message": "Endpoint POST:/pending-approvals/:approvalId/reject existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/groups/:groupe_id/approval-stats",
+          "message": "Endpoint GET:/groups/:groupe_id/approval-stats existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/groups/:groupe_id/super-users",
+          "message": "Endpoint POST:/groups/:groupe_id/super-users existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/groups/:groupe_id/super-users",
+          "message": "Endpoint GET:/groups/:groupe_id/super-users existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "DELETE:/groups/:groupe_id/super-users/:user_id",
+          "message": "Endpoint DELETE:/groups/:groupe_id/super-users/:user_id existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/objectives/:id/indicators",
+          "message": "Endpoint POST:/objectives/:id/indicators existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:id/indicators",
+          "message": "Endpoint GET:/objectives/:id/indicators existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId",
+          "message": "Endpoint GET:/objectives/:objectiveId/indicators/:indicatorId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "PATCH:/objectives/:objectiveId/indicators/:indicatorId",
+          "message": "Endpoint PATCH:/objectives/:objectiveId/indicators/:indicatorId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "DELETE:/objectives/:objectiveId/indicators/:indicatorId",
+          "message": "Endpoint DELETE:/objectives/:objectiveId/indicators/:indicatorId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/objectives/:objectiveId/indicators/:indicatorId/record",
+          "message": "Endpoint POST:/objectives/:objectiveId/indicators/:indicatorId/record existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId/status",
+          "message": "Endpoint GET:/objectives/:objectiveId/indicators/:indicatorId/status existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/objectives/:objectiveId/indicators/:indicatorId/history",
+          "message": "Endpoint GET:/objectives/:objectiveId/indicators/:indicatorId/history existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/journal-entries/:id",
+          "message": "Endpoint GET:/journal-entries/:id existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/journal-entries/report/:periode",
+          "message": "Endpoint GET:/journal-entries/report/:periode existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/account-journal/:accountId",
+          "message": "Endpoint GET:/account-journal/:accountId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "POST:/trigger/:taskName",
+          "message": "Endpoint POST:/trigger/:taskName existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/entries/:id",
+          "message": "Endpoint GET:/entries/:id existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "GET:/history/:entityType/:entityId",
+          "message": "Endpoint GET:/history/:entityType/:entityId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "PUT:/configs/:configId",
+          "message": "Endpoint PUT:/configs/:configId existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "orphaned_endpoint",
+          "endpoint": "PATCH:/configs/:configId/toggle",
+          "message": "Endpoint PATCH:/configs/:configId/toggle existe dans le contrat mais pas dans le code",
+          "severity": "HIGH"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "GET:/api/scheduler/health",
+          "message": "Endpoint GET:/api/scheduler/health existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "GET:/api/scheduler/stats",
+          "message": "Endpoint GET:/api/scheduler/stats existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "POST:/api/scheduler/trigger/:jobName",
+          "message": "Endpoint POST:/api/scheduler/trigger/:jobName existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "POST:/api/auth/register",
+          "message": "Endpoint POST:/api/auth/register existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "POST:/api/auth/login",
+          "message": "Endpoint POST:/api/auth/login existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "GET:/api/auth/check-email/:email",
+          "message": "Endpoint GET:/api/auth/check-email/:email existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "GET:/api/auth/check-username/:username",
+          "message": "Endpoint GET:/api/auth/check-username/:username existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        },
+        {
+          "type": "unregistered_endpoint",
+          "endpoint": "POST:/api/login",
+          "message": "Endpoint POST:/api/login existe dans le code mais pas dans le contrat",
+          "severity": "MEDIUM"
+        }
+      ]
+    },
+    "databaseConsistency": {
+      "total": 7,
+      "valid": 6,
+      "invalid": 1,
+      "issues": [
+        {
+          "type": "unknown_dto_mapping",
+          "dto": "group",
+          "message": "Aucune table correspondante connue pour le DTO group",
+          "severity": "MEDIUM"
+        }
+      ]
+    },
+    "dtoConsistency": {
+      "total": 47,
+      "valid": 5,
+      "invalid": 42,
+      "issues": [
+        {
+          "type": "unused_dto",
+          "dto": "accountBalance",
+          "file": "accountBalance.dto.js",
+          "message": "DTO accountBalance non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "approval_audit_log",
+          "file": "approval_audit_log.dto.js",
+          "message": "DTO approval_audit_log non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "appSetting",
+          "file": "appSetting.dto.js",
+          "message": "DTO appSetting non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "auditTrail",
+          "file": "auditTrail.dto.js",
+          "message": "DTO auditTrail non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "audit_trail",
+          "file": "audit_trail.dto.js",
+          "message": "DTO audit_trail non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "businessOperation",
+          "file": "businessOperation.dto.js",
+          "message": "DTO businessOperation non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "businessOperationAudit",
+          "file": "businessOperationAudit.dto.js",
+          "message": "DTO businessOperationAudit non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "chartOfAccount",
+          "file": "chartOfAccount.dto.js",
+          "message": "DTO chartOfAccount non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "chart_of_account",
+          "file": "chart_of_account.dto.js",
+          "message": "DTO chart_of_account non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "compagnie",
+          "file": "compagnie.dto.js",
+          "message": "DTO compagnie non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "compagnie_permission_backup",
+          "file": "compagnie_permission_backup.dto.js",
+          "message": "DTO compagnie_permission_backup non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "company",
+          "file": "company.dto.js",
+          "message": "DTO company non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "company_permission",
+          "file": "company_permission.dto.js",
+          "message": "DTO company_permission non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "consultantCompanyAccess",
+          "file": "consultantCompanyAccess.dto.js",
+          "message": "DTO consultantCompanyAccess non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "consultantGroupAssignment",
+          "file": "consultantGroupAssignment.dto.js",
+          "message": "DTO consultantGroupAssignment non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "consultant_company_access",
+          "file": "consultant_company_access.dto.js",
+          "message": "DTO consultant_company_access non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "consultingFirm",
+          "file": "consultingFirm.dto.js",
+          "message": "DTO consultingFirm non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "externalDataSource",
+          "file": "externalDataSource.dto.js",
+          "message": "DTO externalDataSource non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "firmConsultants",
+          "file": "firmConsultants.dto.js",
+          "message": "DTO firmConsultants non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "fiscalYear",
+          "file": "fiscalYear.dto.js",
+          "message": "DTO fiscalYear non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "invalid_dto_structure",
+          "dto": "group",
+          "file": "group.dto.js",
+          "message": "Structure du DTO group invalide",
+          "severity": "HIGH"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "groupeEntreprise",
+          "file": "groupeEntreprise.dto.js",
+          "message": "DTO groupeEntreprise non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "groupe_entreprise",
+          "file": "groupe_entreprise.dto.js",
+          "message": "DTO groupe_entreprise non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "groupe_super_user",
+          "file": "groupe_super_user.dto.js",
+          "message": "DTO groupe_super_user non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "journalEntry",
+          "file": "journalEntry.dto.js",
+          "message": "DTO journalEntry non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "journalEntryLine",
+          "file": "journalEntryLine.dto.js",
+          "message": "DTO journalEntryLine non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "journal_entry",
+          "file": "journal_entry.dto.js",
+          "message": "DTO journal_entry non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "journal_entry_line",
+          "file": "journal_entry_line.dto.js",
+          "message": "DTO journal_entry_line non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "objectiveAction",
+          "file": "objectiveAction.dto.js",
+          "message": "DTO objectiveAction non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "operationTemplate",
+          "file": "operationTemplate.dto.js",
+          "message": "DTO operationTemplate non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "passwordResetToken",
+          "file": "passwordResetToken.dto.js",
+          "message": "DTO passwordResetToken non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "password_reset_token",
+          "file": "password_reset_token.dto.js",
+          "message": "DTO password_reset_token non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "performanceIndicator",
+          "file": "performanceIndicator.dto.js",
+          "message": "DTO performanceIndicator non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "role",
+          "file": "role.dto.js",
+          "message": "DTO role non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "role_approval_workflow",
+          "file": "role_approval_workflow.dto.js",
+          "message": "DTO role_approval_workflow non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "securityEvent",
+          "file": "securityEvent.dto.js",
+          "message": "DTO securityEvent non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "security_event",
+          "file": "security_event.dto.js",
+          "message": "DTO security_event non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "strategicObjective",
+          "file": "strategicObjective.dto.js",
+          "message": "DTO strategicObjective non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "thirdParty",
+          "file": "thirdParty.dto.js",
+          "message": "DTO thirdParty non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "tokenBlacklist",
+          "file": "tokenBlacklist.dto.js",
+          "message": "DTO tokenBlacklist non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "unused_dto",
+          "dto": "twoFactorAuth",
+          "file": "twoFactorAuth.dto.js",
+          "message": "DTO twoFactorAuth non utilisé dans le contrat",
+          "severity": "LOW"
+        },
+        {
+          "type": "invalid_dto_structure",
+          "dto": "user",
+          "file": "user.dto.js",
+          "message": "Structure du DTO user invalide",
+          "severity": "HIGH"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "totalValidations": 336,
+    "totalValid": 111,
+    "totalInvalid": 225,
+    "totalIssues": 233,
+    "overallConsistency": "33.04"
+  },
+  "recommendations": [
+    {
+      "category": "Contract",
+      "priority": "HIGH",
+      "message": "125 problèmes critiques dans le contrat",
+      "actions": [
+        "Créer les DTOs manquants",
+        "Ajouter les propriétés manquantes",
+        "Corriger les types invalides"
+      ]
+    },
+    {
+      "category": "Database",
+      "priority": "HIGH",
+      "message": "1 problèmes de consistance base de données",
+      "actions": [
+        "Créer les tables manquantes",
+        "Mettre à jour le mapping DTO/table",
+        "Valider la structure de la base"
+      ]
+    },
+    {
+      "category": "Code",
+      "priority": "MEDIUM",
+      "message": "55 problèmes de consistance code/contrat",
+      "actions": [
+        "Implémenter les endpoints manquants",
+        "Supprimer les endpoints orphelins",
+        "Mettre à jour le contrat"
+      ]
+    },
+    {
+      "category": "DTOs",
+      "priority": "MEDIUM",
+      "message": "42 problèmes de consistance des DTOs",
+      "actions": [
+        "Corriger la structure des DTOs",
+        "Ajouter les méthodes manquantes",
+        "Nettoyer les DTOs non utilisés"
+      ]
+    }
+  ]
+}

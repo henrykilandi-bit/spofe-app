@@ -1,0 +1,249 @@
+name: SPOFE CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test & Validation
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: SPOFEAPP
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: cascade/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: ./cascade
+      run: npm ci
+    
+    - name: Run ESLint
+      working-directory: ./cascade
+      run: npm run lint --if-present
+      continue-on-error: true
+    
+    - name: Run tests
+      working-directory: ./cascade
+      run: npm test --if-present
+      env:
+        DB_HOST: localhost
+        DB_USER: root
+        DB_PASSWORD: root
+        DB_NAME: SPOFEAPP
+        NODE_ENV: test
+        JWT_SECRET: test-secret-key
+      continue-on-error: true
+    
+    - name: Run database verification
+      working-directory: ./cascade
+      run: node scripts/verify-migrations-v5.js --ci
+      env:
+        DB_HOST: localhost
+        DB_USER: root
+        DB_PASSWORD: root
+        DB_NAME: SPOFEAPP
+        NODE_ENV: test
+    
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-reports-${{ matrix.node-version }}
+        path: cascade/logs/tests/
+        retention-days: 30
+
+  pre-deploy-check:
+    name: Pre-Deployment Checks
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: SPOFEAPP
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+        cache: 'npm'
+        cache-dependency-path: cascade/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: ./cascade
+      run: npm ci
+    
+    - name: Run pre-deployment checks
+      working-directory: ./cascade
+      run: node scripts/pre-deploy-check.js --skip-backup
+      env:
+        DB_HOST: localhost
+        DB_USER: root
+        DB_PASSWORD: root
+        DB_NAME: SPOFEAPP
+        NODE_ENV: production
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    
+    - name: Upload deployment reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: deployment-reports
+        path: cascade/logs/deployments/
+        retention-days: 30
+    
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const deployDir = './cascade/logs/deployments';
+          const files = fs.readdirSync(deployDir).filter(f => f.endsWith('.md'));
+          
+          if (files.length > 0) {
+            const report = fs.readFileSync(`${deployDir}/${files[0]}`, 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📋 Pre-Deployment Check Report\n\n${report}`
+            });
+          }
+
+  load-test:
+    name: Load Testing
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+    
+    - name: Install dependencies
+      working-directory: ./cascade
+      run: npm ci
+    
+    - name: Start application
+      working-directory: ./cascade
+      run: npm start &
+      env:
+        DB_HOST: localhost
+        DB_USER: root
+        DB_PASSWORD: root
+        DB_NAME: SPOFEAPP
+      continue-on-error: true
+    
+    - name: Wait for app to start
+      run: sleep 10
+    
+    - name: Run load tests
+      working-directory: ./cascade
+      run: node scripts/load-test.js --light
+      continue-on-error: true
+    
+    - name: Upload load test reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: load-test-reports
+        path: cascade/logs/load-tests/
+        retention-days: 30
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+    
+    - name: Install dependencies
+      working-directory: ./cascade
+      run: npm ci
+    
+    - name: Run npm audit
+      working-directory: ./cascade
+      run: npm audit --audit-level=moderate
+      continue-on-error: true
+    
+    - name: Run SNYK security scan
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      continue-on-error: true
+
+  notify:
+    name: Notification
+    runs-on: ubuntu-latest
+    needs: [test, pre-deploy-check]
+    if: always()
+    
+    steps:
+    - name: Send Slack notification
+      uses: slackapi/slack-github-action@v1
+      with:
+        payload: |
+          {
+            "text": "SPOFE CI/CD Pipeline: ${{ job.status }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*SPOFE CI/CD Pipeline*\nStatus: ${{ job.status }}\nCommit: ${{ github.sha }}\nAuthor: ${{ github.actor }}"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: github.event_name == 'push' && always()

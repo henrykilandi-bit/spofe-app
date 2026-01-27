@@ -1,0 +1,187 @@
+name: PR E2E Tests
+
+on:
+  pull_request:
+    branches: [main, develop, develop-*]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr-e2e-tests:
+    name: Run E2E Tests on PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: spofe_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'cascade/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: cascade
+        run: npm ci
+
+      - name: Install Playwright
+        working-directory: cascade
+        run: npx playwright install --with-deps
+
+      - name: Setup test database
+        working-directory: cascade
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_test
+          NODE_ENV: test
+        run: |
+          npm run db:clean
+          npm run db:setup
+          npm run seed
+
+      - name: Start backend server
+        working-directory: cascade
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: spofe_test
+          NODE_ENV: test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key-pr
+          BASE_URL: http://localhost:3001
+        run: npm run start:test &
+        timeout-minutes: 2
+
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server to be ready..."
+          for i in {1..60}; do
+            if curl -s http://localhost:3001/api/health > /dev/null 2>&1; then
+              echo "✓ Server is ready!"
+              exit 0
+            fi
+            echo "Attempt $i/60... waiting"
+            sleep 2
+          done
+          echo "✗ Server failed to start"
+          exit 1
+
+      - name: Run critical E2E tests
+        working-directory: cascade
+        env:
+          BASE_URL: http://localhost:3001
+          NODE_ENV: test
+        run: |
+          npm run e2e:setup
+          npm run e2e:critical
+
+      - name: Run full E2E suite
+        working-directory: cascade
+        env:
+          BASE_URL: http://localhost:3001
+          NODE_ENV: test
+        run: npm run e2e
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-artifacts-pr${{ github.event.pull_request.number }}
+          path: |
+            cascade/e2e-reports/
+            cascade/test-results/
+          retention-days: 15
+
+      - name: Post E2E results to PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let passed = 0, failed = 0, skipped = 0;
+            
+            try {
+              const reportPath = 'cascade/e2e-reports/json/report.json';
+              if (fs.existsSync(reportPath)) {
+                const reports = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+                const stats = reports[0]?.stats || {};
+                passed = stats.expected || 0;
+                failed = stats.unexpected || 0;
+                skipped = stats.skipped || 0;
+              }
+            } catch (e) {
+              console.error('Error reading report:', e);
+            }
+            
+            const testStatus = failed === 0 ? '✅ PASSED' : '❌ FAILED';
+            const reportLink = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            
+            const comment = `## ${testStatus} E2E Tests
+            
+| Metric | Value |
+|--------|-------|
+| **Total Passed** | ${passed} |
+| **Total Failed** | ${failed} |
+| **Skipped** | ${skipped} |
+| **Report** | [View Full Report](${reportLink}) |
+
+${failed > 0 ? `\n⚠️ **${failed} test(s) failed** - Review the full report for details.\n` : ''}
+*E2E tests completed*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Check test results
+        working-directory: cascade
+        run: |
+          if [ -f "e2e-reports/json/report.json" ]; then
+            total_tests=$(jq '[.[] | select(.stats) | .stats.expected // 0] | add' e2e-reports/json/report.json)
+            failed_tests=$(jq '[.[] | select(.stats) | .stats.unexpected // 0] | add' e2e-reports/json/report.json)
+            
+            echo "Total Tests: $total_tests"
+            echo "Failed Tests: $failed_tests"
+            
+            if [ "$failed_tests" -gt 0 ]; then
+              echo "Tests failed"
+              exit 1
+            fi
+          fi

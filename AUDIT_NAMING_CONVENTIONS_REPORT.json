@@ -1,0 +1,352 @@
+{
+  "summary": {
+    "totalFiles": 122,
+    "conformeFiles": 101,
+    "nonConformeFiles": 21,
+    "conformityScore": "83%"
+  },
+  "backend": {
+    "models": [
+      {
+        "file": "associations.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.model.js",
+        "expected": "associations.model.js"
+      },
+      {
+        "file": "compagnie.model.js",
+        "type": "FORBIDDEN_TERM",
+        "issue": "Uses forbidden term \"compagnie\" or \"company\"",
+        "expected": "Use OHADA compliant naming"
+      },
+      {
+        "file": "consultantCompanyAccess.model.js",
+        "type": "FORBIDDEN_TERM",
+        "issue": "Uses forbidden term \"compagnie\" or \"company\"",
+        "expected": "Use OHADA compliant naming"
+      },
+      {
+        "file": "GroupeSuperUser.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.model.js",
+        "expected": "GroupeSuperUser.model.js"
+      },
+      {
+        "file": "index.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.model.js",
+        "expected": "index.model.js"
+      },
+      {
+        "file": "journalEntry.model.js",
+        "type": "FORBIDDEN_TERM",
+        "issue": "Uses forbidden term \"entree\" or \"entry\"",
+        "expected": "Use OHADA compliant naming"
+      },
+      {
+        "file": "journalEntryLine.model.js",
+        "type": "FORBIDDEN_TERM",
+        "issue": "Uses forbidden term \"entree\" or \"entry\"",
+        "expected": "Use OHADA compliant naming"
+      },
+      {
+        "file": "PendingApproval.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.model.js",
+        "expected": "PendingApproval.model.js"
+      },
+      {
+        "file": "user.model.js",
+        "type": "FORBIDDEN_TERM",
+        "issue": "Uses forbidden term \"utilisateur\" or \"user\"",
+        "expected": "Use OHADA compliant naming"
+      }
+    ],
+    "controllers": [
+      {
+        "file": "approvalsController.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.controller.js",
+        "expected": "approvalsController.controller.js"
+      },
+      {
+        "file": "auth.controller.minimal.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.controller.js",
+        "expected": "auth.controller.minimal.controller.js"
+      }
+    ],
+    "services": [
+      {
+        "file": "advanced-features.integration.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "advanced-features.integration.service.js"
+      },
+      {
+        "file": "approvalProcessingService.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "approvalProcessingService.service.js"
+      },
+      {
+        "file": "csrf-service.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "csrf-service.service.js"
+      },
+      {
+        "file": "EmailService.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "EmailService.service.js"
+      },
+      {
+        "file": "GroupApprovalService.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "GroupApprovalService.service.js"
+      },
+      {
+        "file": "roleApprovalService.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "roleApprovalService.service.js"
+      },
+      {
+        "file": "UserInvitationService.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "UserInvitationService.service.js"
+      },
+      {
+        "file": "winston-config-service.js",
+        "type": "FILENAME_PATTERN",
+        "issue": "Does not match pattern {entity}.service.js",
+        "expected": "winston-config-service.service.js"
+      }
+    ]
+  },
+  "frontend": {
+    "components": [],
+    "hooks": [
+      {
+        "file": "index.js",
+        "type": "HOOK_PATTERN",
+        "issue": "Hook \"index\" does not match \"use{Name}\" pattern",
+        "expected": "useIndex"
+      },
+      {
+        "file": "useRegister-NEW.js",
+        "type": "HOOK_PATTERN",
+        "issue": "Hook \"useRegister-NEW\" does not match \"use{Name}\" pattern",
+        "expected": "useUseRegister-NEW"
+      }
+    ],
+    "utils": []
+  },
+  "database": {
+    "tables": [],
+    "columns": [],
+    "errors": [
+      {
+        "type": "DATABASE_CONNECTION",
+        "message": "Unknown database 'spofe'",
+        "hint": "Make sure MySQL is running and database \"spofe\" exists"
+      }
+    ]
+  },
+  "details": {
+    "backendFiles": [
+      {
+        "category": "Models",
+        "valid": 27,
+        "violations": 9,
+        "files": {
+          "valid": [
+            "accountBalance.model.js",
+            "appSetting.model.js",
+            "auditTrail.model.js",
+            "businessOperation.model.js",
+            "businessOperationAudit.model.js",
+            "chartOfAccount.model.js",
+            "compagnie.model.js",
+            "consultantCompanyAccess.model.js",
+            "consultantGroupAssignment.model.js",
+            "consultingFirm.model.js",
+            "externalDataSource.model.js",
+            "firmConsultants.model.js",
+            "fiscalYear.model.js",
+            "groupeEntreprise.model.js",
+            "journalEntry.model.js",
+            "journalEntryLine.model.js",
+            "objectiveAction.model.js",
+            "operationTemplate.model.js",
+            "passwordResetToken.model.js",
+            "performanceIndicator.model.js",
+            "role.model.js",
+            "securityEvent.model.js",
+            "strategicObjective.model.js",
+            "thirdParty.model.js",
+            "tokenBlacklist.model.js",
+            "twoFactorAuth.model.js",
+            "user.model.js"
+          ],
+          "violations": [
+            "associations.js",
+            "compagnie.model.js",
+            "consultantCompanyAccess.model.js",
+            "GroupeSuperUser.js",
+            "index.js",
+            "journalEntry.model.js",
+            "journalEntryLine.model.js",
+            "PendingApproval.js",
+            "user.model.js"
+          ]
+        }
+      },
+      {
+        "category": "Controllers",
+        "valid": 17,
+        "violations": 2,
+        "files": {
+          "valid": [
+            "auth-advanced.controller.js",
+            "auth.controller.js",
+            "businessOperations.controller.js",
+            "chartOfAccounts.controller.js",
+            "dashboard.controller.js",
+            "indicators.controller.js",
+            "init.controller.js",
+            "journalEntries.controller.js",
+            "objectives.controller.js",
+            "operationTemplates.controller.js",
+            "optimized-journal.controller.js",
+            "reports.controller.js",
+            "scheduler.controller.js",
+            "secure-journal.controller.js",
+            "strategicAI.controller.js",
+            "thirdParties.controller.js",
+            "user.controller.js"
+          ],
+          "violations": [
+            "approvalsController.js",
+            "auth.controller.minimal.js"
+          ]
+        }
+      },
+      {
+        "category": "Services",
+        "valid": 19,
+        "violations": 8,
+        "files": {
+          "valid": [
+            "accessLogging.service.js",
+            "account-lockout.service.js",
+            "accountLockout.service.js",
+            "advanced-cache.service.js",
+            "advanced-pagination.service.js",
+            "banking-api.service.js",
+            "cache-scheduler.service.js",
+            "cache.service.js",
+            "databaseBackup.service.js",
+            "dataRetention.service.js",
+            "index-optimization.service.js",
+            "query-optimization.service.js",
+            "safe-deletion.service.js",
+            "security-audit.service.js",
+            "security-monitoring.service.js",
+            "system-supervisor.service.js",
+            "token-manager.service.js",
+            "websocket.service.js",
+            "workflow-approval.service.js"
+          ],
+          "violations": [
+            "advanced-features.integration.js",
+            "approvalProcessingService.js",
+            "csrf-service.js",
+            "EmailService.js",
+            "GroupApprovalService.js",
+            "roleApprovalService.js",
+            "UserInvitationService.js",
+            "winston-config-service.js"
+          ]
+        }
+      }
+    ],
+    "frontendFiles": [
+      {
+        "category": "Components",
+        "valid": 24,
+        "violations": 0,
+        "files": {
+          "valid": [
+            "admin\\ApprovalStats.jsx",
+            "admin\\AuditLogViewer.jsx",
+            "admin\\PendingApprovalsTable.jsx",
+            "admin\\UserDetailModal.jsx",
+            "BankingIntegrationUI.jsx",
+            "ConnectionHealthMonitor.jsx",
+            "dashboard\\ActionsPanel.jsx",
+            "dashboard\\ActivityChart.jsx",
+            "dashboard\\DashboardLayout.jsx",
+            "dashboard\\DashboardMessage.jsx",
+            "dashboard\\KpiCard.jsx",
+            "dashboard\\PendingValidationsCard.jsx",
+            "dashboard\\ThirdPartiesPreviewTable.jsx",
+            "dashboard\\TreasuryTensionCard.jsx",
+            "NotificationCenter.jsx",
+            "registration\\ConsultantForm.jsx",
+            "registration\\RoleSelector.jsx",
+            "registration\\SuperUtilisateurForm.jsx",
+            "registration\\UtilisateurForm.jsx",
+            "ui\\Alert.jsx",
+            "ui\\Button.jsx",
+            "ui\\Card.jsx",
+            "ui\\ThemeToggle.jsx",
+            "WorkflowApprovalUI.jsx"
+          ],
+          "violations": []
+        }
+      },
+      {
+        "category": "Hooks",
+        "valid": 13,
+        "violations": 2,
+        "files": {
+          "valid": [
+            "useApi.js",
+            "useAuth.js",
+            "useBanking.js",
+            "useChartOfAccounts.js",
+            "useGroupApprovals.js",
+            "useJournalEntries.js",
+            "useNotifications.js",
+            "useRegister.js",
+            "useReports.js",
+            "useSuperUser.js",
+            "useTheme.js",
+            "useThirdParties.js",
+            "useWorkflow.js"
+          ],
+          "violations": [
+            "index.js",
+            "useRegister-NEW.js"
+          ]
+        }
+      },
+      {
+        "category": "Utils",
+        "valid": 1,
+        "violations": 0,
+        "files": {
+          "valid": [
+            "translations.js"
+          ],
+          "violations": []
+        }
+      }
+    ],
+    "databaseSchema": []
+  }
+}

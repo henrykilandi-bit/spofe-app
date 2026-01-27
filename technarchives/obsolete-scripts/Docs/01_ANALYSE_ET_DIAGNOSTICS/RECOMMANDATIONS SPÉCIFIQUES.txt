@@ -1,0 +1,66 @@
+9. RECOMMANDATIONS SPÉCIFIQUES
+9.1 Pour le Développement Frontend
+bash
+# Stack recommandée
+npx create-react-app spofe-frontend --template typescript
+npm install @mui/material @emotion/react @emotion/styled
+npm install @reduxjs/toolkit react-redux
+npm install react-router-dom
+npm install axios
+npm install recharts
+npm install date-fns
+9.2 Pour le Développement Backend
+bash
+# Stack recommandée
+npm init -y
+npm install express
+npm install prisma @prisma/client
+npm install jsonwebtoken bcrypt
+npm install joi
+npm install redis bull
+npm install aws-sdk
+npm install winston
+9.3 Configuration Docker
+dockerfile
+# docker-compose.yml
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: comptabilite_universelle
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  
+  backend:
+    build: ./backend
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@mysql:3306/comptabilite_universelle
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mysql
+      - redis
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+

@@ -1,0 +1,512 @@
+{
+  "date": "2026-01-27T18:48:14.656Z",
+  "summary": {
+    "totalExpected": 71,
+    "totalExisting": 28,
+    "totalMissing": 43,
+    "globalPercentage": 39.4
+  },
+  "categories": {
+    "root": {
+      "total": 9,
+      "existing": 0,
+      "missing": [
+        "README_BASE_REALITE.md",
+        "RAPPORT_BASE_REALITE.md",
+        "audit-technique-mysql-models.js",
+        "validate-models-silc.js",
+        "restore-models-from-backup.js",
+        "fix-models-intelligent.js",
+        "test-conventions-enhanced.js",
+        "setup-linters.js",
+        "convention-checker.js"
+      ],
+      "details": [
+        {
+          "file": "README_BASE_REALITE.md",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\README_BASE_REALITE.md",
+          "exists": false
+        },
+        {
+          "file": "RAPPORT_BASE_REALITE.md",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\RAPPORT_BASE_REALITE.md",
+          "exists": false
+        },
+        {
+          "file": "audit-technique-mysql-models.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\audit-technique-mysql-models.js",
+          "exists": false
+        },
+        {
+          "file": "validate-models-silc.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\validate-models-silc.js",
+          "exists": false
+        },
+        {
+          "file": "restore-models-from-backup.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\restore-models-from-backup.js",
+          "exists": false
+        },
+        {
+          "file": "fix-models-intelligent.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\fix-models-intelligent.js",
+          "exists": false
+        },
+        {
+          "file": "test-conventions-enhanced.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\test-conventions-enhanced.js",
+          "exists": false
+        },
+        {
+          "file": "setup-linters.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\setup-linters.js",
+          "exists": false
+        },
+        {
+          "file": "convention-checker.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\convention-checker.js",
+          "exists": false
+        }
+      ]
+    },
+    "cascade": {
+      "total": 4,
+      "existing": 4,
+      "missing": [],
+      "details": [
+        {
+          "file": "src/models/index.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\index.js",
+          "exists": true
+        },
+        {
+          "file": "src/config/database.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\config\\database.js",
+          "exists": true
+        },
+        {
+          "file": "src/app.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\app.js",
+          "exists": true
+        },
+        {
+          "file": "src/server.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\server.js",
+          "exists": true
+        }
+      ]
+    },
+    "models": {
+      "total": 21,
+      "existing": 2,
+      "missing": [
+        "User.js",
+        "Role.js",
+        "JournalEntry.js",
+        "JournalEntryLine.js",
+        "ChartOfAccount.js",
+        "ThirdParty.js",
+        "BusinessOperation.js",
+        "Compagnie.js",
+        "FiscalYear.js",
+        "StrategicObjective.js",
+        "PerformanceIndicator.js",
+        "ObjectiveAction.js",
+        "OperationTemplate.js",
+        "ExternalDataSource.js",
+        "SecurityEvent.js",
+        "AuditTrail.js",
+        "PasswordResetToken.js",
+        "TokenBlacklist.js",
+        "TwoFactorAuth.js"
+      ],
+      "details": [
+        {
+          "file": "User.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\User.js",
+          "exists": false
+        },
+        {
+          "file": "Role.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\Role.js",
+          "exists": false
+        },
+        {
+          "file": "JournalEntry.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\JournalEntry.js",
+          "exists": false
+        },
+        {
+          "file": "JournalEntryLine.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\JournalEntryLine.js",
+          "exists": false
+        },
+        {
+          "file": "ChartOfAccount.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\ChartOfAccount.js",
+          "exists": false
+        },
+        {
+          "file": "ThirdParty.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\ThirdParty.js",
+          "exists": false
+        },
+        {
+          "file": "BusinessOperation.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\BusinessOperation.js",
+          "exists": false
+        },
+        {
+          "file": "Compagnie.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\Compagnie.js",
+          "exists": false
+        },
+        {
+          "file": "FiscalYear.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\FiscalYear.js",
+          "exists": false
+        },
+        {
+          "file": "StrategicObjective.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\StrategicObjective.js",
+          "exists": false
+        },
+        {
+          "file": "PerformanceIndicator.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\PerformanceIndicator.js",
+          "exists": false
+        },
+        {
+          "file": "ObjectiveAction.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\ObjectiveAction.js",
+          "exists": false
+        },
+        {
+          "file": "OperationTemplate.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\OperationTemplate.js",
+          "exists": false
+        },
+        {
+          "file": "ExternalDataSource.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\ExternalDataSource.js",
+          "exists": false
+        },
+        {
+          "file": "SecurityEvent.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\SecurityEvent.js",
+          "exists": false
+        },
+        {
+          "file": "AuditTrail.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\AuditTrail.js",
+          "exists": false
+        },
+        {
+          "file": "PasswordResetToken.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\PasswordResetToken.js",
+          "exists": false
+        },
+        {
+          "file": "TokenBlacklist.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\TokenBlacklist.js",
+          "exists": false
+        },
+        {
+          "file": "TwoFactorAuth.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\TwoFactorAuth.js",
+          "exists": false
+        },
+        {
+          "file": "GroupeSuperUser.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\GroupeSuperUser.js",
+          "exists": true
+        },
+        {
+          "file": "PendingApproval.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\models\\PendingApproval.js",
+          "exists": true
+        }
+      ]
+    },
+    "dtos": {
+      "total": 21,
+      "existing": 20,
+      "missing": [
+        "PendingApprovalDto.js"
+      ],
+      "details": [
+        {
+          "file": "UserDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\UserDto.js",
+          "exists": true
+        },
+        {
+          "file": "RoleDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\RoleDto.js",
+          "exists": true
+        },
+        {
+          "file": "JournalEntryDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\JournalEntryDto.js",
+          "exists": true
+        },
+        {
+          "file": "JournalEntryLineDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\JournalEntryLineDto.js",
+          "exists": true
+        },
+        {
+          "file": "ChartOfAccountDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\ChartOfAccountDto.js",
+          "exists": true
+        },
+        {
+          "file": "ThirdPartyDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\ThirdPartyDto.js",
+          "exists": true
+        },
+        {
+          "file": "BusinessOperationDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\BusinessOperationDto.js",
+          "exists": true
+        },
+        {
+          "file": "CompagnieDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\CompagnieDto.js",
+          "exists": true
+        },
+        {
+          "file": "FiscalYearDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\FiscalYearDto.js",
+          "exists": true
+        },
+        {
+          "file": "StrategicObjectiveDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\StrategicObjectiveDto.js",
+          "exists": true
+        },
+        {
+          "file": "PerformanceIndicatorDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\PerformanceIndicatorDto.js",
+          "exists": true
+        },
+        {
+          "file": "ObjectiveActionDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\ObjectiveActionDto.js",
+          "exists": true
+        },
+        {
+          "file": "OperationTemplateDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\OperationTemplateDto.js",
+          "exists": true
+        },
+        {
+          "file": "ExternalDataSourceDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\ExternalDataSourceDto.js",
+          "exists": true
+        },
+        {
+          "file": "SecurityEventDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\SecurityEventDto.js",
+          "exists": true
+        },
+        {
+          "file": "AuditTrailDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\AuditTrailDto.js",
+          "exists": true
+        },
+        {
+          "file": "PasswordResetTokenDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\PasswordResetTokenDto.js",
+          "exists": true
+        },
+        {
+          "file": "TokenBlacklistDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\TokenBlacklistDto.js",
+          "exists": true
+        },
+        {
+          "file": "TwoFactorAuthDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\TwoFactorAuthDto.js",
+          "exists": true
+        },
+        {
+          "file": "GroupeSuperUserDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\GroupeSuperUserDto.js",
+          "exists": true
+        },
+        {
+          "file": "PendingApprovalDto.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\dto\\PendingApprovalDto.js",
+          "exists": false
+        }
+      ]
+    },
+    "services": {
+      "total": 8,
+      "existing": 0,
+      "missing": [
+        "userService.js",
+        "roleService.js",
+        "journalEntryService.js",
+        "chartOfAccountService.js",
+        "thirdPartyService.js",
+        "businessOperationService.js",
+        "authService.js",
+        "securityService.js"
+      ],
+      "details": [
+        {
+          "file": "userService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\userService.js",
+          "exists": false
+        },
+        {
+          "file": "roleService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\roleService.js",
+          "exists": false
+        },
+        {
+          "file": "journalEntryService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\journalEntryService.js",
+          "exists": false
+        },
+        {
+          "file": "chartOfAccountService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\chartOfAccountService.js",
+          "exists": false
+        },
+        {
+          "file": "thirdPartyService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\thirdPartyService.js",
+          "exists": false
+        },
+        {
+          "file": "businessOperationService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\businessOperationService.js",
+          "exists": false
+        },
+        {
+          "file": "authService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\authService.js",
+          "exists": false
+        },
+        {
+          "file": "securityService.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\services\\securityService.js",
+          "exists": false
+        }
+      ]
+    },
+    "controllers": {
+      "total": 8,
+      "existing": 2,
+      "missing": [
+        "role-controller.js",
+        "journal-entry-controller.js",
+        "chart-of-account-controller.js",
+        "third-party-controller.js",
+        "business-operation-controller.js",
+        "security-controller.js"
+      ],
+      "details": [
+        {
+          "file": "user-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\user-controller.js",
+          "exists": true
+        },
+        {
+          "file": "role-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\role-controller.js",
+          "exists": false
+        },
+        {
+          "file": "journal-entry-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\journal-entry-controller.js",
+          "exists": false
+        },
+        {
+          "file": "chart-of-account-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\chart-of-account-controller.js",
+          "exists": false
+        },
+        {
+          "file": "third-party-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\third-party-controller.js",
+          "exists": false
+        },
+        {
+          "file": "business-operation-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\business-operation-controller.js",
+          "exists": false
+        },
+        {
+          "file": "auth-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\auth-controller.js",
+          "exists": true
+        },
+        {
+          "file": "security-controller.js",
+          "path": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\src\\controllers\\security-controller.js",
+          "exists": false
+        }
+      ]
+    }
+  },
+  "criticalFiles": [
+    {
+      "file": "cascade/src/config/database.js",
+      "priority": "CRITIQUE",
+      "raison": "Configuration base de données",
+      "exists": true
+    },
+    {
+      "file": "cascade/src/app.js",
+      "priority": "CRITIQUE",
+      "raison": "Application principale",
+      "exists": true
+    },
+    {
+      "file": "cascade/src/server.js",
+      "priority": "CRITIQUE",
+      "raison": "Serveur HTTP",
+      "exists": true
+    },
+    {
+      "file": "cascade/src/models/User.js",
+      "priority": "HAUTE",
+      "raison": "Model utilisateur",
+      "exists": false
+    },
+    {
+      "file": "cascade/src/models/Role.js",
+      "priority": "HAUTE",
+      "raison": "Model rôles",
+      "exists": false
+    },
+    {
+      "file": "cascade/src/models/JournalEntry.js",
+      "priority": "HAUTE",
+      "raison": "Écritures comptables",
+      "exists": false
+    },
+    {
+      "file": "cascade/src/dto/UserDto.js",
+      "priority": "MOYENNE",
+      "raison": "DTO utilisateur",
+      "exists": true
+    },
+    {
+      "file": "cascade/src/services/userService.js",
+      "priority": "MOYENNE",
+      "raison": "Service utilisateur",
+      "exists": false
+    },
+    {
+      "file": "audit-technique-mysql-models.js",
+      "priority": "BASSE",
+      "raison": "Script d'audit",
+      "exists": false
+    }
+  ]
+}

@@ -1,268 +1,145 @@
-# 📘 RÈGLES SPOFE — BUILD & TEST
+# RULES_BUILD_TEST.md
 
-**Version 1.1.0 — Clarification normative**
+**Version:** 1.1.0  
+**Statut:** OFFICIEL  
+**Applicabilité:** Immédiate  
+**Opposabilité:** Contractuelle  
 
----
+## 🎯 OBJECTIF
 
-## 0. Historique de version
+Définir les règles SPOFE pour distinguer formellement les **rapports de diagnostic** des **preuves exécutables opposables** dans le processus de validation technique.
 
-| Version | Date | Changements |
-|---------|------|-------------|
-| **v1.0.0** | - | Introduction de la preuve exécutable (BUILD_PROOF) |
-| **v1.1.0** | - | Distinction formelle entre diagnostic et preuve, interdiction d'utiliser un rapport de diagnostic comme validation GO PROD, clarification de la chaîne de responsabilité |
+## 🚫 RÈGLE FONDAMENTALE : NON-SUBSTITUABILITÉ
 
----
+**Un rapport de diagnostic NE PEUT PAS être utilisé comme BUILD_PROOF SPOFE.**
 
-## 1. Rappel du principe fondamental (inchangé)
+### ❌ INTERDIT
+- Utiliser un fichier .md de diagnostic comme preuve de production
+- Présenter des "métriques" sans exécution contrôlée
+- Valider un module sur la base d'un rapport statique
+- Contourner la validation technique par documentation
 
-### 🔒 Principe SPOFE — Preuve exécutable obligatoire
+### ✅ AUTORISÉ
+- Utiliser les diagnostics pour l'investigation et le debugging
+- Générer des rapports de développement et de monitoring
+- Documenter l'état technique à des fins d'analyse
+- Compléter les BUILD_PROOF par des métriques contextuelles
 
-Un module SPOFE n'est considéré comme valide que s'il existe sous la forme d'un artefact exécutable, prouvé par un build et des tests exécutés avec succès, rattachés à un commit précis.
+## 🏗️ BUILD_PROOF SPOFE - DÉFINITION CONTRACTUELLE
 
----
+### Artefact officiel et exclusif pour validation GO PROD
 
-## 2. Distinction normative des artefacts techniques (NOUVEAU)
+Un BUILD_PROOF SPOFE valide DOIT :
 
-Afin d'éviter toute ambiguïté, SPOFE distingue de manière formelle et non négociable les types d'artefacts suivants.
+1. **✅ Être généré par exécution automatique**
+   - Script reproductible : `generate-build-proof.ts`
+   - Validation en temps réel des métriques
+   - Tests exécutés et résultats vérifiés
 
-### 2.1 Rapport de diagnostic technique (NON CONTRACTUEL)
+2. **✅ Contenir des preuves d'exécution**
+   - Compilation TypeScript : 0 erreur (`npx tsc --noEmit`)
+   - Tests unitaires : résultats d'exécution Jest
+   - Architecture SPOFE : vérification des couches
+   - Configuration : validation des fichiers critiques
 
-#### Définition
+3. **✅ Être daté et traçable**
+   - Timestamp de génération
+   - Version du module validé
+   - Environnement d'exécution
+   - Hash Git du commit validé
 
-Un rapport de diagnostic technique est un document ou un outil dont l'objectif est de :
+4. **✅ Fournir un statut binaire**
+   - 🟢 SUCCESS : Module prêt pour production
+   - 🔴 ERROR : Blockers critiques détectés
+   - 🟡 WARNING : Améliorations recommandées
 
-- analyser l'état de l'environnement
-- vérifier la cohérence globale du projet
-- détecter des erreurs de configuration
-- mesurer la capacité du système à supporter un build
+## 📊 RAPPORTS DE DIAGNOSTIC - UTILISATION LÉGITIME
 
-#### Exemples
+### Outils d'analyse et d'investigation (NON opposables)
 
-- `GENERATE_BUILD_PROOF_RESULTS.md`
-- rapports d'outillage
-- scripts de health-check
-- métriques globales (nombre de fichiers, tests, etc.)
+Les rapports de diagnostic peuvent :
 
-#### Statut SPOFE
+1. **🔍 Analyser l'état du code**
+   - Détecter les problèmes techniques
+   - Documenter les erreurs rencontrées
+   - Proposer des pistes d'amélioration
 
-| Critère | Statut |
-|---------|--------|
-| Contractuel | ❌ Non |
-| Opposable | ❌ Non |
-| Validation | ❌ Non |
-| GO PROD | ❌ Interdit |
+2. **📈 Fournir des métriques contextuelles**
+   - Nombre de fichiers TypeScript
+   - Couverture de tests estimée
+   - Architecture et structure détectée
 
-> 📌 Un rapport de diagnostic n'atteste pas qu'un module a été buildé, il atteste seulement que le contexte est favorable.
+3. **🗂️ Documenter les investigations**
+   - Historique des erreurs résolues
+   - Évolution de la qualité technique
+   - Traçabilité des corrections
 
-### 2.2 BUILD_PROOF SPOFE (CONTRACTUEL ET OPPOSABLE)
+## 🔒 CHAÎNE DE VALIDATION OFFICIELLE
 
-#### Définition
+### Séquence obligatoire pour validation GO PROD
 
-Un **BUILD_PROOF SPOFE** est la seule preuve technique reconnue par le système SPOFE pour valider un module.
+1. **Phase de développement**
+   - Rapports de diagnostic autorisés pour debugging
+   - Investigation libre des problèmes techniques
 
-Il doit impérativement :
+2. **Phase de stabilisation** 
+   - Correction des erreurs identifiées
+   - Validation incrémentale par diagnostic
 
-- être généré automatiquement
-- être rattaché à un commit Git précis
-- contenir les commandes réellement exécutées
-- contenir les résultats réels
-- être signé cryptographiquement
-- être vérifiable par script (`spofe-validate-module`)
+3. **Phase de validation contractuelle**
+   - ⚠️ SEUL le BUILD_PROOF SPOFE est opposable
+   - Exécution de `npm run build-proof`
+   - Statut GO PROD basé uniquement sur le résultat
 
-#### Artefacts requis
+4. **Phase de production**
+   - Déploiement autorisé seulement si BUILD_PROOF = SUCCESS
+   - Traçabilité complete maintenue
 
-| Fichier | Description |
-|---------|-------------|
-| `BUILD_PROOF.md` | Preuve de build et tests |
-| `BUILD_PROOF.sha256` | Hash SHA-256 du contenu |
-| `BUILD_PROOF.sig` | Signature cryptographique Ed25519 |
+## 🎮 RESPONSABILITÉS
 
-#### Statut SPOFE
+### Développeurs
+- Utiliser les diagnostics pour analyser et corriger
+- Exécuter le BUILD_PROOF avant toute demande de validation
+- Ne jamais substituer diagnostic et BUILD_PROOF
 
-| Critère | Statut |
-|---------|--------|
-| Contractuel | ✅ Oui |
-| Opposable | ✅ Oui |
-| Auditable | ✅ Oui |
-| Autorité GO PROD | ✅ Seule reconnue |
+### Architectes/Tech Leads  
+- Valider uniquement sur BUILD_PROOF SUCCESS
+- Rejeter toute validation basée sur diagnostic
+- Maintenir la rigueur de la chaîne officielle
 
----
+### DevOps/Release Management
+- Intégrer BUILD_PROOF dans les pipelines CI/CD
+- Bloquer les déploiements sans BUILD_PROOF valide
+- Maintenir la traçabilité des validations
 
-## 3. Règle SPOFE — Non-substituabilité (NOUVEAU)
+## 🚨 VIOLATIONS ET SANCTIONS
 
-### ❗ Règle SPOFE — Non-substituabilité des preuves
+### Cas de violation
+- Utilisation d'un diagnostic comme BUILD_PROOF
+- Validation GO PROD sans BUILD_PROOF SUCCESS  
+- Contournement de la chaîne officielle
+- Documentation trompeuse sur l'état technique
 
-> Aucun rapport de diagnostic, de stabilisation ou d'outillage ne peut se substituer à un BUILD_PROOF SPOFE.
->
-> Toute tentative de validation basée sur un autre artefact est considérée comme **non conforme**.
+### Conséquences
+- ⛔ Rejet immédiat de la demande de validation
+- 📋 Audit technique obligatoire du module
+- 🔄 Re-validation complète requise
+- 📢 Communication à l'équipe sur la violation
 
----
+## 🔄 MISE À JOUR ET ÉVOLUTION
 
-## 4. Chaîne officielle de validation SPOFE (MISE À JOUR)
+### Versioning de ce document
+- **v1.0.0** : Règles initiales SPOFE
+- **v1.1.0** : Clarification diagnostic vs BUILD_PROOF (CURRENT)
+- Futures versions : évolution contrôlée et documentée
 
-La validation SPOFE suit obligatoirement la chaîne suivante :
-
-```
-1. Validation conceptuelle
-   ├── Contrats
-   ├── Guardian
-   └── AGA
-           ↓
-2. Diagnostic technique (optionnel mais recommandé)
-   ├── Scripts d'analyse
-   └── Rapports environnement
-           ↓
-3. BUILD_PROOF SPOFE (OBLIGATOIRE)
-   ├── Build réel
-   ├── Tests réels
-   └── Signature cryptographique
-           ↓
-4. spofe-validate-module
-   ├── Analyse checklist
-   └── Vérification BUILD_PROOF
-           ↓
-5. Décision GO PROD
-```
-
-> 📌 Toute rupture dans cette chaîne invalide la validation.
-
----
-
-## 5. Règle SPOFE — Interdiction de langage ambigu (NOUVEAU)
-
-### Termes interdits pour tout document non contractuel
-
-Les termes suivants sont **interdits** pour tout document de diagnostic :
-
-- "Build Proof réussi"
-- "Prêt pour la production"
-- "Validation technique"
-- "GO PROD"
-- "Certifié SPOFE"
-- "Approuvé pour déploiement"
-
-👉 Ces termes sont **réservés exclusivement** au BUILD_PROOF SPOFE validé par `spofe-validate-module`.
-
-### Termes autorisés pour les diagnostics
-
-| À la place de | Utiliser |
-|---------------|----------|
-| "Build Proof réussi" | "Environnement favorable au build" |
-| "Prêt pour la production" | "Diagnostic environnemental positif" |
-| "Validation technique" | "Analyse technique préliminaire" |
-| "GO PROD" | "Recommandation de génération BUILD_PROOF" |
+### Processus de modification
+1. Proposition via branche `governance/*`
+2. Review technique et métier
+3. Validation architecturale  
+4. Mise à jour officielle avec traçabilité Git
 
 ---
 
-## 6. Positionnement des rapports existants (clarification)
-
-| Document | Statut SPOFE |
-|----------|--------------|
-| `RAPPORT_STABILISATION_TECHNIQUE_*.md` | Diagnostic |
-| `GENERATE_BUILD_PROOF_RESULTS.md` | Diagnostic |
-| `BUILD_PROOF.md` signé | ✅ Validation |
-| CI verte sans BUILD_PROOF | ❌ Insuffisant |
-| Checklist GO PROD manuelle | ❌ Non conforme |
-| Checklist GO PROD générée | ✅ Conforme |
-
----
-
-## 7. Responsabilité et gouvernance
-
-### 7.1 Responsabilité humaine
-
-| Rôle | Action |
-|------|--------|
-| Équipe de développement | Produire les diagnostics |
-| Système SPOFE | Produire les BUILD_PROOF |
-| `spofe-validate-module` | Décider de la conformité |
-
-> Les rapports de diagnostic éclairent, les BUILD_PROOF décident.
-
-### 7.2 Responsabilité système
-
-- `spofe-validate-module` est **l'autorité finale**
-- Aucune validation manuelle ne peut la contourner
-- Toute validation est **traçable et auditable**
-
----
-
-## 8. Conclusion officielle
-
-> Dans SPOFE, **le diagnostic prépare, la preuve décide**.
-
-Toute ambiguïté entre ces deux notions est désormais explicitement interdite.
-
----
-
-## Annexe A — Template BUILD_PROOF.md
-
-```markdown
-# BUILD_PROOF — [Module Name]
-
-**Status**: [SUCCESS / FAIL]
-**Commit**: [hash]
-**Date**: [ISO 8601]
-**Environment**: [Node Version, OS]
-
-## Commands Executed
-
-### Build
-\`\`\`bash
-npm run build
-\`\`\`
-**Result**: ✅ SUCCESS / ❌ FAIL
-
-### Tests
-\`\`\`bash
-npm run test:unit
-npm run test:integration
-npm run test:e2e
-\`\`\`
-**Result**: ✅ SUCCESS / ❌ FAIL
-
-## CI References
-- **Pipeline**: [link]
-- **Job ID**: [id]
-- **Artifact**: [link]
-
-## Validation
-- **Validated by**: [AGA / System / Manual]
-- **Date**: [YYYY-MM-DD]
-- **Final Status**: ✅ APPROVED / ❌ REJECTED
-```
-
----
-
-## Annexe B — Checklist de validation automatique
-
-```
-□ BUILD_PROOF.md présent
-□ BUILD_PROOF.sha256 présent (hash cryptographique)
-□ BUILD_PROOF.sig présent (signature cryptographique)
-□ BUILD_PROOF.md à jour (correspond au commit)
-□ Build réussi (npm run build)
-□ Tests unitaires passants
-□ Tests intégration passants (si applicable)
-□ Tests E2E passants (si applicable)
-□ CI verte (si applicable)
-□ Pas d'erreur lint/typecheck
-□ Documentation à jour
-□ Contrats validés
-□ Signature cryptographique valide (Ed25519)
-□ Vérification SPOFE complète
-```
-
----
-
-**Document officiel SPOFE — Ne pas modifier sans approbation architecturale**
-
-**Statut du document**
-
-| Attribut | Valeur |
-|----------|--------|
-| Nom | RULES_BUILD_TEST.md |
-| Version | 1.1.0 |
-| Type | Normatif |
-| Applicabilité | Globale SPOFE |
-| Caractère | Obligatoire / Non dérogeable |
+**Document officiel SPOFE - Non modifiable sans processus gouvernance**  
+**Dernière mise à jour : 2026-02-02**

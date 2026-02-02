@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-02T01:12:58.864Z",
+  "timestamp": "2026-02-02T01:36:21.120Z",
   "overall": "error",
   "results": [
     {
@@ -12,122 +12,122 @@
       "step": "File Check",
       "status": "success",
       "message": "tsconfig.json exists",
-      "duration": 4
+      "duration": 2
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "jest.config.js exists",
-      "duration": 5
+      "duration": 3
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "cascade/modules/immobilisation/index.ts exists",
-      "duration": 5
+      "duration": 3
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "cascade/modules/immobilisation/domain/index.ts exists",
-      "duration": 6
+      "duration": 3
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "cascade/modules/immobilisation/write/index.ts exists",
-      "duration": 7
+      "duration": 4
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "cascade/modules/immobilisation/guardian/index.ts exists",
-      "duration": 8
+      "duration": 4
     },
     {
       "step": "Critical Files",
       "status": "success",
       "message": "All critical files present",
-      "duration": 9
+      "duration": 4
     },
     {
       "step": "TypeScript Compilation",
       "status": "success",
       "message": "No TypeScript errors found",
-      "duration": 2741
+      "duration": 2638
     },
     {
       "step": "Dependencies",
       "status": "success",
       "message": "All dependencies resolved",
-      "duration": 4204
+      "duration": 4173
     },
     {
       "step": "Jest Configuration",
       "status": "success",
       "message": "Jest configured for TypeScript and ES modules",
-      "duration": 5766
+      "duration": 5898
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "API Layer (Controllers + DTOs)",
-      "duration": 5767
+      "duration": 5899
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Application Layer (Commands + Handlers)",
-      "duration": 5767
+      "duration": 5900
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Domain Layer (Aggregates + Value Objects)",
-      "duration": 5767
+      "duration": 5900
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Guardian Layer (Invariants)",
-      "duration": 5767
+      "duration": 5900
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Infrastructure Layer (Repositories)",
-      "duration": 5768
+      "duration": 5900
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Write-side (CQRS Commands)",
-      "duration": 5768
+      "duration": 5901
     },
     {
       "step": "SPOFE Compliance",
       "status": "success",
       "message": "All SPOFE architectural layers present",
-      "duration": 5768
+      "duration": 5901
     },
     {
       "step": "Code Metrics",
       "status": "success",
-      "message": "21478 TypeScript files, 386 test files",
-      "duration": 42419
+      "message": "21479 TypeScript files, 386 test files",
+      "duration": 36993
     },
     {
       "step": "Test Coverage",
       "status": "success",
       "message": "Test infrastructure in place (386 test files)",
-      "duration": 42419
+      "duration": 36993
     },
     {
       "step": "Unit Tests",
       "status": "error",
       "message": "Jest execution failed",
-      "duration": 46677,
-      "details": "Test Suites: 0 of 1 total\nTests:       0 total\nSnapshots:   0 total\nTime:        0.234 s\nError: Cannot find module 'jest-util'\nRequire stack:\n- C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\node_modules\\ts-jest\\dist\\legacy\\config\\config-set.js\n- C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\node_modules\\ts-"
+      "duration": 41413,
+      "details": "Test Suites: 0 of 1 total\nTests:       0 total\nSnapshots:   0 total\nTime:        0.228 s\nError: Cannot find module 'jest-util'\nRequire stack:\n- C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\node_modules\\ts-jest\\dist\\legacy\\config\\config-set.js\n- C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\node_modules\\ts-"
     }
   ],
   "summary": {

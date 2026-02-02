@@ -85,7 +85,7 @@ class GovernanceUpdater {
       throw new Error('Ce script doit être exécuté dans un repository Git');
     }
 
-    // Vérifier que nous sommes sur main
+    // Vérifier que nous sommes sur main/master
     try {
       const currentBranch = execSync('git branch --show-current', { encoding: 'utf-8' }).trim();
       if (currentBranch !== 'main' && currentBranch !== 'master') {
@@ -109,6 +109,28 @@ class GovernanceUpdater {
     } catch (error) {
       this.updateStep('Working Directory Check', 'error', 'Cannot check working directory status');
       throw error;
+    }
+  }
+
+  /**
+   * Détecte le nom de la branche principale
+   */
+  private getMainBranch(): string {
+    try {
+      // Essayer de détecter via la remote
+      const result = execSync('git symbolic-ref refs/remotes/origin/HEAD', { encoding: 'utf-8', stdio: 'pipe' });
+      return result.trim().split('/').pop() || 'master';
+    } catch {
+      // Si pas de remote, détecter les branches locales
+      try {
+        const branches = execSync('git branch', { encoding: 'utf-8' });
+        if (branches.includes(' main')) {
+          return 'main';
+        }
+        return 'master';
+      } catch {
+        return 'master';
+      }
     }
   }
 
@@ -394,8 +416,10 @@ Ce fichier trace les évolutions des règles et processus de gouvernance SPOFE.
    * Merge dans main et crée le tag
    */
   private mergeAndTag(): void {
-    // Retour sur main
-    this.execGit('checkout main', 'Switch to Main Branch');
+    const mainBranch = this.getMainBranch();
+    
+    // Retour sur main/master
+    this.execGit(`checkout ${mainBranch}`, `Switch to ${mainBranch} Branch`);
     
     // Merge de la branche de gouvernance
     this.execGit('merge governance/build-test-rules-v1.1.0', 'Merge Governance Branch');

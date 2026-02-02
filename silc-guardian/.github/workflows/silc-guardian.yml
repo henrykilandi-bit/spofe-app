@@ -1,0 +1,81 @@
+name: SILC Guardian — Validation architecture
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  silc-validate:
+    name: "SILC Architecture Validation"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build SILC Guardian
+        run: npm run build
+
+      - name: Run SILC Guardian validation
+        id: silc
+        run: npm run validate:json > silc-report.json 2>&1
+        continue-on-error: true
+
+      - name: Check compliance signature
+        run: npm run check:compliance
+        continue-on-error: true
+
+      - name: Upload SILC report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: silc-guardian-report
+          path: silc-report.json
+          retention-days: 30
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('silc-report.json', 'utf8'));
+            
+            const blocking = report.violations.blocking.length;
+            const warnings = report.violations.warnings.length;
+            
+            const comment = `## 🛡️ SILC Guardian Report
+            
+- Status: ${report.status}
+- Violations: ${report.totalViolations}
+- Blocking: ${blocking}
+- Warnings: ${warnings}
+
+${blocking > 0 ? '❌ **Merge blocked** — Fix blocking violations' : '✅ **SILC Compliant** — Ready to merge'}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Fail if blocking violations
+        if: ${{ steps.silc.outcome == 'failure' }}
+        run: |
+          echo "❌ SILC Guardian detected blocking violations"
+          exit 1

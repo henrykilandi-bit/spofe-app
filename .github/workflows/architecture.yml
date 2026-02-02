@@ -1,0 +1,93 @@
+name: Architecture Governance (AGA)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    name: Verify Architecture Compliance
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate AGA configuration
+        run: npx ts-node aga/index.ts . --validate
+
+      - name: Run architecture checks (console output)
+        id: aga_console
+        run: npx ts-node aga/index.ts . --verbose
+        continue-on-error: true
+
+      - name: Run architecture checks (GitHub annotations)
+        if: always()
+        id: aga_github
+        run: npx ts-node aga/index.ts . --format github --exit-on-violation
+        continue-on-error: true
+
+      - name: Generate AGA report (JSON)
+        if: always()
+        run: npx ts-node aga/index.ts . --format json > aga-report.json
+
+      - name: Upload AGA report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: aga-architecture-report
+          path: aga-report.json
+          retention-days: 30
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('aga-report.json', 'utf8'));
+            
+            let comment = `## 🏗️ Architecture Governance Report\n\n`;
+            comment += `**Status:** ${report.summary.status === 'PASS' ? '✅ PASS' : '❌ FAIL'}\n\n`;
+            comment += `- **Files Scanned:** ${report.totalFiles}\n`;
+            comment += `- **Rules Checked:** ${report.rulesChecked}\n`;
+            comment += `- **Errors:** ${report.summary.errors}\n`;
+            comment += `- **Warnings:** ${report.summary.warnings}\n`;
+            
+            if (report.violations.length > 0) {
+              comment += `\n### Violations Found\n\n`;
+              report.violations.forEach(v => {
+                comment += `- **${v.rule}** in \`${v.file}${v.line ? ':' + v.line : ''}\`\n`;
+                comment += `  - ${v.message}\n`;
+                if (v.suggestion) {
+                  comment += `  - 💡 Suggestion: ${v.suggestion}\n`;
+                }
+              });
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Fail if violations found
+        if: steps.aga_github.outcome == 'failure'
+        run: |
+          echo "❌ Architecture violations detected!"
+          echo "Please fix the violations before merging."
+          exit 1

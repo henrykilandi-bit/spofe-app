@@ -1,0 +1,77 @@
+name: Frontend SPOFE Contract CI
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - 'ci/check-frontend-*.js'
+      - '.github/workflows/frontend-ci.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - 'ci/check-frontend-*.js'
+
+jobs:
+  frontend-contract:
+    name: SPOFE Frontend Contract Compliance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 1️⃣ Check module structure compliance
+      - name: Check module structure
+        run: node ci/check-frontend-structure.js
+        continue-on-error: false
+
+      # 2️⃣ Check manifest declarations
+      - name: Check module manifests
+        run: node ci/check-frontend-manifest.js
+        continue-on-error: false
+
+      # 3️⃣ Check for unauthorized network access
+      - name: Check network access control
+        run: node ci/check-frontend-network.js
+        continue-on-error: false
+
+      # 4️⃣ Run contractual tests
+      - name: Run frontend tests
+        run: npm test -- frontend
+        continue-on-error: false
+
+      # ✅ All checks passed
+      - name: Summary
+        if: success()
+        run: |
+          echo "✅ Frontend SPOFE Contract Compliance: PASSED"
+          echo ""
+          echo "Checks executed:"
+          echo "  ✅ Module structure"
+          echo "  ✅ Manifest declarations"
+          echo "  ✅ Network access control"
+          echo "  ✅ Contractual tests"
+
+      # ❌ Compliance failure
+      - name: Compliance failure notification
+        if: failure()
+        run: |
+          echo "❌ Frontend SPOFE Contract Compliance: FAILED"
+          echo ""
+          echo "One or more contract checks failed."
+          echo "This PR cannot be merged until all checks pass."
+          echo ""
+          echo "Reference:"
+          echo "  📍 contracts/frontend-modules/SPOFE-Frontend-Module-Contract.v1.md"
+          exit 1

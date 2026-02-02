@@ -1,0 +1,82 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    // ═══════════════════════════════════════════════════════════
+    // RÈGLES CRITIQUES DU CONTRAT FRONTEND
+    // ═══════════════════════════════════════════════════════════
+    
+    // Interdire fetch() direct
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "fetch",
+        "message": "❌ VIOLATION: fetch() is not allowed outside of @/core/spofe-contract. Use readModel() or sendCommand() instead."
+      }
+    ],
+
+    // Interdire localStorage/sessionStorage métier
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "localStorage",
+        "property": "setItem",
+        "message": "❌ VIOLATION: localStorage for business data is not allowed. Only UI preferences permitted."
+      },
+      {
+        "object": "sessionStorage",
+        "property": "setItem",
+        "message": "❌ VIOLATION: sessionStorage for business data is not allowed."
+      }
+    ],
+
+    // ═══════════════════════════════════════════════════════════
+    // PATTERNS À ÉVITER
+    // ═══════════════════════════════════════════════════════════
+    
+    "no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_" }
+    ],
+    
+    "no-console": [
+      "warn",
+      { "allow": ["warn", "error"] }
+    ],
+
+    "prefer-const": "warn",
+    "no-var": "error",
+    "eqeqeq": ["error", "always"],
+    "no-implicit-coercion": "error",
+
+    // ═══════════════════════════════════════════════════════════
+    // STYLE & COHÉRENCE
+    // ═══════════════════════════════════════════════════════════
+    
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "semi": ["error", "always"],
+    "comma-dangle": ["error", "never"],
+    "indent": ["warn", 2],
+    "no-trailing-spaces": "warn",
+    "eol-last": ["error", "always"]
+  },
+
+  "overrides": [
+    {
+      "files": ["**/__tests__.js"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+# ==================================================================================
+# SPOFE SQL Tests Configuration
+# Utilisé par CI/CD pour configurer les tests
+# ==================================================================================
+
+[test]
+# Paramètres de connexion
+host = localhost
+port = 5432
+database = spofe
+username = postgres
+password = spofe_secure_pwd_2026
+
+# Options de test
+verbose = false
+on_error_stop = true
+continue_on_failure = false
+
+# Timeouts
+connection_timeout = 30s
+query_timeout = 60s
+test_suite_timeout = 5m
+
+# Répertoires
+test_directory = ddl/tests
+log_directory = .test-logs
+output_format = text
+
+# Format de sortie (text, json, xml)
+report_format = text
+
+# Suites de test (ordre d'exécution)
+[test.suites]
+suite_1 = 01_immutability.sql
+suite_2 = 02_decision_chain.sql
+suite_3 = 03_process_registry.sql
+suite_4 = 04_audit.sql
+suite_5 = 05_read_model.sql
+
+# Invariants testés
+[invariants]
+I-DB-01 = Immutabilité (UPDATE/DELETE interdits)
+I-DB-02 = Chaînage Decision→Event→Fact
+I-DB-03 = Process gouverné
+I-DB-04 = Audit obligatoire
+I-DB-07 = Read-model non-mutable
+
+# Métriques attendues
+[metrics]
+total_tests = 41
+negative_tests = 28
+positive_tests = 13
+min_pass_rate = 100
+
+# Alertes
+[alerts]
+fail_on_single_test_failure = true
+slack_webhook = ${SLACK_WEBHOOK_URL}
+email_on_failure = ${ALERT_EMAIL}
+
+# Environnement Docker
+[docker]
+image = postgres:15-alpine
+container_name = spofe-postgres
+network = spofe-network
+
+# Tags de test
+[tags]
+database = true
+architecture = true
+regression = true
+compliance = silc-v2.1

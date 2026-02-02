@@ -1,0 +1,48 @@
+{
+  "version": "0.1.0",
+  "name": "AGA - Architecture Guardian Assistant",
+  
+  "silc": {
+    "version": "2.1",
+    "level": 4,
+    "guardian": true
+  },
+
+  "rules": {
+    "active": true,
+    "defaultSeverity": "error",
+    "exclude": []
+  },
+
+  "scanner": {
+    "extensions": [".ts", ".tsx", ".js"],
+    "excludeDirs": [
+      "node_modules",
+      "dist",
+      "build",
+      ".git",
+      "coverage",
+      ".aga"
+    ]
+  },
+
+  "report": {
+    "format": "json",
+    "output": ".aga/reports",
+    "enriched": true
+  },
+
+  "autoFix": {
+    "enabled": false,
+    "level": 1
+  },
+
+  "guardian": {
+    "enabled": true,
+    "version": "4.0",
+    "hooks": {
+      "preCommit": true,
+      "prePush": true
+    }
+  }
+}

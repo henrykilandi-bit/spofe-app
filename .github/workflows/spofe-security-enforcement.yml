@@ -1,0 +1,94 @@
+name: SPOFE Security Enforcement
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  frozen-contracts-enforcement:
+    name: Frozen Contracts Enforcement
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ACTE I - API Backend SPOFE v1.0.0
+      - name: Check API Contract Exists
+        run: |
+          echo "🧊 ACTE I - API Backend SPOFE v1.0.0"
+          if [ ! -f "architecture/contracts/backend/SPOFE-API.v1.0.0.md" ]; then
+            echo "❌ API Contract v1.0.0 is missing"
+            exit 1
+          fi
+          echo "✅ API Contract v1.0.0 exists"
+
+      - name: Check API Breaking Changes
+        run: node ci/check-api-breaking-changes.js
+
+      # ACTE II - Frontend Contract Enforcer v1.0.0
+      - name: Check FCE Contract Exists
+        run: |
+          echo "🧊 ACTE II - Frontend Contract Enforcer v1.0.0"
+          if [ ! -f "frontend/core/spofe-contract/README.md" ]; then
+            echo "❌ FCE README v1.0.0 is missing"
+            exit 1
+          fi
+          echo "✅ FCE README v1.0.0 exists"
+
+      - name: Check FCE Behavior Freeze
+        run: node ci/check-fce-behavior.js
+
+      # ACTE III - Security Model SPOFE v1.0.0
+      - name: Check Security Model Exists
+        run: |
+          echo "🧊 ACTE III - Security Model SPOFE v1.0.0"
+          if [ ! -f "architecture/contracts/security/SPOFE-Security-Model.v1.0.0.md" ]; then
+            echo "❌ Security Model v1.0.0 is missing"
+            exit 1
+          fi
+          echo "✅ Security Model v1.0.0 exists"
+
+      - name: Check Auth Contract
+        run: node ci/check-auth-contract-exists.js
+
+      - name: Check Frontend Auth Authority
+        run: node ci/check-frontend-auth-authority.js
+
+      - name: Check Auth Not In Modules
+        run: node ci/check-auth-not-in-modules.js
+
+      - name: Check Backend Guardian Bypass
+        run: node ci/check-backend-auth-guardian.js
+
+      - name: Summary
+        if: success()
+        run: |
+          echo ""
+          echo "✅ ✅ ✅ ALL FROZEN CONTRACTS VALIDATED ✅ ✅ ✅"
+          echo ""
+          echo "🧊 ACTE I - API Backend SPOFE v1.0.0: GELÉ"
+          echo "   - Contract exists and versioned"
+          echo "   - No breaking changes detected"
+          echo ""
+          echo "🧊 ACTE II - Frontend Contract Enforcer v1.0.0: GELÉ"
+          echo "   - README exists and versioned"
+          echo "   - Error mapping frozen (401/403/409/500)"
+          echo "   - No authority logic detected"
+          echo ""
+          echo "🧊 ACTE III - Security Model SPOFE v1.0.0: GELÉ"
+          echo "   - Security Model exists and versioned"
+          echo "   - Auth Contract enforced"
+          echo "   - Frontend has no authority logic"
+          echo "   - Auth isolated from modules"
+          echo "   - Backend does not bypass Guardian"
+          echo ""
+          echo "🏁 SPOFE is STABLE, EXTENSIBLE, AUDITABLE"
+          echo "🏁 Auth identifie. Guardian décide."

@@ -1,0 +1,99 @@
+# ==================================================================================
+# SPOFE PostgreSQL Makefile
+# Commandes pour gérer la base de données PostgreSQL SILC v2.1
+# ==================================================================================
+
+.PHONY: help postgres-start postgres-stop postgres-logs postgres-shell postgres-clean postgres-reset postgres-test postgres-status
+
+help:
+	@echo "🐘 SPOFE PostgreSQL Commands"
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo ""
+	@echo "Setup & Control:"
+	@echo "  make postgres-start      Démarrer PostgreSQL"
+	@echo "  make postgres-stop       Arrêter PostgreSQL"
+	@echo "  make postgres-clean      Arrêter et supprimer le conteneur"
+	@echo "  make postgres-reset      Supprimer et recréer la base"
+	@echo ""
+	@echo "Inspection:"
+	@echo "  make postgres-status     État du conteneur"
+	@echo "  make postgres-logs       Afficher les logs"
+	@echo "  make postgres-shell      Shell PostgreSQL interactif"
+	@echo ""
+	@echo "Tests:"
+	@echo "  make postgres-test       Tester la connexion et vérifier DDL"
+	@echo ""
+
+# Démarrer PostgreSQL
+postgres-start:
+	@echo "🚀 Démarrage de PostgreSQL..."
+	docker-compose -f docker-compose.postgres.yml up -d
+	@echo "✓ PostgreSQL démarré"
+	@echo ""
+	@echo "Attente du démarrage..."
+	@sleep 5
+	@echo "✓ Prêt"
+
+# Arrêter PostgreSQL
+postgres-stop:
+	@echo "🛑 Arrêt de PostgreSQL..."
+	docker-compose -f docker-compose.postgres.yml down
+	@echo "✓ PostgreSQL arrêté"
+
+# Nettoyer (supprimer conteneur et volumes)
+postgres-clean:
+	@echo "🧹 Nettoyage de PostgreSQL..."
+	docker-compose -f docker-compose.postgres.yml down -v
+	@echo "✓ Nettoyage terminé"
+
+# Reset complet
+postgres-reset: postgres-clean postgres-start
+	@echo ""
+	@echo "✅ PostgreSQL réinitialisé"
+
+# État
+postgres-status:
+	@echo "📊 État de PostgreSQL:"
+	@docker ps --filter "name=spofe-postgres" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+# Logs
+postgres-logs:
+	docker-compose -f docker-compose.postgres.yml logs -f
+
+# Shell interactif
+postgres-shell:
+	@echo "🔌 Connexion à PostgreSQL (spofe)..."
+	docker exec -it spofe-postgres psql -U postgres -d spofe
+
+# Test de connexion
+postgres-test:
+	@echo "🔍 Test de connexion PostgreSQL..."
+	@docker exec spofe-postgres pg_isready -U postgres -d spofe && echo "✓ Connexion OK" || echo "✗ Connexion échouée"
+	@echo ""
+	@echo "📊 Tables SPOFE:"
+	@docker exec spofe-postgres psql -U postgres -d spofe -t -c "\dt public.*" | grep -E "process_registry|decision|event|fact|audit_log" || echo "⚠ Aucune table trouvée"
+	@echo ""
+	@echo "🔐 Rôles SILC:"
+	@docker exec spofe-postgres psql -U postgres -d spofe -t -c "SELECT rolname FROM pg_roles WHERE rolname LIKE 'spofe_%';" || echo "⚠ Aucun rôle trouvé"
+
+# Vue des vues
+postgres-views:
+	@echo "👁 Vues SPOFE:"
+	docker exec spofe-postgres psql -U postgres -d spofe -t -c "\dv public.*"
+
+# Statistiques
+postgres-stats:
+	@echo "📈 Statistiques SPOFE:"
+	docker exec spofe-postgres psql -U postgres -d spofe -c "SELECT * FROM v_stats;"
+
+# Audit trail complet
+postgres-audit:
+	@echo "📋 Audit trail:"
+	docker exec spofe-postgres psql -U postgres -d spofe -c "SELECT * FROM v_audit_trail LIMIT 20;"
+
+# Requête personnalisée
+postgres-query:
+	@read -p "Entrez votre requête SQL: " query; \
+	docker exec spofe-postgres psql -U postgres -d spofe -c "$$query"
+
+.DEFAULT_GOAL := help

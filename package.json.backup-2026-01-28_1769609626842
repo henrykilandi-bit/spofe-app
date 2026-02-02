@@ -1,0 +1,38 @@
+{
+  "name": "spofe-app",
+  "version": "2.1.0",
+  "private": true,
+  "description": "SPOFE v2.1 — Gouverné par SILC v2",
+  "scripts": {
+    "prepare": "husky",
+    "silc:validate": "cd silc-guardian && npm run validate",
+    "install:all": "npm install && cd cascade && npm install && cd ../frontend && npm install && cd ../silc-guardian && npm install",
+    "start": "cd cascade && npm start",
+    "dev": "cd cascade && npm run dev",
+    "test": "cd cascade && npm test",
+    "lint": "cd cascade && npm run lint",
+    "test:contracts": "cd cascade && jest --config=jest.config.contracts.cjs",
+    "test:contracts:watch": "cd cascade && jest --config=jest.config.contracts.cjs --watch",
+    "test:contracts:coverage": "cd cascade && jest --config=jest.config.contracts.cjs --coverage",
+    "test:contracts:debug": "cd cascade && node --inspect-brk ./node_modules/.bin/jest --config=jest.config.contracts.cjs --runInBand",
+    "silc:validate:strict": "npm run silc:validate && npm run test:contracts",
+    "validate": "npm run silc:validate",
+    "validate:strict": "npm run silc:validate:strict",
+    "scripts:update": "node update-scripts-silc-compliant.cjs",
+    "scripts:update:dry": "node update-scripts-silc-compliant.cjs --dry-run",
+    "scripts:update:strict": "node update-scripts-silc-compliant.cjs --fail-on-conflict"
+  },
+  "workspaces": [
+    "cascade",
+    "frontend",
+    "silc-guardian"
+  ],
+  "keywords": [
+    "SPOFE",
+    "SILC",
+    "governance",
+    "architecture"
+  ],
+  "author": "Architecture SILC",
+  "license": "PROPRIETARY"
+}

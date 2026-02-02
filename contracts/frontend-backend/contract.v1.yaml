@@ -1,0 +1,311 @@
+contract:
+  name: SPOFE Frontend-Backend Contract
+  version: 1.0.0
+  status: ACTIVE
+  lastUpdated: "2026-01-30"
+  author: SPOFE Team
+
+# ============================================================================
+# PRINCIPES FONDAMENTAUX
+# ============================================================================
+
+principles:
+  - id: frontend_is_not_authority
+    description: "Le frontend n'est jamais source de vérité métier"
+    consequence: "Toute décision est prise par SPOFE"
+
+  - id: backend_is_single_source_of_truth
+    description: "SPOFE est l'unique autorité métier"
+    consequence: "Frontend accepte toutes les décisions sans discussion"
+
+  - id: commands_are_explicit_intentions
+    description: "Toute écriture est une Command explicite"
+    consequence: "Pas d'update implicite, pas d'auto-save métier"
+
+  - id: read_models_are_projection_only
+    description: "Les read-models reflètent la réalité métier"
+    consequence: "Frontend affiche sans recalcul"
+
+  - id: no_business_logic_on_frontend
+    description: "La logique métier reste au backend"
+    consequence: "Frontend = adaptateur, pas décideur"
+
+# ============================================================================
+# RESPONSABILITÉS FRONTEND
+# ============================================================================
+
+frontend:
+  responsibilities:
+    - id: render_ui
+      description: "Afficher l'interface utilisateur"
+      scope: "Tous les modules frontend"
+
+    - id: collect_user_input
+      description: "Collecter les intentions utilisateur"
+      scope: "Formulaires, interactions, saisies"
+
+    - id: call_read_models
+      description: "Demander l'état métier via read-models"
+      scope: "GET /aggregates, /read/*"
+
+    - id: emit_commands
+      description: "Déclencher des Commands explicites"
+      scope: "POST /commands/*, PATCH /aggregates/*"
+
+    - id: display_backend_decisions
+      description: "Afficher les décisions du backend"
+      scope: "Toutes les réponses métier"
+
+  forbidden:
+    - compute_business_state
+    - validate_business_rules
+    - persist_business_state_locally
+    - bypass_commands
+    - infer_authority
+    - reconstruct_temporal_state
+    - override_backend_decision
+
+# ============================================================================
+# GARANTIES BACKEND
+# ============================================================================
+
+backend:
+  guarantees:
+    - id: guardian_is_authority
+      description: "Guardian valide TOUS les invariants"
+      implementation: "Aucune écriture sans validation Guardian"
+
+    - id: append_only_persistence
+      description: "Logs d'événements immuables"
+      implementation: "Toutes les décisions auditées"
+
+    - id: explicit_errors
+      description: "Erreurs métier explicites et documentées"
+      implementation: "403/409/422 avec raison"
+
+    - id: invariant_enforcement
+      description: "Tous les invariants métier respectés"
+      implementation: "Vérification systematique"
+
+    - id: auditable_decisions
+      description: "Toute action est traçable"
+      implementation: "Logs avec who/what/when/why"
+
+# ============================================================================
+# RÈGLES D'ACCÈS (LECTURE)
+# ============================================================================
+
+read_access:
+  principle: "Le frontend ne lit QUE ce qui est projeté pour lui"
+
+  allowed_prefixes:
+    - /aggregates
+    - /read
+
+  allowed_methods:
+    - GET
+
+  forbidden:
+    - direct_table_access
+    - undocumented_endpoints
+    - technical_endpoints
+    - internal_queries
+
+  validation:
+    - "Endpoint doit être listé dans allowed-read-models.v1.json"
+    - "Réponse ne doit contenir que des données projetées"
+    - "Pas d'exposition de clés techniques (IDs internes)"
+
+# ============================================================================
+# RÈGLES D'ACCÈS (ÉCRITURE)
+# ============================================================================
+
+write_access:
+  principle: "Le frontend ne peut écrire QUE via Commands déclarées"
+
+  allowed_methods:
+    - POST
+    - PATCH
+
+  forbidden:
+    - PUT
+    - DELETE
+    - CRUD_generic_endpoints
+    - implicit_updates
+
+  command_requirements:
+    - "Toute Command doit être nommée = une intention métier"
+    - "Payload doit être explicite (pas d'ambiguïté)"
+    - "Command doit être listée dans allowed-commands.v1.json"
+
+  validation:
+    - "Endpoint doit être dans la liste blanche"
+    - "Méthode HTTP doit être POST ou PATCH"
+    - "Payload valide selon schéma backend"
+
+# ============================================================================
+# GESTION DES ERREURS
+# ============================================================================
+
+error_handling:
+  principle: "Une erreur métier est une décision finale, pas une invitation à bricoler"
+
+  frontend_must:
+    - display_error
+    - adapt_ux
+    - inform_user
+    - not_retry_with_altered_intent
+    - not_override_decision
+    - not_compute_workaround
+
+  frontend_must_not:
+    - correct_the_error
+    - guess_the_solution
+    - bypass_the_constraint
+    - hide_the_error
+    - retry_automatically
+
+  status_codes:
+    "403":
+      meaning: "Forbidden - Autorisation manquante"
+      frontend_action: "Informer que l'action n'est pas autorisée"
+
+    "409":
+      meaning: "Conflict - État métier invalide"
+      frontend_action: "Afficher et demander actualisation"
+
+    "422":
+      meaning: "Unprocessable Entity - Invariant violé"
+      frontend_action: "Afficher l'erreur métier"
+
+# ============================================================================
+# RÈGLES SUR L'AUTHENTIFICATION & IDENTITÉ
+# ============================================================================
+
+auth:
+  principle: "Frontend transmet l'identité, pas l'autorité"
+
+  frontend_provides:
+    - identity_token
+    - subject
+    - actor_role
+
+  frontend_forbidden:
+    - role_escalation
+    - implicit_authority
+    - masking_identity
+    - inferring_permissions
+
+  backend_validates:
+    - identity_token
+    - subject_consistency
+    - actor_role_validity
+
+  guarantee:
+    "Backend décide de l'autorité, pas le frontend"
+
+# ============================================================================
+# RÈGLES SUR L'ÉTAT FRONTEND
+# ============================================================================
+
+frontend_state:
+  principle: "État UI uniquement, jamais de vérité métier"
+
+  allowed_state:
+    - ui_state
+    - navigation_state
+    - temporary_memory_cache
+    - form_input_buffers
+
+  forbidden_state:
+    - persistent_business_state
+    - duplicate_truth
+    - offline_metadata
+    - derived_authority
+
+  localStorage:
+    forbidden_for:
+      - business_data
+      - authorization_state
+      - temporal_state
+    allowed_for:
+      - ui_preferences
+      - user_settings
+
+# ============================================================================
+# MODULARITÉ FRONTEND ↔ BACKEND
+# ============================================================================
+
+modularity:
+  principle: "Un module frontend consomme UN module SPOFE"
+
+  rules:
+    - each_frontend_module_is_independent
+    - no_cross_module_logic
+    - no_hidden_dependencies
+    - frontend_module_can_be_added
+    - frontend_module_can_be_removed
+    - frontend_module_can_be_refactored
+
+  consequences:
+    "Sans impact sur les autres modules"
+
+# ============================================================================
+# RÈGLES DE COMMUNICATION TECHNIQUE
+# ============================================================================
+
+http_communication:
+  api_client:
+    requirement: "Client API unique et centralisé"
+    responsibilities:
+      - centralized_headers_management
+      - centralized_error_handling
+      - centralized_auth_management
+      - request_validation
+      - response_validation
+
+  forbidden:
+    - fetch_in_dom_components
+    - await_in_render_functions
+    - direct_http_calls
+    - bypassing_api_client
+
+  headers:
+    required:
+      - Authorization
+      - Content-Type
+    managed_by: "API Client"
+
+# ============================================================================
+# INTÉGRATION CI/CD
+# ============================================================================
+
+ci_cd:
+  frontend_checks:
+    - "Pas de fetch() hors client API"
+    - "Pas d'appel endpoint non-listé"
+    - "Pas d'état métier persistant"
+    - "Pas de logique métier"
+
+  backend_checks:
+    - "Toute new Command documentée"
+    - "Tous les endpoints listés"
+    - "Guardian validations présentes"
+    - "Erreurs explicites"
+
+  fail_conditions:
+    - "Violation de règle détectée"
+    - "Endpoint non listé appelé"
+    - "Méthode HTTP interdite"
+    - "État métier détecté côté client"
+
+# ============================================================================
+# VIE DU CONTRAT
+# ============================================================================
+
+lifecycle:
+  versioning: "Sémantique stricte (v1.0.0, v2.0.0...)"
+  breaking_changes: "Nouvelle version majeure requise"
+  compatibility: "Chaque version = snapshot stable"
+  modifications: "PR + review + CHANGELOG"
+  deployment: "Synchronisé frontend/backend"

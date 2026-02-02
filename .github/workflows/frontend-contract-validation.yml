@@ -1,0 +1,125 @@
+name: Frontend Contract Enforcer - Validation
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - 'src/**'
+      - 'package.json'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'frontend/**'
+      - 'src/**'
+      - 'package.json'
+
+jobs:
+  validate-fce:
+    name: Validate Frontend Contract
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint FCE Library
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Validate Contract
+        run: npm run validate:fce:strict
+        continue-on-error: false
+
+      - name: Type Check
+        run: npm run type-check
+        continue-on-error: true
+
+      - name: Run Tests
+        run: npm run test:coverage
+        continue-on-error: false
+
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage-final.json
+          flags: frontend-contract
+          fail_ci_if_error: false
+
+  forbidden-patterns:
+    name: Check Forbidden Patterns
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: "❌ Check: No fetch() outside FCE"
+        run: |
+          if grep -r "fetch(" src/ --include="*.ts" --include="*.js" --include="*.tsx" --include="*.jsx" \
+            | grep -v "spofe-contract" \
+            | grep -v "__tests__" \
+            | grep -v "node_modules"; then
+            echo "::error::fetch() detected outside of spofe-contract"
+            exit 1
+          fi
+        continue-on-error: false
+
+      - name: "❌ Check: No business data in storage"
+        run: |
+          if grep -r "localStorage\|sessionStorage" src/ --include="*.ts" --include="*.js" --include="*.tsx" --include="*.jsx" \
+            | grep -E "status|balance|aggregate|amount|permission" \
+            | grep -v "spofe-contract" \
+            | grep -v "__tests__"; then
+            echo "::error::Business data in localStorage/sessionStorage detected"
+            exit 1
+          fi
+        continue-on-error: false
+
+      - name: "⚠️ Check: No business logic in components"
+        run: |
+          if grep -r "if.*\.status\|if.*\.balance\|if.*\.closed\|if.*\.approved" \
+            src/components/ --include="*.tsx" --include="*.jsx" \
+            2>/dev/null | grep -v "__tests__"; then
+            echo "::warning::Potential business logic found in components"
+          fi
+        continue-on-error: true
+
+      - name: "❌ Check: FCE imports via index only"
+        run: |
+          if grep -r "from '@/core/spofe-contract/" src/ --include="*.ts" --include="*.js" --include="*.tsx" --include="*.jsx" \
+            | grep -v "spofe-contract/" \
+            | grep -v "index.js" \
+            | grep -v "__tests__"; then
+            echo "::error::Direct import from FCE submodule detected"
+            exit 1
+          fi
+        continue-on-error: false
+
+  comment-on-violations:
+    name: Comment on PR Violations
+    runs-on: ubuntu-latest
+    if: failure() && github.event_name == 'pull_request'
+    needs: [validate-fce, forbidden-patterns]
+    
+    steps:
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **Frontend Contract Enforcer Validation Failed**\n\nPlease check the build logs and fix the violations before merging.'
+            })

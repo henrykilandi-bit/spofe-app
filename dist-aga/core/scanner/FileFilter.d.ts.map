@@ -1,0 +1,1 @@
+{"version":3,"file":"FileFilter.d.ts","sourceRoot":"","sources":["../../../aga/core/scanner/FileFilter.ts"],"names":[],"mappings":"AAAA;;GAEG;AAIH,qBAAa,UAAU;IACrB,MAAM,CAAC,kBAAkB,WAA0B;IAEnD,MAAM,CAAC,aAAa,WAOlB;IAEF,MAAM,CAAC,aAAa,CAAC,QAAQ,EAAE,MAAM,GAAG,OAAO;IAK/C,MAAM,CAAC,mBAAmB,CAAC,OAAO,EAAE,MAAM,GAAG,OAAO;CAMrD"}

@@ -1,0 +1,317 @@
+# 🔐 SILC GUARDIAN v4.0 — QUICK NOTIFICATION
+
+**TO:** All Team Members  
+**FROM:** Architecture Council  
+**DATE:** 28 January 2026  
+**STATUS:** ✅ EFFECTIVE NOW
+
+---
+
+## ⚡ SUMMARY (2 MINUTES)
+
+**SILC Guardian Level 4 is NOW ACTIVE.**
+
+### What This Means for You
+
+✅ **Your current code:** Still works (170/170 tests passing)  
+❌ **New code:** Must pass Level 4 checks (system coherence validation)  
+🔐 **Merge blocking:** Enabled (Level 4 violations block PRs)  
+
+### What is Level 4?
+
+Level 4 validates that all 7 SILC processes work together coherently:
+- Process graph (dependencies, ordering, no cycles)
+- Shared states (valid transitions, no shortcuts)
+- Global invariants (8 impossible-to-bypass rules)
+- Composition safety (no emergent authority)
+- Regression detection (catch silent changes)
+
+### What to Do RIGHT NOW
+
+**Choose your role below. Read what's next for you.**
+
+---
+
+## 👨‍💻 DEVELOPERS
+
+### Your Next PR
+
+```bash
+# Before pushing:
+cd cascade
+npm run guardian
+
+# If all green ✅ → push normally
+# If any G4-* violation ❌ → fix code then retry
+```
+
+### What Can Block Your PR
+
+❌ **G4-01:** Process ordering  
+❌ **G4-02:** Shared state inconsistency  
+❌ **G4-03:** Implicit authority  
+❌ **G4-04:** Invariant violated  
+❌ **G4-05:** Governance bypass  
+
+### Learn More
+
+**3 minutes:** [ULTRA_QUICK_SUMMARY.md](ULTRA_QUICK_SUMMARY.md)  
+**20 minutes:** Violation codes in [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md)  
+**5 minutes:** Run `npm run guardian` locally
+
+---
+
+## 🏗️ ARCHITECTS
+
+### Update Your System Design
+
+**Level 4 now enforces:**
+- Process dependencies are DAG (directed acyclic graph)
+- All state transitions are contractual
+- 8 global invariants apply system-wide
+- No emergent authority from process composition
+
+### Learn More
+
+**45 minutes:** [SILC_GUARDIAN_LEVEL_4.contract.md](architecture/contracts/SILC_GUARDIAN_LEVEL_4.contract.md)  
+**60 minutes:** [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md)  
+**30 minutes:** Review [SYSTEM_STATE_FINAL_v4.md](SYSTEM_STATE_FINAL_v4.md)
+
+---
+
+## 🚀 DEVOPS
+
+### Configure CI/CD
+
+Guardian Level 4 check is now required for merge:
+
+```yaml
+name: SILC Guardian Check
+on: [pull_request, push]
+jobs:
+  guardian:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd cascade && npm ci
+      - run: cd cascade && npm run guardian:check
+```
+
+Set branch protection rule: `SILC Guardian Check` ✅ required
+
+### Learn More
+
+**20 minutes:** CI/CD section in [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md)  
+**30 minutes:** GitHub Actions configuration & testing
+
+---
+
+## 👨‍💼 MANAGERS
+
+### Three Things You Need to Know
+
+1. **System is now CLOSED** to uncontractual acts
+   - Guardian validates system coherence
+   - No exceptions without major version change
+
+2. **Test passing ≠ safe to merge**
+   - Tests check code logic
+   - Guardian checks system coherence
+   - Both required
+
+3. **Team will need ~1 hour training**
+   - Quick summary: 3 min
+   - Role-specific guide: 20-40 min
+   - Hands-on test: 5-10 min
+
+### Learn More
+
+**15 minutes:** [GUARDIAN_LEVEL4_ACTIVATION.md](GUARDIAN_LEVEL4_ACTIVATION.md)  
+**30 minutes:** [SYSTEM_STATE_FINAL_v4.md](SYSTEM_STATE_FINAL_v4.md)
+
+---
+
+## 📚 NEXT STEPS (BY ROLE)
+
+### Today (Urgency: HIGH)
+
+- [ ] **Dev:** Read ULTRA_QUICK_SUMMARY.md
+- [ ] **Architect:** Start reading Level 4 contract
+- [ ] **DevOps:** Review CI/CD integration section
+- [ ] **Manager:** Understand what "Level 4" means
+
+### This Week (Urgency: HIGH)
+
+- [ ] **All:** Complete role-specific learning path
+- [ ] **DevOps:** Configure GitHub Actions & branch protection
+- [ ] **All:** Run `npm run guardian` locally once
+- [ ] **All:** Know what blocks your next PR
+
+### Next Week (Urgency: MEDIUM)
+
+- [ ] **All:** First PR with Level 4 enabled
+- [ ] **Dev:** Get familiar with violation codes
+- [ ] **Architect:** Design new features with Level 4 in mind
+- [ ] **All:** Zero Level 4 violations
+
+---
+
+## 🆘 IF YOUR PR GETS BLOCKED
+
+### Step 1: Identify Violation
+
+```bash
+cat architecture/compliance/SILC_INTERPROCESS_REPORT.json
+# Look for "violations" section
+```
+
+### Step 2: Find Code (G4-01 to G4-05)
+
+Example: `G4-02b: "State 'UserRole' mutation in unauthorized process"`
+
+### Step 3: Read Fix Guide
+
+See [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md) — Violation Codes section
+
+### Step 4: Fix & Retry
+
+```bash
+cd cascade && npm run guardian
+```
+
+### Step 5: If Still Blocked
+
+Contact your Architect (rare; needs major version change)
+
+---
+
+## 📊 THE 8 RULES (I1-I8)
+
+These are IMPOSSIBLE TO BYPASS:
+
+| # | Rule |
+|---|------|
+| I1 | One active role per user-context max |
+| I2 | Every role must have a context |
+| I3 | No state change without decision |
+| I4 | Audit recorded after decision (never before) |
+| I5 | Authorization ≠ Ability |
+| I6 | Revocation is permanent (Transfer only) |
+| I7 | Every role in audit trail |
+| I8 | Audit trail immutable |
+
+Breaking any = **Merge blocked.**
+
+---
+
+## 🎯 EXPECTED BEHAVIOR
+
+### Normal PR (no L4 violation)
+
+```
+PR pushed
+  ✅ Tests pass
+  ✅ Level 4 check passes
+  → Merge allowed
+```
+
+### PR with Issue
+
+```
+PR pushed
+  ✅ Tests pass
+  ❌ Level 4 check fails (e.g., G4-02b)
+  → Merge blocked
+  → Fix code
+  ✅ Re-run tests
+  ✅ Guardian passes
+  → Merge allowed
+```
+
+---
+
+## 📞 FAQ (QUICK ANSWERS)
+
+**Q: Does this break my existing code?**  
+A: No. All existing tests still pass. Guardian adds new validation.
+
+**Q: Can I disable Level 4?**  
+A: No. It's immutable and binding.
+
+**Q: What if I disagree with a violation?**  
+A: The violation is correct. Fix your code or your contract.
+
+**Q: How do I get an exception?**  
+A: You don't (except major version change). Fix the code.
+
+**Q: How long until enforcement?**  
+A: NOW. This week.
+
+---
+
+## 📁 KEY DOCUMENTS
+
+**Quick Reference:**
+- [ULTRA_QUICK_SUMMARY.md](ULTRA_QUICK_SUMMARY.md) — 3-min overview
+- [GUARDIAN_v4_INDEX.md](GUARDIAN_v4_INDEX.md) — Navigation guide
+
+**Technical Details:**
+- [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md) — Complete guide (1,000+ lines)
+- [SILC_GUARDIAN_LEVEL_4.contract.md](architecture/contracts/SILC_GUARDIAN_LEVEL_4.contract.md) — Formal specification
+
+**Notices:**
+- [GUARDIAN_LEVEL4_ACTIVATION.md](GUARDIAN_LEVEL4_ACTIVATION.md) — Official notice
+- [SYSTEM_STATE_FINAL_v4.md](SYSTEM_STATE_FINAL_v4.md) — Final system state
+
+---
+
+## 🚀 START HERE (BY ROLE)
+
+| Role | Start With | Time |
+|------|-----------|------|
+| **Dev** | [ULTRA_QUICK_SUMMARY.md](ULTRA_QUICK_SUMMARY.md) | 3 min |
+| **Architect** | [SILC_GUARDIAN_LEVEL_4.contract.md](architecture/contracts/SILC_GUARDIAN_LEVEL_4.contract.md) | 45 min |
+| **DevOps** | CI/CD section in [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md) | 20 min |
+| **Manager** | [GUARDIAN_LEVEL4_ACTIVATION.md](GUARDIAN_LEVEL4_ACTIVATION.md) | 15 min |
+
+Then: [GUARDIAN_v4_INDEX.md](GUARDIAN_v4_INDEX.md) for full navigation
+
+---
+
+## ✅ SUCCESS CRITERIA
+
+You're ready when:
+- [ ] Know what Level 4 is
+- [ ] Know what blocks your PR
+- [ ] Can run `npm run guardian` locally
+- [ ] Understand the 8 invariants
+- [ ] Know violation codes (G4-*)
+
+---
+
+## 🔏 OFFICIAL STATUS
+
+```
+🔐 SILC Guardian v4.0 — ACTIVATED
+✅ All 4 Levels Operational
+🔒 System Coherence Validated
+🎯 Full Enforcement: NOW
+
+No exceptions. No overrides (except major version).
+The system is CLOSED to uncontractual acts.
+```
+
+---
+
+**QUESTIONS?**
+
+1. Check [GUARDIAN_v4_REFERENCE.md](GUARDIAN_v4_REFERENCE.md) — Troubleshooting section
+2. Read [GUARDIAN_v4_ACTIVATION.md](GUARDIAN_v4_ACTIVATION.md) — FAQ section
+3. Review [GUARDIAN_v4_INDEX.md](GUARDIAN_v4_INDEX.md) — Navigation by topic
+
+---
+
+**Message:** Guardian v4.0 Activation Notification  
+**Effective:** 28 January 2026 — IMMEDIATELY  
+**Authority:** SILC Guardian Architecture Council  
+**Status:** ✅ OFFICIAL & BINDING

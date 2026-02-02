@@ -1,0 +1,46 @@
+name: SPOFE Auth Contract CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  auth-contract-checks:
+    name: Auth Contract Enforcement
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check Auth Contract Exists
+        run: node ci/check-auth-contract-exists.js
+
+      - name: Check Frontend Auth Authority
+        run: node ci/check-frontend-auth-authority.js
+
+      - name: Check Auth Not In Modules
+        run: node ci/check-auth-not-in-modules.js
+
+      - name: Check Backend Guardian Bypass
+        run: node ci/check-backend-auth-guardian.js
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "✅ All Auth Contract checks passed"
+          echo ""
+          echo "Verified:"
+          echo "  - Auth Contract exists and is versioned"
+          echo "  - Frontend has no authority logic"
+          echo "  - Auth is isolated from modules"
+          echo "  - Backend does not bypass Guardian"
+          echo ""
+          echo "SPOFE Rule: Identity ≠ Authority"

@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-02-01T00:00:00.000Z",
+  "source": "cascade/modules/immobilisation/openapi/immobilisation.openapi.json",
+  "paths": 15,
+  "schemas": 25,
+  "contracts": [
+    "IMM-CS-DEP-01",
+    "IMM-CS-DEP-02",
+    "IMM-CS-ALL-01",
+    "IMM-CS-MNT-01",
+    "IMM-CS-MNT-02",
+    "IMM-BUD-REN-01",
+    "IMM-BUD-REN-02",
+    "IMM-BUD-MNT-01",
+    "IMM-BUD-DEP-01"
+  ]
+}

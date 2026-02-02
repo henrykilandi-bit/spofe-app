@@ -1,0 +1,60 @@
+stages:
+  - validate
+  - quality
+
+variables:
+  NODE_VERSION: "18"
+  CACHE_KEY: "$CI_COMMIT_REF_SLUG"
+
+cache:
+  key: ${CACHE_KEY}
+  paths:
+    - node_modules/
+
+architecture-governance:
+  stage: validate
+  image: node:18
+  
+  before_script:
+    - npm ci
+
+  script:
+    - echo "🔍 Running AGA Architecture Checks..."
+    - npx ts-node aga/index.ts . --validate
+    - npx ts-node aga/index.ts . --verbose
+    - npx ts-node aga/index.ts . --format json > aga-report.json
+
+  after_script:
+    - cat aga-report.json | head -20
+
+  artifacts:
+    reports:
+      junit: aga-report.xml
+    paths:
+      - aga-report.json
+    expire_in: 30 days
+    when: always
+
+  allow_failure: false
+  
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH =~ /^(main|develop)$/'
+
+architecture-governance-json:
+  stage: quality
+  image: node:18
+  needs: ["architecture-governance"]
+  
+  script:
+    - npm ci
+    - npx ts-node aga/index.ts . --format json > aga-report.json
+    
+  artifacts:
+    paths:
+      - aga-report.json
+    expire_in: 30 days
+    reports:
+      metrics: aga-metrics.json
+  
+  allow_failure: true

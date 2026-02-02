@@ -1,0 +1,769 @@
+openapi: 3.1.0
+
+info:
+  title: SPOFE API
+  description: |
+    # SPOFE API - Production Documentation
+    
+    **SPOFE** (Système de Pilotage Opérationnel Fédéré Épistémique)
+    
+    API entièrement gouvernée par :
+    - 🔐 **SILC v2.1** - Invariants de cohérence
+    - 🛡️ **Guardian v4** - Gouvernance des processus
+    - 🏗️ **AGA** - Architecture append-only immutable
+    
+    ## Principe Fondamental
+    
+    Cette API expose :
+    ✅ **Commands** (POST/PATCH) - Mutations gouvernées par Guardian
+    ✅ **Read-Models** (GET) - Vues read-only sur facts
+    ❌ **Pas de logique métier** - Tout dans Domain/Guardian
+    ❌ **Pas de write-models** - Accès réservé à SILC
+    
+    ## Contrats
+    
+    - Erreurs : Guardian violations mappées à HTTP status
+    - Validations : TypeBox DTO + SILC invariants
+    - Idempotence : Via command + aggregate ID
+    
+  version: "1.0.0"
+  contact:
+    name: SPOFE Development Team
+  license:
+    name: Proprietary
+    identifier: SPOFE-v1
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+    variables:
+      protocol:
+        default: http
+  - url: https://api.example.com
+    description: Production
+
+tags:
+  - name: Commands
+    description: |
+      **Write operations** governées par Guardian.
+      
+      Chaque commande :
+      1. Valide les inputs (TypeBox DTO)
+      2. Crée un Domain Event (immutable past)
+      3. Crée un Domain Fact (versioned state)
+      4. Soumet à Guardian (SILC invariants)
+      5. Persiste via TransactionManager
+      
+      ➡️ **Guardian peut rejeter** (403/409/422)
+      ➡️ **Aucune mutation sans Guardian approval**
+      
+  - name: ReadModels
+    description: |
+      **Read-only projections** à partir des Facts.
+      
+      Chaque vue :
+      - 📖 SELECT uniquement (aucune write)
+      - ✅ 100% reconstructible à partir des Facts
+      - 🔄 Cohérente avec le state courant
+      - 🚫 Pas de Guardian involvement
+      
+      ➡️ **Latence : O(1) queries**
+      ➡️ **Sécurité : Lecture seule garantie**
+
+  - name: Health & Admin
+    description: Health checks et diagnostics
+
+paths:
+
+  # ═══════════════════════════════════════════════════════════════════
+  # WRITE OPERATIONS (Commands)
+  # ═══════════════════════════════════════════════════════════════════
+
+  /aggregates:
+    post:
+      tags: [Commands]
+      summary: Créer un nouvel agrégat
+      description: |
+        **Crée un nouvel agrégat** avec état initial.
+        
+        Processus Guardian : `CREATE_AGGREGATE`
+        
+        Invariants vérifiés :
+        - Agrégat n'existe pas (I1)
+        - initialData est JSON valide (I2)
+        
+        **Réponse de succès : 201 Created**
+        ```json
+        {
+          "status": "CREATED",
+          "aggregateId": "550e8400-e29b-41d4-a716-446655440000",
+          "event": {
+            "type": "AggregateCreated",
+            "occurredAt": "2026-01-30T15:30:00Z"
+          }
+        }
+        ```
+      operationId: createAggregate
+      requestBody:
+        required: true
+        description: Création d'agrégat avec état initial
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAggregateRequest'
+            examples:
+              valid:
+                description: Exemple valide
+                value:
+                  aggregateId: "550e8400-e29b-41d4-a716-446655440000"
+                  initialData:
+                    name: "Acme Corp"
+                    industry: "Technology"
+                  actorRole: "SYSTEM"
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedAggregateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/InvariantViolation'
+
+  /aggregates/{id}:
+    get:
+      tags: [ReadModels]
+      summary: Récupérer l'état courant d'un agrégat
+      description: |
+        **Récupère l'état courant** d'un agrégat.
+        
+        Basé sur `rm_aggregate_current` - vue read-only.
+        
+        **Aucun Guardian involvement** (lecture seule).
+        
+        **Réponse de succès : 200 OK**
+        ```json
+        {
+          "status": "SUCCESS",
+          "data": {
+            "aggregate_id": "550e8400-e29b-41d4-a716-446655440000",
+            "fact_type": "AggregateUpdated",
+            "data": {
+              "name": "Acme Corp Updated",
+              "industry": "Technology"
+            },
+            "valid_from": "2026-01-30T15:35:00Z"
+          }
+        }
+        ```
+      operationId: getAggregateById
+      parameters:
+        - $ref: '#/components/parameters/AggregateIdPath'
+      responses:
+        '200':
+          $ref: '#/components/responses/AggregateCurrent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      tags: [Commands]
+      summary: Modifier un agrégat existant
+      description: |
+        **Modifie l'état** d'un agrégat existant.
+        
+        Processus Guardian : `UPDATE_AGGREGATE`
+        
+        Invariants vérifiés :
+        - Agrégat existe (I1)
+        - Agrégat n'est pas fermé (I3)
+        - Changements valides (I2)
+        
+        **Réponse de succès : 200 OK**
+        ```json
+        {
+          "status": "UPDATED",
+          "aggregateId": "550e8400-e29b-41d4-a716-446655440000",
+          "event": {
+            "type": "AggregateUpdated",
+            "occurredAt": "2026-01-30T15:35:00Z"
+          }
+        }
+        ```
+      operationId: updateAggregate
+      parameters:
+        - $ref: '#/components/parameters/AggregateIdPath'
+      requestBody:
+        required: true
+        description: Changements à appliquer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAggregateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdatedAggregateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/InvariantViolation'
+
+  /aggregates/{id}/close:
+    post:
+      tags: [Commands]
+      summary: Fermer un agrégat (fin de cycle de vie)
+      description: |
+        **Ferme un agrégat** = fin irrevocable du cycle de vie.
+        
+        Processus Guardian : `CLOSE_AGGREGATE`
+        
+        Invariants vérifiés :
+        - Agrégat existe (I1)
+        - Agrégat n'est pas déjà fermé (I2)
+        - Séquence valide (I4)
+        
+        **Effet** : Guardian bloquera toute UPDATE_AGGREGATE ultérieure.
+        
+        **Réponse de succès : 200 OK**
+        ```json
+        {
+          "status": "CLOSED",
+          "aggregateId": "550e8400-e29b-41d4-a716-446655440000",
+          "event": {
+            "type": "AggregateClosed",
+            "occurredAt": "2026-01-30T16:00:00Z"
+          }
+        }
+        ```
+      operationId: closeAggregate
+      parameters:
+        - $ref: '#/components/parameters/AggregateIdPath'
+      requestBody:
+        required: true
+        description: Fermeture d'agrégat
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloseAggregateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ClosedAggregateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  # ═══════════════════════════════════════════════════════════════════
+  # READ-ONLY VIEWS (Read-Models)
+  # ═══════════════════════════════════════════════════════════════════
+
+  /aggregates/active:
+    get:
+      tags: [ReadModels]
+      summary: Lister les agrégats actifs
+      description: |
+        **Récupère la liste des agrégats actifs** (sans fact `AggregateClosed`).
+        
+        Basé sur `rm_aggregate_active` - vue read-only optimisée.
+        
+        **Aucun Guardian involvement** (lecture seule).
+        
+        **Réponse de succès : 200 OK**
+        ```json
+        {
+          "status": "SUCCESS",
+          "count": 3,
+          "data": [
+            {
+              "aggregate_id": "550e8400-e29b-41d4-a716-446655440000",
+              "data": {
+                "name": "Acme Corp",
+                "industry": "Technology"
+              },
+              "last_updated_at": "2026-01-30T15:35:00Z"
+            }
+          ]
+        }
+        ```
+      operationId: listActiveAggregates
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+          description: Nombre max de résultats
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          description: Décalage pour pagination
+      responses:
+        '200':
+          $ref: '#/components/responses/ActiveAggregatesList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /aggregates/closed:
+    get:
+      tags: [ReadModels]
+      summary: Lister les agrégats fermés
+      description: |
+        **Récupère la liste des agrégats fermés** (avec fact `AggregateClosed`).
+        
+        Basé sur `rm_aggregate_closed` - vue read-only optimisée.
+        
+        **Aucun Guardian involvement** (lecture seule).
+        
+        **Réponse de succès : 200 OK**
+        ```json
+        {
+          "status": "SUCCESS",
+          "count": 2,
+          "data": [
+            {
+              "aggregate_id": "660e8400-e29b-41d4-a716-446655440001",
+              "closed_at": "2026-01-30T14:00:00Z"
+            }
+          ]
+        }
+        ```
+      operationId: listClosedAggregates
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        '200':
+          $ref: '#/components/responses/ClosedAggregatesList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  # ═══════════════════════════════════════════════════════════════════
+  # HEALTH & ADMIN
+  # ═══════════════════════════════════════════════════════════════════
+
+  /health:
+    get:
+      tags: [Health & Admin]
+      summary: Vérifier la santé du serveur
+      description: Diagnostic de santé du serveur API
+      operationId: health
+      responses:
+        '200':
+          description: Serveur sain
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy]
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                required: [status, timestamp, version]
+
+components:
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PARAMETERS
+  # ═══════════════════════════════════════════════════════════════════
+
+  parameters:
+    AggregateIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Identifiant unique de l'agrégat (UUID)
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+  # ═══════════════════════════════════════════════════════════════════
+  # SCHEMAS
+  # ═══════════════════════════════════════════════════════════════════
+
+  schemas:
+
+    # ─────────────────────────────────────────────────────────────────
+    # Enums & Value Objects
+    # ─────────────────────────────────────────────────────────────────
+
+    ActorRole:
+      type: string
+      enum: [SYSTEM, ADMIN, USER]
+      description: |
+        Rôle de l'acteur qui exécute la commande :
+        - **SYSTEM** : Actions système (bootstrapping)
+        - **ADMIN** : Actions administrateur
+        - **USER** : Actions utilisateur normal
+
+    EventType:
+      type: string
+      enum: [AggregateCreated, AggregateUpdated, AggregateClosed]
+      description: Type d'événement domaine
+
+    ProcessType:
+      type: string
+      enum: [CREATE_AGGREGATE, UPDATE_AGGREGATE, CLOSE_AGGREGATE]
+      description: Processus Guardian activé
+
+    # ─────────────────────────────────────────────────────────────────
+    # Request Bodies
+    # ─────────────────────────────────────────────────────────────────
+
+    CreateAggregateRequest:
+      type: object
+      required: [aggregateId, initialData, actorRole]
+      properties:
+        aggregateId:
+          type: string
+          format: uuid
+          description: UUID unique pour cet agrégat
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        initialData:
+          type: object
+          additionalProperties: true
+          description: État initial de l'agrégat (JSON libre)
+          example:
+            name: "Acme Corp"
+            industry: "Technology"
+        actorRole:
+          $ref: '#/components/schemas/ActorRole'
+
+    UpdateAggregateRequest:
+      type: object
+      required: [changes, actorRole]
+      properties:
+        changes:
+          type: object
+          additionalProperties: true
+          description: Changements à appliquer (JSON libre)
+          example:
+            name: "Acme Corp Updated"
+        actorRole:
+          $ref: '#/components/schemas/ActorRole'
+
+    CloseAggregateRequest:
+      type: object
+      required: [actorRole]
+      properties:
+        actorRole:
+          $ref: '#/components/schemas/ActorRole'
+
+    # ─────────────────────────────────────────────────────────────────
+    # Response Data
+    # ─────────────────────────────────────────────────────────────────
+
+    AggregateCurrent:
+      type: object
+      properties:
+        aggregate_id:
+          type: string
+          format: uuid
+          description: Identifiant unique
+        fact_type:
+          $ref: '#/components/schemas/EventType'
+          description: Type du fait courant
+        data:
+          type: object
+          additionalProperties: true
+          description: État courant
+        valid_from:
+          type: string
+          format: date-time
+          description: Timestamp du fait courant
+
+    ActiveAggregate:
+      type: object
+      properties:
+        aggregate_id:
+          type: string
+          format: uuid
+        data:
+          type: object
+          additionalProperties: true
+        last_updated_at:
+          type: string
+          format: date-time
+
+    ClosedAggregate:
+      type: object
+      properties:
+        aggregate_id:
+          type: string
+          format: uuid
+        closed_at:
+          type: string
+          format: date-time
+
+    DomainEvent:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EventType'
+        occurredAt:
+          type: string
+          format: date-time
+          description: Quand l'événement s'est produit (UTC)
+
+    ErrorResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: Code d'erreur (Guardian ou application)
+          enum: [
+            BAD_REQUEST,
+            UNAUTHORIZED,
+            FORBIDDEN,
+            NOT_FOUND,
+            CONFLICT,
+            INVARIANT_VIOLATION,
+            INTERNAL_ERROR,
+            G4_01,
+            G4_02,
+            G4_03,
+            G4_04,
+            G4_05
+          ]
+        message:
+          type: string
+          description: Description lisible
+        violation:
+          type: string
+          description: Détail de la violation SILC (si applicable)
+          example: "I1 violation: Aggregate does not exist"
+        processName:
+          type: string
+          description: Processus Guardian qui a rejeté (si applicable)
+          $ref: '#/components/schemas/ProcessType'
+
+  # ═══════════════════════════════════════════════════════════════════
+  # RESPONSES
+  # ═══════════════════════════════════════════════════════════════════
+
+  responses:
+
+    # ─────────────────────────────────────────────────────────────────
+    # Success Responses
+    # ─────────────────────────────────────────────────────────────────
+
+    CreatedAggregateResponse:
+      description: Agrégat créé avec succès (201)
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, aggregateId, event]
+            properties:
+              status:
+                type: string
+                enum: [CREATED]
+              aggregateId:
+                type: string
+                format: uuid
+              event:
+                $ref: '#/components/schemas/DomainEvent'
+
+    UpdatedAggregateResponse:
+      description: Agrégat modifié avec succès (200)
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, aggregateId, event]
+            properties:
+              status:
+                type: string
+                enum: [UPDATED]
+              aggregateId:
+                type: string
+                format: uuid
+              event:
+                $ref: '#/components/schemas/DomainEvent'
+
+    ClosedAggregateResponse:
+      description: Agrégat fermé avec succès (200)
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, aggregateId, event]
+            properties:
+              status:
+                type: string
+                enum: [CLOSED]
+              aggregateId:
+                type: string
+                format: uuid
+              event:
+                $ref: '#/components/schemas/DomainEvent'
+
+    AggregateCurrent:
+      description: État courant d'un agrégat (200)
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, data]
+            properties:
+              status:
+                type: string
+                enum: [SUCCESS]
+              data:
+                $ref: '#/components/schemas/AggregateCurrent'
+
+    ActiveAggregatesList:
+      description: Liste des agrégats actifs (200)
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, count, data]
+            properties:
+              status:
+                type: string
+                enum: [SUCCESS]
+              count:
+                type: integer
+                minimum: 0
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActiveAggregate'
+
+    ClosedAggregatesList:
+      description: Liste des agrégats fermés (200)
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [status, count, data]
+            properties:
+              status:
+                type: string
+                enum: [SUCCESS]
+              count:
+                type: integer
+                minimum: 0
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClosedAggregate'
+
+    # ─────────────────────────────────────────────────────────────────
+    # Error Responses
+    # ─────────────────────────────────────────────────────────────────
+
+    BadRequest:
+      description: Requête invalide (400)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: BAD_REQUEST
+            message: "aggregateId must be a valid UUID"
+
+    Forbidden:
+      description: Interdite par Guardian (403)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: G4_03
+            message: "Guardian forbids the action"
+            processName: UPDATE_AGGREGATE
+            violation: "I3 violation: Aggregate is closed"
+
+    NotFound:
+      description: Ressource non trouvée (404)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: NOT_FOUND
+            message: "Aggregate not found"
+
+    Conflict:
+      description: Conflit d'état ou de séquence (409)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: CONFLICT
+            message: "Aggregate already exists"
+            violation: "I1 violation: Aggregate already created"
+
+    InvariantViolation:
+      description: Violation d'invariant SILC (422)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: INVARIANT_VIOLATION
+            message: "SILC invariant violated"
+            violation: "I2 violation: initialData is not valid JSON"
+
+# ═══════════════════════════════════════════════════════════════════
+# ADDITIONAL DOCUMENTATION
+# ═══════════════════════════════════════════════════════════════════
+
+webhooks: {}
+
+x-logo:
+  url: "https://example.com/logo.png"
+  altText: "SPOFE Logo"
+
+x-google-endpoints:
+  - name: "api.example.com"
+    allowUnregisteredCalls: false
+    allowUnregisteredCallers: false
+
+x-amazon-apigateway-policy:
+  Version: "2012-10-17"
+  Statement:
+    - Effect: Allow
+      Principal: "*"
+      Action: "execute-api:Invoke"
+      Resource: "execute-api:/*"

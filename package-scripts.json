@@ -1,0 +1,89 @@
+{
+  "name": "spofe-complete",
+  "version": "1.0.0",
+  "description": "SPOFE Complete — Architecture Guardian + PostgreSQL + Application Tier",
+  "type": "module",
+  "main": "src/infrastructure/db/index.ts",
+  "scripts": {
+    "// ============ DEVELOPMENT ============": "",
+    "dev": "nodemon --exec tsx src/server.ts --watch src",
+    "build": "tsc",
+    "start": "node dist/src/server.js",
+    
+    "// ============ API ENDPOINTS ============": "",
+    "spofe:api": "tsx src/infrastructure/db/integration.example.ts",
+    "spofe:api:dev": "nodemon --exec tsx src/infrastructure/db/integration.example.ts",
+    "spofe:api:prod": "npm run build && node dist/src/infrastructure/db/integration.example.js",
+    
+    "// ============ DATABASE ============": "",
+    "db:migrate": "tsx src/infrastructure/db/migrate.ts",
+    "db:seed": "tsx src/infrastructure/db/seed.ts",
+    "db:check": "tsx src/infrastructure/db/health-check.ts",
+    "db:query": "tsx src/infrastructure/db/cli-query.ts",
+    "db:audit": "tsx src/infrastructure/db/audit-check.ts",
+    "db:trace": "tsx src/infrastructure/db/trace-decision.ts",
+    
+    "// ============ TESTING ============": "",
+    "test": "jest",
+    "test:application": "jest --testPathPattern='application' --coverage",
+    "test:integration": "jest --testPathPattern='integration' --coverage",
+    "test:sql": "tsx src/infrastructure/db/tests/run-tests.ts",
+    "test:watch": "jest --watch",
+    "test:all": "npm run test:application && npm run test:integration && npm run test:sql",
+    
+    "// ============ ARCHITECTURE GOVERNANCE (AGA) ============": "",
+    "aga:check": "tsx src/aga/cli.ts check",
+    "aga:report": "tsx src/aga/cli.ts report --format=html",
+    "aga:ci": "tsx src/aga/cli.ts check --exit-code",
+    "aga:fix": "tsx src/aga/cli.ts fix",
+    
+    "// ============ POSTGRESQL DOCKER ============": "",
+    "docker:postgres:up": "docker-compose -f docker-compose.postgres.yml up -d",
+    "docker:postgres:down": "docker-compose -f docker-compose.postgres.yml down",
+    "docker:postgres:logs": "docker-compose -f docker-compose.postgres.yml logs -f",
+    "docker:postgres:shell": "docker-compose -f docker-compose.postgres.yml exec postgres psql -U spofe_user -d spofe",
+    
+    "// ============ PM2 PRODUCTION ============": "",
+    "pm2:start": "pm2 start pm2.config.js",
+    "pm2:stop": "pm2 stop spofe-api",
+    "pm2:restart": "pm2 restart spofe-api",
+    "pm2:logs": "pm2 logs spofe-api",
+    "pm2:delete": "pm2 delete spofe-api",
+    "pm2:status": "pm2 status",
+    
+    "// ============ LINTING & FORMATTING ============": "",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write 'src/**/*.{ts,tsx,json}'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,json}'",
+    
+    "// ============ CLEANUP ============": "",
+    "clean": "rm -rf dist coverage node_modules",
+    "reset": "npm run clean && npm install"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "pino": "^8.17.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.6",
+    "@types/pg": "^8.11.4",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "pm2": "^5.3.0",
+    "prettier": "^3.1.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

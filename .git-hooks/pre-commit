@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+/**
+ * Git Pre-commit Hook
+ * 
+ * Valide le contrat Frontend avant chaque commit
+ * Installation: cp .git-hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+ */
+
+import { execSync } from 'child_process';
+import process from 'process';
+
+console.log('🔐 Validating Frontend Contract Enforcer...\n');
+
+try {
+  // Vérifier que les fichiers stagés respectent le contrat
+  const stagedFiles = execSync('git diff --cached --name-only')
+    .toString()
+    .split('\n')
+    .filter(f => /\.(ts|js|tsx|jsx)$/.test(f));
+
+  if (stagedFiles.length === 0) {
+    console.log('✓ No JS/TS files staged');
+    process.exit(0);
+  }
+
+  // Valider les fichiers stagés
+  console.log(`Checking ${stagedFiles.length} files...`);
+
+  for (const file of stagedFiles) {
+    const content = execSync(`git show :${file}`).toString();
+
+    // Interdire fetch()
+    if (/fetch\s*\(/.test(content) && !file.includes('spofe-contract')) {
+      console.error(`❌ ${file}: fetch() is not allowed`);
+      process.exit(1);
+    }
+
+    // Interdire localStorage métier
+    if (/(localStorage|sessionStorage).*\.(status|balance|aggregate)/.test(content)) {
+      console.error(`❌ ${file}: Business data in localStorage detected`);
+      process.exit(1);
+    }
+
+    // Avertir sur logique métier
+    if (file.includes('components') && /if\s*\(.*\.(status|balance|closed)/.test(content)) {
+      console.warn(`⚠️ ${file}: Potential business logic in component`);
+    }
+  }
+
+  console.log('\n✓ All checks passed');
+  process.exit(0);
+
+} catch (error) {
+  console.error('❌ Pre-commit validation failed');
+  console.error(error.message);
+  process.exit(1);
+}

@@ -1,0 +1,514 @@
+openapi: 3.1.0
+
+info:
+  title: SPOFE API - Frontend Contract Aligned
+  version: 1.0.0
+  description: |
+    OpenAPI specification for SPOFE backend.
+    
+    ⚠️ CRITICAL: This is the SOURCE OF TRUTH for the frontend contract.
+    - All endpoints here must be listed in allowed-commands.v1.json
+    - All endpoints here must be listed in allowed-read-models.v1.json
+    - Frontend cannot call endpoints outside this specification
+    
+  contact:
+    name: SPOFE Architecture Team
+
+servers:
+  - url: http://localhost:3000
+    description: Development
+  - url: https://api.spofe.local
+    description: Production
+
+tags:
+  - name: Commands
+    description: Write operations (Commands from Domain-Driven Design)
+  - name: Read-models
+    description: Read operations (Projections for UI consumption)
+  - name: Health
+    description: System health and status
+
+paths:
+  # ═══════════════════════════════════════════════════════════
+  # COMMANDS (Write operations)
+  # ═══════════════════════════════════════════════════════════
+
+  /commands/CreateAggregate:
+    post:
+      tags:
+        - Commands
+      summary: Create a new aggregate
+      description: |
+        Créer un nouvel agrégat.
+        
+        ⚠️ Corresponds to allowed-commands.v1.json
+      operationId: createAggregate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Aggregate name
+                owner:
+                  type: string
+                  description: Owner identifier
+                description:
+                  type: string
+                  description: Optional description
+              required:
+                - name
+                - owner
+      responses:
+        '201':
+          description: Aggregate created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+      security:
+        - bearerAuth: []
+
+  /commands/UpdateAggregate:
+    post:
+      tags:
+        - Commands
+      summary: Update aggregate value
+      description: |
+        Mettre à jour une valeur d'agrégat.
+        
+        ⚠️ Corresponds to allowed-commands.v1.json
+      operationId: updateAggregate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                aggregateId:
+                  type: string
+                  format: uuid
+                  description: Aggregate to update
+                newValue:
+                  type: string
+                  description: New value
+              required:
+                - aggregateId
+                - newValue
+      responses:
+        '200':
+          description: Aggregate updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+      security:
+        - bearerAuth: []
+
+  /commands/CloseAggregate:
+    post:
+      tags:
+        - Commands
+      summary: Close an aggregate
+      description: |
+        Clôturer un agrégat.
+        
+        ⚠️ Corresponds to allowed-commands.v1.json
+        ⚠️ Guardian will validate if this is allowed
+      operationId: closeAggregate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                aggregateId:
+                  type: string
+                  format: uuid
+                  description: Aggregate to close
+              required:
+                - aggregateId
+      responses:
+        '200':
+          description: Aggregate closed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+      security:
+        - bearerAuth: []
+
+  # ═══════════════════════════════════════════════════════════
+  # READ-MODELS (Read operations)
+  # ═══════════════════════════════════════════════════════════
+
+  /read/aggregates:
+    get:
+      tags:
+        - Read-models
+      summary: List all aggregates with pagination
+      description: |
+        Récupérer la liste de tous les agrégats.
+        
+        ⚠️ Corresponds to allowed-read-models.v1.json
+      operationId: listAggregates
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 100
+          description: Items per page
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          description: Pagination offset
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, closed]
+          description: Filter by status
+      responses:
+        '200':
+          description: List of aggregates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregatePaginatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      security:
+        - bearerAuth: []
+
+  /read/aggregates/active:
+    get:
+      tags:
+        - Read-models
+      summary: List active aggregates
+      description: |
+        Récupérer les agrégats actifs.
+        
+        ⚠️ Corresponds to allowed-read-models.v1.json
+      operationId: listActiveAggregates
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of active aggregates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregatePaginatedResponse'
+      security:
+        - bearerAuth: []
+
+  /read/aggregates/closed:
+    get:
+      tags:
+        - Read-models
+      summary: List closed aggregates
+      description: |
+        Récupérer les agrégats fermés.
+        
+        ⚠️ Corresponds to allowed-read-models.v1.json
+      operationId: listClosedAggregates
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of closed aggregates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregatePaginatedResponse'
+      security:
+        - bearerAuth: []
+
+  /read/aggregates/{id}:
+    get:
+      tags:
+        - Read-models
+      summary: Get aggregate details
+      description: |
+        Récupérer les détails d'un agrégat.
+        
+        ⚠️ Corresponds to allowed-read-models.v1.json
+      operationId: getAggregateDetails
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Aggregate ID
+      responses:
+        '200':
+          description: Aggregate details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: []
+
+  /read/aggregate-timeline:
+    get:
+      tags:
+        - Read-models
+      summary: Get aggregate event timeline
+      description: |
+        Récupérer l'historique des changements.
+        
+        ⚠️ Corresponds to allowed-read-models.v1.json
+      operationId: getAggregateTimeline
+      parameters:
+        - name: aggregateId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Aggregate ID
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Event timeline
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DomainEvent'
+      security:
+        - bearerAuth: []
+
+  # ═══════════════════════════════════════════════════════════
+  # HEALTH
+  # ═══════════════════════════════════════════════════════════
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      operationId: healthCheck
+      responses:
+        '200':
+          description: System healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ok, degraded]
+                  timestamp:
+                    type: string
+                    format: date-time
+
+components:
+  # ═══════════════════════════════════════════════════════════
+  # SCHEMAS
+  # ═══════════════════════════════════════════════════════════
+
+  schemas:
+    Aggregate:
+      type: object
+      description: Core domain aggregate
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum: [active, closed]
+          description: Status decided by backend, not client
+        owner:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+      required:
+        - id
+        - name
+        - status
+        - owner
+        - createdAt
+
+    AggregatePaginatedResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Aggregate'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    DomainEvent:
+      type: object
+      description: Immutable domain event (append-only)
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        eventType:
+          type: string
+        actor:
+          type: string
+        changes:
+          type: object
+          additionalProperties: true
+
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional context
+          additionalProperties: true
+      required:
+        - code
+        - message
+
+    GuardianError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          description: Guardian invariant validation error
+          properties:
+            code:
+              type: string
+              enum:
+                - INVARIANT_VIOLATION
+                - BUSINESS_RULE_FAILED
+                - STATE_INVALID
+
+  # ═══════════════════════════════════════════════════════════
+  # RESPONSES (Reusable)
+  # ═══════════════════════════════════════════════════════════
+
+  responses:
+    BadRequest:
+      description: Bad request (malformed payload)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ConflictError:
+      description: Conflict - Guardian validation failed (invariant violation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GuardianError'
+
+    ValidationError:
+      description: Validation error (unprocessable entity)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    UnauthorizedError:
+      description: Unauthorized (missing or invalid token)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════
+  # SECURITY SCHEMES
+  # ═══════════════════════════════════════════════════════════
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token for authentication

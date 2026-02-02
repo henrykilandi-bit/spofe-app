@@ -1,0 +1,187 @@
+{
+  "rootDir": ".",
+  "projectName": "SPOFE Governance Platform",
+  "projectVersion": "1.0.0",
+  "description": "Architectural Governance Agent configuration for SPOFE",
+
+  "layers": {
+    "domain": {
+      "paths": ["src/domain/**", "domain/**"],
+      "description": "Business logic layer (pure, no I/O)",
+      "color": "blue"
+    },
+    "application": {
+      "paths": ["src/application/**", "application/**"],
+      "description": "Orchestration layer (commands, queries, use cases)",
+      "color": "green"
+    },
+    "infrastructure": {
+      "paths": ["src/infrastructure/**", "infrastructure/**"],
+      "description": "Implementation details (DB, adapters, external services)",
+      "color": "yellow"
+    },
+    "api": {
+      "paths": ["src/api/**", "api/**"],
+      "description": "HTTP routing and handlers",
+      "color": "red"
+    },
+    "governance": {
+      "paths": ["src/governance/**", "governance/**"],
+      "description": "Guardian and audit layer",
+      "color": "purple"
+    }
+  },
+
+  "rules": {
+    "ARCH_010": {
+      "name": "Layer Separation",
+      "level": "error",
+      "description": "Application layer cannot depend on infrastructure layer",
+      "details": "Imports from 'infrastructure/' or 'src/infrastructure/' are forbidden in 'application/' or 'src/application/'",
+      "forbidden": [
+        {
+          "from": ["application/**", "src/application/**"],
+          "import": ["infrastructure/**", "src/infrastructure/**", "../infrastructure"]
+        },
+        {
+          "from": ["domain/**", "src/domain/**"],
+          "import": ["infrastructure/**", "src/infrastructure/**", "application/**", "src/application/**"]
+        }
+      ]
+    },
+
+    "ARCH_030": {
+      "name": "Audit Mandatory",
+      "level": "error",
+      "description": "Every decision write must trigger audit entry",
+      "details": "Cannot create Decision without TransactionManager, which ensures audit_log entry",
+      "patterns": [
+        {
+          "file": ["application/**", "src/application/**"],
+          "must_not_match": "db.insert.*decision|db.insert.*audit",
+          "must_match": "tm.executeDecision|TransactionManager"
+        }
+      ]
+    },
+
+    "ARCH_031": {
+      "name": "Commands Must Be Pure",
+      "level": "error",
+      "description": "Commands cannot contain I/O operations, async code, or side effects",
+      "details": "Commands are intent-only, execution happens in TransactionManager",
+      "forbidden": [
+        {
+          "from": ["application/commands/**", "src/application/commands/**"],
+          "import": ["pg", "http", "axios", "node-fetch", "fs", "path"],
+          "forbidden_keywords": ["async", "await", "new Pool", "fetch", "HTTP"],
+          "forbidden_methods": ["constructor.*{.*new", "execute.*async"]
+        }
+      ]
+    },
+
+    "ARCH_034": {
+      "name": "No Direct Entity Mutation",
+      "level": "error",
+      "description": "No hidden save() methods or direct DB writes from domain objects",
+      "details": "All persistence must go through TransactionManager explicitly",
+      "forbidden": [
+        {
+          "from": ["domain/**", "src/domain/**"],
+          "import": ["PostgresDbClient", "pg", "database", "DbClient"],
+          "forbidden_methods": ["save()", "delete()", "update()", "persist()"]
+        }
+      ]
+    },
+
+    "ARCH_036": {
+      "name": "Guardian Non-Contournable",
+      "level": "error",
+      "description": "All writes must pass through TransactionManager (which calls Guardian)",
+      "details": "Cannot call db.insert*(), db.update*(), db.delete*() directly",
+      "forbidden": [
+        {
+          "from": ["application/**", "src/application/**", "api/**", "src/api/**"],
+          "forbidden_patterns": [
+            "db.insert",
+            "db.update",
+            "db.delete",
+            "PostgresDbClient.*insert",
+            "PostgresDbClient.*update",
+            "PostgresDbClient.*delete"
+          ]
+        }
+      ]
+    },
+
+    "ARCH_038": {
+      "name": "Process Non-Nesting",
+      "level": "error",
+      "description": "Processes (commands) must not call other processes",
+      "details": "Each command is independent, composition happens at API layer",
+      "forbidden": [
+        {
+          "from": ["application/commands/**", "src/application/commands/**"],
+          "forbidden_patterns": [
+            "new.*Command",
+            "execute.*Command",
+            "this\\..*Command\\.execute",
+            "instantiate.*Process"
+          ]
+        }
+      ]
+    }
+  },
+
+  "forbiddenImports": {
+    "application/": [
+      "pg",
+      "mysql",
+      "mongodb",
+      "redis",
+      "axios",
+      "node-fetch",
+      "http",
+      "https",
+      "fs",
+      "path",
+      "../infrastructure",
+      "../../infrastructure",
+      "infrastructure"
+    ],
+    "domain/": [
+      "pg",
+      "mysql",
+      "mongodb",
+      "redis",
+      "http",
+      "https",
+      "fs",
+      "path",
+      "axios",
+      "node-fetch",
+      "../infrastructure",
+      "../../infrastructure",
+      "../application",
+      "../../application",
+      "infrastructure",
+      "application"
+    ]
+  },
+
+  "exceptions": [],
+
+  "analysis": {
+    "checkCyclicDependencies": true,
+    "checkUnusedExports": false,
+    "checkComplexity": false,
+    "reportFormat": "detailed",
+    "verbose": true
+  },
+
+  "reporting": {
+    "formats": ["console", "json", "junit", "github"],
+    "outputDir": "./aga-reports",
+    "failOnError": true,
+    "failOnWarning": false
+  }
+}

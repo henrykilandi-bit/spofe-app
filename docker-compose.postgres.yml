@@ -1,0 +1,76 @@
+version: '3.8'
+
+# ==================================================================================
+# SPOFE PostgreSQL Docker Compose - DDL Initialization
+# Conforme aux invariants SILC v2.1
+# ==================================================================================
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: spofe-postgres
+    restart: unless-stopped
+    
+    # Ports
+    ports:
+      - "5432:5432"
+    
+    # Variables d'environnement
+    environment:
+      # Superuser
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spofe_secure_pwd_2026}
+      
+      # Base de données SPOFE
+      POSTGRES_DB: spofe
+      
+      # Configuration PostgreSQL
+      POSTGRES_INITDB_ARGS: >
+        --encoding=UTF8
+        --locale=fr_FR.UTF-8
+        --lc-collate=fr_FR.UTF-8
+        --lc-ctype=fr_FR.UTF-8
+    
+    # Volumes
+    volumes:
+      # Persistence de données
+      - postgres_data:/var/lib/postgresql/data
+      
+      # Montage du DDL pour initialisation
+      - ./ddl:/docker-entrypoint-initdb.d:ro
+      
+      # Scripts personnalisés (optionnel)
+      - ./scripts/postgres:/scripts:ro
+    
+    # Healthcheck
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d spofe"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    
+    # Réseau
+    networks:
+      - spofe-network
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ==================================================================================
+# Volumes persistants
+# ==================================================================================
+volumes:
+  postgres_data:
+    driver: local
+
+# ==================================================================================
+# Réseau
+# ==================================================================================
+networks:
+  spofe-network:
+    driver: bridge

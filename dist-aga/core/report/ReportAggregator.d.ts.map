@@ -1,0 +1,1 @@
+{"version":3,"file":"ReportAggregator.d.ts","sourceRoot":"","sources":["../../../aga/core/report/ReportAggregator.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,EAAE,qBAAqB,EAAE,MAAM,gCAAgC,CAAC;AACvE,OAAO,EAAE,cAAc,EAAwC,MAAM,kBAAkB,CAAC;AAExF,qBAAa,gBAAgB;IAE3B,MAAM,CAAC,KAAK,CACV,aAAa,EAAE,MAAM,EACrB,UAAU,EAAE,qBAAqB,EAAE,GAClC,cAAc;CAwDlB"}

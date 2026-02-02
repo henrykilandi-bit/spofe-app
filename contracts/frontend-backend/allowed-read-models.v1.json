@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "lastUpdated": "2026-01-30T03:17:19.937Z",
+  "description": "Automatically synchronized from openapi.spofe.yaml",
+  "readModels": [
+    {
+      "path": "/read/aggregates",
+      "method": "GET",
+      "description": "Read-model: /read/aggregates",
+      "cacheStrategy": "short-term"
+    },
+    {
+      "path": "/read/aggregates/active",
+      "method": "GET",
+      "description": "Read-model: /read/aggregates/active",
+      "cacheStrategy": "short-term"
+    },
+    {
+      "path": "/read/aggregates/closed",
+      "method": "GET",
+      "description": "Read-model: /read/aggregates/closed",
+      "cacheStrategy": "short-term"
+    },
+    {
+      "path": "/read/aggregates/{id}",
+      "method": "GET",
+      "description": "Read-model: /read/aggregates/{id}",
+      "cacheStrategy": "short-term"
+    },
+    {
+      "path": "/read/aggregate-timeline",
+      "method": "GET",
+      "description": "Read-model: /read/aggregate-timeline",
+      "cacheStrategy": "short-term"
+    }
+  ]
+}

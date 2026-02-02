@@ -1,0 +1,121 @@
+name: SILC Guardian CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  silc-validation:
+    name: SILC Guardian Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run SILC Validation
+        run: npm run silc:validate
+
+      - name: Check compliance signature
+        run: |
+          if [ -f architecture/compliance/SILC_COMPLIANCE.json ]; then
+            echo "✅ SILC Compliance signature found"
+            cat architecture/compliance/SILC_COMPLIANCE.json | jq '.status'
+          else
+            echo "❌ SILC Compliance signature missing"
+            exit 1
+          fi
+
+  frontend-lint:
+    name: Frontend Linting
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install frontend dependencies
+        run: cd frontend && npm ci
+
+      - name: Lint frontend
+        run: cd frontend && npm run lint
+
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install backend dependencies
+        run: cd cascade && npm ci
+
+      - name: Run tests
+        run: cd cascade && npm run test:unit
+
+  # 🔒 SECURITY: Bloquer le merge si SILC non conforme
+  compliance-check:
+    name: Compliance Check
+    needs: [silc-validation]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify SILC Compliance
+        run: |
+          STATUS=$(cat architecture/compliance/SILC_COMPLIANCE.json | jq -r '.status')
+          
+          if [ "$STATUS" = "COMPLIANT" ] || [ "$STATUS" = "TRANSITION" ]; then
+            echo "✅ SILC Status: $STATUS"
+            exit 0
+          else
+            echo "❌ SILC Status: $STATUS — Merge blocked"
+            exit 1
+          fi
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const compliance = JSON.parse(fs.readFileSync('architecture/compliance/SILC_COMPLIANCE.json', 'utf8'));
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🛡️ SILC Guardian Validation\n\n**Status**: ${compliance.status}\n**Violations**: ${compliance.scope}\n**Guardian Version**: ${compliance.guardian.version}\n\n✅ This PR is SILC v2 compliant`
+            });

@@ -1,0 +1,31 @@
+{
+  "name": "@spofe/build-proof-generator",
+  "version": "1.0.0",
+  "description": "SPOFE Build Proof Generator — Génération automatique de BUILD_PROOF.md",
+  "type": "module",
+  "bin": {
+    "spofe-build-proof": "./dist/generate-build-proof.js"
+  },
+  "scripts": {
+    "build": "tsc generate-build-proof.ts --outDir dist --esModuleInterop --target ES2020 --moduleResolution node",
+    "dev": "tsx generate-build-proof.ts"
+  },
+  "keywords": [
+    "spofe",
+    "build-proof",
+    "governance",
+    "validation",
+    "ci"
+  ],
+  "author": "SPOFE Team",
+  "license": "PROPRIETARY",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

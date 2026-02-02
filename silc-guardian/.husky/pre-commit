@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Hook pre-commit pour SILC Guardian
+# Bloque le commit si violations BLOCKING
+
+echo "🛡️  Vérification SILC Guardian..."
+npm run validate
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Commit bloqué par SILC Guardian"
+  echo "   Corrigez les violations BLOCKING avant de commiter"
+  exit 1
+fi
+
+echo "✅ SILC Guardian: OK"
+exit 0

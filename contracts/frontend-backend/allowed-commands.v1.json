@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "lastUpdated": "2026-01-30T03:17:18.520Z",
+  "description": "Automatically synchronized from openapi.spofe.yaml",
+  "commands": [
+    {
+      "name": "CreateAggregate",
+      "endpoint": "POST /commands/CreateAggregate",
+      "description": "Command: CreateAggregate"
+    },
+    {
+      "name": "UpdateAggregate",
+      "endpoint": "POST /commands/UpdateAggregate",
+      "description": "Command: UpdateAggregate"
+    },
+    {
+      "name": "CloseAggregate",
+      "endpoint": "POST /commands/CloseAggregate",
+      "description": "Command: CloseAggregate"
+    }
+  ]
+}

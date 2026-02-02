@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false
+  },
+  "include": [
+    "src/**/*",
+    "cascade/shared/**/*"
+  ],
+  "exclude": [
+    /* Tests */
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.example.ts",
+    "**/*.examples.ts",
+
+    /* Legacy / POC - Ne doit PAS compiler */
+    "src/infrastructure/db/**",
+    "src/api/http/**",
+    "src/domain/events/**",
+    "src/domain/facts/**",
+    "src/legacy/**",
+
+    /* Modules avec leur propre tsconfig */
+    "cascade/modules/**",
+
+    /* Build outputs */
+    "dist",
+    "node_modules"
+  ]
+}

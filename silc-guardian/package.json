@@ -1,0 +1,22 @@
+{
+  "name": "silc-guardian",
+  "version": "1.0.0",
+  "description": "Validateur architectural normatif pour SPOFE SILC v2",
+  "bin": {
+    "silc-guardian": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "validate": "node dist/cli/index.js validate",
+    "validate:legacy": "node dist/cli/index.js validate --mode=legacy",
+    "validate:json": "node dist/cli/index.js validate --report=json",
+    "validate:strict": "node dist/cli/index.js validate --mode=strict",
+    "check:compliance": "node dist/cli/index.js check-compliance",
+    "dev": "tsc --watch",
+    "test:contracts": "jest",
+    "test:contracts:watch": "jest --watch",
+    "test:contracts:coverage": "jest --coverage",
+    "test:contracts:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "silc:validate:strict": "npm run validate:strict && npm run test:contracts"
+  },
+}

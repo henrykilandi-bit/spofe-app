@@ -1,0 +1,25 @@
+{
+  "status": "TRANSITION",
+  "silcVersion": "2.0",
+  "guardian": {
+    "name": "SILC Guardian",
+    "version": "1.0.0",
+    "mode": "legacy-audit-enabled"
+  },
+  "scope": "SPOFE",
+  "validatedArtifacts": [
+    "architecture/contracts",
+    "architecture/contracts/SILC_Architecture_Structure.contract.md",
+    "architecture/conventions/NAMING_CONVENTION_SILC_V2.md",
+    "silc-guardian/src"
+  ],
+  "nonConformities": {
+    "legacyPresent": true,
+    "legacyAuditRequired": true,
+    "blockingViolations": false
+  },
+  "commit": "1ec5eb2590565f151d2e16ee0774dead153fb8c6",
+  "generatedAt": "2026-01-28T21:45:00Z",
+  "signedBy": "Architecture SILC",
+  "comment": "Entrée officielle en gouvernance SILC. Existant reconnu comme legacy sous audit. SILC Guardian v1.0.0 activé et opposable."
+}

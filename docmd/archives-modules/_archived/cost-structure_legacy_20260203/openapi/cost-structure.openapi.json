@@ -1,0 +1,1016 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SPOFE — Cost-Structure API",
+    "description": "## Contractual API — Cost-Structure (COUTFLEX)\n\n### Overview\nThis API exposes the Cost-Structure module for economic project management.\nIt follows the **Golden Module** architecture pattern.\n\n### Contracts\n- **COUT-BUD-01**: Budget can only consume APPROVED projects with marginAt70 > 0\n- **COUT-01**: Variable cost ratio must be ≤ 70%\n- **COUT-DEC-02**: Validation/Rejection is terminal (no re-decision)\n\n### Multi-Tenant\nAll endpoints require the `X-Tenant-Id` header for tenant isolation.\n\n### Versioning\n- API Version: 1.0.0\n- Contract Version: COST_STRUCTURE_CONTRACT v1.0.0\n\nGenerated: 2026-02-01T02:42:37.709Z",
+    "version": "1.0.0",
+    "contact": {
+      "name": "SPOFE Team",
+      "url": "https://spofe.example.com",
+      "email": "api@spofe.example.com"
+    },
+    "license": {
+      "name": "PROPRIETARY",
+      "url": "https://spofe.example.com/license"
+    }
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "description": "SPOFE API Gateway"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Cost-Structure — Budget Contract",
+      "description": "Endpoints for Budget module consumption (COUT-BUD-01)"
+    },
+    {
+      "name": "Cost Projects",
+      "description": "Economic project listing and details"
+    },
+    {
+      "name": "Cost Structure",
+      "description": "Cost structure versions, lines, and simulations"
+    }
+  ],
+  "paths": {
+    "/cost-structure/budget-ready/projects": {
+      "get": {
+        "operationId": "BudgetReady_listBudgetReadyProjects",
+        "tags": [
+          "Cost-Structure — Budget Contract"
+        ],
+        "summary": "List budget-ready projects",
+        "description": "Returns all APPROVED projects ready for Budget consumption (COUT-BUD-01)",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of budget-ready projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BudgetReadyProjectDTO"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid tenant ID"
+          }
+        }
+      }
+    },
+    "/cost-structure/budget-ready/projects/{projectId}": {
+      "get": {
+        "operationId": "BudgetReady_getBudgetReadyProject",
+        "tags": [
+          "Cost-Structure — Budget Contract"
+        ],
+        "summary": "Get budget-ready project by ID",
+        "description": "Returns a specific APPROVED project for Budget consumption",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project identifier",
+            "schema": {
+              "type": "string",
+              "example": "project-123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Budget-ready project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BudgetReadyProjectDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found or not budget-ready"
+          }
+        }
+      }
+    },
+    "/cost-structure/budget-ready/projects/{projectId}/versions/{version}/summary": {
+      "get": {
+        "operationId": "BudgetReady_getCostSummaryForBudget",
+        "tags": [
+          "Cost-Structure — Budget Contract"
+        ],
+        "summary": "Get cost structure summary for Budget",
+        "description": "Returns cost breakdown summary for Budget module consumption",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project identifier",
+            "schema": {
+              "type": "string",
+              "example": "project-123"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "description": "Cost structure version",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cost structure summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostStructureSummaryDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      }
+    },
+    "/cost-structure/projects": {
+      "get": {
+        "operationId": "CostProjects_listProjects",
+        "tags": [
+          "Cost Projects"
+        ],
+        "summary": "List economic projects",
+        "description": "Returns all projects for tenant with optional filters",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter by project status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DRAFT",
+                "SIMULATED",
+                "VALIDATED",
+                "REJECTED"
+              ]
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "Filter by project type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PRODUCT",
+                "SERVICE",
+                "PROJECT"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CostProjectDTO"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/cost-structure/projects/{projectId}/structure": {
+      "get": {
+        "operationId": "CostStructure_getCurrentStructure",
+        "tags": [
+          "Cost Structure"
+        ],
+        "summary": "Get current cost structure",
+        "description": "Returns the current version of cost structure for a project",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project identifier",
+            "schema": {
+              "type": "string",
+              "example": "project-123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current cost structure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostStructureDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      }
+    },
+    "/cost-structure/projects/{projectId}/structure/{version}/lines": {
+      "get": {
+        "operationId": "CostStructure_getCostLines",
+        "tags": [
+          "Cost Structure"
+        ],
+        "summary": "Get cost lines for version",
+        "description": "Returns all cost lines for a specific version",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project identifier",
+            "schema": {
+              "type": "string",
+              "example": "project-123"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "description": "Cost structure version",
+            "schema": {
+              "type": "integer",
+              "example": 2
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of cost lines",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CostLineDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cost-structure/projects/{projectId}/structure/{version}/simulation": {
+      "get": {
+        "operationId": "CostStructure_getSimulation",
+        "tags": [
+          "Cost Structure"
+        ],
+        "summary": "Get simulation results",
+        "description": "Returns simulation results for a specific version",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project identifier",
+            "schema": {
+              "type": "string",
+              "example": "project-123"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "description": "Cost structure version",
+            "schema": {
+              "type": "integer",
+              "example": 2
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulation results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostSimulationDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cost-structure/projects/{projectId}/decision": {
+      "get": {
+        "operationId": "CostStructure_getDecision",
+        "tags": [
+          "Cost Structure"
+        ],
+        "summary": "Get validation decision",
+        "description": "Returns the validation decision for a project",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "description": "Tenant ID for multi-tenant isolation",
+            "schema": {
+              "type": "string",
+              "example": "tenant-1"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project identifier",
+            "schema": {
+              "type": "string",
+              "example": "project-123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Decision record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostDecisionDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT Authentication Token"
+      },
+      "TenantHeader": {
+        "type": "apiKey",
+        "name": "X-Tenant-Id",
+        "in": "header",
+        "description": "Tenant ID for multi-tenant isolation (required)"
+      }
+    },
+    "schemas": {
+      "BudgetReadyProjectDTO": {
+        "type": "object",
+        "description": "Budget-ready project for Budget module consumption (COUT-BUD-01)",
+        "required": [
+          "tenantId",
+          "projectId",
+          "projectName",
+          "version",
+          "unitCost",
+          "totalCost",
+          "netMargin",
+          "marginAt70"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID (isolation multi-tenant)",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project unique identifier",
+            "example": "project-123"
+          },
+          "projectName": {
+            "type": "string",
+            "description": "Project display name",
+            "example": "Produit Test"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Cost structure version (>= 1)",
+            "minimum": 1,
+            "example": 2
+          },
+          "unitCost": {
+            "type": "number",
+            "description": "Unit cost validated",
+            "example": 10
+          },
+          "totalCost": {
+            "type": "number",
+            "description": "Total cost validated",
+            "example": 10000
+          },
+          "netMargin": {
+            "type": "number",
+            "description": "Net margin rate (0-1)",
+            "example": 0.25
+          },
+          "marginAt70": {
+            "type": "number",
+            "description": "Margin at 70% sales (must be > 0 per COUT-01)",
+            "minimum": 0.01,
+            "example": 0.08
+          }
+        }
+      },
+      "CostProjectDTO": {
+        "type": "object",
+        "description": "Economic project summary",
+        "required": [
+          "tenantId",
+          "projectId",
+          "name",
+          "type",
+          "status",
+          "currentVersion",
+          "createdAt",
+          "createdBy"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project unique identifier",
+            "example": "project-123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Project name",
+            "example": "Produit A"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "SERVICE",
+              "PROJECT"
+            ],
+            "description": "Project type",
+            "example": "PRODUCT"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "SIMULATED",
+              "VALIDATED",
+              "REJECTED"
+            ],
+            "description": "Project status",
+            "example": "VALIDATED"
+          },
+          "currentVersion": {
+            "type": "integer",
+            "description": "Current version number",
+            "example": 2
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Project created at",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "validatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Project validated at (null if not validated)",
+            "example": "2026-01-20T14:00:00Z"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Created by user",
+            "example": "user-123"
+          },
+          "currentUnitCost": {
+            "type": "number",
+            "nullable": true,
+            "description": "Current unit cost (from latest version)",
+            "example": 10.5
+          },
+          "currentTotalCost": {
+            "type": "number",
+            "nullable": true,
+            "description": "Current total cost (from latest version)",
+            "example": 10500
+          }
+        }
+      },
+      "CostStructureDTO": {
+        "type": "object",
+        "description": "Cost structure version details",
+        "required": [
+          "tenantId",
+          "projectId",
+          "version",
+          "status",
+          "unitCost",
+          "totalCost",
+          "netMargin",
+          "marginAt70",
+          "viableAt70",
+          "createdBy",
+          "createdAt"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID",
+            "example": "project-123"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number",
+            "example": 2
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "SIMULATED",
+              "FROZEN"
+            ],
+            "description": "Structure status",
+            "example": "FROZEN"
+          },
+          "unitCost": {
+            "type": "number",
+            "description": "Unit cost",
+            "example": 10.5
+          },
+          "totalCost": {
+            "type": "number",
+            "description": "Total cost",
+            "example": 10500
+          },
+          "netMargin": {
+            "type": "number",
+            "description": "Net margin rate",
+            "example": 0.25
+          },
+          "marginAt70": {
+            "type": "number",
+            "description": "Margin at 70% sales",
+            "example": 0.08
+          },
+          "viableAt70": {
+            "type": "boolean",
+            "description": "Viability at 70% (true if marginAt70 > 0)",
+            "example": true
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Created by user",
+            "example": "user-123"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at timestamp",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "frozenAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Frozen at timestamp (null if not frozen)",
+            "example": "2026-01-20T14:00:00Z"
+          }
+        }
+      },
+      "CostLineDTO": {
+        "type": "object",
+        "description": "Cost line item",
+        "required": [
+          "lineId",
+          "tenantId",
+          "projectId",
+          "version",
+          "category",
+          "description",
+          "unit",
+          "quantity",
+          "unitPrice",
+          "totalAmount",
+          "createdAt"
+        ],
+        "properties": {
+          "lineId": {
+            "type": "string",
+            "description": "Line unique identifier",
+            "example": "line-123"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID",
+            "example": "project-123"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number",
+            "example": 2
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "RAW_MATERIAL",
+              "LABOR",
+              "SUBCONTRACTING",
+              "OVERHEAD"
+            ],
+            "description": "Cost category",
+            "example": "RAW_MATERIAL"
+          },
+          "description": {
+            "type": "string",
+            "description": "Line description",
+            "example": "Raw material A"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure",
+            "example": "kg"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity",
+            "example": 100
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Unit price",
+            "example": 5.5
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "Total line amount",
+            "example": 550
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at timestamp",
+            "example": "2026-01-15T10:30:00Z"
+          }
+        }
+      },
+      "CostSimulationDTO": {
+        "type": "object",
+        "description": "Simulation results",
+        "required": [
+          "simulationId",
+          "tenantId",
+          "projectId",
+          "version",
+          "salesVolume",
+          "unitCost",
+          "totalCost",
+          "netMargin",
+          "marginAt70",
+          "viableAt70",
+          "breakEvenPoint",
+          "createdAt"
+        ],
+        "properties": {
+          "simulationId": {
+            "type": "string",
+            "description": "Simulation ID",
+            "example": "sim-123"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID",
+            "example": "project-123"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number",
+            "example": 2
+          },
+          "salesVolume": {
+            "type": "number",
+            "description": "Sales volume used for simulation",
+            "example": 1000
+          },
+          "unitCost": {
+            "type": "number",
+            "description": "Unit cost at this volume",
+            "example": 10.5
+          },
+          "totalCost": {
+            "type": "number",
+            "description": "Total cost at this volume",
+            "example": 10500
+          },
+          "netMargin": {
+            "type": "number",
+            "description": "Net margin at this volume",
+            "example": 0.25
+          },
+          "marginAt70": {
+            "type": "number",
+            "description": "Margin at 70% of sales volume",
+            "example": 0.08
+          },
+          "viableAt70": {
+            "type": "boolean",
+            "description": "Is viable at 70% (marginAt70 > 0)",
+            "example": true
+          },
+          "breakEvenPoint": {
+            "type": "number",
+            "description": "Break-even point in units",
+            "example": 700
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at timestamp",
+            "example": "2026-01-15T10:30:00Z"
+          }
+        }
+      },
+      "CostStructureSummaryDTO": {
+        "type": "object",
+        "description": "Cost structure summary for Budget integration",
+        "required": [
+          "tenantId",
+          "projectId",
+          "version",
+          "costBreakdown",
+          "costLinesCount",
+          "status"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID (isolation multi-tenant)",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project unique identifier",
+            "example": "project-123"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Cost structure version",
+            "minimum": 1,
+            "example": 2
+          },
+          "costBreakdown": {
+            "$ref": "#/components/schemas/CostBreakdownDTO"
+          },
+          "costLinesCount": {
+            "type": "integer",
+            "description": "Number of cost lines",
+            "minimum": 0,
+            "example": 15
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "FROZEN"
+            ],
+            "description": "Structure status",
+            "example": "FROZEN"
+          },
+          "frozenAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Frozen at timestamp (null if not frozen)",
+            "example": "2026-01-20T14:00:00Z"
+          }
+        }
+      },
+      "CostBreakdownDTO": {
+        "type": "object",
+        "description": "Cost breakdown by category",
+        "required": [
+          "variable",
+          "fixed",
+          "indirect",
+          "total"
+        ],
+        "properties": {
+          "variable": {
+            "type": "number",
+            "description": "Total variable costs",
+            "example": 6000
+          },
+          "fixed": {
+            "type": "number",
+            "description": "Total fixed costs",
+            "example": 3000
+          },
+          "indirect": {
+            "type": "number",
+            "description": "Total indirect costs",
+            "example": 1000
+          },
+          "total": {
+            "type": "number",
+            "description": "Total sum of all costs",
+            "example": 10000
+          }
+        }
+      },
+      "CostDecisionDTO": {
+        "type": "object",
+        "description": "Validation decision record",
+        "required": [
+          "tenantId",
+          "projectId",
+          "version",
+          "decision",
+          "decidedBy",
+          "decidedAt"
+        ],
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "Tenant ID",
+            "example": "tenant-1"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Project ID",
+            "example": "project-123"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number",
+            "example": 2
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "VALIDATED",
+              "REJECTED"
+            ],
+            "description": "Decision type",
+            "example": "VALIDATED"
+          },
+          "decidedBy": {
+            "type": "string",
+            "description": "User who made the decision",
+            "example": "user-123"
+          },
+          "decidedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Decision timestamp",
+            "example": "2026-01-20T14:00:00Z"
+          },
+          "justification": {
+            "type": "string",
+            "nullable": true,
+            "description": "Decision justification",
+            "example": "Approved for production"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    },
+    {
+      "TenantHeader": []
+    }
+  ]
+}

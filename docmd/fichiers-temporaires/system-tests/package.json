@@ -1,0 +1,25 @@
+{
+  "name": "@spofe/system-tests",
+  "version": "2.1.0",
+  "description": "SPOFE System E2E Tests - Inter-modules validation",
+  "private": true,
+  "scripts": {
+    "test": "npm run test:system",
+    "test:system": "jest --config jest.config.system.cjs",
+    "test:watch": "jest --config jest.config.system.cjs --watch",
+    "build-proof": "node tools/generate-build-proof-system.ts",
+    "sign-proof": "node tools/sign-build-proof-system.ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "jest-json-reporter": "^1.2.2",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "jest": {
+    "projects": [
+      "./jest.config.system.cjs"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SPOFE OHADA ↔ PCG Mapping",
+  "type": "object",
+  "required": ["mapping", "rules"],
+  "properties": {
+    "mapping": {
+      "type": "object",
+      "required": ["from", "to", "version"],
+      "properties": {
+        "from": { "type": "string", "enum": ["OHADA"] },
+        "to": { "type": "string", "enum": ["PCG"] },
+        "version": { "type": "string" }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/rule" }
+    }
+  },
+  "definitions": {
+    "rule": {
+      "type": "object",
+      "required": ["ohada", "pcg", "confidence"],
+      "properties": {
+        "ohada": {
+          "type": "object",
+          "required": ["class", "account"],
+          "properties": {
+            "class": { "type": "string" },
+            "account": { "type": "string" }
+          }
+        },
+        "pcg": {
+          "type": "object",
+          "required": ["class", "account"],
+          "properties": {
+            "class": { "type": "string" },
+            "account": { "type": "string" }
+          }
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+name: SPOFE Conformity Table — Auto-Update
+
+# SPOFE Module Conformity Table Generator
+# Version 1.0.0 — Automated Executive Piloting
+#
+# 🔒 Ce workflow régénère automatiquement le tableau global de conformité
+# à chaque release et chaque nuit (cron).
+#
+# Finalité : Fournir une vision exécutive instantanée et objective
+# de la conformité des modules SPOFE.
+
+on:
+  # Régénérer à chaque release (tag)
+  push:
+    tags:
+      - '*-v*.*.*'
+
+  # Régénérer chaque nuit à 2h UTC
+  schedule:
+    - cron: '0 2 * * *'
+
+  # Permettre le déclenchement manuel
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ================================================================
+  # JOB: Generate and commit conformity table
+  # ================================================================
+  update-conformity-table:
+    name: Update SPOFE Conformity Table
+    runs-on: ubuntu-latest
+
+    steps:
+      # --------------------------------------------------------------
+      # Setup
+      # --------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # --------------------------------------------------------------
+      # Generate Conformity Table
+      # --------------------------------------------------------------
+      - name: Generate SPOFE Conformity Table
+        run: npx tsx spofe/tools/conformity/generate-conformity-table.ts
+
+      # --------------------------------------------------------------
+      # Commit changes
+      # --------------------------------------------------------------
+      - name: Commit conformity table updates
+        run: |
+          git config user.name "spofe-ci[bot]"
+          git config user.email "ci@spofe.io"
+
+          git add spofe/governance/MODULE_CONFORMITY_TABLE.json
+          git add spofe/governance/MODULE_CONFORMITY_TABLE.md
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "docs(conformity): auto-update module conformity table [SPOFE CI]"
+            git push
+          fi
+
+      # --------------------------------------------------------------
+      # Summary
+      # --------------------------------------------------------------
+      - name: Display summary
+        run: |
+          echo "::group::SPOFE Conformity Table Updated"
+          cat spofe/governance/MODULE_CONFORMITY_TABLE.md | head -50
+          echo "::endgroup::"
+
+      # --------------------------------------------------------------
+      # Notify on significant changes (optional)
+      # --------------------------------------------------------------
+      - name: Check for non-conform modules
+        run: |
+          NON_CONFORM=$(grep -c '"status": "NON_CONFORM"' spofe/governance/MODULE_CONFORMITY_TABLE.json || true)
+          if [ "$NON_CONFORM" -gt 0 ]; then
+            echo "::warning::⚠️ $NON_CONFORM module(s) are NON CONFORM — Executive attention required"
+          fi
+
+          CONFORM=$(grep -c '"status": "CONFORM"' spofe/governance/MODULE_CONFORMITY_TABLE.json || true)
+          echo "::notice::✅ $CONFORM module(s) are CONFORM"

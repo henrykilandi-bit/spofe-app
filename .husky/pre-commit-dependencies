@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# SPOFE Pre-commit Hook
+# Vérifie automatiquement la conformité des dépendances avant chaque commit
+
+echo "🔍 SPOFE Pre-commit - Dependencies Compliance Check"
+
+# Vérification rapide des dépendances seulement si des DEPENDENCIES.md ont été modifiés
+DEPENDENCIES_CHANGED=$(git diff --cached --name-only | grep -E "DEPENDENCIES\.md$" || true)
+
+if [ -n "$DEPENDENCIES_CHANGED" ]; then
+    echo "📝 DEPENDENCIES.md files changed, running compliance check..."
+    
+    # Exécute la vérification des dépendances
+    if npm run validate:dependencies --silent; then
+        echo "✅ Dependencies compliance: PASSED"
+    else
+        echo "❌ Dependencies compliance: FAILED"
+        echo ""
+        echo "🚫 COMMIT BLOCKED"
+        echo "   Fix dependency violations before committing"
+        echo "   Run 'npm run validate:dependencies' for details"
+        exit 1
+    fi
+else
+    echo "ℹ️  No DEPENDENCIES.md files changed, skipping check"
+fi
+
+echo "✅ Pre-commit checks passed"
+exit 0

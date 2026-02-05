@@ -1,6 +1,7 @@
 # 🔐 GOUVERNANCE DES CLÉS CRYPTOGRAPHIQUES SPOFE
 
-**Version 1.0.0 — Document Normatif**
+**Version 1.1.0 — Document Normatif (P0)**  
+**Date :** 2026-02-03
 
 ---
 

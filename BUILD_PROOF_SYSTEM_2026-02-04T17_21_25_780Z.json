@@ -1,0 +1,675 @@
+{
+  "systemSnapshot": {
+    "name": "SPOFE BUILD_PROOF Global System",
+    "version": "2.0.0",
+    "timestamp": "2026-02-04T17:21:25.779Z",
+    "governance": "SPOFE P0 - Constitutional",
+    "snapshotType": "COMPLETE_SYSTEM"
+  },
+  "certifiedModules": {
+    "budget": {
+      "module": "budget",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.742Z",
+      "buildProofPath": "cascade/modules/budget/BUILD_PROOF.json",
+      "buildProofSHA256": "BUDGET_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    },
+    "gestion-stocks": {
+      "module": "gestion-stocks",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.755Z",
+      "buildProofPath": "cascade/modules/gestion-stocks/BUILD_PROOF.json",
+      "buildProofSHA256": "GESTION-STOCKS_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    },
+    "gestion-tiers": {
+      "module": "gestion-tiers",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.757Z",
+      "buildProofPath": "cascade/modules/gestion-tiers/BUILD_PROOF.json",
+      "buildProofSHA256": "GESTION-TIERS_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    },
+    "oie": {
+      "module": "oie",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.766Z",
+      "buildProofPath": "cascade/modules/oie/BUILD_PROOF.json",
+      "buildProofSHA256": "OIE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 10,
+          "passed": 10
+        },
+        "system": {
+          "total": 5,
+          "passed": 5
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 3
+        }
+      },
+      "invariants": 10,
+      "frozen": true
+    },
+    "parametres": {
+      "module": "parametres",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.768Z",
+      "buildProofPath": "cascade/modules/parametres/BUILD_PROOF.json",
+      "buildProofSHA256": "PARAMETRES_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    },
+    "precomptabilite": {
+      "module": "precomptabilite",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.770Z",
+      "buildProofPath": "cascade/modules/precomptabilite/BUILD_PROOF.json",
+      "buildProofSHA256": "PRECOMPTABILITE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    },
+    "tresorerie-banque": {
+      "module": "tresorerie-banque",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.774Z",
+      "buildProofPath": "cascade/modules/tresorerie-banque/BUILD_PROOF.json",
+      "buildProofSHA256": "TRESORERIE-BANQUE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    },
+    "vente": {
+      "module": "vente",
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T17:21:25.777Z",
+      "buildProofPath": "cascade/modules/vente/BUILD_PROOF.json",
+      "buildProofSHA256": "VENTE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": true
+    }
+  },
+  "uncertifiedModules": {
+    "amortissement": {
+      "module": "amortissement",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/amortissement/BUILD_PROOF.json",
+      "buildProofSHA256": "AMORTISSEMENT_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "budgeting": {
+      "module": "budgeting",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/budgeting/BUILD_PROOF.json",
+      "buildProofSHA256": "BUDGETING_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "coaching": {
+      "module": "coaching",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/coaching/BUILD_PROOF.json",
+      "buildProofSHA256": "COACHING_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "comptabilite": {
+      "module": "comptabilite",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/comptabilite/BUILD_PROOF.json",
+      "buildProofSHA256": "COMPTABILITE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "cost-structure": {
+      "module": "cost-structure",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/cost-structure/BUILD_PROOF.json",
+      "buildProofSHA256": "COST-STRUCTURE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "gestion-commandes": {
+      "module": "gestion-commandes",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/gestion-commandes/BUILD_PROOF.json",
+      "buildProofSHA256": "GESTION-COMMANDES_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "immobilisation": {
+      "module": "immobilisation",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/immobilisation/BUILD_PROOF.json",
+      "buildProofSHA256": "IMMOBILISATION_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "investisseurs": {
+      "module": "investisseurs",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/investisseurs/BUILD_PROOF.json",
+      "buildProofSHA256": "INVESTISSEURS_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "objectif-indicateur-evenement": {
+      "module": "objectif-indicateur-evenement",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/objectif-indicateur-evenement/BUILD_PROOF.json",
+      "buildProofSHA256": "OBJECTIF-INDICATEUR-EVENEMENT_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "objectif-indicateurs-evenements": {
+      "module": "objectif-indicateurs-evenements",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/objectif-indicateurs-evenements/BUILD_PROOF.json",
+      "buildProofSHA256": "OBJECTIF-INDICATEURS-EVENEMENTS_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 10,
+          "passed": 10
+        },
+        "system": {
+          "total": 5,
+          "passed": 5
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 3
+        }
+      },
+      "invariants": 10,
+      "frozen": false
+    },
+    "tresoconsolidation": {
+      "module": "tresoconsolidation",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/tresoconsolidation/BUILD_PROOF.json",
+      "buildProofSHA256": "TRESOCONSOLIDATION_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    },
+    "tresorerie-caisse": {
+      "module": "tresorerie-caisse",
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "cascade/modules/tresorerie-caisse/BUILD_PROOF.json",
+      "buildProofSHA256": "TRESORERIE-CAISSE_2026_02_04_HASH",
+      "moduleType": "Unknown",
+      "domain": "Undefined domain",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": {
+          "total": 0,
+          "passed": 0
+        },
+        "system": {
+          "total": 5,
+          "passed": 0
+        },
+        "e2e": {
+          "total": 3,
+          "passed": 0
+        }
+      },
+      "invariants": 0,
+      "frozen": false
+    }
+  },
+  "interModuleDependencies": {
+    "parametres": {
+      "dependsOn": [],
+      "dependencyStatus": {},
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "gestion-tiers": {
+      "dependsOn": [
+        "parametres"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "precomptabilite": {
+      "dependsOn": [
+        "parametres",
+        "gestion-tiers"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED",
+        "gestion-tiers": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "oie": {
+      "dependsOn": [
+        "parametres",
+        "budget"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED",
+        "budget": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED",
+      "dependencyType": "READ_ONLY"
+    },
+    "budget": {
+      "dependsOn": [
+        "parametres",
+        "precomptabilite"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED",
+        "precomptabilite": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "tresorerie-banque": {
+      "dependsOn": [
+        "parametres",
+        "gestion-tiers"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED",
+        "gestion-tiers": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "vente": {
+      "dependsOn": [
+        "parametres",
+        "gestion-tiers",
+        "gestion-stocks"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED",
+        "gestion-tiers": "CERTIFIED",
+        "gestion-stocks": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "gestion-stocks": {
+      "dependsOn": [
+        "parametres"
+      ],
+      "dependencyStatus": {
+        "parametres": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    }
+  },
+  "systemMetrics": {
+    "totalModules": 20,
+    "certifiedModules": 8,
+    "uncertifiedModules": 12,
+    "readyForCertification": 0,
+    "certificationRate": "40.0%",
+    "totalInvariants": {
+      "certified": 10,
+      "pending": 96
+    },
+    "totalTests": {
+      "guardian": 10,
+      "system": 40,
+      "e2e": 24,
+      "total": 74
+    },
+    "contractsCompliance": true
+  },
+  "compliance": {
+    "spofeP0": true,
+    "contractsValidated": true,
+    "guardianFirst": true,
+    "documentFirst": true,
+    "factOnly": true,
+    "appendOnly": true,
+    "multiTenant": true
+  },
+  "certificationChain": {
+    "algorithm": "SHA256",
+    "certifiedBuildProofs": [],
+    "chainTimestamp": "2026-02-04T17:21:25.779Z",
+    "systemHash": "SIMPLIFIED_HASH_FOR_RESTORATION"
+  },
+  "signature": {
+    "signedBy": "SPOFE BUILD_PROOF SYSTEM - RESTORED",
+    "algorithm": "SHA256",
+    "timestamp": "2026-02-04T17:21:25.779Z",
+    "systemSignature": "RESTORED_2026_02_04_18_03"
+  }
+}

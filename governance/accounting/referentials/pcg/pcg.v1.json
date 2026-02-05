@@ -1,0 +1,101 @@
+{
+  "referential": {
+    "code": "PCG",
+    "name": "Plan Comptable Général (France)",
+    "version": "2014",
+    "status": "PASSIVE"
+  },
+  "classes": [
+    {
+      "classCode": "1",
+      "label": "Comptes de capitaux",
+      "accounts": [
+        { "code": "10", "label": "Capital et réserves", "level": 2, "children": [] },
+        { "code": "11", "label": "Report à nouveau", "level": 2, "children": [] },
+        { "code": "12", "label": "Résultat de l'exercice", "level": 2, "children": [] },
+        { "code": "13", "label": "Subventions d'investissement", "level": 2, "children": [] },
+        { "code": "14", "label": "Provisions réglementées", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "2",
+      "label": "Comptes d'immobilisations",
+      "accounts": [
+        { "code": "20", "label": "Immobilisations incorporelles", "level": 2, "children": [] },
+        { "code": "21", "label": "Immobilisations corporelles", "level": 2, "children": [] },
+        { "code": "26", "label": "Participations", "level": 2, "children": [] },
+        { "code": "27", "label": "Autres immobilisations financières", "level": 2, "children": [] },
+        { "code": "28", "label": "Amortissements", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "3",
+      "label": "Comptes de stocks et en-cours",
+      "accounts": [
+        { "code": "31", "label": "Matières premières", "level": 2, "children": [] },
+        { "code": "32", "label": "Autres approvisionnements", "level": 2, "children": [] },
+        { "code": "33", "label": "En-cours de production", "level": 2, "children": [] },
+        { "code": "35", "label": "Produits finis", "level": 2, "children": [] },
+        { "code": "37", "label": "Marchandises", "level": 2, "children": [] },
+        { "code": "39", "label": "Dépréciations des stocks", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "4",
+      "label": "Comptes de tiers",
+      "accounts": [
+        { "code": "40", "label": "Fournisseurs", "level": 2, "children": [] },
+        { "code": "41", "label": "Clients", "level": 2, "children": [] },
+        { "code": "42", "label": "Personnel", "level": 2, "children": [] },
+        { "code": "43", "label": "Sécurité sociale et organismes sociaux", "level": 2, "children": [] },
+        { "code": "44", "label": "État et collectivités publiques", "level": 2, "children": [] },
+        { "code": "45", "label": "Groupe et associés", "level": 2, "children": [] },
+        { "code": "46", "label": "Débiteurs et créditeurs divers", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "5",
+      "label": "Comptes financiers",
+      "accounts": [
+        { "code": "50", "label": "Valeurs mobilières de placement", "level": 2, "children": [] },
+        { "code": "51", "label": "Banques", "level": 2, "children": [] },
+        { "code": "53", "label": "Caisse", "level": 2, "children": [] },
+        { "code": "58", "label": "Virements internes", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "6",
+      "label": "Comptes de charges",
+      "accounts": [
+        { "code": "60", "label": "Achats", "level": 2, "children": [] },
+        { "code": "61", "label": "Services extérieurs", "level": 2, "children": [] },
+        { "code": "62", "label": "Autres services extérieurs", "level": 2, "children": [] },
+        { "code": "63", "label": "Impôts et taxes", "level": 2, "children": [] },
+        { "code": "64", "label": "Charges de personnel", "level": 2, "children": [] },
+        { "code": "65", "label": "Autres charges de gestion courante", "level": 2, "children": [] },
+        { "code": "66", "label": "Charges financières", "level": 2, "children": [] },
+        { "code": "67", "label": "Charges exceptionnelles", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "7",
+      "label": "Comptes de produits",
+      "accounts": [
+        { "code": "70", "label": "Ventes de produits", "level": 2, "children": [] },
+        { "code": "71", "label": "Production stockée", "level": 2, "children": [] },
+        { "code": "72", "label": "Production immobilisée", "level": 2, "children": [] },
+        { "code": "74", "label": "Subventions d'exploitation", "level": 2, "children": [] },
+        { "code": "75", "label": "Autres produits de gestion courante", "level": 2, "children": [] },
+        { "code": "76", "label": "Produits financiers", "level": 2, "children": [] },
+        { "code": "77", "label": "Produits exceptionnels", "level": 2, "children": [] }
+      ]
+    },
+    {
+      "classCode": "8",
+      "label": "Comptes spéciaux",
+      "accounts": [
+        { "code": "80", "label": "Engagements", "level": 2, "children": [] }
+      ]
+    }
+  ]
+}

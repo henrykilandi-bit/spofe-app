@@ -1,0 +1,457 @@
+# 🚨 CONSTITUTION BROKEN GATE - Système auto-bloqué
+# Workflow GitHub Actions pour mode CONSTITUTION BROKEN
+# Mode: "le système sait qu'il n'a plus le droit d'exister normalement" activé
+
+name: CONSTITUTION_BROKEN_GATE
+
+# Déclenchement sur tous les événements critiques
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      force_check:
+        description: 'Forcer vérification état constitutionnel'
+        required: false
+        default: true
+        type: boolean
+      action_to_check:
+        description: 'Action à vérifier'
+        required: false
+        default: 'deploy'
+        type: choice
+        options:
+        - deploy
+        - migration
+        - infra_switch
+        - critical_config_change
+        - manual_override
+        - read_only
+        - report_generation
+        - audit
+        - guided_remediation
+  schedule:
+    # Vérification toutes les heures
+    - cron: '0 * * * *'
+
+# Permissions
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+  checks: write
+
+# Variables d'environnement
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+# Jobs
+jobs:
+  # Job principal de monitoring constitutionnel
+  constitution-monitoring:
+    name: Constitutional State Monitoring
+    runs-on: ubuntu-latest
+    
+    # Timeout pour éviter les blocages
+    timeout-minutes: 15
+    
+    outputs:
+      system_state: ${{ steps.monitor.outputs.system_state }}
+      violations_detected: ${{ steps.monitor.outputs.violations_detected }}
+      action_required: ${{ steps.monitor.outputs.action_required }}
+      decision: ${{ steps.monitor.outputs.decision }}
+      
+    steps:
+      # 1. Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # 2. Configuration de Python et dépendances
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client jq openssl
+          pip install pyyaml jsonschema
+          
+      # 3. Configuration de l'environnement
+      - name: Setup environment
+        run: |
+          echo "🚨 CONFIGURATION ENVIRONNEMENT CONSTITUTION BROKEN"
+          
+          # Configuration DB
+          export SPOFE_DB_HOST="localhost"
+          export SPOFE_DB_USER="spofe_user"
+          export SPOFE_DB_NAME="spofe"
+          
+          # Création des répertoires
+          mkdir -p governance/constitution_broken
+          mkdir -p governance/events
+          mkdir -p governance/audit
+          
+          echo "✅ Environnement configuré"
+          
+      # 4. Monitoring de l'état constitutionnel
+      - name: Monitor constitutional state
+        id: monitor
+        run: |
+          echo "🚨 MONITORING ÉTAT CONSTITUTIONNEL"
+          echo "==================================="
+          echo "Timestamp: $(date -Iseconds)"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo ""
+          
+          # Configuration DB
+          export SPOFE_DB_HOST="localhost"
+          export SPOFE_DB_USER="spofe_user"
+          export SPOFE_DB_NAME="spofe"
+          
+          # Monitoring constitutionnel
+          if ./governance/constitution_broken_monitor.sh monitor; then
+            echo "system_state=LEGITIMATE" >> $GITHUB_OUTPUT
+            echo "violations_detected=0" >> $GITHUB_OUTPUT
+            echo "action_required=NONE" >> $GITHUB_OUTPUT
+            echo "decision=CONTINUE" >> $GITHUB_OUTPUT
+            
+            echo "✅ SYSTÈME CONSTITUTIONNELLEMENT LÉGITIME"
+            echo "📊 Violations détectées: 0"
+            echo "🚀 Actions autorisées: Toutes"
+          else
+            echo "system_state=CONSTITUTION_BROKEN" >> $GITHUB_OUTPUT
+            echo "violations_detected=1" >> $GITHUB_OUTPUT
+            echo "action_required=STOP_ALL_OPERATIONS" >> $GITHUB_OUTPUT
+            echo "decision=BLOCK_ALL" >> $GITHUB_OUTPUT
+            
+            echo "🚨 MODE CONSTITUTION BROKEN ACTIVÉ"
+            echo "📊 Violations détectées: 1+"
+            echo "🚫 Actions autorisées: READ-ONLY uniquement"
+          fi
+          
+      # 5. Affichage de l'état système
+      - name: Display system state
+        run: |
+          echo "🚨 ÉTAT SYSTÈME CONSTITUTIONNEL"
+          echo "==============================="
+          echo "État: ${{ steps.monitor.outputs.system_state }}"
+          echo "Violations: ${{ steps.monitor.outputs.violations_detected }}"
+          echo "Action requise: ${{ steps.monitor.outputs.action_required }}"
+          echo "Décision: ${{ steps.monitor.outputs.decision }}"
+          echo ""
+          
+          if [ "${{ steps.monitor.outputs.system_state }}" = "CONSTITUTION BROKEN" ]; then
+            echo -e "\033[0;31m🚨 MODE CONSTITUTION BROKEN ACTIF\033[0m"
+            echo ""
+            echo "Actions INTERDITES:"
+            echo "  ❌ Déploiement (tous environnements)"
+            echo "  ❌ Migration"
+            echo "  ❌ Bascule infrastructure"
+            echo "  ❌ Modification configuration critique"
+            echo "  ❌ Override manuel"
+            echo ""
+            echo "Actions AUTORISÉES:"
+            echo "  ✅ Lecture (READ-ONLY)"
+            echo "  ✅ Génération de rapports"
+            echo "  ✅ Audit"
+            echo "  ✅ Remédiation guidée"
+            echo ""
+            echo -e "\033[0;35m👉 Le système ne disparaît pas, il se fige intelligemment\033[0m"
+          else
+            echo -e "\033[0;32m✅ SYSTÈME CONSTITUTIONNELLEMENT LÉGITIME\033[0m"
+            echo ""
+            echo "Actions autorisées:"
+            echo "  ✅ Déploiement"
+            echo "  ✅ Migration"
+            echo "  ✅ Changements de configuration"
+            echo "  ✅ Toutes les opérations normales"
+          fi
+          
+      # 6. Vérification des actions autorisées
+      - name: Check action permissions
+        if: github.event.inputs.action_to_check != ''
+        run: |
+          echo "🔍 VÉRIFICATION PERMISSIONS D'ACTIONS"
+          echo "======================================"
+          
+          ACTION="${{ github.event.inputs.action_to_check }}"
+          echo "Action à vérifier: $ACTION"
+          
+          # Configuration DB
+          export SPOFE_DB_HOST="localhost"
+          export SPOFE_DB_USER="spofe_user"
+          export SPOFE_DB_NAME="spofe"
+          
+          if ./governance/constitution_broken_monitor.sh check "$ACTION"; then
+            echo "✅ ACTION AUTORISÉE: $ACTION"
+          else
+            echo "❌ ACTION INTERDITE: $ACTION"
+            echo "🚨 Le système refuse cette action en mode CONSTITUTION BROKEN"
+            exit 1
+          fi
+          
+      # 7. Gate constitutionnel
+      - name: Constitutional gate
+        run: |
+          echo "🚨 GATE CONSTITUTIONNEL"
+          echo "======================="
+          echo "État système: ${{ steps.monitor.outputs.system_state }}"
+          echo "Décision: ${{ steps.monitor.outputs.decision }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ steps.monitor.outputs.decision }}" = "BLOCK_ALL" ]; then
+            echo "❌ GATE CONSTITUTIONNEL FERMÉ"
+            echo ""
+            echo -e "\033[0;31m🚨 MODE CONSTITUTION BROKEN - ARRÊT IMMÉDIAT\033[0m"
+            echo ""
+            echo "Le système a perdu sa légitimité constitutionnelle."
+            echo "Toutes les opérations d'évolution sont interdites."
+            echo ""
+            echo "Actions possibles:"
+            echo "  1. Identifier et corriger les violations constitutionnelles"
+            echo "  2. Générer de nouvelles preuves valides"
+            echo "  3. Demander la restauration par le Guardian de gouvernance"
+            echo ""
+            echo -e "\033[0;35m🛡️ La gouvernance devient non négociable\033[0m"
+            echo -e "\033[0;35m👉 Le système impose l'arrêt\033[0m"
+            exit 1
+          else
+            echo "✅ GATE CONSTITUTIONNEL OUVERT"
+            echo ""
+            echo "Le système est constitutionnellement légitime."
+            echo "Les opérations normales peuvent continuer."
+          fi
+          
+      # 8. Publication des artefacts de monitoring
+      - name: Upload monitoring artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: constitution-monitoring-${{ github.run_id }}
+          path: |
+            governance/constitution_broken/
+            governance/events/
+            governance/audit/
+          retention-days: 90
+          
+      # 9. Création du rapport de monitoring
+      - name: Create monitoring report
+        if: always()
+        run: |
+          echo "📊 CRÉATION RAPPORT MONITORING CONSTITUTIONNEL"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          REPORT_FILE="governance/constitution_broken/monitoring-report-${{ github.run_id }}.json"
+          
+          cat > "$REPORT_FILE" << EOF
+          {
+            "constitution_monitoring_report": {
+              "workflow_run_id": "${{ github.run_id }}",
+              "timestamp": "$(date -Iseconds)",
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "actor": "${{ github.actor }}",
+              "trigger": "${{ github.event_name }}",
+              
+              "system_state": {
+                "current_state": "${{ steps.monitor.outputs.system_state }}",
+                "violations_detected": ${{ steps.monitor.outputs.violations_detected }},
+                "action_required": "${{ steps.monitor.outputs.action_required }}",
+                "decision": "${{ steps.monitor.outputs.decision }}",
+                "monitoring_timestamp": "$(date -Iseconds)"
+              },
+              
+              "constitutional_invariants": [
+                "GOV-P0-BROKEN-01: Refus global",
+                "GOV-P0-BROKEN-02: Sortie par preuve uniquement", 
+                "GOV-P0-BROKEN-03: Mémoire de la rupture"
+              ],
+              
+              "impact_assessment": {
+                "deployments_blocked": $([ "${{ steps.monitor.outputs.decision }}" = "BLOCK_ALL" ] && echo "true" || echo "false"),
+                "migrations_blocked": $([ "${{ steps.monitor.outputs.decision }}" = "BLOCK_ALL" ] && echo "true" || echo "false"),
+                "critical_changes_blocked": $([ "${{ steps.monitor.outputs.decision }}" = "BLOCK_ALL" ] && echo "true" || echo "false"),
+                "read_only_access": "true",
+                "report_generation_allowed": "true",
+                "audit_allowed": "true"
+              },
+              
+              "workflow_status": {
+                "monitoring_success": "${{ job.status }}",
+                "gate_passed": $([ "${{ steps.monitor.outputs.decision }}" = "CONTINUE" ] && echo "true" || echo "false"),
+                "constitutional_compliance": $([ "${{ steps.monitor.outputs.system_state }}" = "LEGITIMATE" ] && echo "true" || echo "false")
+              },
+              
+              "next_actions": [
+                "Archive monitoring artifacts",
+                "Update system status dashboard",
+                "Notify constitutional guardians",
+                "Schedule next constitutional check"
+              ]
+            }
+          }
+          EOF
+          
+          echo "✅ Rapport monitoring créé: $REPORT_FILE"
+          
+  # Job de blocage total (si mode BROKEN)
+  total-blockade:
+    name: Total System Blockade
+    runs-on: ubuntu-latest
+    needs: constitution-monitoring
+    if: needs.constitution-monitoring.outputs.decision == 'BLOCK_ALL'
+    
+    steps:
+      - name: System blockade notification
+        run: |
+          echo "🚨 BLOCAGE TOTAL SYSTÈME ACTIVÉ"
+          echo "================================="
+          echo "État: ${{ needs.constitution-monitoring.outputs.system_state }}"
+          echo "Décision: ${{ needs.constitution-monitoring.outputs.decision }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          echo -e "\033[0;31m🚨 SYSTÈME EN MODE CONSTITUTION BROKEN\033[0m"
+          echo ""
+          echo "Toutes les opérations sont interdues:"
+          echo "  ❌ Déploiement (tous environnements)"
+          echo "  ❌ Migration"
+          echo "  ❌ Bascule infrastructure"
+          echo "  ❌ Modification configuration critique"
+          echo "  ❌ Override manuel"
+          echo ""
+          echo "Opérations autorisées (READ-ONLY):"
+          echo "  ✅ Lecture des données"
+          echo "  ✅ Génération de rapports"
+          echo "  ✅ Audit"
+          echo "  ✅ Remédiation guidée"
+          echo ""
+          echo -e "\033[0;35m🛡️ LA DISCUSSION EST TERMINÉE\033[0m"
+          echo -e "\033[0;35m🛡️ LA DÉCISION EST TECHNIQUE\033[0m"
+          echo -e "\033[0;35m🛡️ LE SYSTÈME IMPOSE L'ARRÊT\033[0m"
+          echo ""
+          echo "ACTION REQUISE:"
+          echo "1. Identifier les violations constitutionnelles"
+          echo "2. Corriger les problèmes identifiés"
+          echo "3. Générer de nouvelles preuves valides"
+          echo "4. Demander la restauration constitutionnelle"
+          
+  # Job de monitoring continu
+  continuous-monitoring:
+    name: Continuous Constitutional Monitoring
+    runs-on: ubuntu-latest
+    needs: constitution-monitoring
+    if: always()
+    
+    steps:
+      - name: Continuous monitoring check
+        run: |
+          echo "🔍 MONITORING CONTINU CONSTITUTIONNEL"
+          echo "===================================="
+          echo "État actuel: ${{ needs.constitution-monitoring.outputs.system_state }}"
+          echo "Violations: ${{ needs.constitution-monitoring.outputs.violations_detected }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ needs.constitution-monitoring.outputs.system_state }}" = "CONSTITUTION BROKEN" ]; then
+            echo -e "\033[0;31m🚨 ALERT: SYSTÈME EN MODE CONSTITUTION BROKEN\033[0m"
+            echo ""
+            echo "Actions immédiates requises:"
+            echo "  🔍 Investigation des violations constitutionnelles"
+            echo "  📋 Analyse des preuves invalides"
+            echo "  🛠️ Planification des corrections"
+            echo "  📊 Préparation de la restauration"
+            echo ""
+            echo "Fréquence de monitoring: Toutes les heures"
+            echo "Escalade: Équipe de gouvernance constitutionnelle"
+          else
+            echo -e "\033[0;32m✅ SYSTÈME CONSTITUTIONNELLEMENT SAIN\033[0m"
+            echo ""
+            echo "Monitoring normal en cours"
+            echo "Fréquence de monitoring: Toutes les heures"
+            echo "Prochain contrôle: $(date -u -d '+1 hour' --iso-8601)"
+          fi
+          
+      - name: Create health metric
+        run: |
+          echo "📊 CRÉATION MÉTRIQUE SANTÉ CONSTITUTIONNELLE"
+          echo "=========================================="
+          
+          HEALTH_SCORE=100
+          if [ "${{ needs.constitution-monitoring.outputs.system_state }}" = "CONSTITUTION BROKEN" ]; then
+            HEALTH_SCORE=0
+          fi
+          
+          METRIC_FILE="governance/constitution_broken/health-metric-$(date +%Y%m%d-%H%M%S).json"
+          
+          cat > "$METRIC_FILE" << EOF
+          {
+            "constitutional_health_metric": {
+              "timestamp": "$(date -Iseconds)",
+              "system_state": "${{ needs.constitution-monitoring.outputs.system_state }}",
+              "violations_detected": ${{ needs.constitution-monitoring.outputs.violations_detected }},
+              "workflow_id": "${{ github.run_id }}",
+              "repository": "${{ github.repository }}",
+              "health_score": $HEALTH_SCORE,
+              "constitutional_compliance": $([ "${{ needs.constitution-monitoring.outputs.system_state }}" = "LEGITIMATE" ] && echo "true" || echo "false"),
+              "system_broken": $([ "${{ needs.constitution-monitoring.outputs.system_state }}" = "CONSTITUTION BROKEN" ] && echo "true" || echo "false"),
+              "all_operations_blocked": $([ "${{ needs.constitution-monitoring.outputs.decision }}" = "BLOCK_ALL" ] && echo "true" || echo "false"),
+              "read_only_mode": "true",
+              "next_monitoring_check": "$(date -u -d '+1 hour' --iso-8601)"
+            }
+          }
+          EOF
+          
+          echo "✅ Métrique santé créée: $METRIC_FILE"
+          echo "📊 Score santé: $HEALTH_SCORE/100"
+          
+  # Job d'alerting constitutionnel
+  constitutional-alerting:
+    name: Constitutional Alerting
+    runs-on: ubuntu-latest
+    needs: constitution-monitoring
+    if: needs.constitution-monitoring.outputs.decision == 'BLOCK_ALL'
+    
+    steps:
+      - name: Send constitutional alert
+        run: |
+          echo "🚨 ALERTE CONSTITUTIONNELLE CRITIQUE"
+          echo "=================================="
+          echo "Niveau: P0 - CONSTITUTION BROKEN"
+          echo "État: ${{ needs.constitution-monitoring.outputs.system_state }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo "Workflow: ${{ github.run_id }}"
+          echo ""
+          
+          echo -e "\033[0;31m🚨 ALERT CONSTITUTIONNELLE - MODE BROKEN ACTIVÉ\033[0m"
+          echo ""
+          echo "Destinataires:"
+          echo "  🛡️ Guardian de gouvernance"
+          echo "  👥 Équipe constitutionnelle"
+          echo "  📊 Équipe de monitoring"
+          echo "  🚨 Équipe d'intervention"
+          echo ""
+          echo "Message:"
+          echo "Le système SPOFE est entré en mode CONSTITUTION BROKEN."
+          echo "Une ou plusieurs violations constitutionnelles P0 ont été détectées."
+          echo "Toutes les opérations d'évolution sont immédiatement bloquées."
+          echo ""
+          echo "Actions requises:"
+          echo "  1. Investigation immédiate des violations"
+          echo "  2. Correction des problèmes identifiés"
+          echo "  3. Génération de nouvelles preuves constitutionnelles"
+          echo "  4. Validation et restauration par le Guardian"
+          echo ""
+          echo -e "\033[0;35m🛡️ LA GOUVERNANCE DEVIENT NON NÉGIABLE\033[0m"
+          echo -e "\033[0;35m🛡️ LE SYSTÈME IMPOSE L'ARRÊT\033[0m"
+          echo -e "\033[0;35m🛡️ LA DISCUSSION EST TERMINÉE\033[0m"

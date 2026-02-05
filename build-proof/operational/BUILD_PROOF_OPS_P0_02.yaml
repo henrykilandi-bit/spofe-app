@@ -1,0 +1,69 @@
+id: BUILD_PROOF_OPS_P0_02
+type: OPERATIONAL_INVARIANT
+level: P0_CONSTITUTIONAL
+
+title: Cryptographic hash chain integrity
+
+description: >
+  Each domain event must reference the exact SHA-256 hash of the
+  previous event, forming a continuous cryptographic chain that
+  guarantees historical integrity and prevents tampering.
+
+scope:
+  - database: postgresql
+  - table: domain_events
+  - field: previous_hash
+  - field: event_hash
+
+invariant:
+  statement: >
+    Each domain_event.previous_hash must equal the SHA-256 hash
+    of the immediately preceding event. The chain must be
+    continuous with no gaps, forks, or modifications.
+
+proof:
+  mechanism:
+    - cryptographic_validation: sha256_chain_verification
+    - sequence_validation: no_gaps_in_chain
+    - integrity_check: hash_computation_verification
+  verification:
+    - script: governance/migration/02_hash_chain_integrity.sql
+      expected_result: "0 rows returned (no chain violations)"
+    - query: >
+        SELECT COUNT(*) FROM domain_events de1
+        JOIN domain_events de2 ON de1.sequence_number = de2.sequence_number + 1
+        WHERE de1.previous_hash != de2.event_hash
+      expected_result: "0"
+
+verification_policy:
+  when:
+    - pre_migration
+    - post_migration
+    - daily_audit
+    - before_backup
+  frequency: mandatory
+  automated: true
+
+failure_policy:
+  severity: CRITICAL
+  action:
+    - invalidate_build_proof
+    - block_system_state
+    - forensic_investigation
+    - alert_security_team
+  escalation: immediate
+  notification: constitutional_violation
+
+evidence:
+  stored:
+    - hash_validation_logs
+    - chain_integrity_reports
+    - cryptographic_proofs
+    - sequence_verification
+  retention: permanent
+  audit_trail: required
+
+status: CERTIFIED
+certified_by: SPOFE_CONSTITUTIONAL_FRAMEWORK
+certified_date: 2026-02-05
+version: 1.0.0

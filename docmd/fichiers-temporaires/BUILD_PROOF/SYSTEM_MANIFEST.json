@@ -1,0 +1,21 @@
+{
+  "system": "SPOFE",
+  "architecture": {
+    "pattern": "CQRS_STRICT",
+    "write_side": "GUARDIAN_ONLY",
+    "read_side": "READ_MODELS_ONLY",
+    "api_policy": "GET_ONLY"
+  },
+  "governance": {
+    "contracts_executable": true,
+    "append_only": true,
+    "multi_tenant_isolation": true
+  },
+  "forbidden_patterns": [
+    "write_outside_guardian",
+    "business_logic_in_read_models",
+    "cross_module_write",
+    "circular_dependencies"
+  ],
+  "certified_at": "2026-02-04T15:31:41.939Z"
+}

@@ -1,0 +1,196 @@
+{
+  "catalog": {
+    "version": "1.0",
+    "created": "2026-02-05T22:30:00Z",
+    "level": "P0+",
+    "description": "Constitutional Operational Invariants Catalog",
+    "author": "SPOFE Governance Team"
+  },
+  "definition": {
+    "operational_invariant": "A system property that must be true before, during, or after a critical operation, is automatically verifiable, and whose violation renders the system state illegitimate.",
+    "principles": [
+      "verifiable",
+      "binary", 
+      "blocking",
+      "provable",
+      "non-negotiable"
+    ]
+  },
+  "invariants": {
+    "OPS-P0-01": {
+      "id": "OPS-P0-01",
+      "name": "Immutabilité du ledger",
+      "description": "Aucun événement écrit ne peut être modifié ou supprimé",
+      "formal_condition": "∀ e ∈ domain_events, UPDATE(e) = ERROR ∧ DELETE(e) = ERROR",
+      "proof": "01_db_immutability.sql",
+      "period": ["PRE", "DURING", "POST"],
+      "violation_consequence": "État système illégitime",
+      "action": "STOP immédiat",
+      "criticality": "BLOCKING",
+      "dependencies": [],
+      "triggers": [
+        "no_update_domain_events",
+        "no_delete_domain_events",
+        "ledger_sequence_lock",
+        "verify_chain_on_insert",
+        "enforce_hash",
+        "verify_sequence"
+      ]
+    },
+    "OPS-P0-02": {
+      "id": "OPS-P0-02", 
+      "name": "Intégrité de la chaîne de hash",
+      "description": "La chaîne (previous_hash → current_hash) doit être continue et cohérente",
+      "formal_condition": "∀ e_i ∈ domain_events, e_i.previous_hash = e_{i-1}.current_hash",
+      "proof": "02_hash_chain_integrity.sql",
+      "period": ["POST"],
+      "violation_consequence": "Preuve cryptographique rompue",
+      "action": "Investigation forensique",
+      "criticality": "BLOCKING",
+      "dependencies": ["OPS-P0-01"],
+      "validation_function": "check_ledger_integrity()",
+      "hash_format": "SHA-256",
+      "uniqueness_required": true
+    },
+    "OPS-P0-03": {
+      "id": "OPS-P0-03",
+      "name": "Cohérence double-écriture", 
+      "description": "En phase transitoire, MySQL et PostgreSQL doivent produire exactement le même nombre de faits",
+      "formal_condition": "COUNT(domain_events) = COUNT(events) ∧ divergence = 0",
+      "proof": "03_double_write_check.sh",
+      "period": ["DOUBLE-WRITE"],
+      "violation_consequence": "STOP immédiat + rollback",
+      "action": "Synchronisation manuelle",
+      "criticality": "BLOCKING",
+      "dependencies": ["OPS-P0-01", "OPS-P0-02"],
+      "tolerance": 0,
+      "monitoring_frequency": "30s",
+      "propagation_timeout": "5s"
+    },
+    "OPS-P0-04": {
+      "id": "OPS-P0-04",
+      "name": "Read-only effectif de MySQL",
+      "description": "Après bascule, MySQL ne doit accepter aucune écriture métier",
+      "formal_condition": "@@global.read_only = 1 ∧ @@global.super_read_only = 1 ∧ ∀ write, write = ERROR",
+      "proof": "04_mysql_read_only.sql", 
+      "period": ["POST-SWITCH"],
+      "violation_consequence": "Bascule invalide + fork risque",
+      "action": "Restauration read-only",
+      "criticality": "BLOCKING",
+      "dependencies": ["OPS-P0-03"],
+      "protected_operations": ["INSERT", "UPDATE", "DELETE", "CREATE", "DROP"],
+      "monitoring_connections": true
+    },
+    "OPS-P0-05": {
+      "id": "OPS-P0-05",
+      "name": "Capacité d'écriture légitime post-bascule",
+      "description": "Le système doit pouvoir écrire un nouvel événement uniquement via PostgreSQL ledger",
+      "formal_condition": "∃ event, CREATE(event) = SUCCESS ∧ PERSIST(event) = SUCCESS ∧ HASH(event) = SHA-256",
+      "proof": "05_post_switch_smoke_test.sh",
+      "period": ["POST-SWITCH"],
+      "violation_consequence": "Système bloqué ou compromis", 
+      "action": "Investigation + correction",
+      "criticality": "BLOCKING",
+      "dependencies": ["OPS-P0-01", "OPS-P0-02", "OPS-P0-04"],
+      "performance_thresholds": {
+        "creation": "< 1000ms",
+        "persistence": "< 5000ms",
+        "batch_5_events": "< 5000ms"
+      },
+      "required_validations": [
+        "event_created",
+        "event_persisted", 
+        "hash_generated",
+        "chain_integrity",
+        "sequence_continuity"
+      ]
+    }
+  },
+  "lifecycle": {
+    "pre-migration": {
+      "active_invariants": ["OPS-P0-01", "OPS-P0-02"],
+      "objective": "Préparer l'environnement"
+    },
+    "double-write": {
+      "active_invariants": ["OPS-P0-01", "OPS-P0-02", "OPS-P0-03"],
+      "objective": "Synchroniser les vérités"
+    },
+    "switch": {
+      "active_invariants": ["OPS-P0-01", "OPS-P0-02", "OPS-P0-04"],
+      "objective": "Isoler l'ancienne source"
+    },
+    "post-switch": {
+      "active_invariants": ["OPS-P0-01", "OPS-P0-02", "OPS-P0-05"],
+      "objective": "Valider la nouvelle capacité"
+    },
+    "production": {
+      "active_invariants": ["OPS-P0-01", "OPS-P0-02"],
+      "objective": "Maintien constitutionnel"
+    }
+  },
+  "validation": {
+    "automated": true,
+    "binary_result": true,
+    "proof_archival": true,
+    "build_proof_integration": true,
+    "monitoring_continuous": true
+  },
+  "build_proof_extension": {
+    "traditional_checks": [
+      "code_compilation",
+      "tests_passing"
+    ],
+    "operational_checks": [
+      "migration_possible",
+      "db_immutability", 
+      "chain_integrity",
+      "human_non_cheating"
+    ],
+    "proof_command": "build_proof",
+    "constitutional_level": "P0+"
+  },
+  "metrics": {
+    "total_invariants": 5,
+    "active_invariants": 5,
+    "validation_rate_target": "100%",
+    "violations_target": 0,
+    "proof_archival_target": "infinite",
+    "build_proof_coverage_target": "100%"
+  },
+  "governance": {
+    "violation_procedure": [
+      "detection",
+      "isolation", 
+      "analysis",
+      "correction",
+      "revalidation",
+      "documentation"
+    ],
+    "criticality_levels": {
+      "BLOCKING": {
+        "action": "STOP IMMÉDIAT",
+        "impact": "Système illégitime"
+      },
+      "CRITICAL": {
+        "action": "ROLLBACK", 
+        "impact": "Migration échouée"
+      },
+      "WARNING": {
+        "action": "INVESTIGATION",
+        "impact": "Surveillance renforcée"
+      }
+    }
+  },
+  "success_criteria": {
+    "all_invariants_valid": true,
+    "build_proof_extended": true,
+    "proofs_archived": true,
+    "system_constitutional": true
+  },
+  "archival": {
+    "proof_directory": "artifacts/proof-{timestamp}",
+    "hash_algorithm": "SHA-256",
+    "git_tagging": true,
+    "immutable_storage": true
+  }
+}

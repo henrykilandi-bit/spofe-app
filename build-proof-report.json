@@ -1,133 +1,133 @@
 {
-  "timestamp": "2026-02-02T01:36:21.120Z",
+  "timestamp": "2026-02-04T15:25:42.763Z",
   "overall": "error",
   "results": [
     {
       "step": "File Check",
       "status": "success",
       "message": "package.json exists",
-      "duration": 2
+      "duration": 1
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "tsconfig.json exists",
-      "duration": 2
+      "duration": 1
     },
     {
       "step": "File Check",
       "status": "success",
       "message": "jest.config.js exists",
+      "duration": 2
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "cascade/modules/gestion-tiers/index.ts exists",
+      "duration": 2
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "cascade/modules/gestion-tiers/domain/index.ts exists",
+      "duration": 2
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "cascade/modules/gestion-tiers/write/index.ts exists",
       "duration": 3
     },
     {
       "step": "File Check",
       "status": "success",
-      "message": "cascade/modules/immobilisation/index.ts exists",
+      "message": "cascade/modules/gestion-tiers/guardian/index.ts exists",
       "duration": 3
-    },
-    {
-      "step": "File Check",
-      "status": "success",
-      "message": "cascade/modules/immobilisation/domain/index.ts exists",
-      "duration": 3
-    },
-    {
-      "step": "File Check",
-      "status": "success",
-      "message": "cascade/modules/immobilisation/write/index.ts exists",
-      "duration": 4
-    },
-    {
-      "step": "File Check",
-      "status": "success",
-      "message": "cascade/modules/immobilisation/guardian/index.ts exists",
-      "duration": 4
     },
     {
       "step": "Critical Files",
       "status": "success",
       "message": "All critical files present",
-      "duration": 4
+      "duration": 3
     },
     {
       "step": "TypeScript Compilation",
-      "status": "success",
-      "message": "No TypeScript errors found",
-      "duration": 2638
+      "status": "error",
+      "message": "0 TypeScript errors found",
+      "duration": 2414,
+      "details": ""
     },
     {
       "step": "Dependencies",
       "status": "success",
       "message": "All dependencies resolved",
-      "duration": 4173
+      "duration": 3753
     },
     {
       "step": "Jest Configuration",
       "status": "success",
       "message": "Jest configured for TypeScript and ES modules",
-      "duration": 5898
+      "duration": 5205
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "API Layer (Controllers + DTOs)",
-      "duration": 5899
+      "duration": 5206
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Application Layer (Commands + Handlers)",
-      "duration": 5900
+      "duration": 5206
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Domain Layer (Aggregates + Value Objects)",
-      "duration": 5900
+      "duration": 5207
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Guardian Layer (Invariants)",
-      "duration": 5900
+      "duration": 5207
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Infrastructure Layer (Repositories)",
-      "duration": 5900
+      "duration": 5207
     },
     {
       "step": "SPOFE Architecture",
       "status": "success",
       "message": "Write-side (CQRS Commands)",
-      "duration": 5901
+      "duration": 5208
     },
     {
       "step": "SPOFE Compliance",
       "status": "success",
       "message": "All SPOFE architectural layers present",
-      "duration": 5901
+      "duration": 5208
     },
     {
       "step": "Code Metrics",
       "status": "success",
-      "message": "21479 TypeScript files, 386 test files",
-      "duration": 36993
+      "message": "24103 TypeScript files, 459 test files",
+      "duration": 36846
     },
     {
       "step": "Test Coverage",
       "status": "success",
-      "message": "Test infrastructure in place (386 test files)",
-      "duration": 36993
+      "message": "Test infrastructure in place (459 test files)",
+      "duration": 36846
     },
     {
       "step": "Unit Tests",
-      "status": "error",
-      "message": "Jest execution failed",
-      "duration": 41413,
-      "details": "Test Suites: 0 of 1 total\nTests:       0 total\nSnapshots:   0 total\nTime:        0.228 s\nError: Cannot find module 'jest-util'\nRequire stack:\n- C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\node_modules\\ts-jest\\dist\\legacy\\config\\config-set.js\n- C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\node_modules\\ts-"
+      "status": "success",
+      "message": "Tests executed successfully",
+      "duration": 40572
     }
   ],
   "summary": {

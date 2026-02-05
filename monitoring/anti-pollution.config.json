@@ -1,0 +1,116 @@
+{
+  "monitoring": {
+    "name": "SPOFE Anti-Pollution Monitor",
+    "version": "1.0.0",
+    "level": "P0-Constitutional",
+    "enabled": true
+  },
+  
+  "whitelist": {
+    "critical_directories": [
+      "cascade",
+      "frontend", 
+      "src",
+      "architecture",
+      "governance",
+      "tools",
+      "contracts",
+      "domain",
+      "scripts",
+      "monitoring",
+      "silc-guardian",
+      "aga",
+      "spofe",
+      "ci",
+      "tests",
+      "application",
+      "ddl"
+    ],
+    
+    "system_files": [
+      "BUILD_PROOF_SYSTÈME_FINAL_INDUSTRIALISATION.md",
+      "BUILD_PROOF_SYSTEM_INTER_MODULES.json",
+      "BUILD_PROOF_SYSTEM_INTER_MODULES.sha256",
+      "BUILD_PROOF_SYSTEM_INTER_MODULES.sig",
+      "package.json",
+      "README.md",
+      "WELCOME.txt",
+      "START_HERE_SUMMARY.txt"
+    ],
+    
+    "allowed_extensions": [
+      ".ts", ".js", ".jsx", ".tsx", ".mjs", ".cjs",
+      ".json", ".yml", ".yaml", 
+      ".md", ".sql", ".html", ".css",
+      ".png", ".jpg", ".svg", ".ico",
+      ".sh", ".ps1", ".bat",
+      ".env", ".gitignore", ".npmignore",
+      ".config", ".example"
+    ]
+  },
+  
+  "blacklist": {
+    "pollution_patterns": [
+      "**/temp/**", "**/_temp/**", "**/tmp/**",
+      "**/backup/**", "**/_backup/**", "**/bak/**",
+      "**/old/**", "**/_old/**",
+      "**/*legacy*/**", "**/*archived*/**",
+      "**/*-validation-*/**", "**/*-test-*/**",
+      "**/BUILD_PROOF/**",
+      "**/system-tests/**"
+    ],
+    
+    "suspicious_extensions": [
+      ".backup", ".backup-*", ".bak", 
+      ".tmp", ".temp", ".original", 
+      ".old", ".orig", ".test",
+      ".log", ".out", ".err"
+    ],
+    
+    "obsolete_documents": [
+      "PLAN_ACTION_*.md", 
+      "PLAN_REPARATION_*.md",
+      "RAPPORT_*.md",
+      "BUILD_PROOF_*.md",
+      "ANALYSE_*.md",
+      "CRITIQUE_*.md",
+      "*_SUMMARY.*", 
+      "*_NOTIFICATION.*",
+      "*_VALIDATION_*.*",
+      "DELIVERY_*.txt",
+      "GUARDIAN_*.txt",
+      "found-*.txt",
+      "scan-*.txt",
+      "temp-*.txt"
+    ]
+  },
+  
+  "actions": {
+    "auto_archive": true,
+    "alert_level": "warning",
+    "scan_frequency": "daily",
+    "quarantine_suspicious": false,
+    "notify_administrators": true
+  },
+  
+  "archive_rules": {
+    "auto_archive_threshold": 3,
+    "archive_location": "docmd/auto-archives",
+    "preserve_structure": true,
+    "create_manifest": true
+  },
+  
+  "exclusions": {
+    "directories": [
+      "node_modules",
+      ".git", 
+      "docmd",
+      "dist"
+    ],
+    "files": [
+      ".DS_Store",
+      "Thumbs.db",
+      "*.map"
+    ]
+  }
+}

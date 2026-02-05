@@ -1,0 +1,44 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "module": "ES2022",
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@immobilisation/*": ["./*"],
+      "@shared/*": ["../../shared/*"]
+    }
+  },
+  "include": [
+    "domain/**/*.ts",
+    "application/**/*.ts",
+    "guardian/**/*.ts", 
+    "write/**/*.ts",
+    "infrastructure/**/*.ts",
+    "api/**/*.ts",
+    "index.ts",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests/**/*",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "experimental/**/*"
+  ],
+  "references": []
+}

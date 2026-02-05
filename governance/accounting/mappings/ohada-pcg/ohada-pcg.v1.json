@@ -1,0 +1,63 @@
+{
+  "mapping": {
+    "from": "OHADA",
+    "to": "PCG",
+    "version": "v1.0"
+  },
+  "rules": [
+    {
+      "ohada": { "class": "5", "account": "52" },
+      "pcg": { "class": "5", "account": "51" },
+      "confidence": "HIGH",
+      "notes": "Banques"
+    },
+    {
+      "ohada": { "class": "5", "account": "57" },
+      "pcg": { "class": "5", "account": "53" },
+      "confidence": "HIGH",
+      "notes": "Caisse"
+    },
+    {
+      "ohada": { "class": "4", "account": "41" },
+      "pcg": { "class": "4", "account": "41" },
+      "confidence": "HIGH",
+      "notes": "Clients"
+    },
+    {
+      "ohada": { "class": "4", "account": "40" },
+      "pcg": { "class": "4", "account": "40" },
+      "confidence": "HIGH",
+      "notes": "Fournisseurs"
+    },
+    {
+      "ohada": { "class": "2", "account": "21" },
+      "pcg": { "class": "2", "account": "21" },
+      "confidence": "MEDIUM",
+      "notes": "Immobilisations corporelles – périmètre variable selon normes locales"
+    },
+    {
+      "ohada": { "class": "6", "account": "60" },
+      "pcg": { "class": "6", "account": "60" },
+      "confidence": "HIGH",
+      "notes": "Achats"
+    },
+    {
+      "ohada": { "class": "7", "account": "70" },
+      "pcg": { "class": "7", "account": "70" },
+      "confidence": "HIGH",
+      "notes": "Ventes"
+    },
+    {
+      "ohada": { "class": "6", "account": "67" },
+      "pcg": { "class": "6", "account": "66" },
+      "confidence": "MEDIUM",
+      "notes": "Charges financières – nomenclature différente"
+    },
+    {
+      "ohada": { "class": "7", "account": "73" },
+      "pcg": { "class": "7", "account": "76" },
+      "confidence": "MEDIUM",
+      "notes": "Produits financiers"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "tenantId": "TENANT_002",
+  "referential": "PCG",
+  "activatedAccounts": [
+    {
+      "class": "5",
+      "account": "51",
+      "activationReason": "USAGE",
+      "activatedBy": "PRECOMPTA_ENGINE",
+      "activatedAt": "2026-02-01T09:00:00Z"
+    },
+    {
+      "class": "5",
+      "account": "53",
+      "activationReason": "CONFIGURATION",
+      "activatedBy": "ADMIN",
+      "activatedAt": "2026-02-01T09:05:00Z"
+    },
+    {
+      "class": "4",
+      "account": "41",
+      "activationReason": "USAGE",
+      "activatedBy": "PRECOMPTA_ENGINE",
+      "activatedAt": "2026-02-01T10:30:00Z"
+    },
+    {
+      "class": "6",
+      "account": "60",
+      "activationReason": "USAGE",
+      "activatedBy": "PRECOMPTA_ENGINE",
+      "activatedAt": "2026-02-01T11:15:00Z"
+    }
+  ]
+}

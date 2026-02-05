@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SPOFE Accounting Natures",
+  "type": "object",
+  "required": ["version", "natures"],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "natures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/nature"
+      }
+    }
+  },
+  "definitions": {
+    "nature": {
+      "type": "object",
+      "required": ["code", "label", "direction", "scope", "description"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z_]+$"
+        },
+        "label": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["DEBIT", "CREDIT"]
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "TRESORERIE",
+            "TIERS",
+            "STOCK",
+            "IMMOBILISATION",
+            "CHARGE",
+            "PRODUIT",
+            "AUTRE"
+          ]
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

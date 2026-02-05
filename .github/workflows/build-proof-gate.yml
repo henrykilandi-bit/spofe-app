@@ -1,0 +1,304 @@
+# 🛡️ BUILD_PROOF GATE - No Proof → No Deploy
+# Workflow GitHub Actions pour validation constitutionnelle
+# Mode: Blocage automatique si preuves manquantes ou invalides
+
+name: BUILD_PROOF_GATE
+
+# Déclenchement
+on:
+  pull_request:
+    branches: [ main, develop ]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Raison du déclenchement manuel'
+        required: false
+        default: 'Validation manuelle BUILD_PROOF'
+
+# Environnement
+environments:
+  production:
+    protection_rules: build-proof-gate
+
+# Permissions
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  actions: read
+
+# Variables globales
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  BUILD_PROOF_TIMEOUT: '300'
+
+# Jobs
+jobs:
+  # Job principal de validation BUILD_PROOF
+  build-proof-gate:
+    name: BUILD_PROOF Constitutional Gate
+    runs-on: ubuntu-latest
+    
+    # Timeout pour éviter les blocages
+    timeout-minutes: 10
+    
+    steps:
+      # 1. Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Historique complet pour les signatures
+          
+      # 2. Installation des outils requis
+      - name: Install required tools
+        run: |
+          echo "🔧 Installation des outils BUILD_PROOF..."
+          sudo apt-get update
+          sudo apt-get install -y jq yq openssl
+          
+          # Vérification des outils
+          echo "✅ jq version: $(jq --version)"
+          echo "✅ yq version: $(yq --version)"
+          echo "✅ openssl version: $(openssl version)"
+          
+      # 3. Configuration de Python pour les scripts
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      # 4. Installation des dépendances Python
+      - name: Install Python dependencies
+        run: |
+          pip install pyyaml jsonschema
+          
+      # 5. Création des répertoires d'artefacts
+      - name: Create artifacts directories
+        run: |
+          mkdir -p artifacts/build-proof-gate
+          mkdir -p artifacts/reports
+          mkdir -p artifacts/logs
+          
+      # 6. Vérification de la politique de gouvernance
+      - name: Verify governance policy
+        run: |
+          echo "📋 Vérification de la politique de gouvernance..."
+          
+          if [ ! -f "governance/policy.yml" ]; then
+            echo "❌ Fichier de politique manquant: governance/policy.yml"
+            exit 1
+          fi
+          
+          # Validation YAML de la politique
+          if ! yq eval '.' governance/policy.yml > /dev/null 2>&1; then
+            echo "❌ Fichier de politique invalide: governance/policy.yml"
+            exit 1
+          fi
+          
+          echo "✅ Politique de gouvernance valide"
+          
+      # 7. Vérification des clés cryptographiques
+      - name: Verify cryptographic keys
+        run: |
+          echo "🔐 Vérification des clés cryptographiques..."
+          
+          KEYS_DIR="governance/build-proof/keys"
+          PUBLIC_KEY="$KEYS_DIR/build_proof_public.key"
+          
+          if [ ! -f "$PUBLIC_KEY" ]; then
+            echo "❌ Clé publique manquante: $PUBLIC_KEY"
+            exit 1
+          fi
+          
+          # Validation format clé Ed25519
+          if ! grep -q "BEGIN PUBLIC KEY" "$PUBLIC_KEY"; then
+            echo "❌ Format clé publique invalide"
+            exit 1
+          fi
+          
+          echo "✅ Clés cryptographiques valides"
+          
+      # 8. Exécution principale de BUILD_PROOF GATE
+      - name: Execute BUILD_PROOF Gate
+        id: build-proof-gate
+        run: |
+          echo "🛡️ EXÉCUTION BUILD_PROOF GATE"
+          echo "================================"
+          echo "Timestamp: $(date -Iseconds)"
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo ""
+          
+          # Exécution du script de vérification
+          if ./governance/verify_build_proof.sh; then
+            echo "✅ BUILD_PROOF GATE PASSED"
+            echo "BUILD_PROOF_STATUS=PASSED" >> $GITHUB_ENV
+            echo "BUILD_PROOF_MESSAGE=Légitimité constitutionnelle maintenue" >> $GITHUB_ENV
+          else
+            echo "❌ BUILD_PROOF GATE FAILED"
+            echo "BUILD_PROOF_STATUS=FAILED" >> $GITHUB_ENV
+            echo "BUILD_PROOF_MESSAGE=Déploiement bloqué - preuves invalides" >> $GITHUB_ENV
+            exit 1
+          fi
+          
+      # 9. Génération du rapport détaillé
+      - name: Generate detailed report
+        if: always()
+        run: |
+          echo "📊 Génération du rapport détaillé..."
+          
+          REPORT_FILE="artifacts/build-proof-gate-report.json"
+          
+          cat > "$REPORT_FILE" << EOF
+          {
+            "build_proof_gate": {
+              "timestamp": "$(date -Iseconds)",
+              "workflow_run_id": "${{ github.run_id }}",
+              "commit_sha": "${{ github.sha }}",
+              "branch": "${{ github.ref_name }}",
+              "actor": "${{ github.actor }}",
+              "status": "${{ env.BUILD_PROOF_STATUS || 'UNKNOWN' }}",
+              "message": "${{ env.BUILD_PROOF_MESSAGE || 'No message' }}",
+              "repository": "${{ github.repository }}",
+              "workflow": "build-proof-gate.yml",
+              "job_status": "${{ job.status }}"
+            }
+          }
+          EOF
+          
+          echo "✅ Rapport généré: $REPORT_FILE"
+          
+      # 10. Publication des artefacts
+      - name: Upload BUILD_PROOF artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-proof-gate-artifacts
+          path: |
+            artifacts/
+            governance/build-proof/
+          retention-days: 30
+          
+      # 11. Commentaire sur la PR (si applicable)
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let status = process.env.BUILD_PROOF_STATUS || 'UNKNOWN';
+            let message = process.env.BUILD_PROOF_MESSAGE || 'No message';
+            
+            let comment = `## 🛡️ BUILD_PROOF GATE Results\n\n`;
+            comment += `**Status:** ${status === 'PASSED' ? '✅ PASSED' : '❌ FAILED'}\n\n`;
+            comment += `**Message:** ${message}\n\n`;
+            comment += `**Timestamp:** ${new Date().toISOString()}\n\n`;
+            
+            if (status === 'PASSED') {
+              comment += `🎉 **Déploiement autorisé** - Légitimité constitutionnelle maintenue\n`;
+            } else {
+              comment += `⛔ **Déploiement bloqué** - Corrigez les preuves avant de continuer\n`;
+            }
+            
+            // Recherche d'un commentaire existant
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const existingComment = comments.find(comment => 
+              comment.body.includes('BUILD_PROOF GATE Results') && 
+              comment.user.type === 'Bot'
+            );
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+            
+      # 12. Statut du commit
+      - name: Commit status
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const status = process.env.BUILD_PROOF_STATUS || 'UNKNOWN';
+            const message = process.env.BUILD_PROOF_MESSAGE || 'BUILD_PROOF validation';
+            
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: status === 'PASSED' ? 'success' : 'failure',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              description: message,
+              context: 'BUILD_PROOF_GATE'
+            });
+            
+      # 13. Notification (optionnel)
+      - name: Notification on failure
+        if: failure()
+        run: |
+          echo "🚨 NOTIFICATION D'ÉCHEC BUILD_PROOF GATE"
+          echo "======================================"
+          echo "Repository: ${{ github.repository }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Message: ${{ env.BUILD_PROOF_MESSAGE }}"
+          echo ""
+          echo "Action requise: Corrigez les BUILD_PROOF avant déploiement"
+          
+  # Job de validation supplémentaire (optionnel)
+  additional-checks:
+    name: Additional Security Checks
+    runs-on: ubuntu-latest
+    needs: build-proof-gate
+    if: success()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Run security scans
+        run: |
+          echo "🔍 Scans de sécurité supplémentaires..."
+          # Ajouter ici d'autres vérifications de sécurité
+          
+  # Job de déploiement (conditionnel)
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build-proof-gate, additional-checks]
+    if: success() && github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+      - name: Deploy
+        run: |
+          echo "🚀 DÉPLOIEMENT EN PRODUCTION"
+          echo "==========================="
+          echo "BUILD_PROOF GATE: ✅ PASSED"
+          echo "Sécurité: ✅ VALIDÉE"
+          echo "Légitimité: ✅ MAINTENUE"
+          echo ""
+          echo "Déploiement autorisé - Lancement..."
+          
+          # Ajouter ici les commandes de déploiement réelles

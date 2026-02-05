@@ -1,0 +1,36 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@cost-structure/*": ["./*"],
+      "@shared/*": ["../../shared/*"]
+    }
+  },
+  "include": [
+    "domain/**/*.ts",
+    "application/**/*.ts",
+    "infrastructure/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.example.ts",
+    "dist",
+    "node_modules",
+    "api_legacy/**",
+    "tests/**",
+    "index.ts",
+    "cost-structure.module.ts",
+    "guardian/**",
+    "scripts/**"
+  ]
+}

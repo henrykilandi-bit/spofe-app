@@ -1,0 +1,495 @@
+# 🛡️ ENVIRONMENTAL GATE - Guardian de gouvernance par environnement
+# Workflow GitHub Actions pour gates environnementaux distincts
+# Mode: "environnements = états constitutionnels distincts" activé
+
+name: ENVIRONMENTAL_GATE
+
+# Déclenchement sur les événements de déploiement
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: 'Environnement cible'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - development
+        - staging
+        - production
+        - dr
+      force_deploy:
+        description: 'Forcer le déploiement (contournement)'
+        required: false
+        default: false
+        type: boolean
+  release:
+    types: [ published ]
+
+# Permissions
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+  checks: write
+
+# Variables d'environnement
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+# Jobs
+jobs:
+  # Job principal de validation environnementale
+  environmental-validation:
+    name: Environmental Governance Validation
+    runs-on: ubuntu-latest
+    
+    # Timeout pour éviter les blocages
+    timeout-minutes: 25
+    
+    outputs:
+      environment: ${{ steps.validate.outputs.environment }}
+      decision: ${{ steps.validate.outputs.decision }}
+      reason: ${{ steps.validate.outputs.reason }}
+      decision_id: ${{ steps.validate.outputs.decision_id }}
+      
+    steps:
+      # 1. Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # 2. Configuration de Python et dépendances
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client jq openssl yq
+          pip install pyyaml jsonschema
+          
+      # 3. Détermination de l'environnement cible
+      - name: Determine target environment
+        id: determine-env
+        run: |
+          echo "🛡️ DÉTERMINATION ENVIRONNEMENT CIBLE"
+          echo "====================================="
+          
+          # Priorité: input manuel > branch > event
+          if [ "${{ github.event.inputs.target_environment }}" != "" ]; then
+            TARGET_ENV="${{ github.event.inputs.target_environment }}"
+            echo "Environnement manuel: $TARGET_ENV"
+          elif [ "${{ github.ref_name }}" = "main" ]; then
+            if [ "${{ github.event_name }}" = "release" ]; then
+              TARGET_ENV="production"
+            else
+              TARGET_ENV="staging"
+            fi
+            echo "Environnement par branche: $TARGET_ENV"
+          elif [ "${{ github.ref_name }}" = "develop" ]; then
+            TARGET_ENV="staging"
+            echo "Environnement par branche: $TARGET_ENV"
+          else
+            TARGET_ENV="development"
+            echo "Environnement par défaut: $TARGET_ENV"
+          fi
+          
+          echo "environment=$TARGET_ENV" >> $GITHUB_OUTPUT
+          echo "🌍 Environnement cible: $TARGET_ENV"
+          
+      # 4. Génération du rapport CI/CD de légitimité
+      - name: Generate CI/CD legitimacy report
+        id: ci-report
+        run: |
+          echo "🚀 GÉNÉRATION RAPPORT CI/CD LÉGITIMITÉ"
+          echo "======================================"
+          
+          # Configuration de l'environnement
+          export TARGET_ENV="${{ steps.determine-env.outputs.environment }}"
+          export CI_PROVIDER="github-actions"
+          export GITHUB_RUN_ID="$GITHUB_RUN_ID"
+          export GITHUB_SHA="$GITHUB_SHA"
+          export GITHUB_REF_NAME="$GITHUB_REF_NAME"
+          export GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME"
+          export GITHUB_WORKFLOW="$GITHUB_WORKFLOW"
+          
+          # Configuration DB
+          export SPOFE_DB_HOST="localhost"
+          export SPOFE_DB_USER="spofe_user"
+          export SPOFE_DB_NAME="spofe"
+          
+          # Génération du rapport
+          if ./ci/generate_legitimacy_report.sh; then
+            echo "✅ Rapport CI/CD généré avec succès"
+            
+            # Extraction du hash du rapport
+            DATE_SHORT=$(date +"%Y%m%d_%H%M%S")
+            REPORT_FILE="ci/reports/legitimacy_report-CI_LEGITIMACY_$DATE_SHORT.json"
+            
+            if [ -f "$REPORT_FILE" ]; then
+              CI_REPORT_HASH=$(sha256sum "$REPORT_FILE" | awk '{print $1}')
+              echo "ci_report_hash=$CI_REPORT_HASH" >> $GITHUB_OUTPUT
+              echo "📊 Hash rapport CI/CD: $CI_REPORT_HASH"
+            fi
+          else
+            echo "❌ Échec de la génération du rapport CI/CD"
+            exit 1
+          fi
+          
+      # 5. Validation par le Guardian de gouvernance environnementale
+      - name: Environmental governance validation
+        id: validate
+        run: |
+          echo "🛡️ VALIDATION GOUVERNANCE ENVIRONNEMENTALE"
+          echo "=========================================="
+          
+          TARGET_ENV="${{ steps.determine-env.outputs.environment }}"
+          COMMIT="${{ github.sha }}"
+          CI_REPORT_HASH="${{ steps.ci-report.outputs.ci_report_hash }}"
+          
+          echo "🌍 Environnement: $TARGET_ENV"
+          echo "🔧 Commit: $COMMIT"
+          echo "📊 Rapport CI/CD: $CI_REPORT_HASH"
+          echo ""
+          
+          # Configuration du Guardian
+          export SPOFE_DB_HOST="localhost"
+          export SPOFE_DB_USER="spofe_user"
+          export SPOFE_DB_NAME="spofe"
+          
+          # Appel au Guardian de gouvernance
+          DECISION_JSON=$(./governance/guardian/environmental_guardian.sh authorize "$TARGET_ENV" "$COMMIT" "$CI_REPORT_HASH")
+          
+          # Extraction des résultats
+          DECISION=$(echo "$DECISION_JSON" | jq -r '.decision')
+          REASON=$(echo "$DECISION_JSON" | jq -r '.reason')
+          DECISION_ID=$(echo "$DECISION_JSON" | jq -r '.decision_id')
+          
+          echo "decision=$DECISION" >> $GITHUB_OUTPUT
+          echo "reason=$REASON" >> $GITHUB_OUTPUT
+          echo "decision_id=$DECISION_ID" >> $GITHUB_OUTPUT
+          
+          echo ""
+          echo "🛡️ DÉCISION DU GUARDIAN: $DECISION"
+          echo "📋 Raison: $REASON"
+          echo "🆔 ID Décision: $DECISION_ID"
+          
+          # Affichage détaillé
+          if [ "$DECISION" = "ALLOW" ]; then
+            echo ""
+            echo "✅ DÉPLOIEMENT AUTORISÉ pour l'environnement: $TARGET_ENV"
+            echo "   - Toutes les exigences constitutionnelles sont respectées"
+            echo "   - Le Guardian de gouvernance a validé la demande"
+            echo "   - L'environnement est prêt à recevoir le déploiement"
+          else
+            echo ""
+            echo "❌ DÉPLOIEMENT REFUSÉ pour l'environnement: $TARGET_ENV"
+            echo "   - Une ou plusieurs exigences constitutionnelles ne sont pas respectées"
+            echo "   - Le Guardian de gouvernance a bloqué la demande"
+            echo "   - Corriger les problèmes avant de retenter"
+          fi
+          
+      # 6. Affichage des exigences environnementales
+      - name: Display environmental requirements
+        run: |
+          echo "📋 EXIGENCES ENVIRONNEMENTALES: ${{ steps.determine-env.outputs.environment }}"
+          echo "==============================================================="
+          
+          case "${{ steps.determine-env.outputs.environment }}" in
+            "development")
+              echo "🔧 DEVELOPMENT - Exigences minimales:"
+              echo "   ✅ BUILD_PROOF P0 constitutionnels"
+              echo "   ❌ Résistance aux attaques (non requis)"
+              echo "   ❌ Rapport CI/CD signé (optionnel)"
+              echo "   ❌ Audit récent (non requis)"
+              echo "   ❌ Ancrage ledger (non requis)"
+              ;;
+            "staging")
+              echo "🧪 STAGING - Pré-production:"
+              echo "   ✅ BUILD_PROOF P0 constitutionnels"
+              echo "   ❌ Résistance aux attaques (non requis)"
+              echo "   ✅ Rapport CI/CD signé"
+              echo "   ❌ Audit récent (non requis)"
+              echo "   ✅ Ancrage ledger"
+              ;;
+            "production")
+              echo "🚀 PRODUCTION - Exigences maximales:"
+              echo "   ✅ BUILD_PROOF P0 constitutionnels"
+              echo "   ✅ Résistance aux attaques"
+              echo "   ✅ Rapport CI/CD signé"
+              echo "   ✅ Audit récent (< 60 minutes)"
+              echo "   ✅ Ancrage ledger"
+              ;;
+            "dr")
+              echo "🆘 DISASTER RECOVERY - Urgence:"
+              echo "   ✅ BUILD_PROOF P0 constitutionnels"
+              echo "   ✅ Résistance aux attaques"
+              echo "   ✅ Rapport CI/CD signé"
+              echo "   ✅ Audit récent (< 30 minutes)"
+              echo "   ✅ Ancrage ledger"
+              ;;
+          esac
+          echo ""
+          
+      # 7. Gate environnemental - Décision finale
+      - name: Environmental gate decision
+        run: |
+          echo "🛡️ GATE ENVIRONNEMENTAL - DÉCISION FINALE"
+          echo "========================================="
+          echo "Environnement: ${{ steps.determine-env.outputs.environment }}"
+          echo "Décision: ${{ steps.validate.outputs.decision }}"
+          echo "Raison: ${{ steps.validate.outputs.reason }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ steps.validate.outputs.decision }}" = "ALLOW" ]; then
+            echo "✅ GATE ENVIRONNEMENTAL OUVERT"
+            echo ""
+            echo "🛡️ Le Guardian de gouvernance autorise le déploiement"
+            echo "🌍 Environnement: ${{ steps.determine-env.outputs.environment }}"
+            echo "📋 Décision ID: ${{ steps.validate.outputs.decision_id }}"
+            echo ""
+            echo "🚀 Le pipeline peut continuer vers le déploiement"
+          else
+            echo "❌ GATE ENVIRONNEMENTAL FERMÉ"
+            echo ""
+            echo "🛡️ Le Guardian de gouvernance bloque le déploiement"
+            echo "🌍 Environnement: ${{ steps.determine-env.outputs.environment }}"
+            echo "📋 Raison: ${{ steps.validate.outputs.reason }}"
+            echo "🆔 Décision ID: ${{ steps.validate.outputs.decision_id }}"
+            echo ""
+            echo "🚨 ACTION REQUISE:"
+            echo "   1. Corriger les problèmes identifiés"
+            echo "   2. Régénérer les preuves manquantes"
+            echo "   3. Soumettre une nouvelle demande"
+            echo ""
+            echo "⚖️ LA PRODUCTION N'EST PAS UNE DESTINATION, C'EST UNE DÉCISION"
+            exit 1
+          fi
+          
+      # 8. Publication des artefacts de gouvernance
+      - name: Upload governance artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: environmental-governance-${{ steps.validate.outputs.decision_id }}
+          path: |
+            governance/decisions/
+            governance/audit/
+            ci/reports/
+            ci/evidence/
+            ci/signatures/
+          retention-days: 90
+          
+      # 9. Création du rapport de synthèse environnemental
+      - name: Create environmental summary
+        if: always()
+        run: |
+          echo "📊 CRÉATION RAPPORT SYNTHÈSE ENVIRONNEMENTAL"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          SUMMARY_FILE="governance/decisions/environmental-summary-${{ steps.validate.outputs.decision_id }}.json"
+          
+          cat > "$SUMMARY_FILE" << EOF
+          {
+            "environmental_governance_summary": {
+              "workflow_run_id": "${{ github.run_id }}",
+              "timestamp": "$(date -Iseconds)",
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "actor": "${{ github.actor }}",
+              "trigger": "${{ github.event_name }}",
+              
+              "environmental_decision": {
+                "environment": "${{ steps.determine-env.outputs.environment }}",
+                "decision": "${{ steps.validate.outputs.decision }}",
+                "reason": "${{ steps.validate.outputs.reason }}",
+                "decision_id": "${{ steps.validate.outputs.decision_id }}"
+              },
+              
+              "governance_process": {
+                "guardian": "environmental_governance_guardian",
+                "ci_legitimacy_report": "${{ steps.ci-report.outputs.ci_report_hash }}",
+                "constitutional_invariants": [
+                  "GOV-P0-ENV-01: Environnement explicite",
+                  "GOV-P0-ENV-02: Preuve proportionnelle",
+                  "GOV-P0-ENV-03: Refus implicite",
+                  "GOV-P0-ENV-04: Fraîcheur obligatoire"
+                ]
+              },
+              
+              "workflow_status": {
+                "validation_success": "${{ job.status }}",
+                "gate_passed": $([ "${{ steps.validate.outputs.decision }}" = "ALLOW" ] && echo "true" || echo "false"),
+                "deployment_ready": $([ "${{ steps.validate.outputs.decision }}" = "ALLOW" ] && echo "true" || echo "false")
+              },
+              
+              "environmental_impact": {
+                "before": {
+                  "environments": "technical_variants",
+                  "gates": "uniform",
+                  "production": "pipeline_destination",
+                  "governance": "implicit"
+                },
+                "after": {
+                  "environments": "constitutional_states",
+                  "gates": "proportional",
+                  "production": "governance_decision",
+                  "governance": "explicit"
+                }
+              },
+              
+              "next_actions": [
+                "Archive governance decision",
+                "Update deployment status",
+                "Notify stakeholders",
+                "Schedule next environmental check"
+              ]
+            }
+          }
+          EOF
+          
+          echo "✅ Rapport synthèse environnemental créé: $SUMMARY_FILE"
+          
+  # Job de déploiement conditionnel par environnement
+  deploy-to-environment:
+    name: Deploy to Environment
+    runs-on: ubuntu-latest
+    needs: environmental-validation
+    if: needs.environmental-validation.outputs.decision == 'ALLOW'
+    
+    strategy:
+      matrix:
+        environment: [staging, production, dr]
+        include:
+          - environment: staging
+            deploy_script: "deploy-staging.sh"
+            timeout: 10
+          - environment: production
+            deploy_script: "deploy-production.sh"
+            timeout: 15
+          - environment: dr
+            deploy_script: "deploy-dr.sh"
+            timeout: 20
+    
+    steps:
+      - name: Deploy to ${{ matrix.environment }}
+        run: |
+          echo "🚀 DÉPLOIEMENT VERS ${{ matrix.environment }}"
+          echo "==================================="
+          echo "Environnement: ${{ matrix.environment }}"
+          echo "Décision: ${{ needs.environmental-validation.outputs.decision }}"
+          echo "Raison: ${{ needs.environmental-validation.outputs.reason }}"
+          echo "Decision ID: ${{ needs.environmental-validation.outputs.decision_id }}"
+          echo ""
+          
+          echo "✅ DÉPLOIEMENT AUTORISÉ"
+          echo "   Preuve de légitimité: ${{ needs.environmental-validation.outputs.decision_id }}"
+          echo "   Validé par le Guardian de gouvernance"
+          echo "   Environnement: ${{ matrix.environment }}"
+          echo ""
+          echo "🚀 Exécution du déploiement..."
+          # Ici, vous ajouteriez vos étapes de déploiement réelles
+          # docker build, kubectl apply, etc.
+          echo "   Script: ${{ matrix.deploy_script }}"
+          echo "   Timeout: ${{ matrix.timeout }} minutes"
+          
+  # Job de blocage conditionnel
+  deployment-blocked:
+    name: Deployment Blocked
+    runs-on: ubuntu-latest
+    needs: environmental-validation
+    if: needs.environmental-validation.outputs.decision == 'DENY'
+    
+    steps:
+      - name: Deployment blocked notification
+        run: |
+          echo "❌ DÉPLOIEMENT BLOQUÉ - GOUVERNANCE ENVIRONNEMENTALE"
+          echo "======================================================="
+          echo "Environnement: ${{ needs.environmental-validation.outputs.environment }}"
+          echo "Décision: ${{ needs.environmental-validation.outputs.decision }}"
+          echo "Raison: ${{ needs.environmental-validation.outputs.reason }}"
+          echo "Decision ID: ${{ needs.environmental-validation.outputs.decision_id }}"
+          echo ""
+          
+          echo "❌ DÉPLOIEMENT REFUSÉ"
+          echo "   Raison: ${{ needs.environmental-validation.outputs.reason }}"
+          echo "   Preuve: ${{ needs.environmental-validation.outputs.decision_id }}"
+          echo "   Action requise: Corriger les exigences environnementales"
+          echo ""
+          echo "🛡️ Le Guardian de gouvernance a bloqué ce déploiement"
+          echo "⚖️ La production n'est pas une destination, c'est une décision"
+          
+  # Job de monitoring environnemental
+  environmental-monitoring:
+    name: Monitor Environmental Governance
+    runs-on: ubuntu-latest
+    needs: environmental-validation
+    if: always()
+    
+    steps:
+      - name: Check environmental governance health
+        run: |
+          echo "🔍 VÉRIFICATION SANTÉ GOUVERNANCE ENVIRONNEMENTALE"
+          echo "==================================================="
+          echo "Environment: ${{ needs.environmental-validation.outputs.environment }}"
+          echo "Decision: ${{ needs.environmental-validation.outputs.decision }}"
+          echo "Reason: ${{ needs.environmental-validation.outputs.reason }}"
+          echo "Workflow status: ${{ needs.environmental-validation.result }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ needs.environmental-validation.outputs.decision }}" = "ALLOW" ] && [ "${{ needs.environmental-validation.result }}" = "success" ]; then
+            echo "✅ Gouvernance environnementale saine"
+            echo "   Environnement: ${{ needs.environmental-validation.outputs.environment }}"
+            echo "   Décision: ${{ needs.environmental-validation.outputs.decision }}"
+          else
+            echo "❌ Gouvernance environnementale compromise"
+            echo "   Environnement: ${{ needs.environmental-validation.outputs.environment }}"
+            echo "   Décision: ${{ needs.environmental-validation.outputs.decision }}"
+            echo "🚨 INVESTIGATION ENVIRONNEMENTALE REQUISE"
+            exit 1
+          fi
+          
+      - name: Create environmental health metric
+        run: |
+          echo "📊 CRÉATION MÉTRIQUE SANTÉ ENVIRONNEMENTALE"
+          echo "=========================================="
+          
+          HEALTH_SCORE=100
+          if [ "${{ needs.environmental-validation.outputs.decision }}" != "ALLOW" ]; then
+            HEALTH_SCORE=0
+          fi
+          
+          METRIC_FILE="governance/decisions/environmental-health-metric-$(date +%Y%m%d-%H%M%S).json"
+          
+          cat > "$METRIC_FILE" << EOF
+          {
+            "environmental_health_metric": {
+              "timestamp": "$(date -Iseconds)",
+              "environment": "${{ needs.environmental-validation.outputs.environment }}",
+              "decision": "${{ needs.environmental-validation.outputs.decision }}",
+              "reason": "${{ needs.environmental-validation.outputs.reason }}",
+              "workflow_id": "${{ github.run_id }}",
+              "repository": "${{ github.repository }}",
+              "health_score": $HEALTH_SCORE,
+              "governance_compliance": $([ "${{ needs.environmental-validation.outputs.decision }}" = "ALLOW" ] && echo "true" || echo "false"),
+              "environmental_states": "constitutional",
+              "alerts_active": $([ $HEALTH_SCORE -lt 100 ] && echo "true" || echo "false"),
+              "next_governance_check": "$(date -u -d '+1 hour' --iso-8601)"
+            }
+          }
+          EOF
+          
+          echo "✅ Métrique santé environnementale créée: $METRIC_FILE"
+          echo "📊 Score santé: $HEALTH_SCORE/100"

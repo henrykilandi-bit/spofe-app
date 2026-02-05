@@ -1,0 +1,34 @@
+{
+  "name": "spofe-monitoring-task",
+  "schedule": {
+    "daily": "08:00",
+    "trigger": "file_change"
+  },
+  "commands": [
+    {
+      "name": "anti-pollution-scan",
+      "script": "monitoring\\anti-pollution-scanner.ps1",
+      "arguments": ["-Verbose"],
+      "on_failure": "notify"
+    }
+  ],
+  "notifications": {
+    "email": {
+      "enabled": false,
+      "recipients": []
+    },
+    "webhook": {
+      "enabled": false,
+      "url": ""
+    },
+    "log": {
+      "enabled": true,
+      "level": "warning"
+    }
+  },
+  "auto_actions": {
+    "archive_threshold": 5,
+    "auto_archive": false,
+    "require_approval": true
+  }
+}

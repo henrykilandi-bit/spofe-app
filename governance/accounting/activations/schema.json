@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SPOFE Accounting Account Activation",
+  "type": "object",
+  "required": ["tenantId", "referential", "activatedAccounts"],
+  "properties": {
+    "tenantId": {
+      "type": "string"
+    },
+    "referential": {
+      "type": "string",
+      "enum": ["OHADA", "PCG"]
+    },
+    "activatedAccounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/activatedAccount"
+      }
+    }
+  },
+  "definitions": {
+    "activatedAccount": {
+      "type": "object",
+      "required": ["class", "account", "activationReason", "activatedBy", "activatedAt"],
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        },
+        "activationReason": {
+          "type": "string",
+          "enum": ["USAGE", "CONFIGURATION", "REGULATORY"]
+        },
+        "activatedBy": {
+          "type": "string"
+        },
+        "activatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

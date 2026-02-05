@@ -1,9 +1,9 @@
 #!/usr/bin/env tsx
 /**
- * Build Proof Generator - Module Immobilisation
+ * Build Proof Generator - Module Gestion-Tiers
  * 
  * Script de validation complète du build proof pour s'assurer que le module
- * Immobilisation est techniquement stable et prêt pour la production.
+ * Gestion-Tiers est techniquement stable et prêt pour la production.
  * 
  * Usage:
  *   npx tsx generate-build-proof.ts
@@ -83,10 +83,10 @@ class BuildProofValidator {
       'package.json',
       'tsconfig.json',
       'jest.config.js',
-      'cascade/modules/immobilisation/index.ts',
-      'cascade/modules/immobilisation/domain/index.ts',
-      'cascade/modules/immobilisation/write/index.ts',
-      'cascade/modules/immobilisation/guardian/index.ts'
+      'cascade/modules/gestion-tiers/index.ts',
+      'cascade/modules/gestion-tiers/domain/index.ts',
+      'cascade/modules/gestion-tiers/write/index.ts',
+      'cascade/modules/gestion-tiers/guardian/index.ts',
     ];
 
     let missingFiles: string[] = [];
@@ -173,32 +173,32 @@ class BuildProofValidator {
     
     const spofePatterns = [
       {
-        path: 'cascade/modules/immobilisation/api',
+        path: 'cascade/modules/gestion-tiers/src/api',
         required: true,
         description: 'API Layer (Controllers + DTOs)'
       },
       {
-        path: 'cascade/modules/immobilisation/application',
+        path: 'cascade/modules/gestion-tiers/src/application',
         required: true,
         description: 'Application Layer (Commands + Handlers)'
       },
       {
-        path: 'cascade/modules/immobilisation/domain',
+        path: 'cascade/modules/gestion-tiers/src/domain',
         required: true,
         description: 'Domain Layer (Aggregates + Value Objects)'
       },
       {
-        path: 'cascade/modules/immobilisation/guardian',
+        path: 'cascade/modules/gestion-tiers/guardian',
         required: true,
         description: 'Guardian Layer (Invariants)'
       },
       {
-        path: 'cascade/modules/immobilisation/infrastructure',
+        path: 'cascade/modules/gestion-tiers/src/infrastructure',
         required: true,
         description: 'Infrastructure Layer (Repositories)'
       },
       {
-        path: 'cascade/modules/immobilisation/write',
+        path: 'cascade/modules/gestion-tiers/src/read-models',
         required: true,
         description: 'Write-side (CQRS Commands)'
       }
@@ -326,7 +326,7 @@ class BuildProofValidator {
    * Exécute toutes les vérifications
    */
   async runFullValidation(): Promise<BuildProofReport> {
-    console.log('🎯 BUILD PROOF VALIDATOR - Module Immobilisation');
+    console.log('\n🎯 BUILD PROOF VALIDATOR - Module Gestion-Tiers');
     console.log('='.repeat(50));
     
     this.checkCriticalFiles();

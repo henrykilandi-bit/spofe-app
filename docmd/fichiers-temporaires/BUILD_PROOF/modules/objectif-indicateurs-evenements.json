@@ -1,0 +1,22 @@
+{
+  "module": "objectif-indicateurs-evenements",
+  "version": "1.0.0",
+  "guardian": {
+    "invariants_declared": 16,
+    "tests_p0": "PASS"
+  },
+  "read_models": {
+    "count": 3,
+    "e2e_tests": "PASS"
+  },
+  "contracts": {
+    "scope": "PASS",
+    "dependencies": "PASS",
+    "guardian": "PASS"
+  },
+  "ast_checks": {
+    "no_write_outside_guardian": "PASS",
+    "read_only_enforcement": "PASS"
+  },
+  "status": "CERTIFIED"
+}

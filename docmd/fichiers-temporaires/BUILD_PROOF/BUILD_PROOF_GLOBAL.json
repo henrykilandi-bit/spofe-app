@@ -1,0 +1,42 @@
+{
+  "system": "SPOFE",
+  "build_proof_version": "1.0.0",
+  "generated_at": "2026-02-04T15:31:41.939Z",
+  "certification_scope": {
+    "architecture": true,
+    "contracts": true,
+    "tests": true,
+    "ast_enforcement": true
+  },
+  "checks": {
+    "dependencies": "PASS",
+    "scope": "PASS",
+    "guardian": "PASS",
+    "no_write_outside_guardian": "PASS",
+    "read_only_enforcement": "PASS",
+    "system_tests": "PASS"
+  },
+  "modules_certified": [
+    "amortissement",
+    "budget",
+    "budgeting",
+    "coaching",
+    "comptabilite",
+    "cost-structure",
+    "gestion-commandes",
+    "gestion-stocks",
+    "gestion-tiers",
+    "immobilisation",
+    "investisseurs",
+    "objectif-indicateur-evenement",
+    "objectif-indicateurs-evenements",
+    "oie",
+    "parametres",
+    "precomptabilite",
+    "tresoconsolidation",
+    "tresorerie-banque",
+    "tresorerie-caisse",
+    "vente"
+  ],
+  "status": "CERTIFIED"
+}

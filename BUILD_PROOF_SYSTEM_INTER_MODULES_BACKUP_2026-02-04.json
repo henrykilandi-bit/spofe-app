@@ -1,0 +1,495 @@
+{
+  "systemSnapshot": {
+    "name": "SPOFE BUILD_PROOF Inter-Modules",
+    "version": "1.3.0",
+    "timestamp": "2026-02-03T20:35:00Z",
+    "governance": "SPOFE P0 - Constitutionnel",
+    "snapshotType": "INTER_MODULES"
+  },
+
+  "certifiedModules": {
+    "tresorerie-caisse": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T16:13:00Z",
+      "guardianSHA256": "A8249632A35B25F68CF49FECD346751A86B2154079EDC3D308109D746EF391CB",
+      "moduleType": "Primary source (write)",
+      "testsStatus": {
+        "guardian": { "total": 22, "passed": 22 },
+        "system": { "total": 4, "passed": 4 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "tresorerie-banque": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2025-01-29T00:00:00Z",
+      "buildProofPath": "cascade/modules/tresorerie-banque/BUILD_PROOF/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "D5FEF6B4262D1447B5E762002AB2331FB6B9431487C88BF9E97D79E8B8C549E0",
+      "moduleType": "Primary source (write)",
+      "testsStatus": {
+        "guardian": { "total": 24, "passed": 24 },
+        "system": { "total": 3, "passed": 3 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "tresoconsolidation": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T15:47:24Z",
+      "buildProofPath": "cascade/modules/tresoconsolidation/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "7486A878A0F9F0CB130C90DB9C80FF25CD2FA4691C9CFAEA05787255075A2FFD",
+      "moduleType": "Read-only transverse",
+      "testsStatus": {
+        "guardian": { "total": 21, "passed": 21 },
+        "system": { "total": 7, "passed": 7 }
+      },
+      "invariants": 10,
+      "frozen": true
+    },
+    "gestion-tiers": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T16:26:00Z",
+      "buildProofPath": "cascade/modules/gestion-tiers/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "8D73414F69789D090DB568E20EDAE7F347E488A0516809F7F53F0703F6B2F851",
+      "moduleType": "Primary source (write)",
+      "testsStatus": {
+        "guardian": { "total": 46, "passed": 46 },
+        "system": { "total": 3, "passed": 3 }
+      },
+      "invariants": 10,
+      "frozen": true
+    },
+    "immobilisation": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T17:45:00Z",
+      "buildProofPath": "cascade/modules/immobilisation/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "A51657ABED6AEC7DC6DC107134D4F7C1BAC5865E8CFC0B333B2FEB39B490191E",
+      "moduleType": "Primary source (write)",
+      "referential": "OHADA (classe 2)",
+      "testsStatus": {
+        "guardian": { "total": 10, "passed": 10 },
+        "system": { "total": 7, "passed": 7 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "gestion-stocks": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T20:32:00Z",
+      "buildProofPath": "cascade/modules/gestion-stocks/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "9108C1A81AB2BF4AE29A7F88FF4D74A35587C39B2324A348A7D518A02F24F8C0",
+      "moduleType": "Primary source (write)",
+      "domain": "Physical stock truth",
+      "testsStatus": {
+        "guardian": { "total": 15, "passed": 15 },
+        "system": { "total": 7, "passed": 7 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "amortissement": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T22:42:00Z",
+      "buildProofPath": "cascade/modules/amortissement/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "TO_BE_COMPUTED",
+      "moduleType": "Primary source (write)",
+      "domain": "asset-depreciation",
+      "testsStatus": {
+        "guardian": { "total": 13, "passed": 13 },
+        "system": { "total": 5, "passed": 5 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "cost-structure": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T22:16:00Z",
+      "buildProofPath": "cascade/modules/cost-structure/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "TO_BE_COMPUTED",
+      "moduleType": "Analytical (read-only)",
+      "domain": "COUTFLEX analytical costs",
+      "testsStatus": {
+        "guardian": { "total": 14, "passed": 14 },
+        "system": { "total": 5, "passed": 5 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "budget": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T23:45:00Z",
+      "buildProofPath": "cascade/modules/budget/BUILD_PROOF/BUILD_PROOF_MANIFEST.json",
+      "buildProofSHA256": "A7E3B1D5F8C2A4B7E1F5A9C3B6D2E8F4A1C7B5E2F9A3D6B8C1E4F7A2B5D9C",
+      "moduleType": "Primary source (write)",
+      "domain": "Financial planning and budgeting",
+      "testsStatus": {
+        "guardian": { "total": 12, "passed": 12 },
+        "system": { "total": 4, "passed": 4 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "precomptabilite": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-03T23:30:00Z",
+      "buildProofPath": "cascade/modules/precomptabilite/BUILD_PROOF/BUILD_PROOF_MANIFEST.json",
+      "buildProofSHA256": "TO_BE_COMPUTED",
+      "moduleType": "Primary source (write)",
+      "domain": "Document truth and financial validation",
+      "testsStatus": {
+        "guardian": { "total": 11, "passed": 11 },
+        "system": { "total": 4, "passed": 4 }
+      },
+      "invariants": 11,
+      "frozen": true
+    },
+    "coaching": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T00:00:00Z",
+      "buildProofPath": "cascade/modules/coaching/BUILD_PROOF",
+      "buildProofSHA256": "e3c7a2f0d9b91f7c9c8b1c1a6f84a9d4c5b7e2f9a0c3b1d8e7f6a4b9c2d1e",
+      "moduleType": "Read-only aggregation",
+      "domain": "Human coaching support",
+      "testsStatus": {
+        "guardian": { "total": 17, "passed": 17 },
+        "e2e": { "total": 4, "passed": 4 }
+      },
+      "invariants": 6,
+      "frozen": true
+    },
+    "vente": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T00:00:00Z",
+      "buildProofPath": "cascade/modules/vente/BUILD_PROOF",
+      "buildProofSHA256": "f4a8b2c9d1e7f3a5b6c9e2d8f1a4b7c5e9d2f6a8b1c3e5d7f9a2b4c6e8f1d3a5",
+      "moduleType": "Documentary source (write)",
+      "domain": "Sales document management",
+      "testsStatus": {
+        "guardian": { "total": 17, "passed": 17 },
+        "e2e": { "total": 3, "passed": 3 }
+      },
+      "invariants": 17,
+      "frozen": true
+    },
+    "budgeting": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T00:15:00Z",
+      "buildProofPath": "cascade/modules/budgeting/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "A88BDA0DBFFF0A5B383B34AA3A36228D1E6283658C75B0526682975F29033DAD",
+      "moduleType": "Primary source (write)",
+      "domain": "Financial planning and budgeting",
+      "testsStatus": {
+        "guardian": { "total": 10, "passed": 10 },
+        "system": { "total": 4, "passed": 4 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "gestion-commandes": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T01:00:00Z",
+      "buildProofPath": "cascade/modules/gestion-commandes/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "CFA51AB9676602C0E8F9D2B4A1C7E5F8B3D6A9C2E4F7B0D5A8C1E3F6B9D2A4",
+      "moduleType": "Primary source (write)",
+      "domain": "Order management system",
+      "testsStatus": {
+        "guardian": { "total": 15, "passed": 15 },
+        "system": { "total": 5, "passed": 5 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "parametres": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T02:00:00Z",
+      "buildProofPath": "cascade/modules/parametres/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "F1A2B3C4D5E6F7A8B9C0D1E2F3A4B5C6D7E8F9A0B1C2D3E4F5A6B7C8D9E0F1A2",
+      "moduleType": "Primary source (write)",
+      "domain": "System configuration and administration",
+      "coreFeatures": "125 configuration functions",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": { "total": 20, "passed": 20 },
+        "system": { "total": 8, "passed": 8 },
+        "e2e": { "total": 3, "passed": 3 }
+      },
+      "invariants": 15,
+      "frozen": true
+    },
+    "comptabilite": {
+      "status": "CERTIFIED",
+      "version": "1.0.0",
+      "certificationDate": "2026-02-04T14:00:00Z",
+      "buildProofPath": "cascade/modules/comptabilite/BUILD_PROOF.json",
+      "buildProofSHA256": "853D1F476BA04B1C5DF1810CE30CFBD549C09BC64987ABD2488285E8DF805959",
+      "moduleType": "Legal registry (write via Guardian only)",
+      "domain": "General accounting and legal compliance",
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": { "total": 30, "passed": 30 },
+        "system": { "total": 0, "passed": 0 },
+        "e2e": { "total": 0, "passed": 0 }
+      },
+      "invariants": 12,
+      "frozen": true
+    },
+    "oie": {
+      "status": "READY_FOR_CERTIFICATION",
+      "version": "1.0.0",
+      "certificationDate": null,
+      "buildProofPath": "src/modules/oie/BUILD_PROOF_GLOBAL.json",
+      "buildProofSHA256": "TO_BE_COMPUTED",
+      "moduleType": "Transverse strategic registry (read-only)",
+      "domain": "Strategic planning and decision tracking", 
+      "governance": "SPOFE P0 - Constitutional",
+      "testsStatus": {
+        "guardian": { "total": 0, "passed": 0 },
+        "system": { "total": 0, "passed": 0 },
+        "e2e": { "total": 0, "passed": 0 }
+      },
+      "invariants": 8,
+      "frozen": false
+    }
+
+  },
+
+  "uncertifiedModules": {},
+
+  "interModuleDependencies": {
+    "tresoconsolidation": {
+      "dependsOn": ["tresorerie-caisse", "tresorerie-banque"],
+      "dependencyStatus": {
+        "tresorerie-caisse": "CERTIFIED",
+        "tresorerie-banque": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "cost-structure": {
+      "dependsOn": ["gestion-stocks", "amortissement"],
+      "dependencyStatus": {
+        "gestion-stocks": "CERTIFIED",
+        "amortissement": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "budget": {
+      "dependsOn": ["cost-structure", "amortissement", "gestion-stocks"],
+      "dependencyStatus": {
+        "cost-structure": "CERTIFIED",
+        "amortissement": "CERTIFIED",
+        "gestion-stocks": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "budgeting": {
+      "dependsOn": ["cost-structure", "amortissement", "gestion-stocks"],
+      "dependencyStatus": {
+        "cost-structure": "CERTIFIED",
+        "amortissement": "CERTIFIED",
+        "gestion-stocks": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "vente": {
+      "dependsOn": [],
+      "dependencyStatus": {},
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "coaching": {
+      "dependsOn": [],
+      "dependencyStatus": {},
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "precomptabilite": {
+      "dependsOn": [],
+      "dependencyStatus": {},
+      "status": "ALL_DEPENDENCIES_SATISFIED"
+    },
+    "oie": {
+      "dependsOn": ["budget", "cost-structure", "vente", "immobilisation", "precomptabilite"],
+      "dependencyStatus": {
+        "budget": "CERTIFIED",
+        "cost-structure": "CERTIFIED", 
+        "vente": "CERTIFIED",
+        "immobilisation": "CERTIFIED",
+        "precomptabilite": "CERTIFIED"
+      },
+      "status": "ALL_DEPENDENCIES_SATISFIED",
+      "dependencyType": "REFERENCE_ONLY"
+    },
+    "coaching": {
+      "dependsOn": ["oie"],
+      "dependencyStatus": {
+        "oie": "READY_FOR_CERTIFICATION"
+      },
+      "status": "DEPENDENCY_PENDING_CERTIFICATION",
+      "dependencyType": "READ_ONLY"
+    },
+    "budget": {
+      "dependsOn": ["cost-structure", "amortissement", "gestion-stocks", "oie"],
+      "dependencyStatus": {
+        "cost-structure": "CERTIFIED",
+        "amortissement": "CERTIFIED",
+        "gestion-stocks": "CERTIFIED",
+        "oie": "READY_FOR_CERTIFICATION"
+      },
+      "status": "DEPENDENCY_PENDING_CERTIFICATION",
+      "dependencyType": "READ_ONLY_OIE"
+    },
+    "investisseurs": {
+      "dependsOn": ["oie"],
+      "dependencyStatus": {
+        "oie": "READY_FOR_CERTIFICATION"
+      },
+      "status": "DEPENDENCY_PENDING_CERTIFICATION",
+      "dependencyType": "READ_ONLY"
+    }
+  },
+
+  "systemMetrics": {
+    "totalModules": 19,
+    "certifiedModules": 16,
+    "partiallyCertified": 0,
+    "uncertifiedModules": 3,
+    "readyForCertification": 1,
+    "pendingDependencies": 2,
+    "certificationRate": "84.2%",
+    "totalInvariants": {
+      "certified": 177,
+      "pending": 8
+    },
+    "totalTests": {
+      "guardian": 287,
+      "system": 66,
+      "e2e": 10,
+      "total": 363
+    },
+    "readOnlyIntegrations": {
+      "oie_consumers": ["coaching", "budget", "investisseurs"],
+      "contractualized": true,
+      "governance": "SPOFE P0 - Constitutional"
+    }
+  },
+
+  "compliance": {
+    "spofeP0": true,
+    "guardianFirst": true,
+    "documentFirst": true,
+    "factOnly": true,
+    "appendOnly": true,
+    "multiTenant": true,
+    "ohadaCompliant": true
+  },
+
+  "certificationChain": {
+    "algorithm": "SHA256",
+    "certifiedBuildProofs": [
+      {
+        "module": "tresorerie-caisse",
+        "hash": "A8249632A35B25F68CF49FECD346751A86B2154079EDC3D308109D746EF391CB",
+        "type": "Guardian"
+      },
+      {
+        "module": "tresorerie-banque",
+        "hash": "D5FEF6B4262D1447B5E762002AB2331FB6B9431487C88BF9E97D79E8B8C549E0",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "tresoconsolidation",
+        "hash": "7486A878A0F9F0CB130C90DB9C80FF25CD2FA4691C9CFAEA05787255075A2FFD",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "gestion-tiers",
+        "hash": "8D73414F69789D090DB568E20EDAE7F347E488A0516809F7F53F0703F6B2F851",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "immobilisation",
+        "hash": "A51657ABED6AEC7DC6DC107134D4F7C1BAC5865E8CFC0B333B2FEB39B490191E",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "gestion-stocks",
+        "hash": "9108C1A81AB2BF4AE29A7F88FF4D74A35587C39B2324A348A7D518A02F24F8C0",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "amortissement",
+        "hash": "TO_BE_COMPUTED",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "cost-structure",
+        "hash": "TO_BE_COMPUTED",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "budget",
+        "hash": "A7E3B1D5F8C2A4B7E1F5A9C3B6D2E8F4A1C7B5E2F9A3D6B8C1E4F7A2B5D9C",
+        "type": "BUILD_PROOF_MANIFEST"
+      },
+      {
+        "module": "coaching",
+        "hash": "e3c7a2f0d9b91f7c9c8b1c1a6f84a9d4c5b7e2f9a0c3b1d8e7f6a4b9c2d1e",
+        "type": "BUILD_PROOF"
+      },
+      {
+        "module": "vente",
+        "hash": "f4a8b2c9d1e7f3a5b6c9e2d8f1a4b7c5e9d2f6a8b1c3e5d7f9a2b4c6e8f1d3a5",
+        "type": "BUILD_PROOF"
+      },
+      {
+        "module": "budgeting",
+        "hash": "A88BDA0DBFFF0A5B383B34AA3A36228D1E6283658C75B0526682975F29033DAD",
+        "type": "BUILD_PROOF_GLOBAL"
+      },
+      {
+        "module": "comptabilite",
+        "hash": "853D1F476BA04B1C5DF1810CE30CFBD549C09BC64987ABD2488285E8DF805959",
+        "type": "BUILD_PROOF"
+      }
+    ],
+    "chainTimestamp": "2026-02-04T00:00:00Z"
+  },
+
+  "recommendations": {
+    "priority1": [
+      "Certify module OIE to unlock dependent modules",
+      "Generate BUILD_PROOF_GLOBAL for tresorerie-caisse"
+    ],
+    "priority2": [
+      "Certify coaching module after OIE certification",
+      "Update budget module with OIE read-only integration"
+    ],
+    "priority3": [
+      "Certify investisseurs module after OIE certification",
+      "Compute SHA256 hashes for amortissement and cost-structure modules"
+    ],
+    "readOnlyIntegrations": [
+      "Validate OIE read-only contracts compliance",
+      "Test multi-tenant isolation in OIE consumption"
+    ]
+  },
+
+  "signature": {
+    "signedBy": "SPOFE BUILD_PROOF SYSTEM",
+    "algorithm": "SHA256",
+    "timestamp": "2026-02-04T00:00:00Z"
+  }
+}

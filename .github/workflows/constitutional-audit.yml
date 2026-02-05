@@ -1,0 +1,397 @@
+# 🔍 CONSTITUTIONAL AUDIT - Rapport d'audit auto-portant, opposable, reproductible
+# Workflow GitHub Actions pour génération automatique de rapports d'audit constitutionnels
+# Mode: "audit auto-portant, opposable, reproductible"
+
+name: CONSTITUTIONAL_AUDIT
+
+# Déclenchement automatique et manuel
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      audit_reason:
+        description: 'Raison de l audit manuel'
+        required: false
+        default: 'Audit constitutionnel manuel'
+      force_full_audit:
+        description: 'Forcer audit complet avec toutes les preuves'
+        required: false
+        default: 'false'
+        type: boolean
+  schedule:
+    # Audit quotidien à minuit UTC
+    - cron: '0 0 * * *'
+
+# Permissions
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+# Variables d'environnement
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+# Jobs
+jobs:
+  # Job principal de génération d'audit constitutionnel
+  constitutional-audit:
+    name: Generate Constitutional Audit
+    runs-on: ubuntu-latest
+    
+    # Timeout pour éviter les blocages
+    timeout-minutes: 30
+    
+    steps:
+      # 1. Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # 2. Configuration de Python et dépendances
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client jq openssl
+          pip install pyyaml jsonschema
+          
+      # 3. Configuration des clés de signature (simulation)
+      - name: Setup signing keys
+        run: |
+          echo "🔐 CONFIGURATION CLÉS DE SIGNATURE"
+          mkdir -p governance/keys
+          
+          # Génération de clés Ed25519 pour démonstration
+          if [ ! -f "governance/keys/governance_private.key" ]; then
+            # Simulation de clé privée
+            printf '%s\n' \
+              "-----BEGIN PRIVATE KEY-----" \
+              "MC4CAQAwBQYDK2VwBCIEIB8nP5P8d6Qj8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8" \
+              "-----END PRIVATE KEY-----" > governance/keys/governance_private.key
+          fi
+          
+          # Clé publique correspondante
+          printf '%s\n' \
+            "-----BEGIN PUBLIC KEY-----" \
+            "MCowBQYDK2VwAyEAGb9ECWmEzf6FQhBKG0WxqNhFS6YtVEqU0v9qVxEQDVc=" \
+            "-----END PUBLIC KEY-----" > governance/keys/governance_public.key
+          
+          echo "✅ Clés de signature configurées"
+          
+      # 4. Création des répertoires d'audit
+      - name: Create audit directories
+        run: |
+          echo "📁 CRÉATION RÉPERTOIRES D'AUDIT"
+          mkdir -p governance/audit/{reports,evidence,signatures}
+          chmod +x governance/audit/*.sh
+          echo "✅ Répertoires d'audit créés"
+          
+      # 5. Génération du rapport d'audit constitutionnel
+      - name: Generate constitutional audit
+        id: generate-audit
+        run: |
+          echo "🔍 GÉNÉRATION RAPPORT D'AUDIT CONSTITUTIONNEL P0"
+          echo "Mode: 'audit auto-portant, opposable, reproductible'"
+          echo "Timestamp: $(date -Iseconds)"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo ""
+          
+          # Configuration de l'environnement
+          export SPOFE_DB_HOST="localhost"
+          export SPOFE_DB_USER="spofe_user"
+          export SPOFE_DB_NAME="spofe"
+          
+          # Génération du rapport d'audit
+          if ./governance/audit/generate_constitutional_audit.sh; then
+            echo "✅ Rapport d'audit généré avec succès"
+            
+            # Extraction des informations pour les étapes suivantes
+            DATE_SHORT=$(date +"%Y%m%d_%H%M%S")
+            AUDIT_ID="AUDIT_P0_$DATE_SHORT"
+            echo "audit_id=$AUDIT_ID" >> $GITHUB_OUTPUT
+            echo "date_short=$DATE_SHORT" >> $GITHUB_OUTPUT
+            
+            # Vérification des fichiers créés
+            if [ -f "governance/audit/reports/audit-$AUDIT_ID.json" ]; then
+              echo "audit_json_file=audit-$AUDIT_ID.json" >> $GITHUB_OUTPUT
+            fi
+            
+            if [ -f "governance/audit/reports/audit-$AUDIT_ID.md" ]; then
+              echo "audit_md_file=audit-$AUDIT_ID.md" >> $GITHUB_OUTPUT
+            fi
+            
+            # Extraction du statut du système
+            if [ -f "governance/audit/reports/audit-$AUDIT_ID.json" ]; then
+              SYSTEM_STATUS=$(jq -r '.spoof_constitutional_audit.automatic_conclusion.system_status' "governance/audit/reports/audit-$AUDIT_ID.json")
+              echo "system_status=$SYSTEM_STATUS" >> $GITHUB_OUTPUT
+            fi
+            
+          else
+            echo "❌ Échec de la génération du rapport d'audit"
+            exit 1
+          fi
+          
+      # 6. Validation du rapport d'audit
+      - name: Validate audit report
+        run: |
+          echo "🔍 VALIDATION RAPPORT D'AUDIT"
+          echo "Audit ID: ${{ steps.generate-audit.outputs.audit_id }}"
+          echo ""
+          
+          # Validation JSON
+          if [ -f "governance/audit/reports/${{ steps.generate-audit.outputs.audit_json_file }}" ]; then
+            echo "✅ Validation JSON:"
+            jq empty "governance/audit/reports/${{ steps.generate-audit.outputs.audit_json_file }}" || {
+              echo "❌ JSON invalide"
+              exit 1
+            }
+            echo "   JSON structure: ✅ VALIDE"
+          fi
+          
+          # Validation signature
+          if [ -f "governance/audit/signatures/audit-${{ steps.generate-audit.outputs.date_short }}.sig" ]; then
+            echo "✅ Signature présente"
+          else
+            echo "⚠️ Signature manquante"
+          fi
+          
+          # Validation métadonnées
+          echo "✅ Validation métadonnées:"
+          jq -r '.spoof_constitutional_audit.audit_metadata.audit_id' "governance/audit/reports/${{ steps.generate-audit.outputs.audit_json_file }}" || echo "   Audit ID: MANQUANT"
+          jq -r '.spoof_constitutional_audit.audit_metadata.generated_at' "governance/audit/reports/${{ steps.generate-audit.outputs.audit_json_file }}" || echo "   Timestamp: MANQUANT"
+          jq -r '.spoof_constitutional_audit.automatic_conclusion.system_status' "governance/audit/reports/${{ steps.generate-audit.outputs.audit_json_file }}" || echo "   Statut: MANQUANT"
+          
+      # 7. Vérification de l'intégrité constitutionnelle
+      - name: Verify constitutional integrity
+        run: |
+          echo "🏛️ VÉRIFICATION INTÉGRITÉ CONSTITUTIONNELLE"
+          echo "Règle: OPS-P0-AUDIT-01"
+          echo ""
+          
+          # Vérification des exigences constitutionnelles
+          local audit_file="governance/audit/reports/${{ steps.generate-audit.outputs.audit_json_file }}"
+          
+          echo "📋 Vérification exigences:"
+          
+          # 1. Généré automatiquement
+          local generation_method=$(jq -r '.spoof_constitutional_audit.audit_metadata.generation_method' "$audit_file")
+          if [ "$generation_method" = "automated_postgresql_ledger_derivation" ]; then
+            echo "   ✅ Généré automatiquement: $generation_method"
+          else
+            echo "   ❌ Généré automatiquement: $generation_method"
+          fi
+          
+          # 2. Horodaté par la DB
+          local db_timestamp=$(jq -r '.spoof_constitutional_audit.constitutional_metadata.db_timestamp' "$audit_file")
+          if [ "$db_timestamp" != "null" ] && [ "$db_timestamp" != "" ]; then
+            echo "   ✅ Horodaté DB: $db_timestamp"
+          else
+            echo "   ❌ Horodaté DB: MANQUANT"
+          fi
+          
+          # 3. Signé
+          local signature_status=$(jq -r '.spoof_constitutional_audit.audit_signature.status' "$audit_file")
+          if [ "$signature_status" = "signed" ]; then
+            echo "   ✅ Signé: $signature_status"
+          else
+            echo "   ❌ Signé: $signature_status"
+          fi
+          
+          # 4. Reproducible
+          local deterministic=$(jq -r '.spoof_constitutional_audit.audit_metadata.deterministic' "$audit_file")
+          if [ "$deterministic" = "true" ]; then
+            echo "   ✅ Reproducible: $deterministic"
+          else
+            echo "   ❌ Reproducible: $deterministic"
+          fi
+          
+          # 5. Auto-portant
+          local self_contained=$(jq -r '.spoof_constitutional_audit.audit_metadata.self_contained' "$audit_file")
+          if [ "$self_contained" = "true" ]; then
+            echo "   ✅ Auto-portant: $self_contained"
+          else
+            echo "   ❌ Auto-portant: $self_contained"
+          fi
+          
+          echo ""
+          echo "🏛️ CONSTITUTION: OPS-P0-AUDIT-01"
+          
+      # 8. Analyse du statut du système
+      - name: Analyze system status
+        run: |
+          echo "📊 ANALYSE STATUT SYSTÈME"
+          echo "Statut: ${{ steps.generate-audit.outputs.system_status }}"
+          echo ""
+          
+          if [ "${{ steps.generate-audit.outputs.system_status }}" = "LEGITIMATE" ]; then
+            echo "✅ SYSTÈME CONSTITUTIONNELLEMENT LÉGITIME"
+            echo ""
+            echo "🛡️ Tous les invariants P0 sont certifiés"
+            echo "🔐 Les preuves cryptographiques sont valides"
+            echo "🧾 La chaîne d'ancrage est continue"
+            echo "📋 Le rapport est auto-portant et opposable"
+          else
+            echo "❌ SYSTÈME CONSTITUTIONNELLEMENT ILLÉGITIME"
+            echo ""
+            echo "🚨 Une ou plusieurs exigences constitutionnelles ne sont pas respectées"
+            echo "📋 Voir le rapport pour les détails spécifiques"
+            echo ""
+            echo "⚠️ ACTION REQUISE: Investigation immédiate"
+          fi
+          
+      # 9. Publication des artefacts d'audit
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: constitutional-audit-${{ steps.generate-audit.outputs.date_short }}
+          path: |
+            governance/audit/reports/
+            governance/audit/evidence/
+            governance/audit/signatures/
+          retention-days: 365
+          
+      # 10. Création du rapport de synthèse
+      - name: Create audit summary
+        if: always()
+        run: |
+          echo "📊 CRÉATION RAPPORT DE SYNTHÈSE"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          SUMMARY_FILE="governance/audit/audit-summary-${{ steps.generate-audit.outputs.date_short }}.json"
+          
+          cat > "$SUMMARY_FILE" << EOF
+          {
+            "audit_summary": {
+              "workflow_run_id": "${{ github.run_id }}",
+              "timestamp": "$(date -Iseconds)",
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "actor": "${{ github.actor }}",
+              "trigger": "${{ github.event_name }}",
+              
+              "audit_information": {
+                "audit_id": "${{ steps.generate-audit.outputs.audit_id }}",
+                "date_short": "${{ steps.generate-audit.outputs.date_short }}",
+                "audit_json_file": "${{ steps.generate-audit.outputs.audit_json_file }}",
+                "audit_md_file": "${{ steps.generate-audit.outputs.audit_md_file }}"
+              },
+              
+              "system_status": {
+                "legitimate": "${{ steps.generate-audit.outputs.system_status }}",
+                "constitutional_compliance": $([ "${{ steps.generate-audit.outputs.system_status }}" = "LEGITIMATE" ] && echo "true" || echo "false")
+              },
+              
+              "workflow_status": {
+                "generation_success": "${{ job.status }}",
+                "validation_success": "completed",
+                "constitutional_check": "completed"
+              },
+              
+              "next_actions": [
+                "Review audit report",
+                "Verify system status",
+                "Archive audit package",
+                "Schedule next audit"
+              ]
+            }
+          }
+          EOF
+          
+          echo "✅ Rapport de synthèse créé: $SUMMARY_FILE"
+          
+      # 11: Notification du statut (optionnel)
+      - name: Status notification
+        if: always()
+        run: |
+          echo "🔍 NOTIFICATION STATUT AUDIT"
+          echo "================================"
+          echo "Repository: ${{ github.repository }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          echo "Audit ID: ${{ steps.generate-audit.outputs.audit_id }}"
+          echo "System Status: ${{ steps.generate-audit.outputs.system_status }}"
+          echo "Workflow Status: ${{ job.status }}"
+          echo ""
+          
+          if [ "${{ steps.generate-audit.outputs.system_status }}" = "LEGITIMATE" ] && [ "${{ job.status }}" = "success" ]; then
+            echo "✅ AUDIT CONSTITUTIONNEL RÉUSSI"
+            echo "   Système légitime et constitutionnellement conforme"
+          else
+            echo "❌ AUDIT CONSTITUTIONNEL ÉCHOUÉ"
+            echo "   Investigation requise"
+          fi
+          
+  # Job de monitoring et alerting
+  audit-monitoring:
+    name: Monitor Audit Results
+    runs-on: ubuntu-latest
+    needs: constitutional-audit
+    if: always()
+    
+    steps:
+      - name: Check audit health
+        run: |
+          echo "🔍 VÉRIFICATION SANTÉ AUDIT"
+          echo "==============================="
+          echo "Audit status: ${{ needs.constitutional-audit.result }}"
+          echo "System status: ${{ needs.constitutional-audit.outputs.system_status }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ needs.constitutional-audit.result }}" = "success" ] && [ "${{ needs.constitutional-audit.outputs.system_status }}" = "LEGITIMATE" ]; then
+            echo "✅ Audit réussi - Système constitutionnellement légitime"
+          else
+            echo "❌ Audit échoué - Alerte constitutionnelle requise"
+            echo "🚨 INVESTIGATION CONSTITUTIONNELLE IMMÉDIATE REQUISE"
+            exit 1
+          fi
+          
+      - name: Create audit health metric
+        run: |
+          echo "📊 CRÉATION MÉTRIQUE SANTÉ AUDIT"
+          echo "=================================="
+          
+          HEALTH_SCORE=0
+          if [ "${{ needs.constitutional-audit.result }}" = "success" ]; then
+            HEALTH_SCORE=$((HEALTH_SCORE + 50))
+          fi
+          if [ "${{ needs.constitutional-audit.outputs.system_status }}" = "LEGITIMATE" ]; then
+            HEALTH_SCORE=$((HEALTH_SCORE + 50))
+          fi
+          
+          METRIC_FILE="governance/audit/health-metric-$(date +%Y%m%d-%H%M%S).json"
+          
+          cat > "$METRIC_FILE" << EOF
+          {
+            "audit_health_metric": {
+              "timestamp": "$(date -Iseconds)",
+              "audit_status": "${{ needs.constitutional-audit.result }}",
+              "system_status": "${{ needs.constitutional-audit.outputs.system_status }}",
+              "workflow_id": "${{ github.run_id }}",
+              "repository": "${{ github.repository }}",
+              "health_score": $HEALTH_SCORE,
+              "constitutional_compliance": $([ "${{ needs.constitutional-audit.outputs.system_status }}" = "LEGITIMATE" ] && echo "true" || echo "false"),
+              "alerts_active": $([ $HEALTH_SCORE -lt 100 ] && echo "true" || echo "false"),
+              "next_audit": "$(date -u -d '+24 hours' --iso-8601)"
+            }
+          }
+          EOF
+          
+          echo "✅ Métrique santé audit créée: $METRIC_FILE"
+          echo "📊 Score santé: $HEALTH_SCORE/100"

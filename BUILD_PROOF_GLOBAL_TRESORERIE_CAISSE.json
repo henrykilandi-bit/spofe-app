@@ -1,0 +1,91 @@
+{
+  "module": "tresorerie-caisse",
+  "version": "v1.0.0",
+  "scope": "GLOBAL",
+  "buildProofType": "COMPLETE_MODULE",
+  "contracts": {
+    "total": 6,
+    "documents": [
+      "SCOPE.md",
+      "CONTRACT.md", 
+      "GUARDIAN.md",
+      "COMMANDS_EVENTS.md",
+      "READ_MODELS.md",
+      "API_READ_ONLY.md"
+    ],
+    "status": "COMPLETE"
+  },
+  "domain": {
+    "guardian": {
+      "invariants": 12,
+      "frozen": true,
+      "testsTotal": 24,
+      "testsPassed": 24,
+      "status": "CERTIFIED"
+    }
+  },
+  "application": {
+    "handlers": 4,
+    "ports": 3,
+    "guardianFirst": true,
+    "status": "IMPLEMENTED"
+  },
+  "readModels": {
+    "views": 5,
+    "projections": 5,
+    "eventDriven": true,
+    "sideEffects": false,
+    "status": "IMPLEMENTED"
+  },
+  "api": {
+    "controllers": 5,
+    "methods": ["GET"],
+    "writeAccess": false,
+    "conformity": "API_READ_ONLY.md",
+    "status": "IMPLEMENTED"
+  },
+  "tests": {
+    "guardian": {
+      "total": 24,
+      "passed": 24,
+      "coverage": "100%"
+    },
+    "modules": {
+      "total": 10,
+      "passed": 10,
+      "scope": "read-api"
+    },
+    "system": {
+      "total": 4,
+      "passed": 4,
+      "e2eCompliant": true,
+      "guardianRespected": true
+    },
+    "totalTests": 38,
+    "totalPassed": 38,
+    "totalFailed": 0
+  },
+  "architecture": {
+    "layers": [
+      "contracts",
+      "domain", 
+      "application",
+      "read-models",
+      "api",
+      "tests"
+    ],
+    "spofeCompliant": true,
+    "governance": "P0"
+  },
+  "certification": {
+    "partialProofs": [
+      "BUILD_PROOF_GUARDIAN_TRESORERIE_CAISSE",
+      "BUILD_PROOF_API_READ_TRESORERIE_CAISSE"
+    ],
+    "violations": 0,
+    "status": "SUCCESS"
+  },
+  "status": "SUCCESS",
+  "timestamp": "2026-02-03T15:00:00Z",
+  "certifiedBy": "SPOFE_BUILD_PROOF_v1.0.0"
+}

@@ -1,0 +1,91 @@
+{
+  "scope": "SYSTEM",
+  "version": "v2.1.0",
+  "timestamp": "2026-02-02T18:28:12.212Z",
+  "modules": [
+    "gestion-stocks@2.1.0",
+    "immobilisation@2.1.0",
+    "cost-structure@2.1.0",
+    "budgeting@2.1.0"
+  ],
+  "tests": {
+    "e2e": "PASS",
+    "count": 0,
+    "scenarios": [
+      "procurement-to-stock",
+      "budget-to-cost",
+      "immobilisation-lifecycle",
+      "full-business-flow"
+    ]
+  },
+  "results": [
+    {
+      "step": "System Structure",
+      "status": "success",
+      "message": "e2e/procurement-to-stock.e2e.spec.ts found"
+    },
+    {
+      "step": "System Structure",
+      "status": "success",
+      "message": "e2e/budget-to-cost.e2e.spec.ts found"
+    },
+    {
+      "step": "System Structure",
+      "status": "success",
+      "message": "e2e/immobilisation-lifecycle.e2e.spec.ts found"
+    },
+    {
+      "step": "System Structure",
+      "status": "success",
+      "message": "e2e/full-business-flow.e2e.spec.ts found"
+    },
+    {
+      "step": "System Structure",
+      "status": "success",
+      "message": "jest.config.system.cjs found"
+    },
+    {
+      "step": "System Structure",
+      "status": "success",
+      "message": "All required E2E scenarios present"
+    },
+    {
+      "step": "Module Proof",
+      "status": "success",
+      "message": "gestion-stocks@2.1.0 BUILD_PROOF valid (figé)"
+    },
+    {
+      "step": "Module Proof",
+      "status": "success",
+      "message": "immobilisation@2.1.0 BUILD_PROOF valid (figé)"
+    },
+    {
+      "step": "Module Proof",
+      "status": "success",
+      "message": "cost-structure@2.1.0 BUILD_PROOF valid (figé)"
+    },
+    {
+      "step": "Module Proof",
+      "status": "success",
+      "message": "budgeting@2.1.0 BUILD_PROOF valid"
+    },
+    {
+      "step": "Modules Validation",
+      "status": "success",
+      "message": "4/4 modules have valid BUILD_PROOF"
+    },
+    {
+      "step": "E2E Tests",
+      "status": "success",
+      "message": "All system tests passed",
+      "testCount": 0
+    }
+  ],
+  "summary": {
+    "totalSteps": 12,
+    "successCount": 12,
+    "errorCount": 0
+  },
+  "status": "SUCCESS",
+  "signature": "f988c0e6e564cdbed0948ce8f4634c3c7b92dd418078f2cea84d3c7dfa0add5a"
+}

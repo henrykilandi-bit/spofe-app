@@ -1,0 +1,22 @@
+{
+  "module": "tresorerie-caisse",
+  "version": "v1.0.0",
+  "scope": "API_READ_ONLY",
+  "readModels": {
+    "views": 5,
+    "projections": 5,
+    "status": "PASS"
+  },
+  "api": {
+    "endpoints": 5,
+    "methods": ["GET"],
+    "sideEffects": "NONE"
+  },
+  "checks": {
+    "guardianDependency": false,
+    "writeAccess": false,
+    "typescriptCompilation": "PASS"
+  },
+  "status": "SUCCESS",
+  "timestamp": "2026-02-03T14:45:00Z"
+}

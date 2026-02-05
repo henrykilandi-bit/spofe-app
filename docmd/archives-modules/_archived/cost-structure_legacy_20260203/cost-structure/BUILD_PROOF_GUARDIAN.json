@@ -1,0 +1,170 @@
+{
+  "module": "cost-structure",
+  "version": "1.0.0",
+  "buildProofType": "GUARDIAN",
+  "timestamp": "2026-02-03T22:16:00Z",
+  "status": "CERTIFIED",
+  "governance": {
+    "level": "SPOFE_P0",
+    "mutable": false,
+    "contractFirst": true,
+    "guardianFirst": true
+  },
+  "invariants": {
+    "total": 12,
+    "certified": 12,
+    "coverage": "100%",
+    "invariants": [
+      {
+        "code": "CS-01",
+        "description": "Isolation stricte par tenant",
+        "status": "CERTIFIED",
+        "tests": 2
+      },
+      {
+        "code": "CS-02",
+        "description": "Sources certifiées obligatoires",
+        "status": "CERTIFIED",
+        "tests": 2
+      },
+      {
+        "code": "CS-03",
+        "description": "Aucune création de quantité",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-04",
+        "description": "Aucune dépendance au prix",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-05",
+        "description": "Coût incomplet interdit",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-06",
+        "description": "Clé de répartition valide (0..1)",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-07",
+        "description": "Somme des clés = 1",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-08",
+        "description": "Aucun calcul comptable",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-09",
+        "description": "Aucun calcul fiscal",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-10",
+        "description": "Aucune décision métier",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-11",
+        "description": "Append-only",
+        "status": "CERTIFIED",
+        "tests": 1
+      },
+      {
+        "code": "CS-12",
+        "description": "Méthode de calcul explicite",
+        "status": "CERTIFIED",
+        "tests": 1
+      }
+    ]
+  },
+  "tests": {
+    "guardian": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "coverage": "100%",
+      "framework": "Vitest"
+    },
+    "system": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "coverage": "100%",
+      "framework": "Vitest"
+    }
+  },
+  "implementation": {
+    "guardian": {
+      "file": "src/guardian/CostStructureGuardian.ts",
+      "lines": 139,
+      "complexity": "LOW",
+      "dependencies": 3
+    },
+    "calculator": {
+      "file": "src/guardian/CostStructureCalculator.ts",
+      "lines": 35,
+      "complexity": "LOW",
+      "analyticalOnly": true
+    },
+    "application": {
+      "handlers": 2,
+      "events": 3,
+      "commands": 2,
+      "orchestrationOnly": true
+    },
+    "readModels": {
+      "total": 5,
+      "readOnly": true,
+      "eventDriven": true,
+      "multiTenant": true
+    },
+    "api": {
+      "endpoints": 5,
+      "getOnly": true,
+      "readOnly": true,
+      "frameworkAgnostic": true
+    }
+  },
+  "compliance": {
+    "spofe": {
+      "guardianFirst": true,
+      "contractFirst": true,
+      "appendOnly": true,
+      "multiTenant": true,
+      "eventDriven": true,
+      "analyticalOnly": true,
+      "zeroPrice": true,
+      "zeroTax": true,
+      "zeroDecision": true
+    },
+    "architectural": {
+      "separationOfConcerns": true,
+      "dependencyInversion": true,
+      "singleResponsibility": true,
+      "openClosed": true
+    }
+  },
+  "certification": {
+    "buildProofGuardian": "CERTIFIED",
+    "invariantsCoverage": "100%",
+    "testsCoverage": "100%",
+    "complianceScore": "100%",
+    "readyForProduction": true
+  },
+  "signature": {
+    "algorithm": "SHA256",
+    "status": "TO_BE_COMPUTED"
+  }
+}

@@ -1,0 +1,66 @@
+id: BUILD_PROOF_OPS_P0_01
+type: OPERATIONAL_INVARIANT
+level: P0_CONSTITUTIONAL
+
+title: Ledger immutability enforced at database level
+
+description: >
+  The system guarantees that once a domain event is written
+  to the PostgreSQL ledger, it can never be updated or deleted,
+  regardless of application behavior or database access level.
+  This is the fundamental constitutional guarantee of SPOFE.
+
+scope:
+  - database: postgresql
+  - table: domain_events
+  - schema: spofe_ledger
+
+invariant:
+  statement: >
+    Any UPDATE or DELETE operation on domain_events must fail
+    with TRIGGER_VIOLATION error. Only INSERT operations are permitted.
+    This immutability is enforced at the lowest database level.
+
+proof:
+  mechanism:
+    - sql_trigger: prevent_domain_events_modification
+    - forbidden_update_delete_function: reject_with_error
+    - database_constraint: append_only_enforced
+  verification:
+    - script: governance/migration/01_db_immutability.sql
+      expected_result: "ALL UPDATE/DELETE attempts rejected"
+    - test_command: "UPDATE domain_events SET data = '{}' WHERE id = 1"
+      expected_error: "TRIGGER_VIOLATION: domain_events table is append-only"
+
+verification_policy:
+  when:
+    - pre_migration
+    - during_migration
+    - post_migration
+    - daily_audit
+    - manual_audit
+  frequency: mandatory
+  automated: true
+
+failure_policy:
+  severity: CRITICAL
+  action:
+    - invalidate_build_proof
+    - stop_migration
+    - rollback_to_previous_phase
+    - alert_constitutional_team
+  escalation: immediate
+
+evidence:
+  stored:
+    - execution_logs
+    - db_error_messages
+    - timestamp_db
+    - trigger_activation_logs
+  retention: permanent
+  audit_trail: required
+
+status: CERTIFIED
+certified_by: SPOFE_CONSTITUTIONAL_FRAMEWORK
+certified_date: 2026-02-05
+version: 1.0.0

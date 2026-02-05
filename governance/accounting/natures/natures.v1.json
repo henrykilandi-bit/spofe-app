@@ -1,0 +1,75 @@
+{
+  "version": "v1.0",
+  "natures": [
+    {
+      "code": "ENCAISSEMENT_CLIENT",
+      "label": "Encaissement client",
+      "direction": "DEBIT",
+      "scope": "TRESORERIE",
+      "description": "Encaissement d'un règlement client"
+    },
+    {
+      "code": "DECAISSEMENT_FOURNISSEUR",
+      "label": "Décaissement fournisseur",
+      "direction": "CREDIT",
+      "scope": "TRESORERIE",
+      "description": "Paiement d'une facture fournisseur"
+    },
+    {
+      "code": "VENTE_PRODUIT",
+      "label": "Vente de produit",
+      "direction": "CREDIT",
+      "scope": "PRODUIT",
+      "description": "Produit issu de la vente de biens ou services"
+    },
+    {
+      "code": "ACHAT_CHARGE",
+      "label": "Achat – charge",
+      "direction": "DEBIT",
+      "scope": "CHARGE",
+      "description": "Charge d'exploitation liée à un achat"
+    },
+    {
+      "code": "MOUVEMENT_STOCK_ENTREE",
+      "label": "Entrée de stock",
+      "direction": "DEBIT",
+      "scope": "STOCK",
+      "description": "Augmentation du stock"
+    },
+    {
+      "code": "MOUVEMENT_STOCK_SORTIE",
+      "label": "Sortie de stock",
+      "direction": "CREDIT",
+      "scope": "STOCK",
+      "description": "Diminution du stock"
+    },
+    {
+      "code": "ACQUISITION_IMMOBILISATION",
+      "label": "Acquisition immobilisation",
+      "direction": "DEBIT",
+      "scope": "IMMOBILISATION",
+      "description": "Entrée d'une immobilisation"
+    },
+    {
+      "code": "DOTATION_AMORTISSEMENT",
+      "label": "Dotation aux amortissements",
+      "direction": "DEBIT",
+      "scope": "CHARGE",
+      "description": "Constatation de l'amortissement"
+    },
+    {
+      "code": "PRODUIT_FINANCIER",
+      "label": "Produit financier",
+      "direction": "CREDIT",
+      "scope": "PRODUIT",
+      "description": "Intérêts ou produits financiers"
+    },
+    {
+      "code": "CHARGE_FINANCIERE",
+      "label": "Charge financière",
+      "direction": "DEBIT",
+      "scope": "CHARGE",
+      "description": "Intérêts ou frais financiers"
+    }
+  ]
+}

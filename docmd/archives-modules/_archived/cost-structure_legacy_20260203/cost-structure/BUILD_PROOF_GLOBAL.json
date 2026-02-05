@@ -1,0 +1,180 @@
+{
+  "module": "cost-structure",
+  "version": "1.0.0",
+  "buildProofType": "GLOBAL",
+  "timestamp": "2026-02-03T22:16:00Z",
+  "status": "CERTIFIED",
+  "scope": "COUTFLEX_ANALYTICAL_COSTS",
+  "governance": {
+    "level": "SPOFE_P0",
+    "mutable": false,
+    "contractFirst": true,
+    "guardianFirst": true,
+    "productionReady": true
+  },
+  "contracts": {
+    "scope": {
+      "file": "contract/SCOPE.md",
+      "status": "FROZEN",
+      "version": "1.0.0",
+      "analyticalOnly": true
+    },
+    "guardian": {
+      "file": "contract/GUARDIAN.md",
+      "status": "FROZEN",
+      "version": "1.0.0",
+      "invariants": 12
+    },
+    "commandsEvents": {
+      "file": "contract/COMMANDS_EVENTS.md",
+      "status": "FROZEN",
+      "version": "1.0.0",
+      "analyticalEvents": true
+    },
+    "readModels": {
+      "file": "contract/READ_MODELS.md",
+      "status": "FROZEN",
+      "version": "1.0.0",
+      "readOnly": true
+    },
+    "api": {
+      "file": "contract/API_READ_ONLY.md",
+      "status": "FROZEN",
+      "version": "1.0.0",
+      "getOnly": true
+    }
+  },
+  "implementation": {
+    "guardian": {
+      "path": "src/guardian/",
+      "files": 5,
+      "lines": 448,
+      "invariants": 12,
+      "analyticalCalculator": true
+    },
+    "application": {
+      "path": "src/application/",
+      "files": 7,
+      "lines": 234,
+      "handlers": 2,
+      "events": 3,
+      "commands": 2,
+      "orchestrationOnly": true
+    },
+    "readModels": {
+      "path": "src/read-models/",
+      "files": 5,
+      "lines": 516,
+      "projections": 1,
+      "repositories": 1,
+      "readOnly": true
+    },
+    "api": {
+      "path": "src/api/",
+      "files": 4,
+      "lines": 272,
+      "endpoints": 5,
+      "getOnly": true,
+      "frameworkAgnostic": true
+    }
+  },
+  "tests": {
+    "guardian": {
+      "path": "tests/guardian/",
+      "file": "CostStructureGuardian.spec.ts",
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "coverage": "100%",
+      "invariantsCoverage": "100%"
+    },
+    "system": {
+      "path": "tests/system/",
+      "file": "cost-structure.e2e.spec.ts",
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "coverage": "100%",
+      "e2eChain": "Command→Guardian→Events→Projection→Read-Repo→API"
+    }
+  },
+  "compliance": {
+    "spofe": {
+      "guardianFirst": true,
+      "contractFirst": true,
+      "appendOnly": true,
+      "multiTenant": true,
+      "eventDriven": true,
+      "analyticalOnly": true,
+      "zeroPrice": true,
+      "zeroTax": true,
+      "zeroDecision": true,
+      "readOnlyApi": true,
+      "noBusinessLogic": true
+    },
+    "architectural": {
+      "cleanArchitecture": true,
+      "hexagonal": true,
+      "eventSourcing": true,
+      "cqrs": true,
+      "dependencyInjection": true
+    },
+    "quality": {
+      "typeScript": true,
+      "vitest": true,
+      "modular": true,
+      "testable": true,
+      "maintainable": true
+    }
+  },
+  "metrics": {
+    "totalFiles": 21,
+    "totalLines": 1470,
+    "testFiles": 2,
+    "testLines": 7715,
+    "contractFiles": 5,
+    "implementationFiles": 21,
+    "testCoverage": "100%",
+    "invariantsCoverage": "100%"
+  },
+  "certification": {
+    "buildProofGuardian": "CERTIFIED",
+    "buildProofGlobal": "CERTIFIED",
+    "contractsFrozen": true,
+    "invariantsValidated": true,
+    "testsPassed": true,
+    "complianceScore": "100%",
+    "productionReady": true,
+    "spofeLevel": "P0_CERTIFIED"
+  },
+  "integration": {
+    "sources": [
+      {
+        "module": "gestion-stocks",
+        "type": "READ_ONLY",
+        "data": "quantities, unitCosts"
+      },
+      {
+        "module": "amortissement",
+        "type": "READ_ONLY",
+        "data": "amortization amounts"
+      }
+    ],
+    "consumers": [
+      {
+        "module": "budget",
+        "type": "READ_ONLY",
+        "data": "analytical costs"
+      },
+      {
+        "module": "reporting",
+        "type": "READ_ONLY",
+        "data": "cost breakdowns"
+      }
+    ]
+  },
+  "signature": {
+    "algorithm": "SHA256",
+    "status": "TO_BE_COMPUTED"
+  }
+}

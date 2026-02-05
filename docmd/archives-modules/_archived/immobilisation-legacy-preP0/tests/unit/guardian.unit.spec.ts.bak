@@ -1,0 +1,1095 @@
+/**
+ * SPOFE — Tests Unitaires Guardian Immobilisation
+ * Table-Driven Tests pour tous les invariants métier
+ * 
+ * 🎯 Objectif: Prouver que chaque invariant Guardian est:
+ * ✅ accepté quand valide
+ * ❌ rejeté quand invalide avec code IMM-XXX stable
+ * 📌 Guardian pur, déterministe, sans dépendances techniques
+ * 
+ * Module Immobilisation v1.0.0
+ */
+
+import { describe, it, expect, beforeEach } from '@jest/globals';
+import { ImmobilisationGuardian } from '../../guardian/immobilisation.guardian';
+import { GuardianError } from '../../../../shared/GuardianError';
+import { CreateAssetCommand } from '../../write/commands/create-asset.command';
+import { UpdateRenewalCommand } from '../../write/commands/update-renewal.command';
+import { AllocateAssetCommand } from '../../write/commands/allocate-asset.command';
+import { RecordDepreciationCommand } from '../../write/commands/record-depreciation.command';
+import { RecordMaintenanceCommand } from '../../write/commands/record-maintenance.command';
+import { DisposeAssetCommand } from '../../write/commands/dispose-asset.command';
+
+describe('ImmobilisationGuardian — table-driven invariants', () => {
+  let guardian: ImmobilisationGuardian;
+
+  beforeEach(() => {
+    guardian = new ImmobilisationGuardian();
+  });
+
+  /**
+   * ================================
+   * CREATE ASSET INVARIANTS
+   * ================================
+   */
+  describe('CreateAsset — invalid cases', () => {
+    const invalidCases = [
+      {
+        name: 'rejects negative acquisition cost',
+        command: () => CreateAssetCommand.create({
+          tenantId: 'tenant-1',
+          assetId: 'asset-1', 
+          designation: 'Test Asset',
+          description: 'Test description',
+          category: 'EQUIPMENT',
+          acquisitionCost: -1000,
+          currency: 'EUR',
+          acquisitionDate: '2024-01-15',
+          serviceStartDate: '2024-01-15',
+          usefulLifeMonths: 60,
+          depreciationMethod: 'LINEAR',
+          residualValue: 0,
+          renewalDate: null,
+          replacementCost: null,
+          actorId: 'user-1'
+        }),
+        state: () => ({
+          tenantId: 'tenant-1',
+          now: new Date('2024-02-01'),
+          asset: null,
+          depreciation: null,
+          allocations: null
+        }),
+        expectedError: 'IMM-ACQ-001'
+      },
+      {
+        name: 'rejects zero acquisition cost',
+        command: () => CreateAssetCommand.create({
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          designation: 'Test Asset',
+          description: 'Test description', 
+          category: 'EQUIPMENT',
+          acquisitionCost: 0,
+          currency: 'EUR',
+          acquisitionDate: '2024-01-15',
+          serviceStartDate: '2024-01-15',
+          usefulLifeMonths: 60,
+          depreciationMethod: 'LINEAR',
+          residualValue: 0,
+          renewalDate: null,
+          replacementCost: null,
+          actorId: 'user-1'
+        }),
+        state: () => ({
+          tenantId: 'tenant-1',
+          now: new Date('2024-02-01'),
+          asset: null,
+          depreciation: null,
+          allocations: null
+        }),
+        expectedError: 'IMM-ACQ-001'
+      },
+      {
+        name: 'rejects zero useful life',
+        command: () => CreateAssetCommand.create({
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          designation: 'Test Asset',
+          description: 'Test description',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          currency: 'EUR',
+          acquisitionDate: '2024-01-15',
+          serviceStartDate: '2024-01-15',
+          usefulLifeMonths: 0,
+          depreciationMethod: 'LINEAR',
+          residualValue: 0,
+          renewalDate: null,
+          replacementCost: null,
+          actorId: 'user-1'
+        }),
+        state: () => ({
+          tenantId: 'tenant-1',
+          now: new Date('2024-02-01'),
+          asset: null,
+          depreciation: null,
+          allocations: null
+        }),
+        expectedError: 'IMM-LIFE-001'
+      },
+      {
+        name: 'rejects negative residual value',
+        command: () => CreateAssetCommand.create({
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          designation: 'Test Asset',
+          description: 'Test description',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          currency: 'EUR',
+          acquisitionDate: '2024-01-15',
+          serviceStartDate: '2024-01-15',
+          usefulLifeMonths: 60,
+          depreciationMethod: 'LINEAR',
+          residualValue: -100,
+          renewalDate: null,
+          replacementCost: null,
+          actorId: 'user-1'
+        }),
+        state: () => ({
+          tenantId: 'tenant-1',
+          now: new Date('2024-02-01'),
+          asset: null,
+          depreciation: null,
+          allocations: null
+        }),
+        expectedError: 'IMM-RES-001'
+      },
+      {
+        name: 'rejects residual value >= acquisition cost',
+        command: () => CreateAssetCommand.create({
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          designation: 'Test Asset',
+          description: 'Test description',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          currency: 'EUR',
+          acquisitionDate: '2024-01-15',
+          serviceStartDate: '2024-01-15',
+          usefulLifeMonths: 60,
+          depreciationMethod: 'LINEAR',
+          residualValue: 10000,
+          renewalDate: null,
+          replacementCost: null,
+          actorId: 'user-1'
+        }),
+        state: () => ({
+          tenantId: 'tenant-1',
+          now: new Date('2024-02-01'),
+          asset: null,
+          depreciation: null,
+          allocations: null
+        }),
+        expectedError: 'IMM-RES-002'
+      }
+    ];
+
+    invalidCases.forEach(({ name, command, state, expectedError }) => {
+      it(name, () => {
+        expect(() => guardian.validate(command(), state())).toThrow(expectedError);
+      });
+    });
+  });
+
+  describe('CreateAsset — valid cases', () => {
+    it('accepts valid asset creation', () => {
+      const command = CreateAssetCommand.create({
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        designation: 'Test Asset',
+        description: 'Test description',
+        category: 'EQUIPMENT',
+        acquisitionCost: 10000,
+        currency: 'EUR',
+        acquisitionDate: '2024-01-15',
+        serviceStartDate: '2024-01-15',
+        usefulLifeMonths: 60,
+        depreciationMethod: 'LINEAR',
+        residualValue: 1000,
+        renewalDate: null,
+        replacementCost: null,
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: null,
+        depreciation: null,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).not.toThrow();
+    });
+  });
+
+  /**
+   * ================================
+   * RECORD DEPRECIATION INVARIANTS
+   * ================================
+   */
+  describe('RecordDepreciation — invariants', () => {
+    const baseAsset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      designation: 'Test Asset',
+      description: 'Test description',
+      category: 'EQUIPMENT',
+      acquisitionCost: 12000,
+      currency: 'EUR',
+      acquisitionDate: new Date('2020-01-01'),
+      serviceStartDate: new Date('2020-01-01'),
+      usefulLifeMonths: 60,
+      depreciationMethod: 'LINEAR' as const,
+      residualValue: 2000,
+      status: 'IN_SERVICE' as const,
+      renewalDate: null,
+      replacementCost: null
+    };
+
+    const baseDepreciation = {
+      assetId: 'asset-1',
+      accumulatedDepreciation: 2000,
+      netBookValue: 10000,
+      depreciatedPeriods: ['2020-01', '2020-02']
+    };
+
+    it('rejects depreciation if asset is not in service', () => {
+      const command = RecordDepreciationCommand.create({
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        period: '2024-01',
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: { ...baseAsset, status: 'DISPOSED' as const },
+        depreciation: baseDepreciation,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).toThrow('IMM-DEP-001');
+    });
+
+    it('accepts depreciation for in-service asset', () => {
+      const command = RecordDepreciationCommand.create({
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        period: '2024-01',
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: baseAsset,
+        depreciation: baseDepreciation,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).not.toThrow();
+    });
+  });
+
+  /**
+   * ================================
+   * RECORD MAINTENANCE INVARIANTS
+   * ================================
+   */
+  describe('RecordMaintenance — invariants', () => {
+    const asset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      designation: 'Test Asset',
+      description: 'Test description',
+      category: 'EQUIPMENT',
+      acquisitionCost: 12000,
+      currency: 'EUR',
+      acquisitionDate: new Date('2020-01-01'),
+      serviceStartDate: new Date('2020-01-01'),
+      usefulLifeMonths: 60,
+      depreciationMethod: 'LINEAR' as const,
+      residualValue: 2000,
+      status: 'IN_SERVICE' as const,
+      renewalDate: null,
+      replacementCost: null
+    };
+
+    it('rejects negative maintenance cost', () => {
+      const command = RecordMaintenanceCommand.create({
+        tenantId: 'tenant-1',
+        maintenanceId: 'maint-1',
+        assetId: 'asset-1',
+        maintenanceType: 'PREVENTIVE',
+        description: 'Routine maintenance',
+        cost: -500,
+        currency: 'EUR',
+        maintenanceDate: '2024-01-15',
+        vendor: null,
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: asset,
+        depreciation: null,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).toThrow('IMM-MNT-001');
+    });
+
+    it('rejects maintenance on disposed asset', () => {
+      const command = RecordMaintenanceCommand.create({
+        tenantId: 'tenant-1',
+        maintenanceId: 'maint-1',
+        assetId: 'asset-1',
+        maintenanceType: 'PREVENTIVE',
+        description: 'Routine maintenance',
+        cost: 500,
+        currency: 'EUR',
+        maintenanceDate: '2024-01-15',
+        vendor: null,
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: { ...asset, status: 'DISPOSED' as const },
+        depreciation: null,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).toThrow('IMM-MNT-002');
+    });
+
+    it('accepts valid maintenance cost', () => {
+      const command = RecordMaintenanceCommand.create({
+        tenantId: 'tenant-1',
+        maintenanceId: 'maint-1',
+        assetId: 'asset-1',
+        maintenanceType: 'PREVENTIVE',
+        description: 'Routine maintenance',
+        cost: 500,
+        currency: 'EUR',
+        maintenanceDate: '2024-01-15',
+        vendor: null,
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: asset,
+        depreciation: null,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).not.toThrow();
+    });
+  });
+
+  /**
+   * ================================
+   * DISPOSE ASSET INVARIANTS
+   * ================================
+   */
+  describe('DisposeAsset — invariants', () => {
+    const asset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      designation: 'Test Asset',
+      description: 'Test description',
+      category: 'EQUIPMENT',
+      acquisitionCost: 12000,
+      currency: 'EUR',
+      acquisitionDate: new Date('2020-01-01'),
+      serviceStartDate: new Date('2020-01-01'),
+      usefulLifeMonths: 60,
+      depreciationMethod: 'LINEAR' as const,
+      residualValue: 2000,
+      status: 'IN_SERVICE' as const,
+      renewalDate: null,
+      replacementCost: null
+    };
+
+    const depreciation = {
+      assetId: 'asset-1',
+      accumulatedDepreciation: 8000,
+      netBookValue: 4000,
+      depreciatedPeriods: ['2020-01', '2020-02']
+    };
+
+    it('rejects disposal if already disposed', () => {
+      const command = DisposeAssetCommand.create({
+        tenantId: 'tenant-1',
+        disposalId: 'disp-1',
+        assetId: 'asset-1',
+        disposalDate: '2024-01-15',
+        disposalValue: 3000,
+        disposalMethod: 'SALE',
+        buyer: 'Buyer Corp',
+        reason: 'Replacement',
+        currency: 'EUR',
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: { ...asset, status: 'DISPOSED' as const },
+        depreciation: depreciation,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).toThrow('IMM-DIS-001');
+    });
+
+    it('accepts valid disposal', () => {
+      const command = DisposeAssetCommand.create({
+        tenantId: 'tenant-1',
+        disposalId: 'disp-1',
+        assetId: 'asset-1',
+        disposalDate: '2024-01-15',
+        disposalValue: 3000,
+        disposalMethod: 'SALE',
+        buyer: 'Buyer Corp',
+        reason: 'Replacement',
+        currency: 'EUR',
+        actorId: 'user-1'
+      });
+
+      const state = {
+        tenantId: 'tenant-1',
+        now: new Date('2024-02-01'),
+        asset: asset,
+        depreciation: depreciation,
+        allocations: null
+      };
+
+      expect(() => guardian.validate(command, state)).not.toThrow();
+    });
+  });
+});
+
+describe('ImmobilisationGuardian — Invariants Table-Driven', () => {
+  let guardian: ImmobilisationGuardian;
+
+  beforeAll(() => {
+    guardian = new ImmobilisationGuardian();
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 1. INVARIANTS CREATE ASSET
+  // ═══════════════════════════════════════════════════════════════════════
+  describe('CreateAsset — Invariants', () => {
+    const createAssetCases = [
+      {
+        name: 'rejects negative acquisition cost (IMM-ASS-01)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: -1000,
+          acquisitionDate: '2024-01-15',
+          usefulLife: 5,
+          residualValue: 0,
+        },
+        error: INVARIANT_CODES.IMM_ASS_01,
+      },
+      {
+        name: 'rejects zero acquisition cost (IMM-ASS-01)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 0,
+          acquisitionDate: '2024-01-15',
+          usefulLife: 5,
+          residualValue: 0,
+        },
+        error: INVARIANT_CODES.IMM_ASS_01,
+      },
+      {
+        name: 'rejects zero useful life (IMM-ASS-02)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2024-01-15',
+          usefulLife: 0,
+          residualValue: 0,
+        },
+        error: INVARIANT_CODES.IMM_ASS_02,
+      },
+      {
+        name: 'rejects negative useful life (IMM-ASS-02)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2024-01-15',
+          usefulLife: -5,
+          residualValue: 0,
+        },
+        error: INVARIANT_CODES.IMM_ASS_02,
+      },
+      {
+        name: 'rejects negative residual value (IMM-ASS-03)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2024-01-15',
+          usefulLife: 5,
+          residualValue: -100,
+        },
+        error: INVARIANT_CODES.IMM_ASS_03,
+      },
+      {
+        name: 'rejects residual value > acquisition cost (IMM-ASS-07)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2024-01-15',
+          usefulLife: 5,
+          residualValue: 15000,
+        },
+        error: INVARIANT_CODES.IMM_ASS_07,
+      },
+      {
+        name: 'rejects future acquisition date (IMM-ASS-04)',
+        input: {
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2099-01-15',
+          usefulLife: 5,
+          residualValue: 0,
+        },
+        error: INVARIANT_CODES.IMM_ASS_04,
+      },
+      {
+        name: 'rejects missing tenantId (IMM-SEC-01)',
+        input: {
+          tenantId: '',
+          assetId: 'asset-1',
+          name: 'Test Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2024-01-15',
+          usefulLife: 5,
+          residualValue: 0,
+        },
+        error: INVARIANT_CODES.IMM_SEC_01,
+      },
+    ];
+
+    createAssetCases.forEach(({ name, input, error }) => {
+      it(name, () => {
+        const command = {
+          type: 'CreateAsset' as const,
+          ...input,
+        };
+        const result = guardian.validate(command);
+        expect(result.ok).toBe(false);
+        expect(result.violationCode).toBe(error);
+      });
+    });
+
+    it('accepts valid CreateAsset command', () => {
+      const command = {
+        type: 'CreateAsset' as const,
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        name: 'Test Asset',
+        category: 'EQUIPMENT',
+        acquisitionCost: 10000,
+        acquisitionDate: '2024-01-15',
+        usefulLife: 5,
+        residualValue: 1000,
+      };
+      const result = guardian.validate(command);
+      expect(result.ok).toBe(true);
+      expect(result.violationCode).toBeUndefined();
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 2. INVARIANTS RECORD DEPRECIATION
+  // ═══════════════════════════════════════════════════════════════════════
+  describe('RecordDepreciation — Invariants', () => {
+    const baseAsset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      name: 'Test Asset',
+      category: 'EQUIPMENT',
+      acquisitionCost: 12000,
+      acquisitionDate: '2020-01-01',
+      usefulLife: 5,
+      residualValue: 2000,
+      status: 'IN_SERVICE' as const,
+    };
+
+    const depreciationCases = [
+      {
+        name: 'rejects negative depreciation amount (IMM-DEP-01)',
+        input: {
+          type: 'RecordDepreciation' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          period: '2024-01',
+          amount: -100,
+        },
+        currentState: {
+          asset: baseAsset,
+          accumulatedDepreciation: 2000,
+          netBookValue: 10000,
+        },
+        error: INVARIANT_CODES.IMM_DEP_01,
+      },
+      {
+        name: 'rejects depreciation when asset disposed (IMM-ASS-06)',
+        input: {
+          type: 'RecordDepreciation' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          period: '2024-01',
+          amount: 200,
+        },
+        currentState: {
+          asset: { ...baseAsset, status: 'DISPOSED' as const },
+          accumulatedDepreciation: 8000,
+          netBookValue: 4000,
+        },
+        error: INVARIANT_CODES.IMM_ASS_06,
+      },
+      {
+        name: 'rejects duplicate period (IMM-DEP-05)',
+        input: {
+          type: 'RecordDepreciation' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          period: '2024-01',
+          amount: 200,
+        },
+        currentState: {
+          asset: baseAsset,
+          accumulatedDepreciation: 2000,
+          netBookValue: 10000,
+          depreciatedPeriods: ['2024-01'],
+        },
+        error: INVARIANT_CODES.IMM_DEP_05,
+      },
+      {
+        name: 'rejects if accumulated would exceed cost (IMM-DEP-02)',
+        input: {
+          type: 'RecordDepreciation' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          period: '2024-01',
+          amount: 11000,
+        },
+        currentState: {
+          asset: baseAsset,
+          accumulatedDepreciation: 2000,
+          netBookValue: 10000,
+        },
+        error: INVARIANT_CODES.IMM_DEP_02,
+      },
+    ];
+
+    depreciationCases.forEach(({ name, input, currentState, error }) => {
+      it(name, () => {
+        const result = guardian.validate(input, currentState);
+        expect(result.ok).toBe(false);
+        expect(result.violationCode).toBe(error);
+      });
+    });
+
+    it('accepts valid RecordDepreciation command', () => {
+      const command = {
+        type: 'RecordDepreciation' as const,
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        period: '2024-06',
+        amount: 200,
+      };
+      const currentState = {
+        asset: baseAsset,
+        accumulatedDepreciation: 2000,
+        netBookValue: 10000,
+        depreciatedPeriods: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05'],
+      };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(true);
+      expect(result.violationCode).toBeUndefined();
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 3. INVARIANTS RECORD MAINTENANCE
+  // ═══════════════════════════════════════════════════════════════════════
+  describe('RecordMaintenance — Invariants', () => {
+    const baseAsset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      name: 'Test Asset',
+      category: 'EQUIPMENT',
+      acquisitionCost: 10000,
+      acquisitionDate: '2020-01-01',
+      usefulLife: 5,
+      residualValue: 0,
+      status: 'IN_SERVICE' as const,
+    };
+
+    const maintenanceCases = [
+      {
+        name: 'rejects negative maintenance cost (IMM-MNT-01)',
+        input: {
+          type: 'RecordMaintenance' as const,
+          tenantId: 'tenant-1',
+          maintenanceId: 'mnt-1',
+          assetId: 'asset-1',
+          maintenanceType: 'CORRECTIVE',
+          description: 'Repair',
+          cost: -500,
+          currency: 'EUR',
+          date: '2024-06-15',
+        },
+        currentState: { asset: baseAsset },
+        error: INVARIANT_CODES.IMM_MNT_01,
+      },
+      {
+        name: 'rejects future maintenance date (IMM-MNT-02)',
+        input: {
+          type: 'RecordMaintenance' as const,
+          tenantId: 'tenant-1',
+          maintenanceId: 'mnt-1',
+          assetId: 'asset-1',
+          maintenanceType: 'CORRECTIVE',
+          description: 'Repair',
+          cost: 500,
+          currency: 'EUR',
+          date: '2099-06-15',
+        },
+        currentState: { asset: baseAsset },
+        error: INVARIANT_CODES.IMM_MNT_02,
+      },
+      {
+        name: 'rejects maintenance on disposed asset (IMM-MNT-03)',
+        input: {
+          type: 'RecordMaintenance' as const,
+          tenantId: 'tenant-1',
+          maintenanceId: 'mnt-1',
+          assetId: 'asset-1',
+          maintenanceType: 'CORRECTIVE',
+          description: 'Repair',
+          cost: 500,
+          currency: 'EUR',
+          date: '2024-06-15',
+        },
+        currentState: {
+          asset: { ...baseAsset, status: 'DISPOSED' as const },
+        },
+        error: INVARIANT_CODES.IMM_MNT_03,
+      },
+    ];
+
+    maintenanceCases.forEach(({ name, input, currentState, error }) => {
+      it(name, () => {
+        const result = guardian.validate(input, currentState);
+        expect(result.ok).toBe(false);
+        expect(result.violationCode).toBe(error);
+      });
+    });
+
+    it('accepts valid RecordMaintenance command', () => {
+      const command = {
+        type: 'RecordMaintenance' as const,
+        tenantId: 'tenant-1',
+        maintenanceId: 'mnt-1',
+        assetId: 'asset-1',
+        maintenanceType: 'PREVENTIVE' as const,
+        description: 'Annual check',
+        cost: 500,
+        currency: 'EUR',
+        date: '2024-06-15',
+        actorId: 'user-1',
+      };
+      const currentState = { asset: baseAsset };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(true);
+      expect(result.violationCode).toBeUndefined();
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 4. INVARIANTS DISPOSE ASSET
+  // ═══════════════════════════════════════════════════════════════════════
+  describe('DisposeAsset — Invariants', () => {
+    const baseAsset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      name: 'Test Asset',
+      category: 'EQUIPMENT',
+      acquisitionCost: 10000,
+      acquisitionDate: '2020-01-01',
+      usefulLife: 5,
+      residualValue: 0,
+      status: 'IN_SERVICE' as const,
+    };
+
+    const disposalCases = [
+      {
+        name: 'rejects disposal before acquisition (IMM-DIS-01)',
+        input: {
+          type: 'DisposeAsset' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          disposalType: 'SALE',
+          disposalDate: '2019-06-15',
+          disposalValue: 5000,
+          currency: 'EUR',
+        },
+        currentState: {
+          asset: baseAsset,
+          netBookValue: 6000,
+          accumulatedDepreciation: 4000,
+        },
+        error: INVARIANT_CODES.IMM_DIS_01,
+      },
+      {
+        name: 'rejects disposal of already disposed asset (IMM-DIS-02)',
+        input: {
+          type: 'DisposeAsset' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          disposalType: 'SALE',
+          disposalDate: '2024-06-15',
+          disposalValue: 1000,
+          currency: 'EUR',
+        },
+        currentState: {
+          asset: { ...baseAsset, status: 'DISPOSED' as const },
+          netBookValue: 0,
+          accumulatedDepreciation: 10000,
+        },
+        error: INVARIANT_CODES.IMM_DIS_02,
+      },
+      {
+        name: 'rejects negative disposal value (implicit)',
+        input: {
+          type: 'DisposeAsset' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          disposalType: 'SCRAP',
+          disposalDate: '2024-06-15',
+          disposalValue: -100,
+          currency: 'EUR',
+        },
+        currentState: {
+          asset: baseAsset,
+          netBookValue: 6000,
+          accumulatedDepreciation: 4000,
+        },
+        error: expect.any(String), // Any error code
+      },
+    ];
+
+    disposalCases.forEach(({ name, input, currentState, error }) => {
+      it(name, () => {
+        const result = guardian.validate(input, currentState);
+        expect(result.ok).toBe(false);
+        if (typeof error === 'string') {
+          expect(result.violationCode).toBe(error);
+        } else {
+          expect(result.violationCode).toEqual(error);
+        }
+      });
+    });
+
+    it('accepts valid DisposeAsset command (gain scenario)', () => {
+      const command = {
+        type: 'DisposeAsset' as const,
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        disposalType: 'SALE' as const,
+        disposalDate: '2024-06-15',
+        disposalValue: 8000,
+        currency: 'EUR',
+        actorId: 'user-1',
+      };
+      const currentState = {
+        asset: baseAsset,
+        netBookValue: 6000,
+        accumulatedDepreciation: 4000,
+      };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(true);
+      expect(result.violationCode).toBeUndefined();
+      expect(result.metadata).toBeDefined();
+      expect(result.metadata?.gainOrLoss).toBe(2000); // 8000 - 6000
+    });
+
+    it('accepts valid DisposeAsset command (loss scenario)', () => {
+      const command = {
+        type: 'DisposeAsset' as const,
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        disposalType: 'SALE' as const,
+        disposalDate: '2024-06-15',
+        disposalValue: 4000,
+        currency: 'EUR',
+        actorId: 'user-1',
+      };
+      const currentState = {
+        asset: baseAsset,
+        netBookValue: 6000,
+        accumulatedDepreciation: 4000,
+      };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(true);
+      expect(result.metadata?.gainOrLoss).toBe(-2000); // 4000 - 6000
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 5. INVARIANTS MULTI-TENANT
+  // ═══════════════════════════════════════════════════════════════════════
+  describe('Multi-Tenant — Invariants', () => {
+    it('rejects cross-tenant operation (IMM-SEC-02)', () => {
+      const command = {
+        type: 'CreateAsset' as const,
+        tenantId: 'tenant-2', // Different from asset tenant
+        assetId: 'asset-1',
+        name: 'Test Asset',
+        category: 'EQUIPMENT',
+        acquisitionCost: 10000,
+        acquisitionDate: '2024-01-15',
+        usefulLife: 5,
+        residualValue: 0,
+      };
+      const currentState = {
+        asset: {
+          assetId: 'asset-1',
+          tenantId: 'tenant-1', // Asset belongs to tenant-1
+          name: 'Existing Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2020-01-01',
+          usefulLife: 5,
+          residualValue: 0,
+          status: 'IN_SERVICE' as const,
+        },
+      };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(false);
+      expect(result.violationCode).toBe(INVARIANT_CODES.IMM_SEC_02);
+    });
+
+    it('accepts same-tenant operation', () => {
+      const command = {
+        type: 'RecordDepreciation' as const,
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        period: '2024-06',
+        amount: 200,
+      };
+      const currentState = {
+        asset: {
+          assetId: 'asset-1',
+          tenantId: 'tenant-1',
+          name: 'Existing Asset',
+          category: 'EQUIPMENT',
+          acquisitionCost: 10000,
+          acquisitionDate: '2020-01-01',
+          usefulLife: 5,
+          residualValue: 0,
+          status: 'IN_SERVICE' as const,
+        },
+        accumulatedDepreciation: 2000,
+        netBookValue: 8000,
+      };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(true);
+      expect(result.violationCode).toBeUndefined();
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 6. INVARIANTS RENEWAL INFO
+  // ═══════════════════════════════════════════════════════════════════════
+  describe('UpdateRenewalInfo — Invariants', () => {
+    const baseAsset = {
+      assetId: 'asset-1',
+      tenantId: 'tenant-1',
+      name: 'Test Asset',
+      category: 'EQUIPMENT',
+      acquisitionCost: 10000,
+      acquisitionDate: '2020-01-01',
+      usefulLife: 5,
+      residualValue: 0,
+      status: 'IN_SERVICE' as const,
+    };
+
+    const renewalCases = [
+      {
+        name: 'rejects renewal date before acquisition (IMM-REN-01)',
+        input: {
+          type: 'UpdateRenewalInfo' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          renewalDate: '2019-12-31',
+          replacementCost: 15000,
+        },
+        currentState: { asset: baseAsset },
+        error: INVARIANT_CODES.IMM_REN_01,
+      },
+      {
+        name: 'rejects negative replacement cost (IMM-REN-02)',
+        input: {
+          type: 'UpdateRenewalInfo' as const,
+          tenantId: 'tenant-1',
+          assetId: 'asset-1',
+          renewalDate: '2025-12-31',
+          replacementCost: -5000,
+        },
+        currentState: { asset: baseAsset },
+        error: INVARIANT_CODES.IMM_REN_02,
+      },
+    ];
+
+    renewalCases.forEach(({ name, input, currentState, error }) => {
+      it(name, () => {
+        const result = guardian.validate(input, currentState);
+        expect(result.ok).toBe(false);
+        expect(result.violationCode).toBe(error);
+      });
+    });
+
+    it('accepts valid UpdateRenewalInfo command', () => {
+      const command = {
+        type: 'UpdateRenewalInfo' as const,
+        tenantId: 'tenant-1',
+        assetId: 'asset-1',
+        renewalDate: '2025-12-31',
+        replacementCost: 15000,
+        actorId: 'user-1',
+      };
+      const currentState = { asset: baseAsset };
+      const result = guardian.validate(command, currentState);
+      expect(result.ok).toBe(true);
+      expect(result.violationCode).toBeUndefined();
+    });
+  });
+});

@@ -1,0 +1,34 @@
+{
+  "tenantId": "TENANT_001",
+  "referential": "OHADA",
+  "activatedAccounts": [
+    {
+      "class": "5",
+      "account": "52",
+      "activationReason": "USAGE",
+      "activatedBy": "PRECOMPTA_ENGINE",
+      "activatedAt": "2026-01-15T09:30:00Z"
+    },
+    {
+      "class": "5",
+      "account": "521",
+      "activationReason": "USAGE",
+      "activatedBy": "PRECOMPTA_ENGINE",
+      "activatedAt": "2026-01-15T09:31:00Z"
+    },
+    {
+      "class": "5",
+      "account": "57",
+      "activationReason": "CONFIGURATION",
+      "activatedBy": "ADMIN",
+      "activatedAt": "2026-01-15T10:00:00Z"
+    },
+    {
+      "class": "6",
+      "account": "606",
+      "activationReason": "USAGE",
+      "activatedBy": "PRECOMPTA_ENGINE",
+      "activatedAt": "2026-01-16T14:12:00Z"
+    }
+  ]
+}

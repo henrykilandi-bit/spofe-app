@@ -1,0 +1,70 @@
+id: BUILD_PROOF_OPS_P0_04
+type: OPERATIONAL_INVARIANT
+level: P0_CONSTITUTIONAL
+
+title: MySQL read-only enforcement post-migration
+
+description: >
+  After constitutional migration to PostgreSQL, the MySQL
+  database must be enforced as strictly read-only to prevent
+  any possibility of reality fork or competing truth sources.
+  This guarantees PostgreSQL as the unique source of truth.
+
+scope:
+  - database: mysql
+  - mode: read_only_enforced
+  - access_level: all_users_all_operations
+  - phase: post_migration
+
+invariant:
+  statement: >
+    Any write operation (INSERT, UPDATE, DELETE) to MySQL
+    domain_events table must fail with permission denied.
+    Only SELECT operations are permitted. MySQL serves
+    purely as historical archive.
+
+proof:
+  mechanism:
+    - database_readonly_mode: mysql_global_readonly
+    - user_permissions: write_revoked_all_users
+    - trigger_enforcement: reject_write_operations
+  verification:
+    - script: governance/migration/04_mysql_readonly.sql
+      expected_result: "All write operations rejected"
+    - test_insert: "INSERT INTO domain_events (data) VALUES ('test')"
+      expected_error: "Permission denied: database in read-only mode"
+    - test_update: "UPDATE domain_events SET data = '{}' WHERE id = 1"
+      expected_error: "Permission denied: database in read-only mode"
+
+verification_policy:
+  when:
+    - post_migration
+    - daily_audit
+    - monthly_compliance
+    - manual_verification
+  frequency: mandatory
+  automated: true
+
+failure_policy:
+  severity: CRITICAL
+  action:
+    - invalidate_build_proof
+    - block_system_operations
+    - investigate_security_breach
+    - restore_readonly_constraints
+  escalation: immediate
+  notification: constitutional_violation
+
+evidence:
+  stored:
+    - readonly_enforcement_logs
+    - permission_verification
+    - failed_write_attempts
+    - database_mode_status
+  retention: permanent
+  audit_trail: required
+
+status: CERTIFIED
+certified_by: SPOFE_CONSTITUTIONAL_FRAMEWORK
+certified_date: 2026-02-05
+version: 1.0.0

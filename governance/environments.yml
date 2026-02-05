@@ -1,0 +1,210 @@
+# 🏛️ POLITIQUE ENVIRONNEMENTALE - ÉTATS CONSTITUTIONNELS DISTINCTS
+# Mode: "environnements = états constitutionnels distincts" activé
+# Ce fichier est la loi, pas la configuration CI
+
+environments:
+  # Environnement de développement local
+  development:
+    level: DEVELOPMENT
+    description: "Développement local - exigences minimales"
+    required_proofs:
+      - P0_CONSTITUTIONAL
+    allow_attack_proofs: false
+    allow_unsigned_reports: true
+    require_latest_audit: false
+    max_audit_age_minutes: null
+    require_anchor_ledger: false
+    governance_guardian: "lenient"
+    
+  # Environnement de pré-production
+  staging:
+    level: PRE_PRODUCTION
+    description: "Pré-production - validation avant production"
+    required_proofs:
+      - P0_CONSTITUTIONAL
+    allow_attack_proofs: false
+    allow_unsigned_reports: false
+    require_latest_audit: false
+    max_audit_age_minutes: null
+    require_anchor_ledger: true
+    governance_guardian: "standard"
+    
+  # Environnement de production - privilège maximal
+  production:
+    level: PRODUCTION
+    description: "Production - état le plus critique"
+    required_proofs:
+      - P0_CONSTITUTIONAL
+      - ATTACK_RESISTANCE
+    allow_attack_proofs: true
+    allow_unsigned_reports: false
+    require_latest_audit: true
+    max_audit_age_minutes: 60
+    require_anchor_ledger: true
+    governance_guardian: "strict"
+    
+  # Environnement de secours (disaster recovery)
+  dr:
+    level: DISASTER_RECOVERY
+    description: "Reprise après sinistre - exigences de production"
+    required_proofs:
+      - P0_CONSTITUTIONAL
+      - ATTACK_RESISTANCE
+    allow_attack_proofs: true
+    allow_unsigned_reports: false
+    require_latest_audit: true
+    max_audit_age_minutes: 30
+    require_anchor_ledger: true
+    governance_guardian: "emergency"
+
+# Politiques de gouvernance par niveau
+governance_policies:
+  lenient:
+    description: "Gouvernance souple - développement uniquement"
+    check_signatures: false
+    check_timestamps: false
+    check_attack_proofs: false
+    check_audit_freshness: false
+    check_ledger_anchors: false
+    
+  standard:
+    description: "Gouvernance standard - pré-production"
+    check_signatures: true
+    check_timestamps: true
+    check_attack_proofs: false
+    check_audit_freshness: false
+    check_ledger_anchors: true
+    
+  strict:
+    description: "Gouvernance stricte - production"
+    check_signatures: true
+    check_timestamps: true
+    check_attack_proofs: true
+    check_audit_freshness: true
+    check_ledger_anchors: true
+    
+  emergency:
+    description: "Gouvernance d'urgence - reprise après sinistre"
+    check_signatures: true
+    check_timestamps: true
+    check_attack_proofs: true
+    check_audit_freshness: true
+    check_ledger_anchors: true
+    override_requirements: ["max_audit_age_minutes"]
+
+# Invariants de gouvernance environnementale (P0)
+constitutional_invariants:
+  GOV-P0-ENV-01:
+    name: "Environnement explicite"
+    description: "Toute demande de déploiement doit cibler un environnement formellement défini"
+    level: "P0_CONSTITUTIONAL"
+    enforcement: "automatic"
+    
+  GOV-P0-ENV-02:
+    name: "Preuve proportionnelle"
+    description: "Plus l'environnement est critique, plus le niveau de preuve requis est élevé"
+    level: "P0_CONSTITUTIONAL"
+    enforcement: "automatic"
+    
+  GOV-P0-ENV-03:
+    name: "Refus implicite"
+    description: "Une preuve valide en staging n'implique rien pour la prod"
+    level: "P0_CONSTITUTIONAL"
+    enforcement: "automatic"
+    
+  GOV-P0-ENV-04:
+    name: "Fraîcheur obligatoire"
+    description: "En production, une preuve trop ancienne est considérée invalide"
+    level: "P0_CONSTITUTIONAL"
+    enforcement: "automatic"
+
+# Mapping des exigences par environnement
+requirements_matrix:
+  # Règle fondamentale: BUILD_PROOF OPS P0
+  BUILD_PROOF_OPS_P0:
+    development: "required"
+    staging: "required"
+    production: "required"
+    dr: "required"
+    
+  # Règle: BUILD_PROOF ATTACK (résistance aux attaques)
+  BUILD_PROOF_ATTACK_P0:
+    development: "not_required"
+    staging: "not_required"
+    production: "required"
+    dr: "required"
+    
+  # Règle: Rapport CI signé
+  CI_LEGITIMACY_REPORT_SIGNED:
+    development: "optional"
+    staging: "required"
+    production: "required"
+    dr: "required"
+    
+  # Règle: Audit horodaté récent
+  AUDIT_REPORT_FRESH:
+    development: "not_required"
+    staging: "not_required"
+    production: "required"
+    dr: "required"
+    
+  # Règle: Ancrage ledger obligatoire
+  LEDGER_ANCHOR_REQUIRED:
+    development: "not_required"
+    staging: "required"
+    production: "required"
+    dr: "required"
+
+# Politiques de refus automatique
+automatic_denial_rules:
+  production:
+    - "missing_p0_constitutional_proofs"
+    - "missing_attack_resistance_proofs"
+    - "unsigned_ci_report"
+    - "audit_report_too_old"
+    - "missing_ledger_anchors"
+    - "environment_not_declared"
+    
+  staging:
+    - "missing_p0_constitutional_proofs"
+    - "unsigned_ci_report"
+    - "missing_ledger_anchors"
+    - "environment_not_declared"
+    
+  development:
+    - "missing_p0_constitutional_proofs"
+    - "environment_not_declared"
+
+# Messages de refus standard
+denial_messages:
+  missing_p0_constitutional_proofs: "BUILD_PROOF P0 constitutionnels manquants"
+  missing_attack_resistance_proofs: "BUILD_PROOF de résistance aux attaques manquants"
+  unsigned_ci_report: "Rapport CI/CD non signé"
+  audit_report_too_old: "Rapport d'audit trop ancien (>{{max_age}} minutes)"
+  missing_ledger_anchors: "Ancrage dans le ledger manquant"
+  environment_not_declared: "Environnement cible non déclaré ou invalide"
+  environment_policy_violation: "Violation de la politique environnementale"
+  guardian_unavailable: "Guardian de gouvernance indisponible"
+
+# Configuration du Guardian de gouvernance
+guardian_configuration:
+  endpoint: "/governance/authorize-deploy"
+  timeout_seconds: 30
+  retry_attempts: 3
+  cache_ttl_seconds: 300
+  audit_all_requests: true
+  
+# Surveillance et monitoring
+monitoring:
+  track_deployment_attempts: true
+  track_denial_reasons: true
+  track_environment_transitions: true
+  alert_on_production_denials: true
+  alert_on_policy_violations: true
+  
+# Configuration de l'audit
+audit_configuration:
+  log_all_environment_decisions: true
+  retain_audit_days: 365
+  require_signature_for_production: true
+  cross_environment_validation: true

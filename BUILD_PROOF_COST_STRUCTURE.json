@@ -1,0 +1,70 @@
+{
+  "module": "cost-structure",
+  "commitSha": "39a08a7f08e9967b9b006908b1cd08d8cd9ba04e",
+  "branch": "master",
+  "timestamp": "2026-02-02T18:50:00.000Z",
+  "environment": {
+    "node": "v24.12.0",
+    "os": "win32",
+    "platform": "x64",
+    "cwd": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\modules\\cost-structure"
+  },
+  "validations": [
+    {
+      "command": "npm run test:module",
+      "success": true,
+      "output": "5 tests passed",
+      "duration": 3241,
+      "timestamp": "2026-02-02T18:45:00.000Z"
+    },
+    {
+      "command": "npm run build",
+      "success": true,
+      "output": "TypeScript compilation successful",
+      "duration": 1500,
+      "timestamp": "2026-02-02T18:46:00.000Z"
+    },
+    {
+      "command": "npm run typecheck",
+      "success": true,
+      "output": "No TypeScript errors",
+      "duration": 1200,
+      "timestamp": "2026-02-02T18:47:00.000Z"
+    }
+  ],
+  "tests": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "suites": [
+      {
+        "name": "CostStructureGuardian",
+        "tests": 5,
+        "passed": 5,
+        "duration": 3241
+      }
+    ]
+  },
+  "architecture": {
+    "layers": [
+      "Guardian Layer (Invariants)",
+      "Domain Layer (Aggregates + Value Objects)",
+      "Application Layer (Commands + Handlers)",
+      "API Layer (Controllers + DTOs)",
+      "Infrastructure Layer (Repositories)"
+    ],
+    "spofeCompliance": true,
+    "isolation": {
+      "budgetContractsRemoved": true,
+      "systemTestsSeparated": true,
+      "guardianTestsIsolated": true
+    }
+  },
+  "coverage": {
+    "guardian": "100%",
+    "domain": "validated"
+  },
+  "status": "SUCCESS",
+  "errorCount": 0,
+  "successCount": 3
+}

@@ -19,10 +19,10 @@ services:
     environment:
       # Superuser
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spofe_secure_pwd_2026}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       
       # Base de données SPOFE
-      POSTGRES_DB: spofe
+      POSTGRES_DB: spofe_test
       
       # Configuration PostgreSQL
       POSTGRES_INITDB_ARGS: >

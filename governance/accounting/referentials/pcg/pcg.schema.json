@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SPOFE PCG Accounting Referential",
+  "type": "object",
+  "required": ["referential", "classes"],
+  "properties": {
+    "referential": {
+      "type": "object",
+      "required": ["code", "name", "version", "status"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": ["PCG"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PASSIVE"]
+        }
+      }
+    },
+    "classes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/class"
+      }
+    }
+  },
+  "definitions": {
+    "class": {
+      "type": "object",
+      "required": ["classCode", "label", "accounts"],
+      "properties": {
+        "classCode": {
+          "type": "string",
+          "pattern": "^[1-9]$"
+        },
+        "label": {
+          "type": "string"
+        },
+        "accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/account"
+          }
+        }
+      }
+    },
+    "account": {
+      "type": "object",
+      "required": ["code", "label", "level", "children"],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/account"
+          }
+        }
+      }
+    }
+  }
+}

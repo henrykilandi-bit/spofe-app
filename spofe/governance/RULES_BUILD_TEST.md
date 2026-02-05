@@ -1,9 +1,10 @@
 # RULES_BUILD_TEST.md
 
-**Version:** 1.1.0  
-**Statut:** OFFICIEL  
+**Version:** 1.2.0  
+**Statut:** OFFICIEL (P0)  
 **Applicabilité:** Immédiate  
 **Opposabilité:** Contractuelle  
+**Date:** 2026-02-03
 
 ## 🎯 OBJECTIF
 
@@ -127,6 +128,59 @@ Les rapports de diagnostic peuvent :
 - 📢 Communication à l'équipe sur la violation
 
 ## 🔄 MISE À JOUR ET ÉVOLUTION
+
+## 9. Rollback Automatique des Releases (NOUVEAU v1.2.0)
+
+### 🔒 Principe SPOFE — Auto-correction
+
+> Aucune release invalide ne peut survivre dans l'historique actif du système.
+
+Si un BUILD_PROOF échoue après déclenchement de release, le système doit revenir automatiquement à l'état valide précédent.
+
+### 🎯 Ce qui est rollbacké
+
+| Élément | Action |
+|---------|--------|
+| **Tag de release** | Supprimé automatiquement |
+| **Commit de preuve** | Conservé (traçabilité) |
+| **Historique dev** | Jamais réécrit |
+
+### 🚫 Comportements interdits
+
+- ❌ Pas de "release cassée tolérée"
+- ❌ Pas de rollback manuel tardif
+- ❌ Pas de dette de gouvernance
+
+### ✅ Comportement garanti
+
+| Situation | Résultat |
+|-----------|----------|
+| BUILD_PROOF valide | ✅ Tag conservé |
+| BUILD_PROOF invalide | ❌ Tag supprimé |
+| CI interrompue | ❌ Tag supprimé |
+| Signature absente | ❌ Tag supprimé |
+| Checklist non conforme | ❌ Tag supprimé |
+
+### 📊 Traçabilité dans le tableau de conformité
+
+Toute release rollbackée apparaît dans le tableau avec le statut :
+- **❌ ROLLED_BACK** — Release invalide rejetée par le système
+
+Différence clé :
+- **NON_CONFORM** = Pas de tentative de release
+- **ROLLED_BACK** = Tentative rejetée (avec historique CI)
+
+### 🏆 Bénéfices stratégiques
+
+| Avantage | Description |
+|----------|-------------|
+| 🔒 Plus jamais de release cassée | Auto-correction immédiate |
+| 🧠 Système auto-apprenant | Mémoire des échecs |
+| 🧱 Gouvernance incontournable | Impossible à contourner |
+| 🚀 Confiance long terme | Qualité garantie |
+| 📊 Tableau toujours exact | Pas de tags fantômes |
+
+---
 
 ### Versioning de ce document
 - **v1.0.0** : Règles initiales SPOFE

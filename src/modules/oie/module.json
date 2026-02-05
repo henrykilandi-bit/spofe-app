@@ -1,0 +1,62 @@
+{
+  "module": {
+    "name": "oie",
+    "version": "1.0.0",
+    "description": "Module Objectif-Indicateur-Événement",
+    "governance": "SPOFE P0 - Constitutionnel",
+    "type": "READ_ONLY_API"
+  },
+  "compliance": {
+    "spofeP0": true,
+    "guardianFirst": true,
+    "documentFirst": true,
+    "factOnly": true,
+    "appendOnly": true,
+    "multiTenant": true,
+    "cqrsStrict": true
+  },
+  "api": {
+    "type": "READ_ONLY",
+    "methods": ["GET"],
+    "authenticationRequired": false,
+    "multiTenantRequired": true,
+    "framework": "agnostic"
+  },
+  "dependencies": {
+    "external": [],
+    "internal": []
+  },
+  "ports": {
+    "repositories": [
+      "ObjectivesReadRepository",
+      "IndicatorsReadRepository", 
+      "EventsReadRepository"
+    ]
+  },
+  "endpoints": {
+    "objectives": {
+      "getAll": "/objectives",
+      "getById": "/objectives/{id}",
+      "getByPeriod": "/objectives?periodId={periodId}"
+    },
+    "indicators": {
+      "getAll": "/indicators",
+      "getById": "/indicators/{id}",
+      "getByObjective": "/indicators?objectiveId={objectiveId}"
+    },
+    "events": {
+      "getAll": "/events",
+      "getByObjective": "/events?objectiveId={objectiveId}",
+      "getByPeriod": "/events?periodId={periodId}"
+    }
+  },
+  "certification": {
+    "status": "READY_FOR_CERTIFICATION",
+    "requirements": {
+      "buildProof": true,
+      "guardianTests": true,
+      "e2eTests": true,
+      "documentationComplete": true
+    }
+  }
+}

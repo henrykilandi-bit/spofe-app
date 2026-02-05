@@ -1,0 +1,13 @@
+{
+  "name": "@spofe/gestion-stocks",
+  "private": true,
+  "version": "2.1.0",
+  "type": "module",
+  "scripts": {
+    "test:module": "jest --config jest.config.js",
+    "test:unit": "jest --config jest.config.js tests/unit",
+    "test:integration": "jest --config jest.config.js tests/integration",
+    "build:module": "tsc --project tsconfig.module.json",
+    "test": "npm run test:module"
+  }
+}

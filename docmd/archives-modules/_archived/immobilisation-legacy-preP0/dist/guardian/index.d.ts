@@ -1,0 +1,7 @@
+/**
+ * Immobilisation Guardian - Index
+ * Conformité: CONTRACT.md v1.0.0
+ */
+export { ImmobilisationGuardian, immobilisationGuardian, ImmobilisationState, AssetState, DepreciationState, AllocationState, DepreciationCalculation, DisposalCalculation, } from './immobilisation.guardian';
+export { INVARIANT_CODES, InvariantCode, GuardianVerdict, pass, fail, validateTenantRequired, validateSameTenant, validateAcquisitionCostPositive, validateUsefulLifePositive, validateResidualValueNonNegative, validateAcquisitionDatePast, validateResidualWithinCost, validateAssetNotDisposed, validateAssetInService, validateRenewalDateAfterAcquisition, validateReplacementCostNonNegative, validateDepreciationAmountNonNegative, validateAccumulatedWithinCost, validateNetBookValueFormula, validateNetBookValueAboveResidual, validatePeriodNotAlreadyDepreciated, validatePercentageValid, validateAllocationSum100, validateDateRangeValid, validateNoAllocationOverlap, validateAllocationNotOnDisposed, validateMaintenanceCostNonNegative, validateMaintenanceDatePast, validateMaintenanceAssetInService, validateDisposalDateAfterAcquisition, validateDisposalAssetInService, validateGainLossFormula, } from './immobilisation.invariants';
+//# sourceMappingURL=index.d.ts.map

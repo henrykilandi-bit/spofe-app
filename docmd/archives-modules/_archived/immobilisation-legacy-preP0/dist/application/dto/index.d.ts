@@ -1,0 +1,8 @@
+/**
+ * Immobilisation Module - DTO Index
+ * Conformité: COMMANDS_EVENTS.md v1.0.0
+ */
+export { BaseCommandDTO, DepreciationMethodDTO, AllocationTargetTypeDTO, MaintenanceTypeDTO, DisposalTypeDTO, CreateAssetCommandDTO, UpdateRenewalInfoCommandDTO, AllocateAssetCommandDTO, AllocationItemDTO, RecordDepreciationCommandDTO, CalculateDepreciationsCommandDTO, RecordMaintenanceCommandDTO, DisposeAssetCommandDTO, DecommissionAssetCommandDTO, ImmobilisationCommandDTO, } from './command.dto';
+export { BaseEventDTO, AssetCreatedEventDTO, RenewalInfoUpdatedEventDTO, AssetDisposedEventDTO, AssetDecommissionedEventDTO, AssetAllocatedEventDTO, AllocationEndedEventDTO, AllocationItemEventDTO, DepreciationRecordedEventDTO, MaintenanceRecordedEventDTO, ImmobilisationEventDTO, isAssetCreatedEvent, isRenewalInfoUpdatedEvent, isAssetDisposedEvent, isAssetDecommissionedEvent, isAssetAllocatedEvent, isAllocationEndedEvent, isDepreciationRecordedEvent, isMaintenanceRecordedEvent, } from './event.dto';
+export { generateAssetId, generateAllocationId, generateScheduleId, generateMaintenanceId, generateDisposalId, toCreateAssetCommand, toUpdateRenewalInfoCommand, toAllocateAssetCommand, toRecordDepreciationCommand, toCalculateDepreciationsCommand, toRecordMaintenanceCommand, toDisposeAssetCommand, toDecommissionAssetCommand, toAssetCreatedEventDTO, toRenewalInfoUpdatedEventDTO, toAssetDisposedEventDTO, toAssetDecommissionedEventDTO, toDepreciationRecordedEventDTO, toMaintenanceRecordedEventDTO, } from './mapper';
+//# sourceMappingURL=index.d.ts.map

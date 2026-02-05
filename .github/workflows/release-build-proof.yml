@@ -1,0 +1,385 @@
+name: SPOFE Release — BUILD_PROOF
+
+# SPOFE Release-Gated Build Proof
+# Version 1.0.0 — Standard SPOFE
+#
+# 🔒 Ce workflow garantit qu'aucune release ne peut être publiée
+# sans BUILD_PROOF valide et signé cryptographiquement.
+#
+# Déclencheur : Tag Git au format <module>-vX.Y.Z
+# Exemples : immobilisation-v1.0.0, cost-structure-v1.2.0
+
+on:
+  push:
+    tags:
+      - '*-v*.*.*'
+
+permissions:
+  contents: write
+
+env:
+  NODE_ENV: production
+  SPOFE_MODULE_PATH: ${{ github.workspace }}
+
+jobs:
+  # ================================================================
+  # JOB 1: Extract module info from tag
+  # ================================================================
+  extract-info:
+    name: Extract Module Information
+    runs-on: ubuntu-latest
+    outputs:
+      module-name: ${{ steps.extract.outputs.module-name }}
+      version: ${{ steps.extract.outputs.version }}
+      is-valid: ${{ steps.validate.outputs.is-valid }}
+
+    steps:
+      - name: Extract module and version from tag
+        id: extract
+        run: |
+          TAG="${{ github.ref_name }}"
+          echo "Processing tag: $TAG"
+
+          # Extract module name (everything before -v)
+          MODULE=$(echo "$TAG" | sed -E 's/-v[0-9]+\.[0-9]+\.[0-9]+$//')
+          # Extract version (everything after last -v)
+          VERSION=$(echo "$TAG" | sed -E 's/.*-v([0-9]+\.[0-9]+\.[0-9]+)$/\1/')
+
+          echo "module-name=$MODULE" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          echo "Module: $MODULE"
+          echo "Version: $VERSION"
+
+      - name: Validate tag format
+        id: validate
+        run: |
+          TAG="${{ github.ref_name }}"
+
+          # Validate format: <module>-vX.Y.Z
+          if [[ ! "$TAG" =~ ^[a-z0-9-]+-v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid tag format: $TAG"
+            echo "::error::Expected format: <module>-vX.Y.Z (e.g., immobilisation-v1.0.0)"
+            echo "is-valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          echo "is-valid=true" >> $GITHUB_OUTPUT
+          echo "✅ Tag format validated: $TAG"
+
+  # ================================================================
+  # JOB 2: Generate and validate BUILD_PROOF
+  # ================================================================
+  build-proof:
+    name: Generate & Validate BUILD_PROOF
+    needs: extract-info
+    if: needs.extract-info.outputs.is-valid == 'true'
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: spofe
+          POSTGRES_PASSWORD: spofe
+          POSTGRES_DB: spofe_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # --------------------------------------------------------------
+      # Setup
+      # --------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies (root)
+        run: npm ci
+
+      # --------------------------------------------------------------
+      # 1. Environment Diagnostic (NON CONTRACTUEL)
+      # --------------------------------------------------------------
+      - name: Environment diagnostic
+        run: |
+          echo "::group::Environment Diagnostic"
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "Git commit: $(git rev-parse HEAD)"
+          echo "Module: ${{ needs.extract-info.outputs.module-name }}"
+          echo "Version: ${{ needs.extract-info.outputs.version }}"
+          echo "::endgroup::"
+
+          # Optional: Run diagnostic script if it exists
+          if [ -f "spofe/tools/build-proof/generate-build-proof-results.ts" ]; then
+            npx tsx spofe/tools/build-proof/generate-build-proof-results.ts || true
+          fi
+
+      # --------------------------------------------------------------
+      # 2. Generate BUILD_PROOF (CONTRACTUEL)
+      # --------------------------------------------------------------
+      - name: Generate BUILD_PROOF
+        id: generate
+        run: |
+          echo "::group::Generating BUILD_PROOF"
+
+          # Navigate to module directory if it exists
+          MODULE="${{ needs.extract-info.outputs.module-name }}"
+          MODULE_PATH="cascade/modules/$MODULE"
+
+          if [ -d "$MODULE_PATH" ]; then
+            cd "$MODULE_PATH"
+            echo "Working in module: $MODULE_PATH"
+          else
+            echo "Working in root directory"
+          fi
+
+          # Install module dependencies if needed
+          if [ -f "package.json" ]; then
+            npm ci || npm install
+          fi
+
+          # Generate BUILD_PROOF
+          npx tsx ${{ github.workspace }}/spofe/tools/build-proof/generate-build-proof.ts \
+            --module "$MODULE" \
+            --tag "${{ github.ref_name }}"
+
+          echo "::endgroup::"
+
+      # --------------------------------------------------------------
+      # 3. Cryptographic Signing
+      # --------------------------------------------------------------
+      - name: Sign BUILD_PROOF
+        id: sign
+        env:
+          SPOFE_SIGNING_KEY: ${{ secrets.SPOFE_SIGNING_KEY }}
+        run: |
+          echo "::group::Signing BUILD_PROOF"
+
+          MODULE="${{ needs.extract-info.outputs.module-name }}"
+          MODULE_PATH="cascade/modules/$MODULE"
+
+          if [ -d "$MODULE_PATH" ]; then
+            cd "$MODULE_PATH"
+          fi
+
+          # Check if BUILD_PROOF exists
+          if [ ! -f "BUILD_PROOF.md" ]; then
+            echo "::error::BUILD_PROOF.md not found after generation"
+            exit 1
+          fi
+
+          # Sign the BUILD_PROOF
+          npx tsx ${{ github.workspace }}/spofe/tools/build-proof/sign-build-proof.ts \
+            --verify
+
+          echo "✅ BUILD_PROOF signed successfully"
+          echo "::endgroup::"
+
+      # --------------------------------------------------------------
+      # 4. SPOFE Validation (FINAL GATE)
+      # --------------------------------------------------------------
+      - name: SPOFE Validation
+        id: validate
+        run: |
+          echo "::group::SPOFE Validation"
+
+          MODULE="${{ needs.extract-info.outputs.module-name }}"
+          MODULE_PATH="cascade/modules/$MODULE"
+
+          if [ -d "$MODULE_PATH" ]; then
+            cd "$MODULE_PATH"
+          fi
+
+          # Run SPOFE validation with strict mode
+          npx tsx ${{ github.workspace }}/spofe/tools/validate-module/spofe-validate-module.ts \
+            --strict
+
+          echo "✅ SPOFE validation passed"
+          echo "::endgroup::"
+
+      # --------------------------------------------------------------
+      # 5. Upload Artifacts
+      # --------------------------------------------------------------
+      - name: Upload BUILD_PROOF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-proof-${{ needs.extract-info.outputs.module-name }}-${{ needs.extract-info.outputs.version }}
+          path: |
+            BUILD_PROOF.md
+            BUILD_PROOF.sha256
+            BUILD_PROOF.sig
+            BUILD_PROOF.sigmeta
+          retention-days: 365
+
+      # --------------------------------------------------------------
+      # 6. Commit BUILD_PROOF to repository
+      # --------------------------------------------------------------
+      - name: Commit BUILD_PROOF artifacts
+        run: |
+          echo "::group::Committing BUILD_PROOF"
+
+          MODULE="${{ needs.extract-info.outputs.module-name }}"
+          MODULE_PATH="cascade/modules/$MODULE"
+
+          # Configure git
+          git config user.name "spofe-ci[bot]"
+          git config user.email "ci@spofe.io"
+
+          # Add BUILD_PROOF files
+          if [ -d "$MODULE_PATH" ]; then
+            git add "$MODULE_PATH/BUILD_PROOF.md" \
+                    "$MODULE_PATH/BUILD_PROOF.sha256" \
+                    "$MODULE_PATH/BUILD_PROOF.sig" \
+                    "$MODULE_PATH/BUILD_PROOF.sigmeta" \
+                    "$MODULE_PATH/.checklist.hash" 2>/dev/null || true
+          else
+            git add BUILD_PROOF.md \
+                    BUILD_PROOF.sha256 \
+                    BUILD_PROOF.sig \
+                    BUILD_PROOF.sigmeta \
+                    .checklist.hash 2>/dev/null || true
+          fi
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            COMMIT_MSG="proof(${{ github.ref_name }}): BUILD_PROOF signed and validated [SPOFE CI]"
+            git commit -m "$COMMIT_MSG"
+
+            # Push to the tag's branch
+            git push origin HEAD:${{ github.ref }}
+          fi
+
+          echo "✅ BUILD_PROOF committed"
+          echo "::endgroup::"
+
+      # --------------------------------------------------------------
+      # 7. Create Release
+      # --------------------------------------------------------------
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "${{ needs.extract-info.outputs.module-name }} v${{ needs.extract-info.outputs.version }}"
+          body: |
+            ## SPOFE Release — BUILD_PROOF Validated ✅
+
+            **Module:** ${{ needs.extract-info.outputs.module-name }}
+            **Version:** ${{ needs.extract-info.outputs.version }}
+
+            ### Validation Status
+            - ✅ BUILD_PROOF generated
+            - ✅ Cryptographically signed
+            - ✅ SPOFE validation passed
+
+            ### Artifacts
+            - BUILD_PROOF.md
+            - BUILD_PROOF.sha256
+            - BUILD_PROOF.sig
+
+            ### Verification
+            To verify this release:
+            ```bash
+            npx tsx spofe/tools/validate-module/spofe-validate-module.ts
+            ```
+          files: |
+            BUILD_PROOF.md
+            BUILD_PROOF.sha256
+            BUILD_PROOF.sig
+            BUILD_PROOF.sigmeta
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ================================================================
+  # JOB 3: Rollback on failure (SPOFE Auto-Correct)
+  # ================================================================
+  rollback:
+    name: Rollback Invalid Release
+    needs: [extract-info, build-proof]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Rollback invalid release tag
+        run: |
+          TAG="${{ github.ref_name }}"
+          echo "❌ BUILD_PROOF invalid — rolling back $TAG"
+          echo "::error::SPOFE Rollback: Release $TAG invalidated due to failed BUILD_PROOF"
+
+          # Delete the invalid tag
+          git push --delete origin "$TAG" || echo "Tag already deleted"
+
+          echo "✅ Rollback complete: $TAG removed"
+
+      - name: Record rollback event
+        run: |
+          echo "::group::Rollback Event Recorded"
+          echo "Tag: ${{ github.ref_name }}"
+          echo "Module: ${{ needs.extract-info.outputs.module-name }}"
+          echo "Version: ${{ needs.extract-info.outputs.version }}"
+          echo "Reason: BUILD_PROOF validation failed"
+          echo "CI Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::endgroup::"
+
+      - name: Create rollback notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: `❌ **SPOFE ROLLBACK EXECUTED: ${{ github.ref_name }}**
+
+            The release has been automatically rolled back due to BUILD_PROOF validation failure.
+
+            **Details:**
+            - Module: ${{ needs.extract-info.outputs.module-name }}
+            - Version: ${{ needs.extract-info.outputs.version }}
+            - Reason: BUILD_PROOF validation failed
+            - Rolled back at: ${new Date().toISOString()}
+
+            **Status:** This release is now ❌ ROLLED_BACK in SPOFE conformity table.
+
+            [View Failed Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`
+            })
+
+      - name: Update conformity table
+        run: |
+          # Regenerate conformity table to record the rollback
+          npx tsx spofe/tools/conformity/generate-conformity-table.ts || true
+
+          # Commit the updated table
+          git config user.name "spofe-ci[bot]"
+          git config user.email "ci@spofe.io"
+          git add spofe/governance/MODULE_CONFORMITY_TABLE.json spofe/governance/MODULE_CONFORMITY_TABLE.md || true
+
+          if git diff --staged --quiet; then
+            echo "No conformity table changes"
+          else
+            git commit -m "governance: update conformity table (rollback: ${{ github.ref_name }}) [SPOFE CI]"
+            git push
+          fi

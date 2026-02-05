@@ -1,0 +1,296 @@
+# 🛡️ CONSTITUTION CI/CD - POLITIQUE DE GOUVERNANCE BUILD_PROOF
+# Version: 1.0
+# Date: 2026-02-05T22:50:00Z
+# Mode: No Proof → No Deploy
+
+# 📋 PRINCIPE FONDAMENTAL
+# Une entrée BUILD_PROOF P0 peut bloquer un déploiement.
+# ❌ si la preuve est absente → pipeline STOP
+# ❌ si la preuve échoue → pipeline STOP
+# ❌ si la preuve n'est pas signée → pipeline STOP
+
+# 🎯 CLASSIFICATION DES NIVEAUX
+ci_gates:
+  # Niveaux requis pour le déploiement
+  required_levels:
+    - "P0_CONSTITUTIONAL"
+  
+  # Types de preuves qui bloquent le déploiement
+  block_on:
+    - "OPERATIONAL_INVARIANT"
+    - "ATTACK_SCENARIO"
+    - "CONSTITUTIONAL_MIGRATION"
+  
+  # Exigences de signature
+  require_signature: true
+  signature_algorithm: "ed25519"
+  
+  # Politique d'échec
+  failure_policy:
+    missing_proof: "BLOCK_DEPLOY"
+    invalid_proof: "BLOCK_DEPLOY"
+    missing_signature: "BLOCK_DEPLOY"
+    invalid_signature: "BLOCK_DEPLOY"
+    chain_broken: "BLOCK_DEPLOY"
+
+# 📊 DÉFINITION DES NIVEAUX
+levels:
+  P0_CONSTITUTIONAL:
+    description: "Preuves constitutionnelles critiques"
+    effect: "BLOCKING"
+    requires_signature: true
+    examples:
+      - "BUILD_PROOF_OPS_P0_*"
+      - "BUILD_PROOF_ATTACK_P0_*"
+      - "BUILD_PROOF_MIGRATION_P0_*"
+    
+  P1_CRITICAL:
+    description: "Preuves critiques non bloquantes"
+    effect: "WARNING"
+    requires_signature: false
+    examples:
+      - "Performance benchmarks"
+      - "Security scans"
+      - "Compliance checks"
+    
+  P2_INFORMATIONAL:
+    description: "Preuves informatives"
+    effect: "LOG_ONLY"
+    requires_signature: false
+    examples:
+      - "Documentation updates"
+      - "Exploratory scenarios"
+      - "Chaos engineering non-destructif"
+
+# 🎯 ENTRÉES BLOQUANTES SPÉCIFIQUES (SPOFE)
+blocking_entries:
+  # Invariants opérationnels P0
+  operational_invariants:
+    pattern: "BUILD_PROOF_OPS_P0_*"
+    reason: "Intégrité constitutionnelle du système"
+    description: >
+      Ces preuves garantissent l'immutabilité du ledger,
+      l'intégrité de la chaîne de hash, et la capacité
+      d'écriture légitime. Leur absence compromet la légitimité.
+    required_files:
+      - "BUILD_PROOF_OPS_P0_01.yaml"  # Immutabilité ledger
+      - "BUILD_PROOF_OPS_P0_02.yaml"  # Intégrité chaîne hash
+      - "BUILD_PROOF_OPS_P0_03.yaml"  # Cohérence double-écriture
+      - "BUILD_PROOF_OPS_P0_04.yaml"  # Read-only MySQL
+      - "BUILD_PROOF_OPS_P0_05.yaml"  # Capacité écriture post-bascule
+    
+  # Scénarios d'attaque P0
+  attack_scenarios:
+    pattern: "BUILD_PROOF_ATTACK_P0_*"
+    reason: "Résistance aux attaques constitutionnelle"
+    description: >
+      Ces preuves démontrent que le système résiste aux attaques
+      réalistes ou s'arrête légitimement. Leur absence expose
+      le système à des vulnérabilités non détectées.
+    required_files:
+      - "BUILD_PROOF_ATTACK_P0_DB_01.yaml"  # Résistance UPDATE/DELETE
+      - "BUILD_PROOF_ATTACK_P0_DB_02.yaml"  # Injection falsifiée
+      - "BUILD_PROOF_ATTACK_P0_DB_03.yaml"  # Fork chaîne
+      - "BUILD_PROOF_ATTACK_P0_APP_01.yaml" # Bypass Guardian
+
+# 🚫 ENTRÉES NON BLOQUANTES
+non_blocking_entries:
+  benchmarks:
+    pattern: "BUILD_PROOF_PERF_*"
+    reason: "Performance monitoring"
+    effect: "WARNING"
+    
+  chaos_exploratory:
+    pattern: "BUILD_PROOF_CHAOS_*"
+    reason: "Chaos engineering non-destructif"
+    effect: "LOG_ONLY"
+    
+  documentation:
+    pattern: "BUILD_PROOF_DOC_*"
+    reason: "Documentation updates"
+    effect: "LOG_ONLY"
+
+# 🔧 CONFIGURATION TECHNIQUE
+technical:
+  # Outils requis
+  required_tools:
+    - "yq"      # YAML parser
+    - "jq"      # JSON parser
+    - "openssl" # Signature verification
+    
+  # Chemins des fichiers
+  paths:
+    build_proof_dir: "governance/build-proof"
+    policy_file: "governance/policy.yml"
+    verification_script: "governance/verify_build_proof.sh"
+    keys_dir: "governance/build-proof/keys"
+    
+  # Timeout de vérification (secondes)
+  verification_timeout: 300
+  
+  # Retry en cas d'échec
+  retry_attempts: 3
+  retry_delay: 5
+
+# 📋 MÉTRIQUES ET MONITORING
+metrics:
+  # Métriques à collecter
+  collect:
+    - "proof_verification_time"
+    - "signature_verification_time"
+    - "chain_validation_time"
+    - "total_blocking_proofs"
+    - "failed_proofs_count"
+    
+  # Seuils d'alerte
+  alerts:
+    verification_time_threshold: 60  # secondes
+    failure_rate_threshold: 0.05      # 5%
+    
+  # Reporting
+  reporting:
+    format: "json"
+    destination: "artifacts/build-proof-gate-report.json"
+    include_detailed_logs: true
+
+# 🔄 INTÉGRATION CI/CD
+ci_integration:
+  # Position dans le pipeline
+  gate_position: 1  # Première étape
+  
+  # Conditions de déclenchement
+  trigger_on:
+    - "pull_request"
+    - "push_to_main"
+    - "release_creation"
+    
+  # Branches protégées
+  protected_branches:
+    - "main"
+    - "production"
+    - "release/*"
+    
+  # Exclusions
+  exclude_branches:
+    - "hotfix/*"
+    - "emergency/*"
+    - "docs/*"
+
+# 🚨 GESTION DES INCIDENTS
+incident_management:
+  # Classification des échecs
+  failure_classifications:
+    missing_proof:
+      severity: "CRITICAL"
+      action: "BLOCK_DEPLOY"
+      escalation: "IMMEDIATE"
+      
+    invalid_signature:
+      severity: "CRITICAL"
+      action: "BLOCK_DEPLOY"
+      escalation: "IMMEDIATE"
+      
+    chain_broken:
+      severity: "CRITICAL"
+      action: "BLOCK_DEPLOY"
+      escalation: "IMMEDIATE"
+      
+    verification_timeout:
+      severity: "HIGH"
+      action: "BLOCK_DEPLOY"
+      escalation: "WITHIN_1_HOUR"
+  
+  # Procédures d'escalade
+  escalation:
+    immediate:
+      - "Notify security team"
+      - "Block deployment"
+      - "Create incident ticket"
+      
+    within_1_hour:
+      - "Notify engineering lead"
+      - "Schedule emergency review"
+      - "Document root cause"
+      
+    within_4_hours:
+      - "Executive notification"
+      - "Compliance report"
+      - "Remediation plan"
+
+# 📊 AUDIT ET CONFORMITÉ
+audit:
+  # Logs requis
+  required_logs:
+    - "proof_verification_results"
+    - "signature_validation_details"
+    - "chain_integrity_checks"
+    - "gate_decision_rationale"
+    
+  # Rétention des logs
+  log_retention:
+    duration: "7_years"
+    storage: "immutable_worm"
+    
+  # Rapports d'audit
+  audit_reports:
+    frequency: "monthly"
+    format: "compliance_standard"
+    recipients:
+      - "security@spo fe.app"
+      - "compliance@spo fe.app"
+      - "audit@spo fe.app"
+
+# 🎯 OBJECTIFS ET KPI
+objectives:
+  # Objectifs de disponibilité
+  availability:
+    target: "99.9%"
+    measurement: "build_proof_gate_success_rate"
+    
+  # Objectifs de performance
+  performance:
+    max_verification_time: 60  # secondes
+    max_gate_duration: 300      # secondes
+    
+  # Objectifs de sécurité
+  security:
+    zero_false_positives: true
+    zero_false_negatives: true
+    immediate_detection: true
+
+# 🏆 SUCCÈS ET VALIDATION
+success_criteria:
+  gate_success:
+    all_blocking_proofs_valid: true
+    all_signatures_verified: true
+    chain_integrity_maintained: true
+    
+  deployment_approval:
+    constitutional_legitimacy: "MAINTAINED"
+    attack_resistance: "PROVEN"
+    operational_integrity: "GUARANTEED"
+    
+  compliance:
+    regulatory_requirements: "MET"
+    audit_readiness: "ACHIEVED"
+    forensic_evidence: "PRESERVED"
+
+# 🔄 ÉVOLUTION DE LA POLITIQUE
+policy_evolution:
+  # Versionnement
+  versioning:
+    current_version: "1.0"
+    backward_compatibility: false
+    
+  # Processus de modification
+  modification_process:
+    - "Security review"
+    - "Engineering approval"
+    - "Compliance validation"
+    - "Executive sign-off"
+    
+  # Fréquence de révision
+  review_frequency:
+    security: "quarterly"
+    compliance: "semi-annually"
+    technical: "monthly"

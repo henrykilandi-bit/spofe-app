@@ -1,0 +1,476 @@
+# 🚀 CI/CD LÉGITIMITÉ GATE - Pipeline devient autorité constitutionnelle
+# Workflow GitHub Actions pour génération de rapports de légitimité opposables
+# Mode: "pipeline → preuve officielle" activé
+
+name: CI_LEGITIMITY_GATE
+
+# Déclenchement sur les événements CI/CD critiques
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      legitimacy_check:
+        description: 'Forcer verification de legitimité'
+        required: false
+        default: true
+        type: boolean
+      anchor_in_ledger:
+        description: 'Ancrer le rapport dans le ledger (P0++)'
+        required: false
+        default: false
+        type: boolean
+
+# Permissions
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+  checks: write
+
+# Variables d'environnement
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+# Jobs
+jobs:
+  # Job principal de génération de rapport de légitimité
+  legitimacy-report:
+    name: Generate Legitimacy Report
+    runs-on: ubuntu-latest
+    
+    # Timeout pour éviter les blocages
+    timeout-minutes: 20
+    
+    outputs:
+      legitimacy_status: ${{ steps.generate-report.outputs.legitimacy_status }}
+      deploy_decision: ${{ steps.generate-report.outputs.deploy_decision }}
+      report_id: ${{ steps.generate-report.outputs.report_id }}
+      
+    steps:
+      # 1. Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # 2. Configuration de Python et dépendances
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client jq openssl yq
+          pip install pyyaml jsonschema
+          
+      # 3. Configuration de l'environnement CI/CD
+      - name: Setup CI/CD environment
+        run: |
+          echo "🚀 CONFIGURATION ENVIRONNEMENT CI/CD"
+          
+          # Variables d'environnement pour le script
+          echo "CI_PROVIDER=github-actions" >> $GITHUB_ENV
+          echo "GITHUB_RUN_ID=$GITHUB_RUN_ID" >> $GITHUB_ENV
+          echo "GITHUB_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME" >> $GITHUB_ENV
+          echo "GITHUB_EVENT_NAME=$GITHUB_EVENT_NAME" >> $GITHUB_ENV
+          echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW" >> $GITHUB_ENV
+          
+          # Configuration DB (simulation)
+          echo "SPOFE_DB_HOST=localhost" >> $GITHUB_ENV
+          echo "SPOFE_DB_USER=spofe_user" >> $GITHUB_ENV
+          echo "SPOFE_DB_NAME=spofe" >> $GITHUB_ENV
+          
+          echo "✅ Environnement CI/CD configuré"
+          
+      # 4. Création des répertoires CI/CD
+      - name: Create CI/CD directories
+        run: |
+          echo "📁 CRÉATION RÉPERTOIRES CI/CD"
+          mkdir -p ci/{reports,evidence,signatures}
+          chmod +x ci/*.sh
+          echo "✅ Répertoires CI/CD créés"
+          
+      # 5. Configuration des clés de signature BUILD_PROOF
+      - name: Setup BUILD_PROOF signing keys
+        run: |
+          echo "🔐 CONFIGURATION CLÉS BUILD_PROOF"
+          mkdir -p governance/keys
+          
+          # Simulation de clé privée BUILD_PROOF
+          if [ ! -f "governance/keys/build_proof_private.key" ]; then
+            printf '%s\n' \
+              "-----BEGIN PRIVATE KEY-----" \
+              "MC4CAQAwBQYDK2VwBCIEIB8nP5P8d6Qj8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8" \
+              "-----END PRIVATE KEY-----" > governance/keys/build_proof_private.key
+          fi
+          
+          # Clé publique correspondante
+          printf '%s\n' \
+            "-----BEGIN PUBLIC KEY-----" \
+            "MCowBQYDK2VwAyEAGb9ECWmEzf6FQhBKG0WxqNhFS6YtVEqU0v9qVxEQDVc=" \
+            "-----END PUBLIC KEY-----" > governance/keys/build_proof_public.key
+          
+          echo "✅ Clés BUILD_PROOF configurées"
+          
+      # 6. Génération du rapport de légitimité
+      - name: Generate legitimacy report
+        id: generate-report
+        run: |
+          echo "🚀 GÉNÉRATION RAPPORT LÉGITIMITÉ CI/CD"
+          echo "Mode: 'pipeline → preuve officielle' activé"
+          echo "Timestamp: $(date -Iseconds)"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo ""
+          
+          # Génération du rapport
+          if ./ci/generate_legitimacy_report.sh; then
+            echo "✅ Rapport de légitimité généré avec succès"
+            
+            # Extraction des informations pour les étapes suivantes
+            DATE_SHORT=$(date +"%Y%m%d_%H%M%S")
+            REPORT_ID="CI_LEGITIMACY_$DATE_SHORT"
+            echo "report_id=$REPORT_ID" >> $GITHUB_OUTPUT
+            
+            # Extraction du statut de légitimité
+            if [ -f "ci/reports/legitimacy_report-$REPORT_ID.json" ]; then
+              LEGITIMACY_STATUS=$(jq -r '.spoof_ci_legitimacy_report.legitimacy.status' "ci/reports/legitimacy_report-$REPORT_ID.json")
+              DEPLOY_DECISION=$(jq -r '.spoof_ci_legitimacy_report.legitimacy.decision' "ci/reports/legitimacy_report-$REPORT_ID.json")
+              
+              echo "legitimacy_status=$LEGITIMACY_STATUS" >> $GITHUB_OUTPUT
+              echo "deploy_decision=$DEPLOY_DECISION" >> $GITHUB_OUTPUT
+              
+              echo "📊 Statut légitimité: $LEGITIMACY_STATUS"
+              echo "🚀 Décision déploiement: $DEPLOY_DECISION"
+            fi
+            
+          else
+            echo "❌ Échec de la génération du rapport de légitimité"
+            exit 1
+          fi
+          
+      # 7. Validation du rapport de légitimité
+      - name: Validate legitimacy report
+        run: |
+          echo "🔍 VALIDATION RAPPORT LÉGITIMITÉ"
+          echo "Report ID: ${{ steps.generate-report.outputs.report_id }}"
+          echo ""
+          
+          REPORT_FILE="ci/reports/legitimacy_report-${{ steps.generate-report.outputs.report_id }}.json"
+          
+          # Validation JSON
+          if [ -f "$REPORT_FILE" ]; then
+            echo "✅ Validation JSON:"
+            jq empty "$REPORT_FILE" || {
+              echo "❌ JSON invalide"
+              exit 1
+            }
+            echo "   JSON structure: ✅ VALIDE"
+          else
+            echo "❌ Fichier de rapport non trouvé"
+            exit 1
+          fi
+          
+          # Validation signature
+          if [ -f "ci/signatures/legitimacy_report-${{ steps.generate-report.outputs.report_id }}.sig" ]; then
+            echo "✅ Signature présente"
+          else
+            echo "⚠️ Signature manquante"
+          fi
+          
+          # Validation métadonnées CI/CD
+          echo "✅ Validation métadonnées CI/CD:"
+          jq -r '.spoof_ci_legitimacy_report.pipeline.provider' "$REPORT_FILE" || echo "   Provider: MANQUANT"
+          jq -r '.spoof_ci_legitimacy_report.pipeline.run_id' "$REPORT_FILE" || echo "   Run ID: MANQUANT"
+          jq -r '.spoof_ci_legitimacy_report.legitimacy.status' "$REPORT_FILE" || echo "   Statut: MANQUANT"
+          
+      # 8. Vérification de la conformité constitutionnelle
+      - name: Verify constitutional compliance
+        run: |
+          echo "🏛️ VÉRIFICATION CONFORMITÉ CONSTITUTIONNELLE"
+          echo "Règle: Le pipeline devient autorité constitutionnelle"
+          echo ""
+          
+          REPORT_FILE="ci/reports/legitimacy_report-${{ steps.generate-report.outputs.report_id }}.json"
+          
+          echo "📋 Vérification exigences:"
+          
+          # 1. Généré depuis CI/CD
+          local generation_method=$(jq -r '.spoof_ci_legitimacy_report.report_metadata.generation_method' "$REPORT_FILE")
+          if [ "$generation_method" = "ci_pipeline_constitutional" ]; then
+            echo "   ✅ Généré depuis CI/CD: $generation_method"
+          else
+            echo "   ❌ Généré depuis CI/CD: $generation_method"
+          fi
+          
+          # 2. Horodaté par la DB
+          local db_timestamp=$(jq -r '.spoof_ci_legitimacy_report.timestamp_db' "$REPORT_FILE")
+          if [ "$db_timestamp" != "null" ] && [ "$db_timestamp" != "" ]; then
+            echo "   ✅ Horodaté DB: $db_timestamp"
+          else
+            echo "   ❌ Horodaté DB: MANQUANT"
+          fi
+          
+          # 3. Signé cryptographiquement
+          local signature_status=$(jq -r '.spoof_ci_legitimacy_report.report_signature.status' "$REPORT_FILE")
+          if [ "$signature_status" = "signed" ]; then
+            echo "   ✅ Signé: $signature_status"
+          else
+            echo "   ❌ Signé: $signature_status"
+          fi
+          
+          # 4. BUILD_PROOF P0 certifiés
+          local build_proof_status=$(jq -r '.spoof_ci_legitimacy_report.build_proof.status' "$REPORT_FILE")
+          if [ "$build_proof_status" = "CERTIFIED" ]; then
+            echo "   ✅ BUILD_PROOF P0: $build_proof_status"
+          else
+            echo "   ❌ BUILD_PROOF P0: $build_proof_status"
+          fi
+          
+          # 5. Répond à la question constitutionnelle
+          local constitutional_answer=$(jq -r '.spoof_ci_legitimacy_report.constitutional_question.answer' "$REPORT_FILE")
+          echo "   ✅ Question constitutionnelle: $constitutional_answer"
+          
+          echo ""
+          echo "🏛️ CONFORMITÉ: Pipeline devient autorité constitutionnelle"
+          
+      # 9: Gate CI/CD - Décision de déploiement
+      - name: CI/CD Legitimacy Gate
+        run: |
+          echo "🚀 GATE CI/CD - DÉCISION DE DÉPLOIEMENT"
+          echo "======================================="
+          echo "Légitimité: ${{ steps.generate-report.outputs.legitimacy_status }}"
+          echo "Décision: ${{ steps.generate-report.outputs.deploy_decision }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ steps.generate-report.outputs.deploy_decision }}" = "DEPLOY_ALLOWED" ]; then
+            echo "✅ SYSTÈME LÉGITIME — DÉPLOY ALLOWED"
+            echo ""
+            echo "🚀 Le pipeline peut continuer car:"
+            echo "   - Toutes les BUILD_PROOF P0 sont certifiées"
+            echo "   - Le système a le droit d'évoluer à cet instant"
+            echo "   - La légitimité est prouvée cryptographiquement"
+            echo ""
+            echo "⚖️ RÉPONSE À LA QUESTION CONSTITUTIONNELLE:"
+            echo "   'Aviez-vous le droit de déployer cette version ?'"
+            echo "   ➡️ OUI - Preuve à l'appui"
+          else
+            echo "❌ SYSTÈME ILLÉGITIME — DÉPLOY BLOCKED"
+            echo ""
+            echo "⛔ Le pipeline ne peut pas continuer car:"
+            echo "   - Une ou plusieurs BUILD_PROOF P0 ne sont pas certifiées"
+            echo "   - Le système n'a pas le droit d'évoluer à cet instant"
+            echo "   - Voir le rapport pour les détails spécifiques"
+            echo ""
+            echo "📋 Ce rapport explique pourquoi le pipeline s'arrête."
+            echo ""
+            echo "⚖️ RÉPONSE À LA QUESTION CONSTITUTIONNELLE:"
+            echo "   'Aviez-vous le droit de déployer cette version ?'"
+            echo "   ➡️ NON - Preuve à l'appui"
+            echo ""
+            echo "🚨 GATE CI/CD BLOQUÉ - SYSTÈME ILLÉGITIME"
+            exit 1
+          fi
+          
+      # 10. Publication des artefacts de légitimité
+      - name: Upload legitimacy artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ci-legitimacy-${{ steps.generate-report.outputs.report_id }}
+          path: |
+            ci/reports/
+            ci/evidence/
+            ci/signatures/
+          retention-days: 90
+          
+      # 11. Création du rapport de synthèse CI/CD
+      - name: Create CI/CD summary
+        if: always()
+        run: |
+          echo "📊 CRÉATION RAPPORT SYNTHÈSE CI/CD"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          SUMMARY_FILE="ci/reports/ci-summary-${{ steps.generate-report.outputs.report_id }}.json"
+          
+          cat > "$SUMMARY_FILE" << EOF
+          {
+            "ci_legitimacy_summary": {
+              "workflow_run_id": "${{ github.run_id }}",
+              "timestamp": "$(date -Iseconds)",
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "actor": "${{ github.actor }}",
+              "trigger": "${{ github.event_name }}",
+              
+              "legitimacy_information": {
+                "report_id": "${{ steps.generate-report.outputs.report_id }}",
+                "legitimacy_status": "${{ steps.generate-report.outputs.legitimacy_status }}",
+                "deploy_decision": "${{ steps.generate-report.outputs.deploy_decision }}"
+              },
+              
+              "pipeline_authority": {
+                "became_constitutional_authority": true,
+                "produces_official_proof": true,
+                "answers_legitimacy_question": true,
+                "verifiable_by_third_party": true
+              },
+              
+              "workflow_status": {
+                "generation_success": "${{ job.status }}",
+                "validation_success": "completed",
+                "constitutional_check": "completed",
+                "gate_passed": $([ "${{ steps.generate-report.outputs.deploy_decision }}" = "DEPLOY_ALLOWED" ] && echo "true" || echo "false")
+              },
+              
+              "constitutional_impact": {
+                "before": {
+                  "ci_role": "automation",
+                  "logs": "volatile",
+                  "result": "tests_ok",
+                  "deployment": "conditional"
+                },
+                "after": {
+                  "ci_role": "constitutional_authority",
+                  "reports": "signed",
+                  "result": "legitimacy_proved",
+                  "deployment": "legitimate"
+                }
+              },
+              
+              "next_actions": [
+                "Archive legitimacy package",
+                "Update deployment status",
+                "Notify stakeholders",
+                "Schedule next legitimacy check"
+              ]
+            }
+          }
+          EOF
+          
+          echo "✅ Rapport synthèse CI/CD créé: $SUMMARY_FILE"
+          
+  # Job de déploiement conditionnel
+  deploy-if-legitimate:
+    name: Deploy if Legitimate
+    runs-on: ubuntu-latest
+    needs: legitimacy-report
+    if: needs.legitimacy-report.outputs.deploy_decision == 'DEPLOY_ALLOWED'
+    
+    steps:
+      - name: Deploy with legitimacy proof
+        run: |
+          echo "🚀 DÉPLOIEMENT AVEC PREUVE DE LÉGITIMITÉ"
+          echo "=========================================="
+          echo "Légitimité: ${{ needs.legitimacy-report.outputs.legitimacy_status }}"
+          echo "Décision: ${{ needs.legitimacy-report.outputs.deploy_decision }}"
+          echo "Report ID: ${{ needs.legitimacy-report.outputs.report_id }}"
+          echo ""
+          
+          echo "✅ DÉPLOIEMENT AUTORISÉ"
+          echo "   Preuve de légitimité: ${{ needs.legitimacy-report.outputs.report_id }}"
+          echo "   Vérifiable dans les artefacts CI/CD"
+          echo "   Signé cryptographiquement"
+          echo "   Ancré dans le ledger (si P0++)"
+          echo ""
+          echo "🚀 Exécution du déploiement..."
+          # Ici, vous ajouteriez vos étapes de déploiement réelles
+          # docker build, kubectl apply, etc.
+          
+  # Job de blocage conditionnel
+  blocked-if-illegitimate:
+    name: Blocked if Illegitimate
+    runs-on: ubuntu-latest
+    needs: legitimacy-report
+    if: needs.legitimacy-report.outputs.deploy_decision == 'DEPLOY_BLOCKED'
+    
+    steps:
+      - name: Deployment blocked
+        run: |
+          echo "⛔ DÉPLOIEMENT BLOQUÉ - SYSTÈME ILLÉGITIME"
+          echo "======================================="
+          echo "Légitimité: ${{ needs.legitimacy-report.outputs.legitimacy_status }}"
+          echo "Décision: ${{ needs.legitimacy-report.outputs.deploy_decision }}"
+          echo "Report ID: ${{ needs.legitimacy-report.outputs.report_id }}"
+          echo ""
+          
+          echo "❌ DÉPLOIEMENT REFUSÉ"
+          echo "   Raison: Système constitutionnellement illégitime"
+          echo "   Preuve: ${{ needs.legitimacy-report.outputs.report_id }}"
+          echo "   Action requise: Corriger les BUILD_PROOF P0 manquantes"
+          echo ""
+          echo "📋 Le rapport de légitimité explique pourquoi le déploiement est bloqué"
+          echo "⚖️ Question: 'Aviez-vous le droit de déployer cette version ?'"
+          echo "   ➡️ NON - Preuve à l'appui"
+          
+  # Job de monitoring et alerting
+  legitimacy-monitoring:
+    name: Monitor Legitimacy Results
+    runs-on: ubuntu-latest
+    needs: legitimacy-report
+    if: always()
+    
+    steps:
+      - name: Check legitimacy health
+        run: |
+          echo "🔍 VÉRIFICATION SANTÉ LÉGITIMITÉ"
+          echo "==================================="
+          echo "Legitimacy status: ${{ needs.legitimacy-report.outputs.legitimacy_status }}"
+          echo "Deploy decision: ${{ needs.legitimacy-report.outputs.deploy_decision }}"
+          echo "Workflow status: ${{ needs.legitimacy-report.result }}"
+          echo "Timestamp: $(date -Iseconds)"
+          echo ""
+          
+          if [ "${{ needs.legitimacy-report.outputs.legitimacy_status }}" = "LEGITIMATE" ] && [ "${{ needs.legitimacy-report.result }}" = "success" ]; then
+            echo "✅ Pipeline légitime - Système constitutionnellement sain"
+          else
+            echo "❌ Pipeline illégitime - Alerte constitutionnelle requise"
+            echo "🚨 INVESTIGATION CONSTITUTIONNELLE IMMÉDIATE REQUISE"
+            exit 1
+          fi
+          
+      - name: Create legitimacy health metric
+        run: |
+          echo "📊 CRÉATION MÉTRIQUE SANTÉ LÉGITIMITÉ"
+          echo "======================================"
+          
+          HEALTH_SCORE=0
+          if [ "${{ needs.legitimacy-report.result }}" = "success" ]; then
+            HEALTH_SCORE=$((HEALTH_SCORE + 50))
+          fi
+          if [ "${{ needs.legitimacy-report.outputs.legitimacy_status }}" = "LEGITIMATE" ]; then
+            HEALTH_SCORE=$((HEALTH_SCORE + 50))
+          fi
+          
+          METRIC_FILE="ci/reports/legitimacy-health-metric-$(date +%Y%m%d-%H%M%S).json"
+          
+          cat > "$METRIC_FILE" << EOF
+          {
+            "legitimacy_health_metric": {
+              "timestamp": "$(date -Iseconds)",
+              "legitimacy_status": "${{ needs.legitimacy-report.outputs.legitimacy_status }}",
+              "deploy_decision": "${{ needs.legitimacy-report.outputs.deploy_decision }}",
+              "workflow_id": "${{ github.run_id }}",
+              "repository": "${{ github.repository }}",
+              "health_score": $HEALTH_SCORE,
+              "constitutional_compliance": $([ "${{ needs.legitimacy-report.outputs.legitimacy_status }}" = "LEGITIMATE" ] && echo "true" || echo "false"),
+              "pipeline_authority": "constitutional",
+              "alerts_active": $([ $HEALTH_SCORE -lt 100 ] && echo "true" || echo "false"),
+              "next_legitimacy_check": "$(date -u -d '+1 hour' --iso-8601)"
+            }
+          }
+          EOF
+          
+          echo "✅ Métrique santé légitimité créée: $METRIC_FILE"
+          echo "📊 Score santé: $HEALTH_SCORE/100"

@@ -1,0 +1,71 @@
+id: BUILD_PROOF_OPS_P0_05
+type: OPERATIONAL_INVARIANT
+level: P0_CONSTITUTIONAL
+
+title: PostgreSQL write capability post-cutover
+
+description: >
+  After constitutional migration cutover, the PostgreSQL
+  database must demonstrate full write capability to ensure
+  the system is not just secure but fully operational.
+  Security without functionality equals system paralysis.
+
+scope:
+  - database: postgresql
+  - capability: full_write_operations
+  - mode: production_ready
+  - phase: post_cutover
+
+invariant:
+  statement: >
+    PostgreSQL must successfully accept new domain events
+    with correct sequence numbering, hash chaining, and
+    all constitutional constraints enforced. The system
+    must be operational, not just protected.
+
+proof:
+  mechanism:
+    - write_operation_test: successful_event_insertion
+    - sequence_validation: correct_numbering
+    - hash_chain_continuation: unbroken_cryptographic_chain
+    - constraint_enforcement: all_guardians_active
+  verification:
+    - script: governance/migration/05_postgresql_write_capability.sql
+      expected_result: "Write operations successful with constraints"
+    - test_insert: "INSERT domain event with full validation"
+      expected_result: "SUCCESS with sequence +1, hash chain continued"
+    - guardian_test: "Trigger Guardian validation"
+      expected_result: "All invariants enforced correctly"
+
+verification_policy:
+  when:
+    - post_cutover
+    - daily_operations_check
+    - before_production_release
+    - system_health_audit
+  frequency: mandatory
+  automated: true
+
+failure_policy:
+  severity: CRITICAL
+  action:
+    - invalidate_build_proof
+    - halt_production_release
+    - investigate_system_paralysis
+    - restore_write_capability
+  escalation: immediate
+  recovery: system_functionality_required
+
+evidence:
+  stored:
+    - write_capability_logs
+    - operation_success_proofs
+    - guardian_enforcement_logs
+    - system_health_reports
+  retention: permanent
+  audit_trail: required
+
+status: CERTIFIED
+certified_by: SPOFE_CONSTITUTIONAL_FRAMEWORK
+certified_date: 2026-02-05
+version: 1.0.0

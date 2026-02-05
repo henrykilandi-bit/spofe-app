@@ -1,0 +1,65 @@
+[2026-02-04 22:22:46] [INFO] 🚀 SPOFE Anti-Pollution Monitor Starting
+[2026-02-04 22:22:46] [ERROR] Failed to load configuration: Conversion from JSON failed with error: Unexpected character encountered while parsing value: #. Path '', line 0, position 0.
+[2026-02-04 22:22:46] [ERROR] Cannot proceed without valid configuration
+[2026-02-04 22:23:03] [INFO] 🚀 SPOFE Anti-Pollution Monitor Starting
+[2026-02-04 22:23:03] [INFO] Configuration loaded successfully
+[2026-02-04 22:23:03] [INFO] 🛡️ Monitor: SPOFE Anti-Pollution Monitor v1.0.0
+[2026-02-04 22:23:03] [INFO] 🔒 Level: P0-Constitutional
+[2026-02-04 22:23:03] [WARNING] 🔍 DRY RUN MODE - No actions will be taken
+[2026-02-04 22:23:03] [INFO] 🔍 Starting SPOFE Anti-Pollution Scan
+[2026-02-04 22:23:20] [INFO] 📊 Scanning 2278 files
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: BUILD_PROOF_SYSTÈME_FINAL_INDUSTRIALISATION.md - Obsolete document pattern: BUILD_PROOF_*.md
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: SPOFE_GUARDIAN_TESTS_SUMMARY.sh - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: START_HERE_SUMMARY.txt - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: architecture\compliance\COMPLETION_SUMMARY.txt - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\budget\BUILD_PROOF\BUILD_PROOF_GUARDIAN.md - Obsolete document pattern: BUILD_PROOF_*.md, Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\budget\BUILD_PROOF\BUILD_PROOF_HASHES.sha256 - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\budget\BUILD_PROOF\BUILD_PROOF_MANIFEST.json - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\budget\BUILD_PROOF\BUILD_PROOF_MODULE.md - Obsolete document pattern: BUILD_PROOF_*.md, Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\budget\BUILD_PROOF\BUILD_PROOF_SIGNATURE.sig - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\coaching\BUILD_PROOF\BUILD_PROOF.sha256 - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:20] [WARNING] 🚨 Suspicious file: cascade\modules\coaching\BUILD_PROOF\BUILD_PROOF.sig - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\gestion-tiers\package.json.original - Suspicious extension: .original
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\gestion-tiers\build-proof\GUARDIAN_FREEZE_NOTICE.txt - Obsolete document pattern: GUARDIAN_*.txt
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\gestion-tiers\test\legacy\non-guardian-compliant.test.ts - Pollution pattern: *\*legacy*\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\precomptabilite\BUILD_PROOF\BUILD_PROOF_GUARDIAN.md - Obsolete document pattern: BUILD_PROOF_*.md, Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\precomptabilite\BUILD_PROOF\BUILD_PROOF_HASHES.sha256 - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\precomptabilite\BUILD_PROOF\BUILD_PROOF_MANIFEST.json - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\precomptabilite\BUILD_PROOF\BUILD_PROOF_MODULE.md - Obsolete document pattern: BUILD_PROOF_*.md, Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\precomptabilite\BUILD_PROOF\BUILD_PROOF_SIGNATURE.sig - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\all-test-results.json - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\BUILD_PROOF_GLOBAL.json - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\BUILD_PROOF_GLOBAL.sha256 - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\BUILD_PROOF_GUARDIAN.json - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\BUILD_PROOF_GUARDIAN.sha256 - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\guardian-test-results.json - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\tresorerie-banque\BUILD_PROOF\README.md - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\vente\BUILD_PROOF\BUILD_PROOF.sha256 - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: cascade\modules\vente\BUILD_PROOF\BUILD_PROOF.sig - Pollution pattern: *\BUILD_PROOF\*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: ci\VISUAL_SUMMARY.md - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\CONTRACT_TESTS_SUMMARY.md - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\FRONTEND_IMPLEMENTATION_SUMMARY.md - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\install.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\test-output.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\logs\conventions_frontend_audit.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\logs\frontend-20260119-140434.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\logs\frontend-20260119-140541.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\logs\frontend-error.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\logs\frontend-out.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\components\ui\alert.jsx.backup - Suspicious extension: .backup
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\components\ui\button.jsx.backup - Suspicious extension: .backup
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\components\ui\card.jsx.backup - Suspicious extension: .backup
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\LoginPage-BACKUP.jsx.backup - Suspicious extension: .backup
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\LoginPage-FULL.jsx.backup - Suspicious extension: .backup
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\LoginPage-SIMPLE.jsx.backup - Suspicious extension: .backup
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\RegisterPage-BACKUP.jsx.bak - Suspicious extension: .bak
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\RegisterPage-NEW.jsx.bak - Suspicious extension: .bak
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\RegisterPage-OLD.jsx.bak - Suspicious extension: .bak
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: frontend\src\pages\RegisterPage.jsx.bak - Suspicious extension: .bak
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: monitoring\pollution-monitor.log - Suspicious extension: .log
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: silc-guardian\sgdoc\FINAL_SUMMARY.md - Obsolete document pattern: *_SUMMARY.*
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: spofe\governance\BUILD_PROOF_TEMPLATE.md - Obsolete document pattern: BUILD_PROOF_*.md
+[2026-02-04 22:23:21] [WARNING] 🚨 Suspicious file: src\legacy\README.md - Pollution pattern: *\*legacy*\*
+[2026-02-04 22:23:21] [INFO] ✅ Scan completed: 2226 clean, 52 suspicious
+[2026-02-04 22:23:21] [INFO] 📄 Report generated: monitoring\pollution-report-2026-02-04-2223.md
+[2026-02-04 22:23:21] [INFO] 🏁 Anti-Pollution Monitor Completed

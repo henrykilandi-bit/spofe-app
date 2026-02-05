@@ -1,0 +1,2170 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SPOFE — Immobilisation API",
+    "description": "## Contractual API — Immobilisation Module v1.0.0\n\n### Overview\nThis API exposes the Immobilisation (Fixed Assets) module for asset management, depreciation tracking, maintenance, and renewals.\nIt follows the **CQRS Read-Only** architecture pattern.\n\n### Contracts\n- **IMM-CS-DEP-01**: Cost-Structure - Depreciation summary per period\n- **IMM-CS-DEP-02**: Cost-Structure - Depreciation export with allocations\n- **IMM-CS-ALL-01**: Cost-Structure - Effective allocations\n- **IMM-CS-MNT-01**: Cost-Structure - Maintenance summary per asset\n- **IMM-CS-MNT-02**: Cost-Structure - Maintenance by period\n- **IMM-BUD-REN-01**: Budget - Renewal projections\n- **IMM-BUD-REN-02**: Budget - Renewals by year\n- **IMM-BUD-MNT-01**: Budget - Maintenance costs (OPEX)\n- **IMM-BUD-DEP-01**: Budget - Depreciation summary\n\n### Multi-Tenant\nAll endpoints require the `X-Tenant-Id` header for tenant isolation.\n\n### Versioning\n- API Version: 1.0.0\n- Contract Version: IMMOBILISATION_CONTRACT v1.0.0\n\n### Architecture\n- ✅ GET endpoints only (read-only)\n- ✅ 1 endpoint = 1 read-model SQL\n- ✅ Zero business logic in controllers\n- ✅ Zero Guardian validation on read\n\nGenerated: 2026-02-01T17:01:01.949Z",
+    "version": "1.0.0",
+    "contact": {
+      "name": "SPOFE Team",
+      "url": "https://spofe.example.com",
+      "email": "api@spofe.example.com"
+    },
+    "license": {
+      "name": "PROPRIETARY",
+      "url": "https://spofe.example.com/license"
+    }
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "description": "SPOFE API Gateway"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Immobilisation — Assets",
+      "description": "Asset listing, details, and net book values"
+    },
+    {
+      "name": "Immobilisation — Depreciation",
+      "description": "Depreciation history and summaries"
+    },
+    {
+      "name": "Immobilisation — Cost-Structure Contract",
+      "description": "Endpoints for Cost-Structure module consumption (IMM-CS-*)"
+    },
+    {
+      "name": "Immobilisation — Budget Contract",
+      "description": "Endpoints for Budget module consumption (IMM-BUD-*)"
+    },
+    {
+      "name": "Immobilisation — Maintenance",
+      "description": "Maintenance history and costs"
+    },
+    {
+      "name": "Immobilisation — Renewals",
+      "description": "Renewal projections for CAPEX planning"
+    },
+    {
+      "name": "Immobilisation — Disposals",
+      "description": "Disposal and scrap history"
+    },
+    {
+      "name": "Immobilisation — KPI",
+      "description": "Dashboard KPIs"
+    }
+  ],
+  "paths": {
+    "/immobilisation/assets": {
+      "get": {
+        "operationId": "Immobilisation_listAssets",
+        "tags": [
+          "Immobilisation — Assets"
+        ],
+        "summary": "List assets",
+        "description": "Returns all assets for the tenant. Read-model: rm_assets_current",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by asset status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IN_SERVICE",
+                "DISPOSED",
+                "SCRAPPED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAssetListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/assets/net-book-value": {
+      "get": {
+        "operationId": "Immobilisation_listAssetNetBookValues",
+        "tags": [
+          "Immobilisation — Assets"
+        ],
+        "summary": "List asset net book values",
+        "description": "Returns current net book values (VNC). Read-model: rm_asset_net_book_value",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by asset status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IN_SERVICE",
+                "DISPOSED",
+                "SCRAPPED"
+              ]
+            }
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Filter by asset ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of net book values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedNetBookValueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/assets/{assetId}": {
+      "get": {
+        "operationId": "Immobilisation_getAssetDetail",
+        "tags": [
+          "Immobilisation — Assets"
+        ],
+        "summary": "Get asset detail",
+        "description": "Returns full asset detail with history",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "description": "Asset identifier",
+            "schema": {
+              "type": "string",
+              "example": "asset-001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDetailDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/immobilisation/assets/{assetId}/depreciation": {
+      "get": {
+        "operationId": "Immobilisation_getAssetDepreciationHistory",
+        "tags": [
+          "Immobilisation — Depreciation"
+        ],
+        "summary": "Get asset depreciation history",
+        "description": "Returns depreciation history for an asset. Read-model: rm_asset_depreciation_history",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "description": "Asset identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "name": "fromPeriod",
+            "in": "query",
+            "description": "Start period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          },
+          {
+            "name": "toPeriod",
+            "in": "query",
+            "description": "End period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated depreciation history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDepreciationHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/depreciation/summary": {
+      "get": {
+        "operationId": "Immobilisation_getDepreciationSummary",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get depreciation summary [IMM-CS-DEP-01]",
+        "description": "CONTRACTUAL: Cost-Structure. Returns aggregated depreciation for a period. Read-model: rm_asset_depreciation_summary",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": true,
+            "description": "Period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+              "example": "2025-01"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Depreciation summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepreciationSummaryDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/depreciation/cost-structure-export": {
+      "get": {
+        "operationId": "Immobilisation_getDepreciationCostStructureExport",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get depreciation export for Cost-Structure [IMM-CS-DEP-02]",
+        "description": "CONTRACTUAL: Cost-Structure. Returns depreciation with allocations. Read-model: rm_depreciation_cost_structure_export",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": true,
+            "description": "Period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+              "example": "2025-01"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Depreciation export",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepreciationCostStructureExportDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/allocations": {
+      "get": {
+        "operationId": "Immobilisation_listAllocations",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "List effective allocations [IMM-CS-ALL-01]",
+        "description": "CONTRACTUAL: Cost-Structure. Returns effective allocations. Read-model: rm_asset_allocation_effective",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Filter by asset ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetType",
+            "in": "query",
+            "description": "Filter by target type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PRODUCT",
+                "SERVICE",
+                "PROJECT"
+              ]
+            }
+          },
+          {
+            "name": "targetId",
+            "in": "query",
+            "description": "Filter by target ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated allocations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAllocationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/maintenance": {
+      "get": {
+        "operationId": "Immobilisation_listMaintenanceHistory",
+        "tags": [
+          "Immobilisation — Maintenance"
+        ],
+        "summary": "List maintenance history",
+        "description": "Returns maintenance interventions. Read-model: rm_asset_maintenance_history",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Filter by asset ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated maintenance history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedMaintenanceHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/maintenance/summary": {
+      "get": {
+        "operationId": "Immobilisation_getMaintenanceSummary",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract",
+          "Immobilisation — Budget Contract"
+        ],
+        "summary": "Get maintenance summary [IMM-CS-MNT-01, IMM-BUD-MNT-01]",
+        "description": "CONTRACTUAL: Cost-Structure, Budget. Returns maintenance costs per asset. Read-model: rm_asset_maintenance_summary",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Filter by asset ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceSummaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/maintenance/by-period": {
+      "get": {
+        "operationId": "Immobilisation_getMaintenanceByPeriod",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get maintenance by period [IMM-CS-MNT-02]",
+        "description": "CONTRACTUAL: Cost-Structure. Returns maintenance costs by period. Read-model: rm_asset_maintenance_by_period",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "fromPeriod",
+            "in": "query",
+            "description": "Start period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          },
+          {
+            "name": "toPeriod",
+            "in": "query",
+            "description": "End period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance by period",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceByPeriodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/renewals": {
+      "get": {
+        "operationId": "Immobilisation_listRenewals",
+        "tags": [
+          "Immobilisation — Budget Contract",
+          "Immobilisation — Renewals"
+        ],
+        "summary": "List renewal projections [IMM-BUD-REN-01]",
+        "description": "CONTRACTUAL: Budget. Returns renewal projections for CAPEX. Read-model: rm_assets_renewal_projection",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          },
+          {
+            "name": "fromYear",
+            "in": "query",
+            "description": "Start year",
+            "schema": {
+              "type": "integer",
+              "example": 2026
+            }
+          },
+          {
+            "name": "toYear",
+            "in": "query",
+            "description": "End year",
+            "schema": {
+              "type": "integer",
+              "example": 2030
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated renewal projections",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedRenewalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/disposals": {
+      "get": {
+        "operationId": "Immobilisation_listDisposals",
+        "tags": [
+          "Immobilisation — Disposals"
+        ],
+        "summary": "List disposal history",
+        "description": "Returns disposal/scrap history. Read-model: rm_asset_disposal_history",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "$ref": "#/components/parameters/PageQuery"
+          },
+          {
+            "$ref": "#/components/parameters/LimitQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated disposal history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedDisposalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/kpi": {
+      "get": {
+        "operationId": "Immobilisation_getKpi",
+        "tags": [
+          "Immobilisation — KPI"
+        ],
+        "summary": "Get KPIs",
+        "description": "Returns dashboard KPIs. Read-model: rm_immobilisation_kpi",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "KPIs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImmobilisationKpiDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/immobilisation/cost-structure/depreciation/summary": {
+      "get": {
+        "operationId": "ImmobilisationCostStructure_getDepreciationSummary",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get depreciation summary [IMM-CS-DEP-01]",
+        "description": "CONTRACTUAL: Cost-Structure dedicated endpoint",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": true,
+            "description": "Period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Depreciation summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepreciationSummaryDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/immobilisation/cost-structure/depreciation/export": {
+      "get": {
+        "operationId": "ImmobilisationCostStructure_getDepreciationExport",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get depreciation export [IMM-CS-DEP-02]",
+        "description": "CONTRACTUAL: Cost-Structure dedicated endpoint",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": true,
+            "description": "Period (YYYY-MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Depreciation export",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepreciationCostStructureExportDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/immobilisation/cost-structure/allocations": {
+      "get": {
+        "operationId": "ImmobilisationCostStructure_getAllocations",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get allocations [IMM-CS-ALL-01]",
+        "description": "CONTRACTUAL: Cost-Structure dedicated endpoint",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PRODUCT",
+                "SERVICE",
+                "PROJECT"
+              ]
+            }
+          },
+          {
+            "name": "targetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Allocations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AllocationItemDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/immobilisation/cost-structure/maintenance/summary": {
+      "get": {
+        "operationId": "ImmobilisationCostStructure_getMaintenanceSummary",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get maintenance summary [IMM-CS-MNT-01]",
+        "description": "CONTRACTUAL: Cost-Structure dedicated endpoint",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaintenanceSummaryItemDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/immobilisation/cost-structure/maintenance/by-period": {
+      "get": {
+        "operationId": "ImmobilisationCostStructure_getMaintenanceByPeriod",
+        "tags": [
+          "Immobilisation — Cost-Structure Contract"
+        ],
+        "summary": "Get maintenance by period [IMM-CS-MNT-02]",
+        "description": "CONTRACTUAL: Cost-Structure dedicated endpoint",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "fromPeriod",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          },
+          {
+            "name": "toPeriod",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance by period",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaintenanceByPeriodItemDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/immobilisation/budget/renewals": {
+      "get": {
+        "operationId": "ImmobilisationBudget_getRenewals",
+        "tags": [
+          "Immobilisation — Budget Contract"
+        ],
+        "summary": "Get renewal projections [IMM-BUD-REN-01]",
+        "description": "CONTRACTUAL: Budget dedicated endpoint - CAPEX",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "fromYear",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "toYear",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Renewal projections",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RenewalProjectionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/immobilisation/budget/renewals/by-year": {
+      "get": {
+        "operationId": "ImmobilisationBudget_getRenewalsByYear",
+        "tags": [
+          "Immobilisation — Budget Contract"
+        ],
+        "summary": "Get renewals by year [IMM-BUD-REN-02]",
+        "description": "CONTRACTUAL: Budget dedicated endpoint - CAPEX aggregated by year",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "fromYear",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "toYear",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Renewals by year",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RenewalsByYearDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/immobilisation/budget/maintenance": {
+      "get": {
+        "operationId": "ImmobilisationBudget_getMaintenance",
+        "tags": [
+          "Immobilisation — Budget Contract"
+        ],
+        "summary": "Get maintenance costs [IMM-BUD-MNT-01]",
+        "description": "CONTRACTUAL: Budget dedicated endpoint - OPEX",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance costs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceBudgetResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/immobilisation/budget/depreciation": {
+      "get": {
+        "operationId": "ImmobilisationBudget_getDepreciation",
+        "tags": [
+          "Immobilisation — Budget Contract"
+        ],
+        "summary": "Get depreciation for budget [IMM-BUD-DEP-01]",
+        "description": "CONTRACTUAL: Budget dedicated endpoint",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantIdHeader"
+          },
+          {
+            "name": "fromPeriod",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          },
+          {
+            "name": "toPeriod",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Depreciation for budget",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepreciationBudgetResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "TenantIdHeader": {
+        "name": "X-Tenant-Id",
+        "in": "header",
+        "required": true,
+        "description": "Tenant ID for multi-tenant isolation",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "550e8400-e29b-41d4-a716-446655440000"
+        }
+      },
+      "PageQuery": {
+        "name": "page",
+        "in": "query",
+        "description": "Page number (1-indexed)",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1,
+          "example": 1
+        }
+      },
+      "LimitQuery": {
+        "name": "limit",
+        "in": "query",
+        "description": "Items per page",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20,
+          "example": 20
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid authentication",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "Validation failed"
+          },
+          "error": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "path": {
+            "type": "string",
+            "example": "/api/immobilisation/assets"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message"
+        ]
+      },
+      "PaginatedAssetListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetListItemDTO"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "limit": {
+            "type": "integer",
+            "example": 20
+          },
+          "total": {
+            "type": "integer",
+            "example": 150
+          },
+          "hasMore": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "AssetListItemDTO": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "acquisitionCost": {
+            "type": "number",
+            "example": 12000000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          },
+          "acquisitionDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01"
+          },
+          "usefulLifeMonths": {
+            "type": "integer",
+            "example": 60
+          },
+          "depreciationMethod": {
+            "type": "string",
+            "enum": [
+              "LINEAR",
+              "DECLINING"
+            ],
+            "example": "LINEAR"
+          },
+          "residualValue": {
+            "type": "number",
+            "example": 1000000
+          },
+          "renewalDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2029-01-01"
+          },
+          "replacementCost": {
+            "type": "number",
+            "example": 15000000
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "IN_SERVICE",
+              "DISPOSED",
+              "SCRAPPED"
+            ],
+            "example": "IN_SERVICE"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "assetId",
+          "acquisitionCost",
+          "currency",
+          "acquisitionDate",
+          "usefulLifeMonths",
+          "depreciationMethod",
+          "residualValue",
+          "status",
+          "createdAt"
+        ]
+      },
+      "PaginatedNetBookValueResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetNetBookValueDTO"
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "AssetNetBookValueDTO": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "acquisitionCost": {
+            "type": "number",
+            "example": 12000000
+          },
+          "residualValue": {
+            "type": "number",
+            "example": 1000000
+          },
+          "accumulatedDepreciation": {
+            "type": "number",
+            "example": 2200000
+          },
+          "netBookValue": {
+            "type": "number",
+            "example": 9800000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          },
+          "status": {
+            "type": "string",
+            "example": "IN_SERVICE"
+          },
+          "lastPeriod": {
+            "type": "string",
+            "example": "2025-01"
+          }
+        },
+        "required": [
+          "assetId",
+          "acquisitionCost",
+          "residualValue",
+          "accumulatedDepreciation",
+          "netBookValue",
+          "currency",
+          "status"
+        ]
+      },
+      "AssetDetailDTO": {
+        "type": "object",
+        "properties": {
+          "asset": {
+            "$ref": "#/components/schemas/AssetListItemDTO"
+          },
+          "netBookValue": {
+            "$ref": "#/components/schemas/AssetNetBookValueDTO"
+          },
+          "depreciationHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepreciationHistoryItemDTO"
+            }
+          },
+          "maintenanceHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceHistoryItemDTO"
+            }
+          },
+          "allocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllocationItemDTO"
+            }
+          }
+        },
+        "required": [
+          "asset",
+          "netBookValue",
+          "depreciationHistory",
+          "maintenanceHistory",
+          "allocations"
+        ]
+      },
+      "PaginatedDepreciationHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepreciationHistoryItemDTO"
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "DepreciationHistoryItemDTO": {
+        "type": "object",
+        "properties": {
+          "scheduleId": {
+            "type": "string",
+            "example": "sched-001"
+          },
+          "period": {
+            "type": "string",
+            "example": "2024-01"
+          },
+          "depreciationAmount": {
+            "type": "number",
+            "example": 183333.33
+          },
+          "accumulatedDepreciation": {
+            "type": "number",
+            "example": 183333.33
+          },
+          "netBookValue": {
+            "type": "number",
+            "example": 11816666.67
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          },
+          "calculatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "scheduleId",
+          "period",
+          "depreciationAmount",
+          "accumulatedDepreciation",
+          "netBookValue",
+          "currency",
+          "calculatedAt"
+        ]
+      },
+      "DepreciationSummaryDTO": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "example": "2025-01"
+          },
+          "totalDepreciation": {
+            "type": "number",
+            "example": 4500000
+          },
+          "assetCount": {
+            "type": "integer",
+            "example": 12
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "period",
+          "totalDepreciation",
+          "assetCount",
+          "currency"
+        ]
+      },
+      "DepreciationCostStructureExportDTO": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "example": "2025-01"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepreciationCostStructureExportItemDTO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "example": 5
+          }
+        },
+        "required": [
+          "period",
+          "items",
+          "total"
+        ]
+      },
+      "DepreciationCostStructureExportItemDTO": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "depreciationAmount": {
+            "type": "number",
+            "example": 183333.33
+          },
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "SERVICE",
+              "PROJECT"
+            ],
+            "example": "PRODUCT"
+          },
+          "targetId": {
+            "type": "string",
+            "example": "product-001"
+          },
+          "percentage": {
+            "type": "number",
+            "example": 60
+          },
+          "allocatedAmount": {
+            "type": "number",
+            "example": 110000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "assetId",
+          "depreciationAmount",
+          "targetType",
+          "targetId",
+          "percentage",
+          "allocatedAmount",
+          "currency"
+        ]
+      },
+      "PaginatedAllocationResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllocationItemDTO"
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "AllocationItemDTO": {
+        "type": "object",
+        "properties": {
+          "allocationId": {
+            "type": "string",
+            "example": "alloc-001"
+          },
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "SERVICE",
+              "PROJECT"
+            ],
+            "example": "PRODUCT"
+          },
+          "targetId": {
+            "type": "string",
+            "example": "product-001"
+          },
+          "percentage": {
+            "type": "number",
+            "example": 60
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01"
+          },
+          "effectiveTo": {
+            "type": "string",
+            "format": "date",
+            "example": null
+          }
+        },
+        "required": [
+          "allocationId",
+          "assetId",
+          "targetType",
+          "targetId",
+          "percentage",
+          "effectiveFrom"
+        ]
+      },
+      "PaginatedMaintenanceHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceHistoryItemDTO"
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "MaintenanceHistoryItemDTO": {
+        "type": "object",
+        "properties": {
+          "maintenanceId": {
+            "type": "string",
+            "example": "mnt-001"
+          },
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "maintenanceType": {
+            "type": "string",
+            "enum": [
+              "MAINTENANCE",
+              "REPAIR",
+              "SERVICE"
+            ],
+            "example": "MAINTENANCE"
+          },
+          "maintenanceDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-06-15"
+          },
+          "description": {
+            "type": "string",
+            "example": "Maintenance préventive semestrielle"
+          },
+          "cost": {
+            "type": "number",
+            "example": 150000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          },
+          "performedBy": {
+            "type": "string",
+            "example": "Technicien A"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "maintenanceId",
+          "assetId",
+          "maintenanceType",
+          "maintenanceDate",
+          "description",
+          "cost",
+          "currency",
+          "performedBy",
+          "recordedAt"
+        ]
+      },
+      "MaintenanceSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceSummaryItemDTO"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ]
+      },
+      "MaintenanceSummaryItemDTO": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "totalMaintenanceCost": {
+            "type": "number",
+            "example": 500000
+          },
+          "interventionCount": {
+            "type": "integer",
+            "example": 3
+          },
+          "firstIntervention": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-06-15"
+          },
+          "lastIntervention": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-01-10"
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "assetId",
+          "totalMaintenanceCost",
+          "interventionCount",
+          "currency"
+        ]
+      },
+      "MaintenanceByPeriodResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceByPeriodItemDTO"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ]
+      },
+      "MaintenanceByPeriodItemDTO": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "example": "2025-01"
+          },
+          "totalMaintenanceCost": {
+            "type": "number",
+            "example": 225000
+          },
+          "interventionCount": {
+            "type": "integer",
+            "example": 5
+          },
+          "assetsMaintained": {
+            "type": "integer",
+            "example": 3
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "period",
+          "totalMaintenanceCost",
+          "interventionCount",
+          "assetsMaintained",
+          "currency"
+        ]
+      },
+      "PaginatedRenewalResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RenewalProjectionItemDTO"
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "RenewalProjectionItemDTO": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "example": "asset-001"
+          },
+          "acquisitionCost": {
+            "type": "number",
+            "example": 12000000
+          },
+          "renewalDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2029-01-01"
+          },
+          "replacementCost": {
+            "type": "number",
+            "example": 15000000
+          },
+          "renewalYear": {
+            "type": "integer",
+            "example": 2029
+          },
+          "renewalMonth": {
+            "type": "integer",
+            "example": 1
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "assetId",
+          "acquisitionCost",
+          "renewalDate",
+          "renewalYear",
+          "renewalMonth",
+          "currency"
+        ]
+      },
+      "RenewalProjectionsResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RenewalProjectionItemDTO"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ]
+      },
+      "RenewalsByYearDTO": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "example": 2029
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RenewalProjectionItemDTO"
+            }
+          },
+          "totalReplacementCost": {
+            "type": "number",
+            "example": 45000000
+          },
+          "assetCount": {
+            "type": "integer",
+            "example": 3
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "year",
+          "items",
+          "totalReplacementCost",
+          "assetCount",
+          "currency"
+        ]
+      },
+      "MaintenanceBudgetResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceSummaryItemDTO"
+            }
+          },
+          "totalCost": {
+            "type": "number",
+            "example": 1500000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "items",
+          "totalCost",
+          "currency"
+        ]
+      },
+      "DepreciationBudgetResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepreciationSummaryDTO"
+            }
+          },
+          "totalDepreciation": {
+            "type": "number",
+            "example": 54000000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "items",
+          "totalDepreciation",
+          "currency"
+        ]
+      },
+      "PaginatedDisposalResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DisposalHistoryItemDTO"
+            }
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "limit",
+          "total",
+          "hasMore"
+        ]
+      },
+      "DisposalHistoryItemDTO": {
+        "type": "object",
+        "properties": {
+          "disposalId": {
+            "type": "string",
+            "example": "disp-001"
+          },
+          "assetId": {
+            "type": "string",
+            "example": "asset-003"
+          },
+          "disposalDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-01-15"
+          },
+          "disposalType": {
+            "type": "string",
+            "enum": [
+              "SALE",
+              "SCRAP"
+            ],
+            "example": "SALE"
+          },
+          "disposalValue": {
+            "type": "number",
+            "example": 300000
+          },
+          "netBookValue": {
+            "type": "number",
+            "example": 100000
+          },
+          "gainOrLoss": {
+            "type": "number",
+            "example": 200000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "disposedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "disposalId",
+          "assetId",
+          "disposalDate",
+          "disposalType",
+          "disposalValue",
+          "netBookValue",
+          "gainOrLoss",
+          "currency",
+          "disposedAt"
+        ]
+      },
+      "ImmobilisationKpiDTO": {
+        "type": "object",
+        "properties": {
+          "assetsInService": {
+            "type": "integer",
+            "example": 42
+          },
+          "assetsDisposed": {
+            "type": "integer",
+            "example": 5
+          },
+          "assetsScrapped": {
+            "type": "integer",
+            "example": 2
+          },
+          "totalAssets": {
+            "type": "integer",
+            "example": 49
+          },
+          "totalAcquisitionCost": {
+            "type": "number",
+            "example": 250000000
+          },
+          "totalNetBookValue": {
+            "type": "number",
+            "example": 180000000
+          },
+          "totalAccumulatedDepreciation": {
+            "type": "number",
+            "example": 70000000
+          },
+          "currency": {
+            "type": "string",
+            "example": "XAF"
+          }
+        },
+        "required": [
+          "assetsInService",
+          "assetsDisposed",
+          "assetsScrapped",
+          "totalAssets",
+          "currency"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "tenantId": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Tenant-Id"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "tenantId": []
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+id: BUILD_PROOF_OPS_P0_03
+type: OPERATIONAL_INVARIANT
+level: P0_CONSTITUTIONAL
+
+title: Double-write consistency during migration
+
+description: >
+  During the constitutional migration from MySQL to PostgreSQL,
+  every domain event must be written to both systems with
+  identical content and sequence. This ensures zero data loss
+  and perfect synchronization during the transition phase.
+
+scope:
+  - database_source: mysql
+  - database_target: postgresql
+  - table: domain_events
+  - phase: migration_only
+
+invariant:
+  statement: >
+    Every domain event written to PostgreSQL must have an
+    identical counterpart in MySQL with same sequence_number,
+    event_type, data, and timestamp. No event exists in one
+    system without existing in the other.
+
+proof:
+  mechanism:
+    - dual_write_validation: mysql_postgresql_sync
+    - sequence_comparison: identical_sequences
+    - content_verification: byte_level_comparison
+  verification:
+    - script: governance/migration/03_double_write_consistency.sql
+      expected_result: "0 inconsistencies found"
+    - cross_db_query: >
+        SELECT pg.sequence_number FROM postgresql.domain_events pg
+        LEFT JOIN mysql.domain_events my ON pg.sequence_number = my.sequence_number
+        WHERE my.sequence_number IS NULL
+      expected_result: "empty result set"
+
+verification_policy:
+  when:
+    - during_migration
+    - migration_checkpoint
+    - pre_cutover
+  frequency: mandatory
+  automated: true
+  context: migration_phase_only
+
+failure_policy:
+  severity: CRITICAL
+  action:
+    - invalidate_build_proof
+    - halt_migration
+    - rollback_to_checkpoint
+    - investigate_sync_failure
+  escalation: immediate
+  recovery: manual_intervention_required
+
+evidence:
+  stored:
+    - sync_validation_logs
+    - cross_database_reports
+    - migration_checkpoints
+    - consistency_proofs
+  retention: migration_duration_plus_1_year
+  audit_trail: required
+
+status: ACTIVE_MIGRATION_PHASE
+context: temporary_but_constitutional
+certified_by: SPOFE_CONSTITUTIONAL_FRAMEWORK
+certified_date: 2026-02-05
+version: 1.0.0

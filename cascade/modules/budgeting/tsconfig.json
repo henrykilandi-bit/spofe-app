@@ -1,0 +1,36 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+
+    /* Sécurité & qualité */
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Build propre */
+    "skipLibCheck": true,
+    
+    /* Paths spécifiques au module */
+    "baseUrl": ".",
+    "paths": {
+      "@budgeting/*": ["./*"],
+      "@shared/*": ["../../shared/*"]
+    }
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.example.ts",
+    "dist",
+    "node_modules"
+  ]
+}

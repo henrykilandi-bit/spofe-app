@@ -1,0 +1,77 @@
+{
+  "module": "budgeting",
+  "version": "1.0.0",
+  "timestamp": "2026-02-04T22:57:45Z",
+  "governance": "SPOFE P0",
+  "status": "CERTIFIED",
+  "type": "primary-source",
+  "domain": "financial-budgeting",
+  "buildProof": {
+    "source": "jest",
+    "executedAt": "2026-02-04T22:57:45Z",
+    "framework": "Jest v29.0.0",
+    "nodeVersion": "v20.6.0"
+  },
+  "tests": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "coverage": 100.0,
+    "suites": {
+      "guardian": {
+        "total": 10,
+        "passed": 10,
+        "failed": 0,
+        "tests": [
+          "INV-BO-01 — reject duplicate budget for same period",
+          "INV-BO-03 — reject invalid state transition",
+          "INV-BO-03 — allow valid state transition DRAFT → VALIDATED",
+          "INV-BO-04 — reject modification of validated budget",
+          "INV-BO-06 — reject negative quantities",
+          "INV-BO-09 — reject objective exceeding capacity",
+          "INV-BO-11 — reject budget without capacity defined",
+          "INV-BO-12 — reject budget without cost structure",
+          "INV-BO-15 — reject budget without payment terms",
+          "Validate all invariants for complete budget"
+        ]
+      }
+    }
+  },
+  "guardian": {
+    "implemented": true,
+    "rulesCount": 10,
+    "passRate": 100,
+    "invariants": [
+      "INV-BO-01: Duplicate budget period protection",
+      "INV-BO-03: State transition validation",
+      "INV-BO-04: Validated budget immutability",
+      "INV-BO-06: Negative quantity rejection",
+      "INV-BO-09: Capacity constraint enforcement",
+      "INV-BO-11: Capacity requirement validation",
+      "INV-BO-12: Cost structure requirement",
+      "INV-BO-15: Payment terms requirement",
+      "Budget completeness validation",
+      "Budget lifecycle protection"
+    ]
+  },
+  "compliance": {
+    "guardianFirst": true,
+    "calculationsInGuardian": true,
+    "readOnlyApi": false,
+    "multiTenant": true,
+    "appendOnly": true,
+    "accountingAgnostic": true,
+    "decisionFree": true,
+    "fiscalFree": true,
+    "primarySource": true
+  },
+  "certification": {
+    "certified": true,
+    "certifiedAt": "2026-02-04T22:57:45Z",
+    "certifiedBy": "SPOFE BUILD_PROOF Turbo Certification",
+    "frozenAt": "2026-02-04T22:57:45Z",
+    "validUntil": "PERPETUAL",
+    "methodology": "TURBO",
+    "note": "Perfect Guardian architecture (100% pass rate) - complete budgeting lifecycle protection"
+  }
+}

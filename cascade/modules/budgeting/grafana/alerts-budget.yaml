@@ -1,0 +1,74 @@
+groups:
+  - name: budget-module-alerts
+    rules:
+      - alert: BudgetHighGuardianRejections
+        expr: rate(budget_guardian_rejections_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+          service: budget
+          module: budgeting
+        annotations:
+          summary: "High Guardian rejection rate in Budget module"
+          description: "Guardian is rejecting {{ $value }} commands/sec for tenant {{ $labels.tenant_id }}"
+          runbook_url: "https://docs.spofe.com/runbooks/budget#guardian-rejections"
+
+      - alert: BudgetRLSViolation
+        expr: increase(budget_rls_violations_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: critical
+          service: budget
+          module: budgeting
+        annotations:
+          summary: "RLS Policy Violation Detected in Budget Module"
+          description: "{{ $value }} RLS violations detected for tenant {{ $labels.tenant_id }}"
+          runbook_url: "https://docs.spofe.com/runbooks/budget#rls-violations"
+
+      - alert: BudgetCommandLatencyHigh
+        expr: histogram_quantile(0.95, rate(budget_command_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: budget
+          module: budgeting
+        annotations:
+          summary: "Budget command latency is high"
+          description: "95th percentile latency for {{ $labels.command_type }} is {{ $value }}s"
+          runbook_url: "https://docs.spofe.com/runbooks/budget#performance"
+
+      - alert: BudgetModuleDown
+        expr: up{job="budget-service"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: budget
+          module: budgeting
+        annotations:
+          summary: "Budget module is down"
+          description: "Budget service has been down for more than 1 minute"
+          runbook_url: "https://docs.spofe.com/runbooks/budget#service-down"
+
+      - alert: BudgetDatabaseConnections
+        expr: budget_active_read_models > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: budget
+          module: budgeting
+        annotations:
+          summary: "Too many active database connections"
+          description: "{{ $value }} active read-model queries, possible connection leak"
+          runbook_url: "https://docs.spofe.com/runbooks/budget#database-connections"
+
+      - alert: BudgetNoCommandsProcessed
+        expr: rate(budget_commands_total[10m]) == 0
+        for: 10m
+        labels:
+          severity: warning
+          service: budget
+          module: budgeting
+        annotations:
+          summary: "No budget commands processed"
+          description: "No budget commands have been processed in the last 10 minutes"
+          runbook_url: "https://docs.spofe.com/runbooks/budget#no-activity"

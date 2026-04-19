@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-04-19T22:54:24.800Z",
+  "durationMs": 2955,
+  "verdict": "GO",
+  "commands": [
+    {
+      "label": "server-start",
+      "command": "npm run server:start",
+      "status": 0,
+      "durationMs": 1082
+    },
+    {
+      "label": "server-health",
+      "command": "npm run server:health",
+      "status": 0,
+      "durationMs": 1235
+    },
+    {
+      "label": "server-stop",
+      "command": "npm run server:stop",
+      "status": 0,
+      "durationMs": 620
+    }
+  ],
+  "httpChecks": [
+    {
+      "check": "GET /health",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "passed": true,
+      "details": "status=healthy"
+    },
+    {
+      "check": "POST /aggregates invalid payload",
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "passed": true,
+      "details": "DTO guard active"
+    }
+  ],
+  "reasons": []
+}

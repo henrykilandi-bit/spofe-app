@@ -83,6 +83,15 @@ export class PrecomptabiliteGuardian {
   }
 
   private assertFactOnlyFields(cmd: PrecomptabiliteCommand) {
+    if (cmd.commandType === 'UPDATE_METADATA') {
+      const reference = cmd.metadata?.reference?.trim();
+      if (!reference) {
+        throw new GuardianError(
+          'P-07: Third-party reference is mandatory on metadata update'
+        );
+      }
+    }
+
     if (cmd.metadata) {
       if (
         cmd.metadata.amount !== undefined &&

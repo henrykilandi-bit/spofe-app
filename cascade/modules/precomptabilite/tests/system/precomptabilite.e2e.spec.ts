@@ -52,6 +52,7 @@ describe('SYSTEM E2E — precomptabilite', () => {
         amount: 850,
         currency: 'EUR',
         supplierName: 'FOURNISSEUR X',
+        reference: 'F-2026-0001',
       },
       analytics: {
         projectId: 'CHANTIER_1',

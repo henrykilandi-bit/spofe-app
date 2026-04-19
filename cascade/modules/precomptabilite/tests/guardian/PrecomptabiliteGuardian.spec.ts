@@ -121,6 +121,7 @@ describe('GUARDIAN — precomptabilite', () => {
         ...baseCommand,
         commandType: 'UPDATE_METADATA',
         metadata: {
+          reference: 'F-001',
           amount: -100,
         },
       })
@@ -133,7 +134,20 @@ describe('GUARDIAN — precomptabilite', () => {
         ...baseCommand,
         commandType: 'UPDATE_METADATA',
         metadata: {
+          reference: 'F-001',
           amount: 0,
+        },
+      })
+    ).toThrow(GuardianError);
+  });
+
+  it('P-07 — reject missing third-party reference on metadata update', () => {
+    expect(() =>
+      guardian.validate(ctx, {
+        ...baseCommand,
+        commandType: 'UPDATE_METADATA',
+        metadata: {
+          amount: 100,
         },
       })
     ).toThrow(GuardianError);
@@ -200,6 +214,19 @@ describe('GUARDIAN — precomptabilite', () => {
         ...baseCommand,
         commandType: 'VALIDATE_DOCUMENT',
         status: 'SUBMITTED',
+      })
+    ).not.toThrow();
+  });
+
+  it('HAPPY PATH — metadata update accepted with third-party reference', () => {
+    expect(() =>
+      guardian.validate(ctx, {
+        ...baseCommand,
+        commandType: 'UPDATE_METADATA',
+        metadata: {
+          reference: 'F-001',
+          amount: 100,
+        },
       })
     ).not.toThrow();
   });

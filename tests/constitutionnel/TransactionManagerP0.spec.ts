@@ -10,8 +10,12 @@
  */
 
 import { describe, it, expect, beforeEach, beforeAll, afterAll } from '@jest/globals';
-import { ConstitutionalTransactionManagerP0 } from '../../src/application/transaction/ConstitutionalTransactionManagerP0';
+import {
+  ConstitutionalTransactionManagerP0,
+  ConstitutionalTransactionManagerFactory
+} from '../../src/application/transaction/ConstitutionalTransactionManagerP0';
 import { TransactionManagerMigrationAdapter } from '../../src/application/transaction/TransactionManagerMigrationAdapter';
+import { buildDatabaseUrlFromEnv } from '../../src/infrastructure/db/databaseConfig';
 
 // Mock Command pour tests
 class MockCommand {
@@ -48,9 +52,16 @@ class MockDbClient {
   insertAudit = jest.fn().mockResolvedValue({});
 }
 
-describe('🏛️ Constitutional TransactionManager P0 Tests', () => {
+const hasDedicatedTestDb =
+  Boolean(process.env.TEST_DATABASE_URL) ||
+  Boolean(process.env.TEST_DB_NAME) ||
+  Boolean(process.env.TEST_DB_DATABASE);
+
+const describeWithDb = hasDedicatedTestDb ? describe : describe.skip;
+
+describeWithDb('🏛️ Constitutional TransactionManager P0 Tests', () => {
   let tm: ConstitutionalTransactionManagerP0;
-  const testDatabaseUrl = process.env.TEST_DATABASE_URL || 'postgresql://spofe:test@localhost:5432/spofe_test';
+  const testDatabaseUrl = buildDatabaseUrlFromEnv('TEST');
 
   beforeAll(async () => {
     tm = ConstitutionalTransactionManagerFactory.create(testDatabaseUrl);
@@ -380,11 +391,3 @@ describe('🔄 TransactionManager Migration Adapter Tests', () => {
     });
   });
 });
-
-// Factory pour tests
-class ConstitutionalTransactionManagerFactory {
-  static create(databaseUrl: string): ConstitutionalTransactionManagerP0 {
-    // Mock implementation pour tests
-    return new ConstitutionalTransactionManagerP0(null as any);
-  }
-}

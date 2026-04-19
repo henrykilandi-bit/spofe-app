@@ -18,6 +18,7 @@ import {
   CreateAggregateCommand,
   CreateAggregateInput,
 } from '../../../../application/commands/CreateAggregateCommand';
+import { ExecuteDecisionInput } from '../../../../src/application/transaction';
 import {
   AggregateId,
   ActorRole,
@@ -32,19 +33,27 @@ import {
  * Enregistre les appels pour vérification.
  */
 class MockTransactionManager {
-  calls: Array<{
-    decisionId: string;
-    processName: string;
-    decisionType: string;
-    actorRole: string;
-    payload: Record<string, unknown>;
-    events: Array<Record<string, unknown>>;
-    facts: Array<Record<string, unknown>>;
-    context: Record<string, unknown>;
-  }> = [];
+  calls: Array<
+    Omit<ExecuteDecisionInput, 'payload' | 'events' | 'facts' | 'context'> & {
+      payload: Record<string, any>;
+      events: Array<{
+        eventId: string;
+        eventType: string;
+        payload: Record<string, any>;
+      }>;
+      facts: Array<{
+        factId: string;
+        aggregateId: string;
+        factType: string;
+        payload: Record<string, any>;
+        causedByEvent: string;
+      }>;
+      context: Record<string, unknown>;
+    }
+  > = [];
 
-  async executeDecision(decision: any): Promise<void> {
-    this.calls.push(decision);
+  async executeDecision(decision: ExecuteDecisionInput): Promise<void> {
+    this.calls.push(decision as MockTransactionManager['calls'][number]);
   }
 
   reset(): void {

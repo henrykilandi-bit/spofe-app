@@ -127,6 +127,18 @@ describe('GUARDIAN — precomptabilite', () => {
     ).toThrow(GuardianError);
   });
 
+  it('P-07 — reject zero amount', () => {
+    expect(() =>
+      guardian.validate(ctx, {
+        ...baseCommand,
+        commandType: 'UPDATE_METADATA',
+        metadata: {
+          amount: 0,
+        },
+      })
+    ).toThrow(GuardianError);
+  });
+
   // P-08..P-10
   it('P-08..P-10 — reject forbidden accounting field', () => {
     expect(() =>

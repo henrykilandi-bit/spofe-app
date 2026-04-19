@@ -86,10 +86,10 @@ export class PrecomptabiliteGuardian {
     if (cmd.metadata) {
       if (
         cmd.metadata.amount !== undefined &&
-        cmd.metadata.amount < 0
+        cmd.metadata.amount <= 0
       ) {
         throw new GuardianError(
-          'P-07: Document amount must be >= 0'
+          'P-07: Document amount must be > 0'
         );
       }
     }

@@ -247,4 +247,60 @@ describe('🧪 E2E — Comptabilité Générale (read-only)', () => {
     expect(exposedPeriod?.status).toBe('CLOSED');
   });
 
+  test('defense-in-depth — repository filters malformed read entries', () => {
+    const leakyPeriod = initAccountingPeriodRM('2026-03');
+    leakyPeriod.entries = [
+      {
+        entryId: 'E-VALID',
+        periodId: '2026-03',
+        journalCode: 'VE',
+        entryDate: '2026-03-10',
+        accountCode: '411',
+        debit: 500,
+        credit: 0,
+        tierId: 'C-777',
+        documentRef: 'DOC-777',
+        sourceModule: 'precomptabilite',
+        sourceId: 'DOC-777',
+        createdAt: '2026-03-10T10:00:00Z',
+      },
+      {
+        entryId: 'E-WRONG-PERIOD',
+        periodId: '2026-04',
+        journalCode: 'VE',
+        entryDate: '2026-03-10',
+        accountCode: '706',
+        debit: 0,
+        credit: 500,
+        documentRef: 'DOC-777',
+        sourceModule: 'precomptabilite',
+        sourceId: 'DOC-777',
+        createdAt: '2026-03-10T10:00:00Z',
+      },
+      {
+        entryId: 'E-INVALID-AMOUNT',
+        periodId: '2026-03',
+        journalCode: 'VE',
+        entryDate: '2026-03-10',
+        accountCode: '512',
+        debit: -50,
+        credit: 0,
+        documentRef: 'DOC-778',
+        sourceModule: 'precomptabilite',
+        sourceId: 'DOC-778',
+        createdAt: '2026-03-10T10:00:00Z',
+      },
+    ];
+
+    const repository = new InMemoryAccountingReadRepository([leakyPeriod]);
+    const controller = new AccountingReadController(repository);
+
+    const entries = controller.getEntriesByPeriod('2026-03');
+    expect(entries).toHaveLength(1);
+    expect(entries[0].entryId).toBe('E-VALID');
+
+    const period = controller.getPeriod('2026-03');
+    expect(period?.entries).toHaveLength(1);
+  });
+
 });

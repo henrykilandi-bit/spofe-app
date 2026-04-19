@@ -139,4 +139,126 @@ describe('SYSTEM E2E — budget', () => {
       expect((res.body[0] as any)[field]).toBeUndefined();
     });
   });
+
+  it('SYSTEM — defense-in-depth filters malformed read rows', async () => {
+    const hardenedRepo = new InMemoryBudgetReadRepository(
+      [
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_OK',
+          targetType: 'PRODUCT',
+          targetId: 'P_OK',
+          period: '2026-01',
+          amount: 1200,
+        },
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_BAD_TARGET',
+          targetType: 'CATEGORY' as any,
+          targetId: 'CAT_1',
+          period: '2026-01',
+          amount: 1000,
+        },
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_BAD_PERIOD',
+          targetType: 'PRODUCT',
+          targetId: 'P_2',
+          period: '2026-13',
+          amount: 500,
+        },
+      ],
+      [
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_OK',
+          period: '2026-01',
+          inflow: 900,
+          outflow: 300,
+          net: 1, // volontairement incohérent: doit être normalisé à 600
+        },
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_BAD_CASHFLOW',
+          period: '2026-01',
+          inflow: Number.NaN,
+          outflow: 100,
+          net: 0,
+        },
+      ],
+      [
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_OK',
+          period: '2026-01',
+          variance: 15,
+        },
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_BAD_VARIANCE',
+          period: '2026-00',
+          variance: 20,
+        },
+      ],
+      [
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_OK',
+          period: '2026-01',
+          projectedAmount: 1200,
+        },
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_BAD_TIMELINE',
+          period: 'BAD-PERIOD',
+          projectedAmount: 100,
+        },
+      ],
+      [
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_OK',
+          period: '2026-01',
+          level: 'WARNING',
+          message: 'Monitoring alert',
+        },
+        {
+          tenantId: 'TENANT_1',
+          budgetId: 'BUDGET_BAD_ALERT',
+          period: '2026-01',
+          level: 'INVALID' as any,
+          message: '',
+        },
+      ]
+    );
+
+    const hardenedController = new BudgetReadController(hardenedRepo);
+
+    const objectives = await hardenedController.getObjectives({
+      tenantId: 'TENANT_1',
+    });
+    expect(objectives.body).toHaveLength(1);
+    expect(objectives.body[0].budgetId).toBe('BUDGET_OK');
+
+    const cashflows = await hardenedController.getCashflows({
+      tenantId: 'TENANT_1',
+    });
+    expect(cashflows.body).toHaveLength(1);
+    expect(cashflows.body[0].net).toBe(600);
+
+    const variances = await hardenedController.getVariances({
+      tenantId: 'TENANT_1',
+    });
+    expect(variances.body).toHaveLength(1);
+
+    const timeline = await hardenedController.getTimeline({
+      tenantId: 'TENANT_1',
+    });
+    expect(timeline.body).toHaveLength(1);
+
+    const alerts = await hardenedController.getAlerts({
+      tenantId: 'TENANT_1',
+    });
+    expect(alerts.body).toHaveLength(1);
+  });
 });

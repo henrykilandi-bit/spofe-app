@@ -2,6 +2,9 @@ name: Release Gate - Final
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - codex-baseline-exploitation-v2
   pull_request:
     branches:
       - main

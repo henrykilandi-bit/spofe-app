@@ -11,10 +11,18 @@
 
 import { describe, it, expect, beforeEach, beforeAll, afterAll } from '@jest/globals';
 import { ConstitutionalLedger } from '../../src/infrastructure/ConstitutionalLedger';
+import { buildDatabaseUrlFromEnv } from '../../src/infrastructure/db/databaseConfig';
 
-describe('🛡️ Constitutional Defense Level 2 Tests', () => {
+const hasDedicatedTestDb =
+  Boolean(process.env.TEST_DATABASE_URL) ||
+  Boolean(process.env.TEST_DB_NAME) ||
+  Boolean(process.env.TEST_DB_DATABASE);
+
+const describeWithDb = hasDedicatedTestDb ? describe : describe.skip;
+
+describeWithDb('🛡️ Constitutional Defense Level 2 Tests', () => {
   let ledger: ConstitutionalLedger;
-  const testDatabaseUrl = process.env.TEST_DATABASE_URL || 'postgresql://spofe:test@localhost:5432/spofe_test';
+  const testDatabaseUrl = buildDatabaseUrlFromEnv('TEST');
 
   beforeAll(async () => {
     ledger = new ConstitutionalLedger(testDatabaseUrl);
@@ -263,11 +271,13 @@ describe('🛡️ Constitutional Defense Level 2 Tests', () => {
   describe('🔍 Defense Monitoring Tests', () => {
     it('should provide defense status monitoring', async () => {
       const status = await getDefenseStatus();
-      
-      expect(status).toHaveProperty('mechanism_name');
-      expect(status).toHaveProperty('is_active');
-      expect(status).toHaveProperty('status_message');
-      expect(status).toHaveProperty('status_icon');
+
+      expect(Array.isArray(status)).toBe(true);
+      expect(status.length).toBeGreaterThan(0);
+      expect(status[0]).toHaveProperty('mechanism_name');
+      expect(status[0]).toHaveProperty('is_active');
+      expect(status[0]).toHaveProperty('status_message');
+      expect(status[0]).toHaveProperty('status_icon');
       
       // Tous les mécanismes doivent être actifs
       const allActive = status.every(s => s.is_active);

@@ -44,7 +44,11 @@ import {
 import { AggregateUpdated } from '../../domain/events/AggregateUpdated';
 
 // Application
-import { TransactionManager } from '../transaction/TransactionManager';
+import type { ExecuteDecisionInput } from '../../src/application/transaction/TransactionManager';
+
+interface DecisionExecutor {
+  executeDecision(input: ExecuteDecisionInput): Promise<unknown>;
+}
 
 /**
  * Input DTO - Données brutes depuis HTTP
@@ -88,7 +92,7 @@ export class UpdateAggregateCommand {
    *
    * @param transactionManager - Gérant les transactions (injection)
    */
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: DecisionExecutor) {}
 
   /**
    * Exécute la mise à jour d'un agrégat existant.

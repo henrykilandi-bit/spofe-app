@@ -33,12 +33,19 @@ import {
 } from './setupDb';
 
 // Import actual implementations (NOT mocks)
-import { TransactionManager } from '../../src/application/decision/TransactionManager';
+import { TransactionManager } from '../../src/application/transaction/TransactionManager';
 import { PostgresDbClient } from '../../src/infrastructure/db/PostgresDbClient';
 import { GuardianV4Adapter } from '../../src/infrastructure/guardian/GuardianV4Adapter';
 import { guardianV4 } from '../../src/infrastructure/guardian/GuardianInstance';
 
-describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
+const hasDedicatedTestDb =
+  Boolean(process.env.TEST_DATABASE_URL) ||
+  Boolean(process.env.TEST_DB_NAME) ||
+  Boolean(process.env.TEST_DB_DATABASE);
+
+const describeWithDb = hasDedicatedTestDb ? describe : describe.skip;
+
+describeWithDb('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
   let txManager: TransactionManager;
   let dbClient: PostgresDbClient;
 
@@ -224,9 +231,9 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const result = await txManager.executeDecision(input);
 
       // PROOF: Result is successful
-      expect(result.ok).toBe(true);
-      expect(result.data?.decisionId).toBe(decisionId);
-      expect(result.data?.checksum).toBeDefined();
+      expect(result.success).toBe(true);
+      expect(result.decisionId).toBe(decisionId);
+      expect(result.checksum).toBeDefined();
 
       // PROOF: DB state is complete
       const state = await verifyAtomicState();
@@ -258,13 +265,13 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const decision1 = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_1')
       );
-      expect(decision1.ok).toBe(true);
+      expect(decision1.success).toBe(true);
 
       // Second decision
       const decision2 = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_2')
       );
-      expect(decision2.ok).toBe(true);
+      expect(decision2.success).toBe(true);
 
       // PROOF: Both committed
       const state = await verifyAtomicState();
@@ -406,7 +413,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const result = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_AUDIT')
       );
-      expect(result.ok).toBe(true);
+      expect(result.success).toBe(true);
 
       // PROOF: Audit exists
       const audit = await verifyAuditIntegrity();
@@ -427,7 +434,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const result = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_CHECKSUM')
       );
-      expect(result.ok).toBe(true);
+      expect(result.success).toBe(true);
 
       // Get audit entry
       const audits = await getTableContents('audit_log');
@@ -487,7 +494,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const result = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_IMMUTABLE')
       );
-      expect(result.ok).toBe(true);
+      expect(result.success).toBe(true);
 
       const decisions = await getTableContents('decision');
       const decisionId = decisions[0].decision_id;
@@ -515,7 +522,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const result = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_IMMUTABLE')
       );
-      expect(result.ok).toBe(true);
+      expect(result.success).toBe(true);
 
       const decisions = await getTableContents('decision');
       const decisionId = decisions[0].decision_id;
@@ -542,7 +549,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       const result = await txManager.executeDecision(
         createFixtureDecisionInput('PROCESS_CHECKSUM_PROOF', { payload })
       );
-      expect(result.ok).toBe(true);
+      expect(result.success).toBe(true);
 
       // Get audit checksum
       const audits = await getTableContents('audit_log');
@@ -556,7 +563,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       expect(decisionPayload).toEqual(payload);
 
       // Checksum should be recalculated and match (no tampering)
-      const recalculatedChecksum = result.data?.checksum;
+      const recalculatedChecksum = result.checksum;
       // Note: Guardian decides if checksums match
       expect(originalChecksum).toBeDefined();
       expect(recalculatedChecksum).toBeDefined();
@@ -615,7 +622,7 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
       try {
         const result = await txManager.executeDecision(input);
 
-        if (result.ok) {
+        if (result.success) {
           // Verify DB has it
           const decisions = await getTableContents('decision');
           expect(decisions[0].payload).toBeDefined();
@@ -644,8 +651,8 @@ describe('Guardian v4 ↔ PostgreSQL Integration Tests', () => {
           createFixtureDecisionInput('PROCESS_CONCURRENT')
         );
 
-        if (result.ok && result.data?.decisionId) {
-          ids.add(result.data.decisionId);
+        if (result.success && result.decisionId) {
+          ids.add(result.decisionId);
         }
       }
 

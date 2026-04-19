@@ -11,10 +11,18 @@
 
 import { describe, it, expect, beforeEach, beforeAll, afterAll } from '@jest/globals';
 import { ConstitutionalLedger, ConstitutionalTransactionManager, DomainEvent } from '../../src/infrastructure/ConstitutionalLedger';
+import { buildDatabaseUrlFromEnv } from '../../src/infrastructure/db/databaseConfig';
 
-describe('🏛️ Constitutional Ledger Tests', () => {
+const hasDedicatedTestDb =
+  Boolean(process.env.TEST_DATABASE_URL) ||
+  Boolean(process.env.TEST_DB_NAME) ||
+  Boolean(process.env.TEST_DB_DATABASE);
+
+const describeWithDb = hasDedicatedTestDb ? describe : describe.skip;
+
+describeWithDb('🏛️ Constitutional Ledger Tests', () => {
   let ledger: ConstitutionalLedger;
-  const testDatabaseUrl = process.env.TEST_DATABASE_URL || 'postgresql://spofe:test@localhost:5432/spofe_test';
+  const testDatabaseUrl = buildDatabaseUrlFromEnv('TEST');
 
   beforeAll(async () => {
     ledger = new ConstitutionalLedger(testDatabaseUrl);

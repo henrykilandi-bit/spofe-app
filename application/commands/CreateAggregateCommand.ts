@@ -38,7 +38,11 @@ import {
 } from '../../domain';
 
 // Application
-import { TransactionManager } from '../transaction/TransactionManager';
+import type { ExecuteDecisionInput } from '../../src/application/transaction/TransactionManager';
+
+interface DecisionExecutor {
+  executeDecision(input: ExecuteDecisionInput): Promise<unknown>;
+}
 
 /**
  * Input DTO - Données brutes depuis HTTP
@@ -79,7 +83,7 @@ export class CreateAggregateCommand {
    *
    * @param transactionManager - Gérant les transactions (injection)
    */
-  constructor(private readonly transactionManager: TransactionManager) {}
+  constructor(private readonly transactionManager: DecisionExecutor) {}
 
   /**
    * Exécute la création d'un nouvel agrégat.

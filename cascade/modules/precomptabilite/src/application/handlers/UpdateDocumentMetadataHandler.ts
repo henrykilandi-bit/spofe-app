@@ -13,6 +13,7 @@ export class UpdateDocumentMetadataHandler {
         commandType: 'UPDATE_METADATA',
         tenantId: cmd.tenantId,
         documentId: cmd.documentId,
+        status: cmd.currentStatus,
         metadata: cmd.metadata,
         analytics: cmd.analytics,
       }

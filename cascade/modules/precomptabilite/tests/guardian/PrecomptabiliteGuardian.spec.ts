@@ -120,6 +120,7 @@ describe('GUARDIAN — precomptabilite', () => {
       guardian.validate(ctx, {
         ...baseCommand,
         commandType: 'UPDATE_METADATA',
+        status: 'DRAFT',
         metadata: {
           reference: 'F-001',
           amount: -100,
@@ -133,6 +134,7 @@ describe('GUARDIAN — precomptabilite', () => {
       guardian.validate(ctx, {
         ...baseCommand,
         commandType: 'UPDATE_METADATA',
+        status: 'DRAFT',
         metadata: {
           reference: 'F-001',
           amount: 0,
@@ -146,7 +148,22 @@ describe('GUARDIAN — precomptabilite', () => {
       guardian.validate(ctx, {
         ...baseCommand,
         commandType: 'UPDATE_METADATA',
+        status: 'DRAFT',
         metadata: {
+          amount: 100,
+        },
+      })
+    ).toThrow(GuardianError);
+  });
+
+  it('P-06 — reject metadata update if document is not DRAFT', () => {
+    expect(() =>
+      guardian.validate(ctx, {
+        ...baseCommand,
+        commandType: 'UPDATE_METADATA',
+        status: 'SUBMITTED',
+        metadata: {
+          reference: 'F-001',
           amount: 100,
         },
       })
@@ -223,6 +240,7 @@ describe('GUARDIAN — precomptabilite', () => {
       guardian.validate(ctx, {
         ...baseCommand,
         commandType: 'UPDATE_METADATA',
+        status: 'DRAFT',
         metadata: {
           reference: 'F-001',
           amount: 100,

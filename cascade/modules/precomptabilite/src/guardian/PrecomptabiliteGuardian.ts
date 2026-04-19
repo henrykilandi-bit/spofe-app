@@ -57,6 +57,12 @@ export class PrecomptabiliteGuardian {
   private assertWorkflow(cmd: PrecomptabiliteCommand) {
     const status = cmd.status as DocumentStatus | undefined;
 
+    if (cmd.commandType === 'UPDATE_METADATA' && status !== 'DRAFT') {
+      throw new GuardianError(
+        'P-06: Metadata can only be updated while document is DRAFT'
+      );
+    }
+
     if (cmd.commandType === 'SUBMIT_FOR_VALIDATION' && status !== 'DRAFT') {
       throw new GuardianError(
         'P-06: Only DRAFT document can be submitted'

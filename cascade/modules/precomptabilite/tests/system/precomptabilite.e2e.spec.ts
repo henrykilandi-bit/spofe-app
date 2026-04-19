@@ -48,6 +48,7 @@ describe('SYSTEM E2E — precomptabilite', () => {
       tenantId: 'TENANT_1',
       actorId: 'ACTOR_1',
       documentId: 'DOC_1',
+      currentStatus: 'DRAFT',
       metadata: {
         amount: 850,
         currency: 'EUR',

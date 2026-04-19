@@ -9,6 +9,7 @@ export interface UpdateDocumentMetadataCommand {
   actorId: string;
 
   documentId: string;
+  currentStatus: 'DRAFT';
   metadata?: DocumentMetadata;
   analytics?: AnalyticalAffectation;
 }

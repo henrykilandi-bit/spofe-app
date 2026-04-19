@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-04-19T22:38:54.725Z",
+  "baselinePath": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\governance\\contract-debt-baseline.json",
+  "snapshot": {
+    "generatedAt": "2026-04-19T22:38:54.723Z",
+    "modulesRoot": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\cascade\\modules",
+    "dependencies": {
+      "total": 0,
+      "byType": {},
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scope": {
+      "total": 61,
+      "byType": {
+        "SCOPE_OVERLAP": 61
+      },
+      "fingerprint": "cdc274019c6557d084c3da2ae36c766b5f8df891af46aeae3f36ac302da0636a"
+    },
+    "guardian": {
+      "total": 18,
+      "byType": {
+        "EMPTY_INVARIANTS": 17,
+        "MISSING_INVARIANTS": 1
+      },
+      "fingerprint": "627335c1bec37bccdbe39a3f36afec38009d382d1345d9ca5dcac2c2d3a4728e"
+    },
+    "overallTotal": 79
+  },
+  "findings": [],
+  "notes": []
+}

@@ -1,37 +1,37 @@
 {
-  "generatedAt": "2026-04-19T23:16:24.394Z",
-  "durationMs": 4521,
+  "generatedAt": "2026-04-19T23:24:46.895Z",
+  "durationMs": 5025,
   "verdict": "GO",
   "steps": [
     {
       "label": "Start server",
       "command": "npm run server:start",
       "status": 0,
-      "durationMs": 1065
+      "durationMs": 1178
     },
     {
       "label": "Health check",
       "command": "npm run server:health",
       "status": 0,
-      "durationMs": 1171
+      "durationMs": 1681
     },
     {
       "label": "DB connectivity",
       "command": "npm run db:check",
       "status": 0,
-      "durationMs": 787
+      "durationMs": 825
     },
     {
       "label": "KPI refresh",
       "command": "npm run kpi:exploitation",
       "status": 0,
-      "durationMs": 647
+      "durationMs": 666
     },
     {
       "label": "SLO refresh",
       "command": "npm run observability:slo",
       "status": 0,
-      "durationMs": 845
+      "durationMs": 670
     }
   ],
   "reasons": []

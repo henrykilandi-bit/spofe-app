@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-04-19T23:24:47.593Z",
+  "durationMs": 71456,
+  "verdict": "GO",
+  "commands": [
+    {
+      "label": "release-gate",
+      "command": "npm run release:gate",
+      "status": 0,
+      "durationMs": 61351
+    },
+    {
+      "label": "post-release-smoke",
+      "command": "npm run post-release:smoke",
+      "status": 0,
+      "durationMs": 3793
+    },
+    {
+      "label": "pilot-supervision",
+      "command": "npm run pilot:supervision",
+      "status": 0,
+      "durationMs": 5653
+    },
+    {
+      "label": "server-stop-cleanup",
+      "command": "npm run server:stop",
+      "status": 0,
+      "durationMs": 656
+    }
+  ],
+  "evidenceChecks": [
+    {
+      "name": "preprod_mirror_real",
+      "ok": true,
+      "details": "parityStatus=ok"
+    },
+    {
+      "name": "prod_config_check",
+      "ok": true,
+      "details": "decision=GO"
+    },
+    {
+      "name": "post_release_smoke",
+      "ok": true,
+      "details": "verdict=GO"
+    },
+    {
+      "name": "pilot_supervision",
+      "ok": true,
+      "details": "verdict=GO"
+    }
+  ],
+  "reasons": []
+}

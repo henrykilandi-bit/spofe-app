@@ -1,15 +1,15 @@
 # Post-release Smoke Report (latest)
 
-Generated at: 2026-04-19T22:54:24.800Z
+Generated at: 2026-04-19T23:24:41.242Z
 Verdict: **GO**
 
 ## Runtime commands
 
 | Step | Status | Duration (ms) | Command |
 | --- | --- | ---: | --- |
-| server-start | OK | 1082 | `npm run server:start` |
-| server-health | OK | 1235 | `npm run server:health` |
-| server-stop | OK | 620 | `npm run server:stop` |
+| server-start | OK | 1132 | `npm run server:start` |
+| server-health | OK | 1260 | `npm run server:health` |
+| server-stop | OK | 651 | `npm run server:stop` |
 
 ## HTTP checks
 

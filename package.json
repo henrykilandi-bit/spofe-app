@@ -12,6 +12,7 @@
     "check:repo": "npm test -- --runInBand",
     "check:modules:extended": "node tools/operations/check-modules-extended.mjs",
     "release:gate": "node tools/operations/release-gate-final.mjs",
+    "go-live:readiness": "node tools/operations/go-live-readiness-final.mjs",
     "preprod:mirror:check": "node tools/operations/preprod-mirror-check.mjs --staging-env .env.staging.example --production-env .env.production.example --report governance/PREPROD_MIRROR_LATEST.json",
     "db:check": "node tools/operations/db-check.mjs",
     "db:migrate": "node tools/operations/db-migrate.mjs",

@@ -1,25 +1,25 @@
 {
-  "generatedAt": "2026-04-19T22:54:24.800Z",
-  "durationMs": 2955,
+  "generatedAt": "2026-04-19T23:24:41.242Z",
+  "durationMs": 3061,
   "verdict": "GO",
   "commands": [
     {
       "label": "server-start",
       "command": "npm run server:start",
       "status": 0,
-      "durationMs": 1082
+      "durationMs": 1132
     },
     {
       "label": "server-health",
       "command": "npm run server:health",
       "status": 0,
-      "durationMs": 1235
+      "durationMs": 1260
     },
     {
       "label": "server-stop",
       "command": "npm run server:stop",
       "status": 0,
-      "durationMs": 620
+      "durationMs": 651
     }
   ],
   "httpChecks": [

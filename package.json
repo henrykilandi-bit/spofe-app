@@ -6,6 +6,11 @@
   "description": "SPOFE v2.1 - Gouverne par SILC v2",
   "scripts": {
     "test": "jest",
+    "test:guardian-core": "jest --runInBand tests/unit/guardianError.test.ts tests/unit/guardianHttpMap.test.ts",
+    "check:repo": "npm run test:guardian-core",
+    "check:modules:extended": "node tools/operations/check-modules-extended.mjs",
+    "ci:exploitation:precheck": "node tools/operations/ci-exploitation-gh.mjs precheck",
+    "ci:exploitation:dispatch": "node tools/operations/ci-exploitation-gh.mjs dispatch",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "jest --config jest.e2e.config.js",

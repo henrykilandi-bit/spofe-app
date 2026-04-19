@@ -1,10 +1,15 @@
 import { TierEvent } from '../../domain/events/TierEvents';
 import { TierSummaryView } from '../models/TierSummaryView';
+import { isProjectionEligibleEvent } from './projectionGuards';
 
 export class TierSummaryProjection {
   private readonly store = new Map<string, TierSummaryView>();
 
   apply(event: TierEvent): void {
+    if (!isProjectionEligibleEvent(event)) {
+      return;
+    }
+
     const key = `${event.tenantId}:${event.tierId}`;
     const now = event.timestamp;
 

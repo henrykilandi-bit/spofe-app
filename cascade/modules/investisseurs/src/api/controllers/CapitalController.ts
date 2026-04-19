@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { requireAllowedRole, requireTenantContext } from '../requestGuards';
 import { AuthenticatedRequest, CapTableCurrentRow, CapTableHistoryRow } from '../types';
+import { sanitizeCapTableCurrent, sanitizeCapTableHistory } from '../rowSanitizers';
 
 export class CapitalController {
   constructor(private readonly db: any) {}
@@ -22,10 +23,11 @@ export class CapitalController {
         WHERE tenant_id = $1
         ORDER BY percentage DESC
       `, [tenantId]);
+      const safeRows = sanitizeCapTableCurrent(result.rows as unknown[]);
 
       res.json({
         tenantId,
-        capTable: result.rows.map((row: CapTableCurrentRow) => ({
+        capTable: safeRows.map((row: CapTableCurrentRow) => ({
           shareholderId: row.shareholder_id,
           shares: row.shares,
           percentage: row.percentage,
@@ -54,10 +56,11 @@ export class CapitalController {
         WHERE tenant_id = $1
         ORDER BY occurred_at ASC
       `, [tenantId]);
+      const safeRows = sanitizeCapTableHistory(result.rows as unknown[]);
 
       res.json({
         tenantId,
-        history: result.rows.map((row: CapTableHistoryRow) => ({
+        history: safeRows.map((row: CapTableHistoryRow) => ({
           shareholderId: row.shareholder_id,
           shares: row.shares,
           percentage: row.percentage,

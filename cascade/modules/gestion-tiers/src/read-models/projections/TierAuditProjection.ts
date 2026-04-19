@@ -1,10 +1,15 @@
 import { TierEvent } from '../../domain/events/TierEvents';
 import { TierAuditView } from '../models/TierAuditView';
+import { isProjectionEligibleEvent } from './projectionGuards';
 
 export class TierAuditProjection {
   private readonly store: TierAuditView[] = [];
 
   apply(event: TierEvent): void {
+    if (!isProjectionEligibleEvent(event)) {
+      return;
+    }
+
     this.store.push({
       tenantId: event.tenantId,
       tierId: event.tierId,

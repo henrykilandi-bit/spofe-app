@@ -1,6 +1,10 @@
 import { Response } from 'express';
 import { requireAllowedRole, requireTenantContext } from '../requestGuards';
 import { AuthenticatedRequest, GovernanceAssemblyRow, GovernanceDocumentRow } from '../types';
+import {
+  sanitizeGovernanceAssemblies,
+  sanitizeGovernanceDocuments,
+} from '../rowSanitizers';
 
 export class GovernanceController {
   constructor(private readonly db: any) {}
@@ -22,9 +26,10 @@ export class GovernanceController {
         WHERE tenant_id = $1
         ORDER BY assembly_date DESC
       `, [tenantId]);
+      const safeRows = sanitizeGovernanceAssemblies(result.rows as unknown[]);
 
       res.json({
-        assemblies: result.rows.map((row: GovernanceAssemblyRow) => ({
+        assemblies: safeRows.map((row: GovernanceAssemblyRow) => ({
           assemblyId: row.assembly_id,
           assemblyType: row.assembly_type,
           assemblyDate: row.assembly_date,
@@ -69,9 +74,10 @@ export class GovernanceController {
       query += ` ORDER BY created_at DESC`;
 
       const result = await this.db.query(query, params);
+      const safeRows = sanitizeGovernanceDocuments(result.rows as unknown[]);
 
       res.json({
-        documents: result.rows.map((row: GovernanceDocumentRow) => ({
+        documents: safeRows.map((row: GovernanceDocumentRow) => ({
           documentId: row.document_id,
           documentType: row.document_type,
           linkedAssemblyId: row.linked_assembly_id,

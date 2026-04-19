@@ -1,10 +1,15 @@
 import { TierEvent } from '../../domain/events/TierEvents';
 import { TierByStatusView } from '../models/TierByStatusView';
+import { isProjectionEligibleEvent } from './projectionGuards';
 
 export class TierByStatusProjection {
   private readonly store = new Map<string, TierByStatusView>();
 
   apply(event: TierEvent): void {
+    if (!isProjectionEligibleEvent(event)) {
+      return;
+    }
+
     const key = `${event.tenantId}:${event.tierId}`;
 
     if (event.type === 'TierCreated') {

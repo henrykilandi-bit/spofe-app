@@ -52,7 +52,7 @@ export interface InvestorReportRow {
 }
 
 export interface InvestorAccessRightsRow {
-  scope: string[];
+  scope: string;
   granted_at: string;
 }
 

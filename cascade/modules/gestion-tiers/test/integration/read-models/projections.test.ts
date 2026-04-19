@@ -93,4 +93,27 @@ describe('Read Models - Event Projection', () => {
 
     console.log('✅ Event sequence projection successful');
   });
+
+  it('should ignore malformed events from upstream sources', () => {
+    const summaryProjection = new TierSummaryProjection();
+    const statusProjection = new TierByStatusProjection();
+    const auditProjection = new TierAuditProjection();
+
+    const malformedEvent = {
+      type: 'TierCreated',
+      tierId: '',
+      tenantId: 'tenant-001',
+      actorId: 'actor-001',
+      timestamp: 'not-a-date',
+      payload: {},
+    } as unknown as TierEvent;
+
+    summaryProjection.apply(malformedEvent);
+    statusProjection.apply(malformedEvent);
+    auditProjection.apply(malformedEvent);
+
+    expect(summaryProjection.getAll()).toHaveLength(0);
+    expect(statusProjection.getAll()).toHaveLength(0);
+    expect(auditProjection.getByTier('tenant-001', '')).toHaveLength(0);
+  });
 });

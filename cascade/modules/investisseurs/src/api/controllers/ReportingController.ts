@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { requireAllowedRole, requireInvestorReportScope, requireTenantContext } from '../requestGuards';
 import { AuthenticatedRequest, InvestorReportRow } from '../types';
+import { sanitizeInvestorReports } from '../rowSanitizers';
 
 export class ReportingController {
   constructor(private readonly db: any) {}
@@ -26,9 +27,10 @@ export class ReportingController {
         WHERE tenant_id = $1
         ORDER BY published_at DESC
       `, [tenantId]);
+      const safeRows = sanitizeInvestorReports(result.rows as unknown[]);
 
       res.json({
-        reports: result.rows.map((row: InvestorReportRow) => ({
+        reports: safeRows.map((row: InvestorReportRow) => ({
           reportId: row.report_id,
           period: row.period,
           publishedAt: row.published_at
@@ -67,7 +69,13 @@ export class ReportingController {
         return;
       }
 
-      const report = result.rows[0] as InvestorReportRow;
+      const safeRows = sanitizeInvestorReports(result.rows as unknown[]);
+      if (safeRows.length === 0) {
+        res.status(404).json({ error: 'Report not found' });
+        return;
+      }
+
+      const report = safeRows[0] as InvestorReportRow;
 
       // TODO: Generate InvestorDocumentViewed event
       // await this.eventBus.publish({

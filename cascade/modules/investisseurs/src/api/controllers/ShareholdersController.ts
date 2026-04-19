@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { requireAllowedRole, requireTenantContext } from '../requestGuards';
 import { AuthenticatedRequest, ShareholderRow } from '../types';
+import { sanitizeShareholders } from '../rowSanitizers';
 
 export class ShareholdersController {
   constructor(private readonly db: any) {}
@@ -22,9 +23,10 @@ export class ShareholdersController {
         WHERE tenant_id = $1
         ORDER BY created_at ASC
       `, [tenantId]);
+      const safeRows = sanitizeShareholders(result.rows as unknown[]);
 
       res.json({
-        shareholders: result.rows.map((row: ShareholderRow) => ({
+        shareholders: safeRows.map((row: ShareholderRow) => ({
           shareholderId: row.shareholder_id,
           name: row.name,
           createdAt: row.created_at

@@ -1,6 +1,10 @@
 import { Response } from 'express';
 import { requireAllowedRole, requireTenantContext } from '../requestGuards';
 import { AuthenticatedRequest, InvestorAccessRightsRow, InvestorAccessLogRow } from '../types';
+import {
+  sanitizeInvestorAccessLog,
+  sanitizeInvestorAccessRights,
+} from '../rowSanitizers';
 
 export class AccessController {
   constructor(private readonly db: any) {}
@@ -29,11 +33,12 @@ export class AccessController {
         WHERE tenant_id = $1 AND investor_id = $2
         ORDER BY granted_at DESC
       `, [tenantId, investorId]);
+      const safeRows = sanitizeInvestorAccessRights(result.rows as unknown[]);
 
       res.json({
         tenantId,
         investorId,
-        accessRights: result.rows.map((row: InvestorAccessRightsRow) => ({
+        accessRights: safeRows.map((row: InvestorAccessRightsRow) => ({
           scope: row.scope,
           grantedAt: row.granted_at
         }))
@@ -69,10 +74,11 @@ export class AccessController {
         ORDER BY accessed_at DESC
         LIMIT 1000
       `, [tenantId]);
+      const safeRows = sanitizeInvestorAccessLog(result.rows as unknown[]);
 
       res.json({
         tenantId,
-        accessLog: result.rows.map((row: InvestorAccessLogRow) => ({
+        accessLog: safeRows.map((row: InvestorAccessLogRow) => ({
           investorId: row.investor_id,
           resource: row.resource,
           accessedAt: row.accessed_at

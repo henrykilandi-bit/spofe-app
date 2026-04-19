@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-04-19T22:27:45.999Z",
+  "durationMs": 1909,
+  "verdict": "GO",
+  "inputs": {
+    "stagingEnv": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\.env.staging",
+    "productionEnv": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\.env.production",
+    "mirrorReport": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\governance\\PREPROD_MIRROR_REAL_LATEST.json"
+  },
+  "steps": [
+    {
+      "label": "preprod-mirror-check",
+      "command": "node tools/operations/preprod-mirror-check.mjs --staging-env .env.staging --production-env .env.production --report governance/PREPROD_MIRROR_REAL_LATEST.json",
+      "status": 0,
+      "durationMs": 141
+    },
+    {
+      "label": "db-backup-restore-smoke",
+      "command": "npm run db:backup:smoke",
+      "status": 0,
+      "durationMs": 952
+    },
+    {
+      "label": "db-check",
+      "command": "npm run db:check",
+      "status": 0,
+      "durationMs": 813
+    }
+  ],
+  "mirror": {
+    "generatedAt": "2026-04-19T22:27:44.212Z",
+    "stagingEnv": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\.env.staging",
+    "productionEnv": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\.env.production",
+    "stagingDbMode": "postgres-url",
+    "productionDbMode": "postgres-url",
+    "behaviorParityKeys": {
+      "GUARDIAN_VERSION": {
+        "staging": "4",
+        "production": "4"
+      },
+      "GUARDIAN_MODE": {
+        "staging": "strict",
+        "production": "strict"
+      },
+      "REQUEST_TIMEOUT": {
+        "staging": "30000",
+        "production": "30000"
+      },
+      "METRICS_ENABLED": {
+        "staging": "true",
+        "production": "true"
+      },
+      "TRACING_ENABLED": {
+        "staging": "true",
+        "production": "true"
+      },
+      "FEATURE_AUDIT_LOGGING": {
+        "staging": "true",
+        "production": "true"
+      },
+      "FEATURE_COMPRESSION": {
+        "staging": "true",
+        "production": "true"
+      },
+      "FEATURE_CACHING": {
+        "staging": "true",
+        "production": "true"
+      }
+    },
+    "migrations": {
+      "migrationDir": "C:\\Users\\henry\\Desktop\\SPOFE-APP VERS 1.0\\governance\\migration_exploitation",
+      "fingerprint": "3d07ce29fb2937f284078b88344006e295fdabed1f080b6dd450f85010e562da",
+      "fileCount": 1
+    },
+    "parityStatus": "ok",
+    "errors": [],
+    "warnings": [],
+    "fingerprint": "5222f5106abcbae88e87750ffa4adbc7391853f25148c8931ceea44eec330333"
+  },
+  "reasons": []
+}

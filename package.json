@@ -18,6 +18,7 @@
     "db:backup": "node tools/operations/db-backup.mjs",
     "db:restore": "node tools/operations/db-restore.mjs",
     "db:backup:smoke": "node tools/operations/db-backup-restore-smoke.mjs",
+    "preprod:rollback:drill": "node tools/operations/preprod-rollback-drill.mjs --staging-env .env.staging --production-env .env.production --mirror-report governance/PREPROD_MIRROR_REAL_LATEST.json --report-json governance/ROLLBACK_DRILL_LATEST.json --report-md governance/ROLLBACK_DRILL_LATEST.md",
     "db:safety:check": "node tools/operations/db-execution-safety-check.mjs",
     "server:start": "node tools/runtime/server-start-detached.mjs",
     "server:stop": "node tools/runtime/server-stop.mjs",

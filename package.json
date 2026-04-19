@@ -8,6 +8,7 @@
     "test": "jest",
     "test:db": "jest --config jest.db.config.js --runInBand",
     "test:guardian-core": "jest --runInBand tests/unit/guardianError.test.ts tests/unit/guardianHttpMap.test.ts",
+    "repo:health": "npm run check:repo",
     "check:repo": "npm test -- --runInBand",
     "check:modules:extended": "node tools/operations/check-modules-extended.mjs",
     "ci:exploitation:precheck": "node tools/operations/ci-exploitation-gh.mjs precheck",

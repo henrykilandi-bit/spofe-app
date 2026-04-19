@@ -1,1 +1,0 @@
-{"version":3,"file":"ReportFormatter.d.ts","sourceRoot":"","sources":["../../../aga/core/report/ReportFormatter.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,OAAO,EAAE,cAAc,EAAE,MAAM,kBAAkB,CAAC;AAElD,qBAAa,eAAe;IAE1B,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,cAAc,GAAG,MAAM;IAoC7C,MAAM,CAAC,cAAc,CAAC,MAAM,EAAE,cAAc;CAG7C"}

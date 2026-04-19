@@ -1,1 +1,12 @@
 node_modules
+**/node_modules/
+*.log
+*.tsbuildinfo
+backups
+.spofe
+env/.env.production
+env/.env.staging
+coverage/
+**/coverage/
+dist-aga/
+.quarantine/

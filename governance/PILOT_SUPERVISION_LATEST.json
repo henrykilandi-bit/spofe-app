@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-04-19T23:16:24.394Z",
+  "durationMs": 4521,
+  "verdict": "GO",
+  "steps": [
+    {
+      "label": "Start server",
+      "command": "npm run server:start",
+      "status": 0,
+      "durationMs": 1065
+    },
+    {
+      "label": "Health check",
+      "command": "npm run server:health",
+      "status": 0,
+      "durationMs": 1171
+    },
+    {
+      "label": "DB connectivity",
+      "command": "npm run db:check",
+      "status": 0,
+      "durationMs": 787
+    },
+    {
+      "label": "KPI refresh",
+      "command": "npm run kpi:exploitation",
+      "status": 0,
+      "durationMs": 647
+    },
+    {
+      "label": "SLO refresh",
+      "command": "npm run observability:slo",
+      "status": 0,
+      "durationMs": 845
+    }
+  ],
+  "reasons": []
+}

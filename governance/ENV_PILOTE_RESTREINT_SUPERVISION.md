@@ -32,6 +32,7 @@ Signaux attendus:
 - KPI mis a jour (`governance/KPI_EXPLOITATION_LATEST.md`)
 - dashboard SLO mis a jour (`governance/OBSERVABILITY_SLO_DASHBOARD_LATEST.md`)
 - alertes SLO mises a jour (`.spofe/observability-alerts-latest.json`)
+- rapport cycle pilote mis a jour (`governance/PILOT_SUPERVISION_LATEST.md`, `governance/PILOT_SUPERVISION_LATEST.json`)
 
 ## 3) Procedure incident rapide (pilote)
 

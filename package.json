@@ -25,7 +25,7 @@
     "server:health": "node tools/runtime/server-health-smoke.mjs",
     "server:smoke": "npm run server:health",
     "post-release:smoke": "node tools/operations/post-release-smoke.mjs",
-    "pilot:supervision": "npm run server:start && npm run server:health && npm run db:check && npm run kpi:exploitation && npm run observability:slo",
+    "pilot:supervision": "node tools/runtime/pilot-supervision-cycle.mjs",
     "kpi:exploitation": "node tools/operations/kpi-exploitation-report.mjs",
     "observability:slo": "node tools/operations/slo-alert-dashboard.mjs",
     "observability:check": "node tools/operations/observability-baseline-check.mjs",

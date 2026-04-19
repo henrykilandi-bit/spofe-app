@@ -1,0 +1,85 @@
+{
+  "timestamp": "2026-02-02T18:10:52.494Z",
+  "module": "budgeting",
+  "version": "1.0.0",
+  "overall": "success",
+  "results": [
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "package.json exists"
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "tsconfig.json exists"
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "jest.config.guardian-only.cjs exists"
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "index.ts exists"
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "domain/index.ts exists"
+    },
+    {
+      "step": "File Check",
+      "status": "success",
+      "message": "guardian/index.ts exists"
+    },
+    {
+      "step": "Critical Files",
+      "status": "success",
+      "message": "All critical files present"
+    },
+    {
+      "step": "TypeScript Compilation",
+      "status": "success",
+      "message": "No TypeScript errors found"
+    },
+    {
+      "step": "Jest Configuration",
+      "status": "success",
+      "message": "Jest config found"
+    },
+    {
+      "step": "Guardian Tests",
+      "status": "success",
+      "message": "All Guardian tests passed"
+    },
+    {
+      "step": "SPOFE Architecture",
+      "status": "success",
+      "message": "Domain Layer (Aggregates + Value Objects) found"
+    },
+    {
+      "step": "SPOFE Architecture",
+      "status": "success",
+      "message": "Guardian Layer (Invariants) found"
+    },
+    {
+      "step": "SPOFE Architecture",
+      "status": "success",
+      "message": "Guardian Tests found"
+    },
+    {
+      "step": "SPOFE Compliance",
+      "status": "success",
+      "message": "3/3 SPOFE layers valid"
+    }
+  ],
+  "summary": {
+    "totalSteps": 14,
+    "successCount": 14,
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "signature": "40dd0a9883f2c21e84c0598388b1dccc642aefa008ae665b319da9ab10c222ee"
+}

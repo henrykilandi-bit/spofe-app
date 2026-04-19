@@ -1,0 +1,6 @@
+dist/
+node_modules/
+*.spec.ts
+*.test.ts
+*.example.ts
+tsconfig.tsbuildinfo

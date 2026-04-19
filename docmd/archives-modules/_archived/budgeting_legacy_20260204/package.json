@@ -1,0 +1,35 @@
+{
+  "name": "@spofe/budgeting",
+  "version": "1.0.0",
+  "description": "SPOFE Budget Module - Production Ready",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "test": "jest --config jest.config.guardian-only.cjs",
+    "test:module": "jest --config jest.config.guardian-only.cjs"
+  },
+  "keywords": [
+    "spofe",
+    "budget",
+    "cashflow",
+    "multi-tenant"
+  ],
+  "author": "SPOFE Team",
+  "license": "PROPRIETARY",
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/swagger": "^7.0.0",
+    "pg": "^8.11.0",
+    "prom-client": "^15.0.0"
+  }
+}

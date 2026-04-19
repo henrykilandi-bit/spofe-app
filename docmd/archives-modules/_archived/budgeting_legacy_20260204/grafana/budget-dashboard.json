@@ -1,0 +1,53 @@
+{
+  "dashboard": {
+    "title": "Budget Module - Production Dashboard",
+    "tags": ["budget", "spofe", "multi-tenant"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Commands Total (by type)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(budget_commands_total[5m])",
+            "legendFormat": "{{command_type}} - {{status}}"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Guardian Rejections",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(rate(budget_guardian_rejections_total[5m]))",
+            "legendFormat": "Rejections/sec"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Command Duration (p95)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(budget_command_duration_seconds_bucket[5m]))",
+            "legendFormat": "p95 - {{command_type}}"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "RLS Violations",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(budget_rls_violations_total)",
+            "legendFormat": "Total Violations"
+          }
+        ]
+      }
+    ]
+  }
+}

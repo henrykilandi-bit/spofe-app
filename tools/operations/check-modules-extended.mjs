@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 
 const MODULES = [
   {
@@ -10,6 +11,10 @@ const MODULES = [
   {
     name: 'tresorerie-banque',
     sentinel: 'cascade/modules/tresorerie-banque/tests/system/tresorerie-banque.e2e.spec.ts',
+  },
+  {
+    name: 'tresorerie-caisse',
+    sentinel: 'cascade/modules/tresorerie-caisse/tests/system/cash-register.e2e.spec.ts',
   },
   {
     name: 'cost-structure',
@@ -111,15 +116,32 @@ if (availableModules.length === 0) {
 
 for (const moduleDef of availableModules) {
   const modulePath = path.join('cascade', 'modules', moduleDef.name);
+  const packagePath = path.join(modulePath, 'package.json');
+  let isVitestModule = false;
+
+  if (existsSync(packagePath)) {
+    try {
+      const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+      const testScript = packageJson?.scripts?.test ?? '';
+      isVitestModule = /\bvitest\b/.test(testScript);
+    } catch (error) {
+      fail(`unable to parse package.json for ${moduleDef.name}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
   info(`running tests for ${moduleDef.name}`);
+  const args = isVitestModule
+    ? ['--prefix', modulePath, 'test']
+    : ['--prefix', modulePath, 'test', '--', '--runInBand'];
+
   const result =
     process.platform === 'win32'
-      ? spawnSync('cmd.exe', ['/d', '/c', 'npm', '--prefix', modulePath, 'test', '--', '--runInBand'], {
+      ? spawnSync('cmd.exe', ['/d', '/c', 'npm', ...args], {
           stdio: 'inherit',
           shell: false,
           env: process.env,
         })
-      : spawnSync('npm', ['--prefix', modulePath, 'test', '--', '--runInBand'], {
+      : spawnSync('npm', args, {
           stdio: 'inherit',
           shell: false,
           env: process.env,

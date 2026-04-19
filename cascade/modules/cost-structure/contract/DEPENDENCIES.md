@@ -22,7 +22,6 @@
 |--------|----------|
 | budget | Utilisation des coûts en planification |
 | budgeting | Projections de coûts |
-| objectif-indicateur-evenement | Références d'indicateurs de coûts |
 
 ---
 

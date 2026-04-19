@@ -20,7 +20,6 @@
 | Module | Finalité |
 |--------|----------|
 | amortissement | Base de calcul des amortissements |
-| objectif-indicateur-evenement | Références d'indicateurs patrimoniaux |
 
 ---
 

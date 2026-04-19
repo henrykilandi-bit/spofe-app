@@ -23,7 +23,6 @@
 | gestion-commandes | Références clients et fournisseurs |
 | precomptabilite | Validation des tiers |
 | tresorerie-banque | Références pour virements |
-| objectif-indicateur-evenement | Références d'indicateurs commerciaux |
 
 ---
 

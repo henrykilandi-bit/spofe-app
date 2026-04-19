@@ -1,34 +1,39 @@
-# DEPENDENCIES.md - Objectif-Indicateurs-Événements Module
+# DEPENDENCIES — Module Objectif-Indicateurs-Événements
 
-Module: **objectif-indicateurs-evenements**
-
----
-
-## CONSUMED DEPENDENCIES
-
-Ce module consomme les données des modules suivants :
-
-<!-- DEPENDENCIES_CONSUMED_START -->
-<!-- Aucune dépendance consommée -->
-<!-- DEPENDENCIES_CONSUMED_END -->
+## Nature du module
+- Type : Module explicatif (READ-ONLY)
+- Rôle : Contexte narratif et événements stratégiques
+- Sens des flux : LECTURE référentielle
 
 ---
 
-## CONSUMER DEPENDENCIES  
+## Modules consommés (READ-ONLY)
 
-Ce module expose ses données aux modules suivants :
-
-<!-- DEPENDENCIES_CONSUMER_START -->
-- coaching
-- budget
-- investisseurs
-<!-- DEPENDENCIES_CONSUMER_END -->
+👉 **AUCUN**
 
 ---
 
-## VALIDATION
+## Modules consommateurs (READ-ONLY)
 
-Cette déclaration est automatiquement vérifiée par :
-- Le système de validation des dépendances SPOFE
-- Les tests d'intégration inter-modules
-- La vérification de cohérence contractuelle
+| Module | Finalité |
+|--------|----------|
+| coaching | Narration du suivi d'accompagnement |
+| budget | Justification des révisions |
+| investisseurs | Publication de contexte non financier |
+
+---
+
+## Dépendances interdites
+
+- ❌ Toute dépendance entrante en écriture
+- ❌ Toute écriture dans un module consommateur
+- ❌ Toute logique de calcul financier
+
+---
+
+## Règle de gouvernance
+
+OIE reste un module explicatif.  
+Toute évolution de dépendance nécessite :
+- nouvelle version du module
+- validation BUILD_PROOF

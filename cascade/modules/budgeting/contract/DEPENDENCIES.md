@@ -21,7 +21,6 @@
 
 | Module | Finalité |
 |--------|----------|
-| objectif-indicateur-evenement | Références d'indicateurs financiers |
 
 ---
 

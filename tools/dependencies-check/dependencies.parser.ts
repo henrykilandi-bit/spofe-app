@@ -8,6 +8,14 @@ export interface ModuleDependencies {
   readOnlyType?: string;
 }
 
+function canonicalizeModuleName(name: string): string {
+  const normalized = name.toLowerCase().trim();
+  if (normalized === 'objectif-indicateurs-evenements') {
+    return 'objectif-indicateur-evenement';
+  }
+  return normalized;
+}
+
 /**
  * Parse tous les fichiers DEPENDENCIES.md des modules SPOFE
  * et extrait les dépendances déclarées
@@ -20,10 +28,12 @@ export function parseDependencies(
       const fullPath = path.join(modulesRoot, item);
       return fs.statSync(fullPath).isDirectory() && 
              !item.startsWith('_') && 
-             !item.startsWith('.');
+             !item.startsWith('.') &&
+             !item.startsWith('test-module-');
     });
 
   return modules.map((moduleName) => {
+    const canonicalModuleName = canonicalizeModuleName(moduleName);
     const depFile = path.join(
       modulesRoot,
       moduleName,
@@ -52,9 +62,9 @@ export function parseDependencies(
     const readOnlyConsumes = extractReadOnlyDependencies(content);
     
     return {
-      module: moduleName,
-      consumes: [...consumes, ...readOnlyConsumes.map(dep => dep.module)],
-      consumedBy,
+      module: canonicalModuleName,
+      consumes: [...consumes, ...readOnlyConsumes.map(dep => dep.module)].map(canonicalizeModuleName),
+      consumedBy: consumedBy.map(canonicalizeModuleName),
       readOnlyType: readOnlyConsumes.length > 0 ? 'READ_ONLY' : undefined
     };
   });
@@ -87,7 +97,7 @@ function extractDependencyList(
           tableMatch[1] !== 'Module' && 
           tableMatch[1] !== 'Finalité' &&
           tableMatch[1] !== 'Usage') {
-        return tableMatch[1].trim().toLowerCase();
+        return canonicalizeModuleName(tableMatch[1].trim().toLowerCase());
       }
       return null;
     })
@@ -103,15 +113,15 @@ function extractReadOnlyDependencies(
   const dependencies: Array<{ module: string; type: string }> = [];
   
   // Cherche les sections "Dépendance READ-only"
-  const readOnlyRegex = /## Dépendance READ-only — (.+?)\n/gi;
+  const readOnlyRegex = /##\s+D[ée]pendance\s+READ[\s\-–—]*ONLY\s*[—\-–]\s+(.+?)\r?\n/giu;
   let match;
   
   while ((match = readOnlyRegex.exec(content)) !== null) {
-    const moduleName = match[1]
+    const moduleName = canonicalizeModuleName(match[1]
       .replace('Objectif–Indicateur–Événement', 'objectif-indicateur-evenement')
       .replace(/\s*\(.+\)/, '')
       .toLowerCase()
-      .trim();
+      .trim());
     
     dependencies.push({
       module: moduleName,

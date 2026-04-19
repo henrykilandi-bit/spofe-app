@@ -24,6 +24,7 @@
     "server:health": "node tools/runtime/server-health-smoke.mjs",
     "kpi:exploitation": "node tools/operations/kpi-exploitation-report.mjs",
     "observability:check": "node tools/operations/observability-baseline-check.mjs",
+    "security:baseline:check": "node tools/operations/security-baseline-check.mjs",
     "ci:exploitation:precheck": "node tools/operations/ci-exploitation-gh.mjs precheck",
     "ci:exploitation:dispatch": "node tools/operations/ci-exploitation-gh.mjs dispatch",
     "test:watch": "jest --watch",

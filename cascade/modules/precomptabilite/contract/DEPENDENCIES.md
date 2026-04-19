@@ -12,6 +12,7 @@
 | Module | Usage |
 |--------|---------|
 | gestion-tiers | Validation des tiers |
+| gestion-commandes | Références documentaires de commandes |
 | parametres | Règles de validation |
 
 ---
@@ -22,7 +23,6 @@
 |--------|----------|
 | tresorerie-caisse | Références pour encaissements |
 | tresorerie-banque | Références pour virements |
-| objectif-indicateur-evenement | Références d'indicateurs de flux |
 
 ---
 

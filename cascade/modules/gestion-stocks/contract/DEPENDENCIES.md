@@ -23,7 +23,6 @@
 | budget | Valorisation des stocks en planification |
 | budgeting | Projections de stocks |
 | gestion-commandes | Vérification des disponibilités |
-| objectif-indicateur-evenement | Références d'indicateurs stocks |
 
 ---
 

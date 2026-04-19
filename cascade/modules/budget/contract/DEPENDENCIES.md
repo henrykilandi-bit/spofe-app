@@ -1,80 +1,41 @@
 # DEPENDENCIES — Module Budget
 
-## Dépendance READ-ONLY — Objectif–Indicateur–Événement (OIE)
-
-### Type de dépendance
-- Sens : READ-ONLY
-- Nature : Explicative / contextuelle
-- Criticité : FAIBLE
+## Nature du module
+- Type : Module métier principal
+- Rôle : Planification budgétaire et suivi des écarts
+- Sens des flux : SOURCE (write)
 
 ---
 
-### Données consommées depuis OIE
+## Modules consommés (READ-ONLY)
 
-| Read-model OIE | Usage Budget |
-|---------------|-------------|
-| ObjectivesRM | Alignement avec le Plan d'Affaires |
-| EventsTimelineRM | Justification des révisions |
-| ObjectiveHistoryRM | Traçabilité des hypothèses |
-
----
-
-### Règles strictes
-
-- Budget reste **souverain sur tous les calculs**
-- OIE ne fournit **aucune valeur chiffrée**
-- OIE ne pilote **aucune projection budgétaire**
-- Les écarts sont **calculés par Budget, expliqués par OIE**
+| Module | Usage |
+|--------|-------|
+| parametres | Exercices, périodes, cadres de référence |
+| gestion-stocks | Valorisation des stocks en planification |
+| cost-structure | Référentiel analytique des coûts |
+| amortissement | Charges d'amortissement prévisionnelles |
+| objectif-indicateur-evenement | Contexte narratif et justification des révisions |
 
 ---
 
-### Justification architecturale
+## Modules consommateurs (READ-ONLY)
 
-Le Budget calcule.  
-OIE explique.
-
-Cette dissociation garantit :
-- lisibilité
-- auditabilité
-- absence de circularité
+👉 **AUCUN**
 
 ---
 
-### Interface technique contractuelle
+## Dépendances interdites
 
-```typescript
-export interface OieReadApi {
-  getObjectives(tenantId: string): Promise<ObjectiveRM[]>;
-  getEvents(tenantId: string): Promise<StrategicEventRM[]>;
-  getEventsByPeriod(tenantId: string, periodId: string): Promise<StrategicEventRM[]>;
-  getObjectiveHistory(tenantId: string, objectiveId: string): Promise<ObjectiveHistoryRM[]>;
-}
-```
+- ❌ Toute dépendance entrante en écriture
+- ❌ Toute dépendance inverse vers modules consommateurs
+- ❌ Toute logique de calcul déléguée à OIE
 
-### Exemple d'usage autorisé
+---
 
-```typescript
-// budget/application/BudgetNarrativeService.ts
-export class BudgetNarrativeService {
-  constructor(private readonly oieApi: OieReadApi) {}
+## Règle de gouvernance
 
-  async explainRevision(tenantId: string, periodId: string) {
-    const events = await this.oieApi.getEventsByPeriod(
-      tenantId,
-      periodId
-    );
-
-    return {
-      budgetRevisionContext: events,
-    };
-  }
-}
-```
-
-### Cas d'usage typiques
-
-| Cas Budget | Lecture OIE |
-|------------|-------------|
-| Révision budgétaire | Événement stratégique |
-| Écart important | Décision / incident |
-| Projection modifiée | Objectif révisé |
+Le Budget reste souverain sur les calculs.  
+Toute évolution de dépendance nécessite :
+- nouvelle version du module
+- validation BUILD_PROOF

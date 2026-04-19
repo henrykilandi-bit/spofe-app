@@ -23,7 +23,6 @@
 | cost-structure | Calculs de coûts analytiques |
 | budget | Intégration des amortissements en planification |
 | budgeting | Projections budgétaires |
-| objectif-indicateur-evenement | Références d'indicateurs patrimoniaux |
 
 ---
 

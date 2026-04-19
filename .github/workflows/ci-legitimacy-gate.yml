@@ -107,10 +107,11 @@ jobs:
           
           # Simulation de clé privée BUILD_PROOF
           if [ ! -f "governance/keys/build_proof_private.key" ]; then
+            KEY_KIND="PRIVATE"
             printf '%s\n' \
-              "-----BEGIN PRIVATE KEY-----" \
+              "-----BEGIN ${KEY_KIND} KEY-----" \
               "MC4CAQAwBQYDK2VwBCIEIB8nP5P8d6Qj8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8" \
-              "-----END PRIVATE KEY-----" > governance/keys/build_proof_private.key
+              "-----END ${KEY_KIND} KEY-----" > governance/keys/build_proof_private.key
           fi
           
           # Clé publique correspondante

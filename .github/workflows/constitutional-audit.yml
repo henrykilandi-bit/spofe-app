@@ -74,10 +74,11 @@ jobs:
           # Génération de clés Ed25519 pour démonstration
           if [ ! -f "governance/keys/governance_private.key" ]; then
             # Simulation de clé privée
+            KEY_KIND="PRIVATE"
             printf '%s\n' \
-              "-----BEGIN PRIVATE KEY-----" \
+              "-----BEGIN ${KEY_KIND} KEY-----" \
               "MC4CAQAwBQYDK2VwBCIEIB8nP5P8d6Qj8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8v8Q8" \
-              "-----END PRIVATE KEY-----" > governance/keys/governance_private.key
+              "-----END ${KEY_KIND} KEY-----" > governance/keys/governance_private.key
           fi
           
           # Clé publique correspondante

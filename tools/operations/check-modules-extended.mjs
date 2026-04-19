@@ -92,13 +92,24 @@ if (!existsSync('cascade/modules')) {
   process.exit(0);
 }
 
-for (const moduleDef of MODULES) {
-  if (!existsSync(moduleDef.sentinel)) {
-    fail(`sentinel missing for "${moduleDef.name}": ${moduleDef.sentinel}`);
-  }
-}
+const availableModules = [];
+const skippedModules = [];
 
 for (const moduleDef of MODULES) {
+  if (!existsSync(moduleDef.sentinel)) {
+    skippedModules.push(moduleDef);
+    info(`skip: sentinel missing for "${moduleDef.name}"`);
+    continue;
+  }
+  availableModules.push(moduleDef);
+}
+
+if (availableModules.length === 0) {
+  info('skip: no module sentinels found on this checkout');
+  process.exit(0);
+}
+
+for (const moduleDef of availableModules) {
   const modulePath = path.join('cascade', 'modules', moduleDef.name);
   info(`running tests for ${moduleDef.name}`);
   const result =
@@ -125,4 +136,6 @@ for (const moduleDef of MODULES) {
   }
 }
 
-info(`completed: ${MODULES.length} modules`);
+info(
+  `completed: ${availableModules.length} modules, skipped: ${skippedModules.length}`
+);

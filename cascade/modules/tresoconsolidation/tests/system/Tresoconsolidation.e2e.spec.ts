@@ -112,4 +112,196 @@ describe('Tresoconsolidation — System E2E Tests (P0)', () => {
       expect(['CAISSE', 'BANQUE']).toContain(entry.source);
     });
   });
+
+  it('S-08 — tenant isolation is enforced even if upstream ports leak mixed tenants', async () => {
+    const leakyController = buildTresoconsolidationController(
+      {
+        async getBalances() {
+          return [
+            {
+              caisseId: 'CAISSE_1',
+              caisseLabel: 'Caisse T1',
+              solde: 100,
+              devise: 'XOF',
+              asOf: '2026-01-01',
+              tenantId: 'TENANT_1',
+            },
+            {
+              caisseId: 'CAISSE_X',
+              caisseLabel: 'Caisse T2',
+              solde: 999,
+              devise: 'XOF',
+              asOf: '2026-01-01',
+              tenantId: 'TENANT_2',
+            },
+          ];
+        },
+        async getJournal() {
+          return [
+            {
+              movementId: 'MOV_C_1',
+              date: '2026-01-01',
+              libelle: 'Encaissement T1',
+              montant: 100,
+              devise: 'XOF',
+              tenantId: 'TENANT_1',
+              createdAt: '2026-01-01T10:00:00Z',
+            },
+            {
+              movementId: 'MOV_C_X',
+              date: '2026-01-01',
+              libelle: 'Encaissement T2',
+              montant: 999,
+              devise: 'XOF',
+              tenantId: 'TENANT_2',
+              createdAt: '2026-01-01T10:10:00Z',
+            },
+          ];
+        },
+      },
+      {
+        async getBalances() {
+          return [
+            {
+              bankAccountId: 'BANK_1',
+              bankName: 'Banque T1',
+              accountReference: 'REF-T1',
+              solde: 300,
+              devise: 'XOF',
+              asOf: '2026-01-01',
+              tenantId: 'TENANT_1',
+            },
+            {
+              bankAccountId: 'BANK_X',
+              bankName: 'Banque T2',
+              accountReference: 'REF-T2',
+              solde: 777,
+              devise: 'XOF',
+              asOf: '2026-01-01',
+              tenantId: 'TENANT_2',
+            },
+          ];
+        },
+        async getJournal() {
+          return [
+            {
+              movementId: 'MOV_B_1',
+              date: '2026-01-01',
+              libelle: 'Virement T1',
+              montant: 300,
+              devise: 'XOF',
+              tenantId: 'TENANT_1',
+              createdAt: '2026-01-01T11:00:00Z',
+            },
+            {
+              movementId: 'MOV_B_X',
+              date: '2026-01-01',
+              libelle: 'Virement T2',
+              montant: 777,
+              devise: 'XOF',
+              tenantId: 'TENANT_2',
+              createdAt: '2026-01-01T11:10:00Z',
+            },
+          ];
+        },
+      }
+    );
+
+    const balance = await leakyController.balance({
+      tenantId: 'TENANT_1',
+      query: {},
+    });
+    expect(balance.status).toBe(200);
+    expect(balance.body.totalCaisse).toBe(100);
+    expect(balance.body.totalBanque).toBe(300);
+    expect(balance.body.totalTresorerie).toBe(400);
+
+    const journal = await leakyController.journal({
+      tenantId: 'TENANT_1',
+      query: {},
+    });
+    expect(journal.status).toBe(200);
+    expect(journal.body).toHaveLength(2);
+    expect(journal.body.map((entry: any) => entry.movementId)).toEqual([
+      'MOV_C_1',
+      'MOV_B_1',
+    ]);
+  });
+
+  it('S-09 — sourceId filter is propagated to source-specific journal', async () => {
+    const filteredController = buildTresoconsolidationController(
+      {
+        async getBalances() {
+          return [
+            {
+              caisseId: 'CAISSE_1',
+              caisseLabel: 'Caisse 1',
+              solde: 100,
+              devise: 'XOF',
+              asOf: '2026-01-01',
+              tenantId: 'TENANT_1',
+            },
+          ];
+        },
+        async getJournal(_tenantId, filters) {
+          const rows = [
+            {
+              movementId: 'MOV_C_1',
+              date: '2026-01-01',
+              libelle: 'Caisse 1',
+              montant: 100,
+              devise: 'XOF',
+              tenantId: 'TENANT_1',
+              createdAt: '2026-01-01T10:00:00Z',
+              caisseId: 'CAISSE_1',
+            },
+            {
+              movementId: 'MOV_C_2',
+              date: '2026-01-01',
+              libelle: 'Caisse 2',
+              montant: 50,
+              devise: 'XOF',
+              tenantId: 'TENANT_1',
+              createdAt: '2026-01-01T10:05:00Z',
+              caisseId: 'CAISSE_2',
+            },
+          ];
+          return filters?.caisseId
+            ? rows.filter(row => row.caisseId === filters.caisseId)
+            : rows;
+        },
+      },
+      {
+        async getBalances() {
+          return [
+            {
+              bankAccountId: 'BANK_1',
+              bankName: 'Banque 1',
+              accountReference: 'REF-B1',
+              solde: 300,
+              devise: 'XOF',
+              asOf: '2026-01-01',
+              tenantId: 'TENANT_1',
+            },
+          ];
+        },
+        async getJournal() {
+          return [];
+        },
+      }
+    );
+
+    const res = await filteredController.journal({
+      tenantId: 'TENANT_1',
+      query: {
+        source: 'CAISSE',
+        sourceId: 'CAISSE_1',
+      },
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+    expect(res.body[0].movementId).toBe('MOV_C_1');
+    expect(res.body[0].source).toBe('CAISSE');
+  });
 });

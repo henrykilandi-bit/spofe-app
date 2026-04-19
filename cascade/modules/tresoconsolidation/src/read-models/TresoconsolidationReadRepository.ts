@@ -44,10 +44,12 @@ export class TresoconsolidationReadRepository {
     tenantId: string,
     asOf?: string
   ): Promise<ConsolidatedTreasuryBalanceRM> {
-    const [caisse, banque] = await Promise.all([
+    const [rawCaisse, rawBanque] = await Promise.all([
       this.caisseRM.getBalances(tenantId, asOf),
       this.banqueRM.getBalances(tenantId, asOf),
     ]);
+    const caisse = this.filterByTenant(rawCaisse, tenantId);
+    const banque = this.filterByTenant(rawBanque, tenantId);
     return computeConsolidatedBalance(caisse, banque);
   }
 
@@ -56,10 +58,12 @@ export class TresoconsolidationReadRepository {
     source?: string,
     asOf?: string
   ): Promise<TreasuryBalanceBySourceRM[]> {
-    const [caisse, banque] = await Promise.all([
+    const [rawCaisse, rawBanque] = await Promise.all([
       this.caisseRM.getBalances(tenantId, asOf),
       this.banqueRM.getBalances(tenantId, asOf),
     ]);
+    const caisse = this.filterByTenant(rawCaisse, tenantId);
+    const banque = this.filterByTenant(rawBanque, tenantId);
 
     const result = computeBalanceBySource(caisse, banque);
 
@@ -74,7 +78,8 @@ export class TresoconsolidationReadRepository {
     caisseId?: string,
     asOf?: string
   ): Promise<TreasuryBalanceByCaisseRM[]> {
-    const caisse = await this.caisseRM.getBalances(tenantId, asOf);
+    const rawCaisse = await this.caisseRM.getBalances(tenantId, asOf);
+    const caisse = this.filterByTenant(rawCaisse, tenantId);
     return computeBalanceByCaisse(
       caisseId ? caisse.filter(c => c.caisseId === caisseId) : caisse
     );
@@ -85,7 +90,8 @@ export class TresoconsolidationReadRepository {
     bankAccountId?: string,
     asOf?: string
   ): Promise<TreasuryBalanceByBankAccountRM[]> {
-    const banque = await this.banqueRM.getBalances(tenantId, asOf);
+    const rawBanque = await this.banqueRM.getBalances(tenantId, asOf);
+    const banque = this.filterByTenant(rawBanque, tenantId);
     return computeBalanceByBankAccount(
       bankAccountId
         ? banque.filter(b => b.bankAccountId === bankAccountId)
@@ -102,14 +108,39 @@ export class TresoconsolidationReadRepository {
       sourceId?: string;
     }
   ): Promise<ConsolidatedTreasuryJournalRM[]> {
-    const [caisse, banque] = await Promise.all([
-      this.caisseRM.getJournal(tenantId, filters),
-      this.banqueRM.getJournal(tenantId, filters),
+    const caisseFilters = filters?.source === 'BANQUE'
+      ? undefined
+      : {
+          fromDate: filters?.fromDate,
+          toDate: filters?.toDate,
+          caisseId: filters?.source === 'CAISSE' ? filters?.sourceId : undefined,
+        };
+
+    const banqueFilters = filters?.source === 'CAISSE'
+      ? undefined
+      : {
+          fromDate: filters?.fromDate,
+          toDate: filters?.toDate,
+          bankAccountId: filters?.source === 'BANQUE' ? filters?.sourceId : undefined,
+        };
+
+    const [rawCaisse, rawBanque] = await Promise.all([
+      this.caisseRM.getJournal(tenantId, caisseFilters),
+      this.banqueRM.getJournal(tenantId, banqueFilters),
     ]);
+    const caisse = this.filterByTenant(rawCaisse, tenantId);
+    const banque = this.filterByTenant(rawBanque, tenantId);
 
     return computeConsolidatedJournal(
       filters?.source === 'BANQUE' ? [] : caisse,
       filters?.source === 'CAISSE' ? [] : banque
     );
+  }
+
+  private filterByTenant<T extends { tenantId: string }>(
+    records: readonly T[],
+    tenantId: string
+  ): T[] {
+    return records.filter(record => record.tenantId === tenantId);
   }
 }

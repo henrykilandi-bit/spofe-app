@@ -148,4 +148,42 @@ describe('SYSTEM E2E — precomptabilite', () => {
       expect((res.body[0] as any)[field]).toBeUndefined();
     });
   });
+
+  it('SYSTEM — excludes VALIDATED documents with incomplete metadata from exposure', async () => {
+    const guardian = new PrecomptabiliteGuardian();
+    const createHandler = new CreateDocumentHandler(guardian);
+    const submitHandler = new SubmitForValidationHandler(guardian);
+    const validateHandler = new ValidateDocumentHandler(guardian);
+    const projection = new PrecomptabiliteProjection();
+
+    const created = createHandler.handle({
+      commandId: 'CMD_INCOMPLETE_1',
+      tenantId: 'TENANT_1',
+      actorId: 'ACTOR_1',
+      documentId: 'DOC_INCOMPLETE',
+      documentType: 'SUPPLIER_INVOICE',
+    });
+    projection.apply(created as any);
+
+    const submitted = submitHandler.handle({
+      commandId: 'CMD_INCOMPLETE_2',
+      tenantId: 'TENANT_1',
+      actorId: 'ACTOR_1',
+      documentId: 'DOC_INCOMPLETE',
+      currentStatus: 'DRAFT',
+    });
+    projection.apply(submitted as any);
+
+    const validated = validateHandler.handle({
+      commandId: 'CMD_INCOMPLETE_3',
+      tenantId: 'TENANT_1',
+      actorId: 'ACTOR_1',
+      documentId: 'DOC_INCOMPLETE',
+      currentStatus: 'SUBMITTED',
+    });
+    projection.apply(validated as any);
+
+    const exposure = projection.snapshotExposure();
+    expect(exposure.find(e => e.documentId === 'DOC_INCOMPLETE')).toBeUndefined();
+  });
 });

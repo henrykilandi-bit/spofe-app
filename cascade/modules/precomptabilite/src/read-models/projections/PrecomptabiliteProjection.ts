@@ -102,7 +102,7 @@ export class PrecomptabiliteProjection {
         const doc = this.documents.get(key);
         const ana = this.analytics.get(key);
 
-        if (doc) {
+        if (doc && this.isExposureEligible(doc)) {
           result.push({
             tenantId: doc.tenantId,
             documentId: doc.documentId,
@@ -118,5 +118,13 @@ export class PrecomptabiliteProjection {
     }
 
     return result;
+  }
+
+  private isExposureEligible(doc: PreAccountingDocumentRM): boolean {
+    const hasPositiveAmount =
+      typeof doc.amount === 'number' && Number.isFinite(doc.amount) && doc.amount > 0;
+    const hasCurrency = typeof doc.currency === 'string' && doc.currency.trim().length > 0;
+    const hasReference = typeof doc.reference === 'string' && doc.reference.trim().length > 0;
+    return hasPositiveAmount && hasCurrency && hasReference;
   }
 }

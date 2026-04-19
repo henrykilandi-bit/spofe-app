@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "vitest run",
-    "test:integration": "vitest run tests/system",
+    "test": "vitest run --pool=threads",
+    "test:integration": "vitest run --pool=threads tests/system",
     "build": "tsc -p tsconfig.module.json --noEmit",
-    "guardian": "vitest run tests/guardian"
+    "guardian": "vitest run --pool=threads tests/guardian"
   },
   "main": "./index.ts",
   "exports": {

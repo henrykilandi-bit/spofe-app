@@ -25,3 +25,19 @@ Registre des validations GO/NO-GO pour les changements `db`, `ci`, `runtime`.
 - docs_requises: RELEASE_CHECKLIST_EXPLOITATION.md, PRODUCTION_INCIDENT_MINI_GUIDE.md, governance/RELEASE_GATE_REPORT_2026-04-19.md
 - docs_manquantes: aucune
 - decision: release stable documentee
+## 2026-04-19T23:03:38.915Z | scope=runtime | status=NO_GO
+
+- resume: etape 6 - validation gouvernance sensible apres integration smoke post-release
+- release_gate: ko
+- docs_requises: PRODUCTION_INCIDENT_MINI_GUIDE.md, PRODUCTION.md, USAGE.md
+- docs_manquantes: aucune
+- decision: blocage/no-go
+
+## 2026-04-19T23:12:04.207Z | scope=runtime | status=GO
+
+- resume: etape 6 - validation gouvernance sensible avec outillage stable
+- release_gate: ok
+- docs_requises: PRODUCTION_INCIDENT_MINI_GUIDE.md, PRODUCTION.md, USAGE.md
+- docs_manquantes: aucune
+- decision: validation exploitation accordee
+

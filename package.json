@@ -12,6 +12,7 @@
     "check:repo": "npm test -- --runInBand",
     "check:modules:extended": "node tools/operations/check-modules-extended.mjs",
     "release:gate": "node tools/operations/release-gate-final.mjs",
+    "preprod:mirror:check": "node tools/operations/preprod-mirror-check.mjs --staging-env .env.staging.example --production-env .env.production.example --report governance/PREPROD_MIRROR_LATEST.json",
     "ci:exploitation:precheck": "node tools/operations/ci-exploitation-gh.mjs precheck",
     "ci:exploitation:dispatch": "node tools/operations/ci-exploitation-gh.mjs dispatch",
     "test:watch": "jest --watch",

@@ -1,0 +1,1 @@
+{"version":3,"file":"ValidateOrder.d.ts","sourceRoot":"","sources":["../../../src/application/commands/ValidateOrder.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,aAAa;IAC5B,OAAO,EAAE,MAAM,CAAC;IAChB,aAAa,EAAE,OAAO,CAAC;IACvB,KAAK,EAAE;QACL,OAAO,EAAE,MAAM,CAAC;QAChB,QAAQ,EAAE,MAAM,CAAC;KAClB,CAAC;CACH"}

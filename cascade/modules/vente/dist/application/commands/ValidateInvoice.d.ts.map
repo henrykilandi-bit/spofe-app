@@ -1,0 +1,1 @@
+{"version":3,"file":"ValidateInvoice.d.ts","sourceRoot":"","sources":["../../../src/application/commands/ValidateInvoice.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,eAAe;IAC9B,SAAS,EAAE,MAAM,CAAC;IAClB,aAAa,EAAE,OAAO,CAAC;IACvB,KAAK,EAAE;QACL,OAAO,EAAE,MAAM,CAAC;QAChB,QAAQ,EAAE,MAAM,CAAC;KAClB,CAAC;CACH"}

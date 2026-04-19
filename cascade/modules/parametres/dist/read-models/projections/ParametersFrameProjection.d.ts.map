@@ -1,0 +1,1 @@
+{"version":3,"file":"ParametersFrameProjection.d.ts","sourceRoot":"","sources":["../../../src/read-models/projections/ParametersFrameProjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,yCAAyC,CAAC;AAC1E,OAAO,EAAE,iBAAiB,EAAE,MAAM,+BAA+B,CAAC;AAQlE,qBAAa,yBAAyB;IACpC,MAAM,CAAC,OAAO,CAAC,KAAK,EAAE,eAAe,GAAG,iBAAiB;CAqF1D"}

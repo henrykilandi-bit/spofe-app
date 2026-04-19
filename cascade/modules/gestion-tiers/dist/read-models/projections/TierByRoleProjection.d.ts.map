@@ -1,0 +1,1 @@
+{"version":3,"file":"TierByRoleProjection.d.ts","sourceRoot":"","sources":["../../../src/read-models/projections/TierByRoleProjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,gCAAgC,CAAC;AAC3D,OAAO,EAAE,cAAc,EAAE,MAAM,0BAA0B,CAAC;AAE1D,qBAAa,oBAAoB;IAC/B,OAAO,CAAC,QAAQ,CAAC,KAAK,CAAwB;IAE9C,KAAK,CAAC,KAAK,EAAE,SAAS,GAAG,IAAI;IAO7B,MAAM,IAAI,cAAc,EAAE;CAG3B"}

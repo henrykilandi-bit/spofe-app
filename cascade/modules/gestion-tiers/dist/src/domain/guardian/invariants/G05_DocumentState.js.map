@@ -1,0 +1,1 @@
+{"version":3,"file":"G05_DocumentState.js","sourceRoot":"","sources":["../../../../../src/domain/guardian/invariants/G05_DocumentState.ts"],"names":[],"mappings":";;;AACA,oDAAiD;AAEjD,MAAa,iBAAiB;IAC5B,QAAQ,CAAC,GAAoB;QAC3B,IAAI,GAAG,CAAC,QAAQ,CAAC,KAAK,KAAK,WAAW,EAAE,CAAC;YACvC,MAAM,IAAI,6BAAa,CACrB,4BAA4B,EAC5B,4BAA4B,CAC7B,CAAC;QACJ,CAAC;IACH,CAAC;CACF;AATD,8CASC"}

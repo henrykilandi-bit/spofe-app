@@ -1,0 +1,1 @@
+{"version":3,"file":"BankDocumentProjection.d.ts","sourceRoot":"","sources":["../../../../src/read-models/projections/BankDocumentProjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,gBAAgB,EAAE,MAAM,2BAA2B,CAAC;AAE7D,qBAAa,sBAAsB;IACjC,OAAO,CAAC,KAAK,EAAE,GAAG,GAAG,gBAAgB,GAAG,IAAI;CAa7C"}

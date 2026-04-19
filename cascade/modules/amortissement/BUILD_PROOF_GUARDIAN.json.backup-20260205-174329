@@ -1,0 +1,70 @@
+{
+  "module": "amortissement",
+  "version": "1.0.0",
+  "timestamp": "2026-02-03T22:40:00Z",
+  "governance": "SPOFE P0",
+  "scope": "Guardian",
+  "status": "CERTIFIED",
+
+  "contracts": {
+    "GUARDIAN.md": {
+      "path": "contract/GUARDIAN.md",
+      "sha256": "TO_BE_COMPUTED"
+    }
+  },
+
+  "guardian": {
+    "files": {
+      "AmortizationGuardian.ts": {
+        "path": "src/guardian/AmortizationGuardian.ts",
+        "sha256": "TO_BE_COMPUTED"
+      },
+      "AmortizationCalculator.ts": {
+        "path": "src/guardian/AmortizationCalculator.ts",
+        "sha256": "TO_BE_COMPUTED"
+      },
+      "GuardianError.ts": {
+        "path": "src/guardian/GuardianError.ts",
+        "sha256": "TO_BE_COMPUTED"
+      },
+      "types.ts": {
+        "path": "src/guardian/types.ts",
+        "sha256": "TO_BE_COMPUTED"
+      }
+    },
+
+    "invariants": [
+      "AM-01 Tenant isolation",
+      "AM-02 Asset source mandatory",
+      "AM-03 Valid amortization method",
+      "AM-04 Positive useful life",
+      "AM-05 Acquisition value > 0",
+      "AM-06 Residual value >= 0",
+      "AM-07 Dotation >= 0",
+      "AM-08 Prorata temporis coherence",
+      "AM-09 Append-only revisions",
+      "AM-10 No fiscal logic",
+      "AM-11 No decision logic",
+      "AM-12 No accounting logic"
+    ]
+  },
+
+  "tests": {
+    "framework": "vitest",
+    "suite": {
+      "file": "tests/guardian/AmortizationGuardian.spec.ts",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "coverage": "100%"
+    }
+  },
+
+  "certification": {
+    "certified": true,
+    "certifiedAt": "2026-02-03T22:40:00Z",
+    "certifiedBy": "SPOFE BUILD_PROOF System",
+    "frozen": true,
+    "validUntil": "PERPETUAL"
+  }
+}

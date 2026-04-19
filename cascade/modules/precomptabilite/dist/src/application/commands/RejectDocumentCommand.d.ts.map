@@ -1,0 +1,1 @@
+{"version":3,"file":"RejectDocumentCommand.d.ts","sourceRoot":"","sources":["../../../../src/application/commands/RejectDocumentCommand.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,qBAAqB;IACpC,SAAS,EAAE,MAAM,CAAC;IAClB,QAAQ,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,CAAC;IAEhB,UAAU,EAAE,MAAM,CAAC;IACnB,aAAa,EAAE,WAAW,CAAC;IAC3B,MAAM,CAAC,EAAE,MAAM,CAAC;CACjB"}

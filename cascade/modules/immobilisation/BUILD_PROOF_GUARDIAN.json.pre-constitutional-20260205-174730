@@ -1,0 +1,72 @@
+{
+  "module": "immobilisation",
+  "version": "1.0.0",
+  "timestamp": "2026-02-03T17:00:00Z",
+  "governance": "SPOFE P0",
+  "status": "CERTIFIED",
+  "moduleType": "Primary source (write)",
+  "referential": "OHADA (classe 2)",
+  "contracts": {
+    "SCOPE.md": {
+      "sha256": "B2CD209263279E255424E5C4CCB86F6F159BB3472EA23E4D75070108BA5D981A",
+      "path": "contract/SCOPE.md"
+    },
+    "GUARDIAN.md": {
+      "sha256": "9E27A95967136678A04F3A2A4E6CA0F05096928B00158B3A0843E64885A50B92",
+      "path": "contract/GUARDIAN.md"
+    },
+    "COMMANDS_EVENTS.md": {
+      "sha256": "F04841868CC3693CC5A701ED17091F053859776FE3D60C6FAABF2741261F2F83",
+      "path": "contract/COMMANDS_EVENTS.md"
+    },
+    "READ_MODELS.md": {
+      "sha256": "F65C42AD62F3E271F9ACC149AB24FA07B4A12D45F940BE8358B1C09C23F4F09D",
+      "path": "contract/READ_MODELS.md"
+    },
+    "API_READ_ONLY.md": {
+      "sha256": "B9F6301EFC5EA266A28397CC2D0CB8DDF94C8734EC70E3E124A09981894BC2B0",
+      "path": "contract/API_READ_ONLY.md"
+    }
+  },
+  "guardian": {
+    "ImmobilisationGuardian.ts": {
+      "sha256": "E9194C51A748AFFE0A78C3AF1455673235985353B749F76B80CE159DD1F637F8",
+      "path": "src/guardian/ImmobilisationGuardian.ts"
+    },
+    "invariants": [
+      "G01 - TenantUnique: Toute immobilisation appartient à un tenant unique",
+      "G02 - CategorieOHADA: Toute immobilisation est rattachée à une catégorie OHADA valide",
+      "G03 - NoComputations: Aucun calcul comptable n'est autorisé",
+      "G04 - DocumentRequired: Toute immobilisation repose sur un document validé",
+      "G05 - AppendOnly: Aucun événement modifiable ou supprimable",
+      "G06 - ServiceAfterAcquisition: Mise en service postérieure à l'acquisition",
+      "G07 - DisposeAfterService: Sortie postérieure à la mise en service",
+      "G08 - ActorRequired: Un acteur SPOFE est obligatoire",
+      "G09 - NoCrossTenant: Interdiction de cross-tenant",
+      "G10 - NoAccountingWrite: Interdiction d'écriture comptable",
+      "G11 - NoAmortisation: Interdiction de logique d'amortissement",
+      "G12 - NoModificationAfterDispose: Interdiction de modification après sortie"
+    ]
+  },
+  "tests": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "coverage": "100%",
+    "suites": {
+      "guardian": {
+        "total": 10,
+        "passed": 10,
+        "files": [
+          "tests/guardian/ImmobilisationGuardian.spec.ts"
+        ]
+      }
+    }
+  },
+  "certification": {
+    "certifiedBy": "SPOFE Guardian System",
+    "certificationDate": "2026-02-03",
+    "level": "P0 (Constitutional)",
+    "mutable": false
+  }
+}

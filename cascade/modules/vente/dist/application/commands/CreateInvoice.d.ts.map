@@ -1,0 +1,1 @@
+{"version":3,"file":"CreateInvoice.d.ts","sourceRoot":"","sources":["../../../src/application/commands/CreateInvoice.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,aAAa;IAC5B,QAAQ,EAAE,MAAM,CAAC;IACjB,kBAAkB,EAAE,OAAO,CAAC;IAC5B,KAAK,EAAE;QACL,OAAO,EAAE,MAAM,CAAC;QAChB,QAAQ,EAAE,MAAM,CAAC;KAClB,CAAC;CACH"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"QueryParams.d.ts","sourceRoot":"","sources":["../../../../src/api/dtos/QueryParams.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC7B,QAAQ,CAAC,EAAE,MAAM,CAAC;IAClB,MAAM,CAAC,EAAE,MAAM,CAAC;CACjB;AAED,MAAM,WAAW,gBAAiB,SAAQ,cAAc;IACtD,QAAQ,EAAE,MAAM,CAAC;IACjB,MAAM,EAAE,MAAM,CAAC;IACf,aAAa,EAAE,MAAM,CAAC;CACvB"}

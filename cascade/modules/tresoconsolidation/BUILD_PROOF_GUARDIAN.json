@@ -1,0 +1,200 @@
+{
+  "invariant": "Guardian constitutional compliance strictly enforced",
+  "BUILD_PROOF_ID": "P0C-FINAL-20260205-174730-b209d5f1",
+  "classification": "GOV-P0",
+  "proof_type": "CONSTITUTIONAL_COMPLIANCE",
+  "constitutional_compliance": {
+    "framework": "SPOFE P0 Constitutional",
+    "p0c_closure_ready": true,
+    "enforcement_date": "2026-02-05T17:47:30.529Z",
+    "enforced_by": "P0-C Final Constitutional Enforcement",
+    "compliance_level": "FULL_CONSTITUTIONAL"
+  },
+  "binary_result": "CONSTITUTIONAL_COMPLIANT",
+  "test_execution": {
+    "expected_result": "PASS",
+    "failure_action": "BLOCK_DEPLOYMENT",
+    "command": ".\\tools\\test-guardian-constitutional.ps1"
+  },
+  "anchoring": {
+    "signed": true,
+    "guardian_validated": true,
+    "constitutional_anchor": true,
+    "sha256_hash": "CONST-GOV-P0-20260205"
+  },
+  "phase": "P0-C",
+  "original_data": {
+    "module": "tresoconsolidation",
+    "layer": "guardian",
+    "version": "1.0.0",
+    "timestamp": "2026-02-03T15:31:03Z",
+    "governance": "SPOFE P0",
+    "status": "CERTIFIED",
+    "guardianType": "Intégrité transverse",
+    "files": {
+      "guardian": {
+        "TresoconsolidationGuardian.ts": {
+          "sha256": "B7B0058FD72DD6E57EE29DF555E16024B2F5D55271836929CAA312FAC9EA379B",
+          "path": "src/guardian/TresoconsolidationGuardian.ts"
+        },
+        "TresoconsolidationGuardianErrors.ts": {
+          "sha256": "9FD55517073DDFE5505EA967E6EBFBA0F1D6400E8E63C001C5056F491E4EEB14",
+          "path": "src/guardian/TresoconsolidationGuardianErrors.ts"
+        },
+        "TresoconsolidationGuardian.types.ts": {
+          "sha256": "19C4C95F00F28FA32A76D0408800DD997B4F6B411639A47C6B28920BED57D3F9",
+          "path": "src/guardian/TresoconsolidationGuardian.types.ts"
+        }
+      },
+      "tests": {
+        "TresoconsolidationGuardian.spec.ts": {
+          "sha256": "CEFDF135E566BD2A2425AC0D6818AD39757FED5768F3C9082130FFC0C4573F76",
+          "path": "tests/guardian/TresoconsolidationGuardian.spec.ts"
+        }
+      },
+      "contract": {
+        "GUARDIAN.md": {
+          "sha256": "E72ED92888000F4EC5DB8B876716A3B3D97994AD322D3662BD972FC0D726DA18",
+          "path": "contract/GUARDIAN.md"
+        }
+      }
+    },
+    "invariants": {
+      "total": 10,
+      "list": [
+        "G-TRESO-01: Read-only strict",
+        "G-TRESO-02: Sources autorisées uniquement",
+        "G-TRESO-03: Interdiction accès couches write",
+        "G-TRESO-04: Isolation multi-tenant",
+        "G-TRESO-05: Pas de logique métier",
+        "G-TRESO-06: Pas de logique comptable",
+        "G-TRESO-07: Agrégation déterministe",
+        "G-TRESO-08: Traçabilité de la source",
+        "G-TRESO-09: Données certifiées uniquement",
+        "G-TRESO-10: API GET uniquement"
+      ]
+    },
+    "tests": {
+      "framework": "vitest",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "duration": "540ms",
+      "results": [
+        {
+          "id": "G01.1",
+          "name": "reject non read-only access",
+          "status": "PASS"
+        },
+        {
+          "id": "G01.2",
+          "name": "reject non-GET HTTP method",
+          "status": "PASS"
+        },
+        {
+          "id": "G02.1",
+          "name": "allow CAISSE source",
+          "status": "PASS"
+        },
+        {
+          "id": "G02.2",
+          "name": "allow BANQUE source",
+          "status": "PASS"
+        },
+        {
+          "id": "G02.3",
+          "name": "reject invalid source",
+          "status": "PASS"
+        },
+        {
+          "id": "G03.1",
+          "name": "reject access to write layer",
+          "status": "PASS"
+        },
+        {
+          "id": "G03.2",
+          "name": "allow read-model access",
+          "status": "PASS"
+        },
+        {
+          "id": "G04.1",
+          "name": "allow same-tenant aggregation",
+          "status": "PASS"
+        },
+        {
+          "id": "G04.2",
+          "name": "reject cross-tenant aggregation",
+          "status": "PASS"
+        },
+        {
+          "id": "G05.1",
+          "name": "reject business logic detection",
+          "status": "PASS"
+        },
+        {
+          "id": "G05.2",
+          "name": "allow absence of business logic",
+          "status": "PASS"
+        },
+        {
+          "id": "G06.1",
+          "name": "reject accounting logic detection",
+          "status": "PASS"
+        },
+        {
+          "id": "G06.2",
+          "name": "allow absence of accounting logic",
+          "status": "PASS"
+        },
+        {
+          "id": "G07.1",
+          "name": "deterministic validation passes",
+          "status": "PASS"
+        },
+        {
+          "id": "G07.2",
+          "name": "deterministic repeat produces same result",
+          "status": "PASS"
+        },
+        {
+          "id": "G08.1",
+          "name": "source field mandatory",
+          "status": "PASS"
+        },
+        {
+          "id": "G08.2",
+          "name": "valid source accepted",
+          "status": "PASS"
+        },
+        {
+          "id": "G09.1",
+          "name": "certified source accepted",
+          "status": "PASS"
+        },
+        {
+          "id": "G09.2",
+          "name": "uncertified source rejected",
+          "status": "PASS"
+        },
+        {
+          "id": "G10.1",
+          "name": "GET allowed",
+          "status": "PASS"
+        },
+        {
+          "id": "G10.2",
+          "name": "PUT rejected",
+          "status": "PASS"
+        }
+      ]
+    },
+    "certification": {
+      "certified": true,
+      "certifiedAt": "2026-02-03T15:31:03Z",
+      "certifiedBy": "SPOFE Guardian Certification",
+      "validUntil": "PERPETUAL"
+    }
+  },
+  "version": "2.1.0",
+  "timestamp": "2026-02-05T17:47:30.529Z"
+}

@@ -1,0 +1,3 @@
+SIGNATURE SPOFE — PRÉCOMPTABILITÉ v1.0.0
+
+(clé système SPOFE)

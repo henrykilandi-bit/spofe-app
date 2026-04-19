@@ -1,0 +1,10 @@
+import { BudgetHypothesis, BudgetLine } from '../../guardian/types';
+export interface UpdateBudgetCommand {
+    commandId: string;
+    tenantId: string;
+    actorId: string;
+    budgetId: string;
+    hypotheses?: BudgetHypothesis[];
+    lines?: BudgetLine[];
+}
+//# sourceMappingURL=UpdateBudgetCommand.d.ts.map

@@ -1,0 +1,4 @@
+export * from './PreAccountingDocumentRM';
+export * from './PreAccountingStatusRM';
+export * from './PreAccountingAnalyticsRM';
+export * from './PreAccountingExposureRM';

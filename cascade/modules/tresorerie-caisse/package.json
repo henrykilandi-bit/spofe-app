@@ -1,0 +1,19 @@
+{
+  "name": "@spofe/tresorerie-caisse",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:integration": "vitest run tests/system",
+    "build": "tsc -p tsconfig.module.json --noEmit",
+    "guardian": "vitest run tests/guardian"
+  },
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./domain": "./domain/index.ts",
+    "./write": "./write/index.ts",
+    "./guardian": "./guardian/index.ts"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "module": "gestion-tiers",
+  "version": "v1.0.0",
+  "scope": "API_READ_MODELS",
+  "buildProofType": "STRUCTURAL_CERTIFICATION",
+  "timestamp": "2026-02-03T10:00:00Z",
+  "governance": {
+    "accountingCharter": "CHARTE_SPOFE_REFERENTIEL_COMPTABLE_P0",
+    "defaultReferential": "OHADA",
+    "compliance": "CONFIRMED"
+  },
+  "artifacts": {
+    "readModels": [
+      "TierSummaryProjection",
+      "TierByStatusProjection",
+      "TierByRoleProjection",
+      "TierContactProjection",
+      "TierAuditProjection"
+    ],
+    "views": [
+      "TierSummaryView",
+      "TierByStatusView",
+      "TierByRoleView",
+      "TierContactView",
+      "TierAuditView"
+    ],
+    "api": [
+      "TierController",
+      "ApiContainer",
+      "HttpTypes"
+    ]
+  },
+  "checks": {
+    "typescriptCompilation": "PASS",
+    "mutationSurface": "NONE",
+    "guardianDependency": "NONE",
+    "writeAccess": "NONE",
+    "eventDrivenProjections": "PASS",
+    "frameworkAgnostic": "PASS",
+    "tenantIsolation": "PASS"
+  },
+  "validations": {
+    "readModelsAreEventDriven": true,
+    "apiIsReadOnly": true,
+    "noBusinessLogic": true,
+    "noMutations": true,
+    "noGuardianAccess": true,
+    "frameworkIndependent": true
+  },
+  "structure": {
+    "src/read-models/": {
+      "models/": 5,
+      "projections/": 5
+    },
+    "src/api/": {
+      "http/": 2,
+      "wiring/": 1
+    }
+  },
+  "conformity": {
+    "READ_MODELS_md": "COMPLIANT",
+    "API_READ_ONLY_md": "COMPLIANT",
+    "SPOFE_P0": "COMPLIANT"
+  },
+  "status": "SUCCESS"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@spofe/tresoconsolidation",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SPOFE Tresoconsolidation - Treasury consolidation and reporting module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src tests --ext .ts",
+    "clean": "rm -rf dist coverage"
+  },
+  "dependencies": {
+    "@jest/globals": "^29.7.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.49.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
+  },
+  "keywords": ["spofe", "treasury", "consolidation", "p0", "guardian"],
+  "author": "SPOFE Build System",
+  "license": "PROPRIETARY"
+}

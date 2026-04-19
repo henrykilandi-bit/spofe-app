@@ -1,0 +1,43 @@
+{
+  "name": "@spofe/gestion-tiers",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SPOFE Module: Gestion des Tiers - Domain skeleton with frozen Guardian",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test:guardian": "jest --config jest.config.guardian-only.cjs",
+    "test:guardian:watch": "jest --config jest.config.guardian-only.cjs --watch",
+    "test:guardian:coverage": "jest --config jest.config.guardian-only.cjs --coverage",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.5.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@spofe/core": "^2.1.0"
+  },
+  "keywords": [
+    "spofe",
+    "domain",
+    "gestion-tiers",
+    "guardian"
+  ],
+  "author": "SPOFE Development Team",
+  "license": "PROPRIETARY",
+  "repository": {
+    "type": "git",
+    "url": "internal"
+  }
+}

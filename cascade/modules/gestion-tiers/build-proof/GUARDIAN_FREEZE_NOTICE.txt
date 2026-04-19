@@ -1,0 +1,53 @@
+🧊 GUARDIAN GESTION-TIERS — OFFICIALLY FROZEN
+═══════════════════════════════════════════════
+
+📅 Freeze Date: 2026-02-03T14:38:00Z
+🔒 Module: gestion-tiers v1.0.0 Guardian
+🛡️ Scope: Guardian Layer Only
+🎯 Status: PRODUCTION READY
+
+✅ BUILD_PROOF GUARDIAN COMPLETED
+─────────────────────────────────
+
+• Tests: 46/46 PASSED ✅
+• Coverage: 100% statements/branches/functions/lines ✅
+• Invariants: 10/10 implemented and tested ✅
+• Isolation: COMPLETE ✅
+• Signature: VERIFIED ✅
+
+🔐 CRYPTOGRAPHIC VERIFICATION
+───────────────────────────
+Hash: 644B1C521E645AEE71C135DD7FA04449CC65DBE118924984CEE8E626D8244EFE
+Algorithm: SHA256
+Verification: ✔ PASSED
+
+🧊 FREEZE RULES APPLIED
+──────────────────────
+
+❌ FORBIDDEN POST-FREEZE:
+- Modify any invariant (G01-G10)
+- Add/remove Guardian rules  
+- Change error codes
+- Alter Guardian behavior
+- Update test logic
+
+✅ ALLOWED POST-FREEZE:
+- Use Guardian in application layer
+- Connect to infrastructure
+- Build read-models
+- Create APIs
+- System integration
+
+⚠️  EVOLUTION POLICY:
+Any Guardian modification requires version bump to v1.1+ 
+with full re-validation cycle.
+
+🚀 NEXT STEPS
+────────────
+Guardian is now frozen and ready for:
+✅ Application layer integration
+✅ Infrastructure binding
+✅ Production deployment
+✅ System-level testing
+
+The Guardian core is now IMMUTABLE and CERTIFIED for SPOFE v2.1.0 production use.

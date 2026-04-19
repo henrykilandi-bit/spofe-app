@@ -1,0 +1,20 @@
+{
+  "name": "@spofe/gestion-commandes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "jest --config jest.config.cjs --runInBand",
+    "test:integration": "jest --config jest.config.cjs --runInBand",
+    "build": "tsc -p tsconfig.module.json --noEmit",
+    "guardian": "jest --config jest.config.cjs --runInBand"
+  },
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./domain": "./domain/index.ts",
+    "./write": "./write/index.ts",
+    "./guardian": "./guardian/index.ts",
+    "./read-models": "./read-models/index.ts"
+  }
+}

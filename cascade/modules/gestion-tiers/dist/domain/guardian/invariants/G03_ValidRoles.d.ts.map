@@ -1,0 +1,1 @@
+{"version":3,"file":"G03_ValidRoles.d.ts","sourceRoot":"","sources":["../../../../src/domain/guardian/invariants/G03_ValidRoles.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAY,MAAM,oBAAoB,CAAC;AAW/D,qBAAa,cAAc;IACzB,QAAQ,CAAC,GAAG,EAAE,eAAe,GAAG,IAAI;CAmBrC"}

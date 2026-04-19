@@ -1,0 +1,104 @@
+{
+  "buildProof": {
+    "module": "gestion-tiers",
+    "scope": "GUARDIAN",
+    "version": "v1.0.0",
+    "timestamp": "2026-02-03T14:35:00Z",
+    "builder": "SPOFE Build System v2.1.0",
+    "environment": {
+      "node": "20.x",
+      "typescript": "5.x",
+      "jest": "29.x"
+    }
+  },
+  "coverage": {
+    "statements": 100,
+    "branches": 100,
+    "functions": 100,
+    "lines": 100,
+    "threshold": "100%",
+    "status": "PASSED"
+  },
+  "tests": {
+    "guardian": {
+      "suites": 11,
+      "tests": 46,
+      "status": "PASSED",
+      "duration": "13.716s",
+      "breakdown": {
+        "G01_UniqueTier": { "tests": 4, "status": "PASSED" },
+        "G02_LegalIdentity": { "tests": 4, "status": "PASSED" },
+        "G03_ValidRoles": { "tests": 5, "status": "PASSED" },
+        "G04_DocumentDriven": { "tests": 3, "status": "PASSED" },
+        "G05_DocumentState": { "tests": 3, "status": "PASSED" },
+        "G06_TierStatus": { "tests": 4, "status": "PASSED" },
+        "G07_AppendOnly": { "tests": 4, "status": "PASSED" },
+        "G08_TenantIsolation": { "tests": 3, "status": "PASSED" },
+        "G09_ActorRequired": { "tests": 4, "status": "PASSED" },
+        "G10_NoFinancialLogic": { "tests": 5, "status": "PASSED" },
+        "TierGuardian_Integration": { "tests": 7, "status": "PASSED" }
+      }
+    }
+  },
+  "invariants": {
+    "implemented": [
+      "G01_UniqueTier",
+      "G02_LegalIdentity", 
+      "G03_ValidRoles",
+      "G04_DocumentDriven",
+      "G05_DocumentState",
+      "G06_TierStatus",
+      "G07_AppendOnly",
+      "G08_TenantIsolation",
+      "G09_ActorRequired",
+      "G10_NoFinancialLogic"
+    ],
+    "count": 10,
+    "coverage": "100%"
+  },
+  "quality": {
+    "isolation": "COMPLETE",
+    "dependencies": {
+      "external": 0,
+      "infrastructure": 0,
+      "financial_logic": 0
+    },
+    "architecture": {
+      "append_only": "ENFORCED",
+      "tenant_isolation": "ENFORCED", 
+      "actor_required": "ENFORCED",
+      "document_driven": "ENFORCED"
+    }
+  },
+  "scope": {
+    "included": [
+      "src/domain/guardian/GuardianContext.ts",
+      "src/domain/guardian/GuardianError.ts", 
+      "src/domain/guardian/TierGuardian.ts",
+      "src/domain/guardian/invariants/*.ts"
+    ],
+    "excluded": [
+      "application/*",
+      "infrastructure/*",
+      "api/*",
+      "read-models/*"
+    ]
+  },
+  "validation": {
+    "audit_status": "PASSED",
+    "corrections_applied": "ALL_P1_FIXED",
+    "reserves": "NONE",
+    "debt": "NONE",
+    "contractual_alignment": "100%"
+  },
+  "status": "SUCCESS",
+  "ready_for_production": true,
+  "frozen": true,
+  "freeze_timestamp": "2026-02-03T14:38:00Z",
+  "signature": {
+    "hash": "644B1C521E645AEE71C135DD7FA04449CC65DBE118924984CEE8E626D8244EFE",
+    "algorithm": "SHA256",
+    "signed_by": "SPOFE Build System v2.1.0",
+    "signed_at": "2026-02-03T14:36:00Z"
+  }
+}

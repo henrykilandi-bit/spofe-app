@@ -1,0 +1,1 @@
+{"version":3,"file":"BudgetUpdated.d.ts","sourceRoot":"","sources":["../../../../src/application/events/BudgetUpdated.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,aAAa;IAC5B,IAAI,EAAE,eAAe,CAAC;IACtB,OAAO,EAAE;QACP,QAAQ,EAAE,MAAM,CAAC;QACjB,QAAQ,EAAE,MAAM,CAAC;QACjB,UAAU,EAAE,MAAM,CAAC;KACpB,CAAC;CACH"}

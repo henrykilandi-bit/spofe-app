@@ -1,0 +1,1 @@
+{"version":3,"file":"DocumentSubmitted.d.ts","sourceRoot":"","sources":["../../../../src/application/events/DocumentSubmitted.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,iBAAiB;IAChC,IAAI,EAAE,mBAAmB,CAAC;IAC1B,OAAO,EAAE;QACP,QAAQ,EAAE,MAAM,CAAC;QACjB,UAAU,EAAE,MAAM,CAAC;QACnB,UAAU,EAAE,MAAM,CAAC;KACpB,CAAC;CACH"}

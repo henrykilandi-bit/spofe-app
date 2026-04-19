@@ -1,0 +1,1 @@
+{"version":3,"file":"BudgetClosed.d.ts","sourceRoot":"","sources":["../../../../src/application/events/BudgetClosed.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,YAAY;IAC3B,IAAI,EAAE,cAAc,CAAC;IACrB,OAAO,EAAE;QACP,QAAQ,EAAE,MAAM,CAAC;QACjB,QAAQ,EAAE,MAAM,CAAC;QACjB,UAAU,EAAE,MAAM,CAAC;KACpB,CAAC;CACH"}

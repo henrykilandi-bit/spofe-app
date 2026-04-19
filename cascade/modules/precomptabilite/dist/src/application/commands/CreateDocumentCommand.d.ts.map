@@ -1,0 +1,1 @@
+{"version":3,"file":"CreateDocumentCommand.d.ts","sourceRoot":"","sources":["../../../../src/application/commands/CreateDocumentCommand.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,sBAAsB,CAAC;AAEpD,MAAM,WAAW,qBAAqB;IACpC,SAAS,EAAE,MAAM,CAAC;IAClB,QAAQ,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,CAAC;IAEhB,UAAU,EAAE,MAAM,CAAC;IACnB,YAAY,EAAE,YAAY,CAAC;CAC5B"}

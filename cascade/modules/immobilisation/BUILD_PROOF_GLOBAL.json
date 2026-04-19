@@ -1,0 +1,179 @@
+{
+  "invariant": "System operational integrity maintained under constitutional framework",
+  "BUILD_PROOF_ID": "P0C-FINAL-20260205-174730-34d4a9ac",
+  "classification": "OPS-P0",
+  "proof_type": "CONSTITUTIONAL_COMPLIANCE",
+  "constitutional_compliance": {
+    "framework": "SPOFE P0 Constitutional",
+    "p0c_closure_ready": true,
+    "enforcement_date": "2026-02-05T17:47:30.481Z",
+    "enforced_by": "P0-C Final Constitutional Enforcement",
+    "compliance_level": "FULL_CONSTITUTIONAL"
+  },
+  "binary_result": "CONSTITUTIONAL_COMPLIANT",
+  "test_execution": {
+    "expected_result": "PASS",
+    "failure_action": "BLOCK_DEPLOYMENT",
+    "command": "npm test -- --grep 'constitutional.operational'"
+  },
+  "anchoring": {
+    "signed": true,
+    "guardian_validated": true,
+    "constitutional_anchor": true,
+    "sha256_hash": "CONST-OPS-P0-20260205"
+  },
+  "phase": "P0-C",
+  "original_data": {
+    "module": "immobilisation",
+    "version": "1.0.0",
+    "timestamp": "2026-02-03T17:45:00Z",
+    "governance": "SPOFE P0",
+    "status": "CERTIFIED",
+    "moduleType": "Primary source (write)",
+    "referential": "OHADA (classe 2)",
+    "contracts": {
+      "SCOPE.md": {
+        "sha256": "B2CD209263279E255424E5C4CCB86F6F159BB3472EA23E4D75070108BA5D981A",
+        "path": "contract/SCOPE.md"
+      },
+      "GUARDIAN.md": {
+        "sha256": "9E27A95967136678A04F3A2A4E6CA0F05096928B00158B3A0843E64885A50B92",
+        "path": "contract/GUARDIAN.md"
+      },
+      "COMMANDS_EVENTS.md": {
+        "sha256": "F04841868CC3693CC5A701ED17091F053859776FE3D60C6FAABF2741261F2F83",
+        "path": "contract/COMMANDS_EVENTS.md"
+      },
+      "READ_MODELS.md": {
+        "sha256": "F65C42AD62F3E271F9ACC149AB24FA07B4A12D45F940BE8358B1C09C23F4F09D",
+        "path": "contract/READ_MODELS.md"
+      },
+      "API_READ_ONLY.md": {
+        "sha256": "B9F6301EFC5EA266A28397CC2D0CB8DDF94C8734EC70E3E124A09981894BC2B0",
+        "path": "contract/API_READ_ONLY.md"
+      }
+    },
+    "guardian": {
+      "types.ts": {
+        "sha256": "F354B234CE4AFB13C8988CD260F5F616F00554FB5958D89B77FA2754A046A5AA",
+        "path": "src/guardian/types.ts"
+      },
+      "GuardianError.ts": {
+        "sha256": "6F4A49EDC874549620B6DD52B79379B673FADFC81CD0C3CD3A00DE968D57BD07",
+        "path": "src/guardian/GuardianError.ts"
+      },
+      "ImmobilisationGuardian.ts": {
+        "sha256": "E9194C51A748AFFE0A78C3AF1455673235985353B749F76B80CE159DD1F637F8",
+        "path": "src/guardian/ImmobilisationGuardian.ts"
+      },
+      "invariants": [
+        "G01 - TenantUnique: Toute immobilisation appartient à un tenant unique",
+        "G02 - CategorieOHADA: Toute immobilisation est rattachée à une catégorie OHADA valide",
+        "G03 - NoComputations: Aucun calcul comptable n'est autorisé",
+        "G04 - DocumentRequired: Toute immobilisation repose sur un document validé",
+        "G05 - AppendOnly: Aucun événement modifiable ou supprimable",
+        "G06 - ServiceAfterAcquisition: Mise en service postérieure à l'acquisition",
+        "G07 - DisposeAfterService: Sortie postérieure à la mise en service",
+        "G08 - ActorRequired: Un acteur SPOFE est obligatoire",
+        "G09 - NoCrossTenant: Interdiction de cross-tenant",
+        "G10 - NoAccountingWrite: Interdiction d'écriture comptable",
+        "G11 - NoAmortisation: Interdiction de logique d'amortissement",
+        "G12 - NoModificationAfterDispose: Interdiction de modification après sortie"
+      ]
+    },
+    "readModels": {
+      "types": {
+        "types.ts": {
+          "sha256": "62D02E5426E36B86C59A9D1A1480E42EAC4D90AB1DA921C87B92EE629500E3E6",
+          "path": "src/read-models/types.ts"
+        }
+      },
+      "ports": {
+        "ImmobilisationReadRepository.ts": {
+          "sha256": "FBE2532BFBE3483E6037360B80F6B01A6E7619231688D41CA11AEE807511C02A",
+          "path": "src/read-models/ports/ImmobilisationReadRepository.ts"
+        },
+        "index.ts": {
+          "sha256": "7ED958586A44BC4262F6BA97A11644CA2655FCCE3D8DD84DEBE1E65CE2DAD625",
+          "path": "src/read-models/ports/index.ts"
+        }
+      },
+      "projections": {
+        "ImmobilisationProjection.ts": {
+          "sha256": "1373C9B60EB99B40BEB14AF97FA3C684BA02870F92A0EAD92DF5EBC642EFEBB7",
+          "path": "src/read-models/ImmobilisationProjection.ts"
+        }
+      },
+      "repository": {
+        "InMemoryImmobilisationReadRepository.ts": {
+          "sha256": "BE01F92BD308DF0C87B84B9C3772E7ECE94DD16818C59E1DD7583D4FD23E6180",
+          "path": "src/read-models/InMemoryImmobilisationReadRepository.ts"
+        }
+      },
+      "index": {
+        "index.ts": {
+          "sha256": "4E6A377D53D00B53205D3A41E38A47F894D9B781C941E3019DC47550370E7CA2",
+          "path": "src/read-models/index.ts"
+        }
+      }
+    },
+    "api": {
+      "types.ts": {
+        "sha256": "4FA3384640894CAF0D1EA2D00017F253E3A54CA9B3100537A56E43065A09F678",
+        "path": "src/api/types.ts"
+      },
+      "ImmobilisationReadController.ts": {
+        "sha256": "342AF51D8EA19A6D961064A7CBECA4CC43ADD4A9DF5EE0C292191A9640C94C5D",
+        "path": "src/api/ImmobilisationReadController.ts"
+      },
+      "ImmobilisationApiWiring.ts": {
+        "sha256": "0ECE1408CB0BF2243DE53B80CD7D980BC5B9D08F18BA9499548EAC76B7BFA1EC",
+        "path": "src/api/ImmobilisationApiWiring.ts"
+      },
+      "index.ts": {
+        "sha256": "43785FCA1D0ED9AD9CA7573D295E14D31062E839AF0A48A6C0D9EC7802D8347E",
+        "path": "src/api/index.ts"
+      },
+      "endpoints": [
+        "GET /immobilisations",
+        "GET /immobilisations/{id}",
+        "GET /immobilisations/en-service",
+        "GET /immobilisations/disposed",
+        "GET /immobilisations?category=CORPORELLE"
+      ]
+    },
+    "tests": {
+      "framework": "vitest",
+      "total": 17,
+      "passed": 17,
+      "failed": 0,
+      "duration": "1313ms",
+      "suites": {
+        "guardian": {
+          "file": "tests/guardian/ImmobilisationGuardian.spec.ts",
+          "sha256": "A1A9F567CCB89709630D7C059DF41896FDCEAF387737A5176B2A9F2E7C679E9E",
+          "tests": 10,
+          "passed": 10
+        },
+        "system": {
+          "file": "tests/system/immobilisation.e2e.spec.ts",
+          "sha256": "3E4B07BE51846C6927881FAD6F97D2F2A28F3757C9F0BB9F4526D4DB81A2F9CD",
+          "tests": 7,
+          "passed": 7
+        }
+      }
+    },
+    "dependencies": {
+      "sources": []
+    },
+    "certification": {
+      "certified": true,
+      "certifiedAt": "2026-02-03T17:45:00Z",
+      "certifiedBy": "SPOFE BUILD_PROOF Certification",
+      "validUntil": "PERPETUAL",
+      "frozenAt": "2026-02-03T17:45:00Z"
+    }
+  },
+  "version": "2.1.0",
+  "timestamp": "2026-02-05T17:47:30.481Z"
+}

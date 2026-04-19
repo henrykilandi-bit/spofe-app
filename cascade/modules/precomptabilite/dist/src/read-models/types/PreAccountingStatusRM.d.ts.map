@@ -1,0 +1,1 @@
+{"version":3,"file":"PreAccountingStatusRM.d.ts","sourceRoot":"","sources":["../../../../src/read-models/types/PreAccountingStatusRM.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,qBAAqB;IACpC,QAAQ,EAAE,MAAM,CAAC;IACjB,UAAU,EAAE,MAAM,CAAC;IACnB,MAAM,EACF,OAAO,GACP,WAAW,GACX,WAAW,GACX,UAAU,GACV,WAAW,CAAC;IAEhB,aAAa,EAAE,MAAM,CAAC;CACvB"}

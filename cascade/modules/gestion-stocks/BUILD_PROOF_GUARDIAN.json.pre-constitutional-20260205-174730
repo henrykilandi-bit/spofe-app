@@ -1,0 +1,63 @@
+{
+  "module": "gestion-stocks",
+  "version": "1.0.0",
+  "timestamp": "2026-02-03T20:30:00Z",
+  "governance": "SPOFE P0",
+  "scope": "Guardian only",
+  "status": "CERTIFIED",
+  "contracts": {
+    "GUARDIAN.md": {
+      "path": "contract/GUARDIAN.md",
+      "sha256": "D881D77C935C5DA3FE547A2D97DA36AE193FA4E094EF66581C9D408DBDF56DCC"
+    }
+  },
+  "guardian": {
+    "files": {
+      "StockGuardian.ts": {
+        "path": "src/guardian/StockGuardian.ts",
+        "sha256": "2578A26E9C95E5FFBE9A8B85B900F927B8F232F01EF6D20EB8159D775F5A600A"
+      },
+      "GuardianError.ts": {
+        "path": "src/guardian/GuardianError.ts",
+        "sha256": "B91A7FB5155B2262F487F5604CC1AB081C2111E8125D368D04A186D530C37AD6"
+      },
+      "types.ts": {
+        "path": "src/guardian/types.ts",
+        "sha256": "2BD959F1421689189EE0B9D9C479E28B6AC6348FBA31263655F99678AAF721E0"
+      }
+    },
+    "invariants": [
+      "GS-01 Tenant isolation",
+      "GS-02 Document validated",
+      "GS-03 Actor mandatory",
+      "GS-04 Quantity non-zero",
+      "GS-05 No negative stock",
+      "GS-06 Product mandatory",
+      "GS-07 Depot mandatory",
+      "GS-08 Optional lots/series",
+      "GS-09 Transfer consistency",
+      "GS-10 Append-only",
+      "GS-11 No accounting data",
+      "GS-12 No valuation logic"
+    ]
+  },
+  "tests": {
+    "framework": "vitest",
+    "suites": {
+      "guardian": {
+        "file": "tests/guardian/StockGuardian.spec.ts",
+        "total": 15,
+        "passed": 15,
+        "failed": 0,
+        "coverage": "100%"
+      }
+    }
+  },
+  "certification": {
+    "certified": true,
+    "certifiedAt": "2026-02-03T20:30:00Z",
+    "certifiedBy": "SPOFE BUILD_PROOF System",
+    "validUntil": "PERPETUAL",
+    "frozen": true
+  }
+}

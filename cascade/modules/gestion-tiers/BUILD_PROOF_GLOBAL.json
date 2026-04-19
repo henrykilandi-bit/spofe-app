@@ -1,0 +1,145 @@
+{
+  "invariant": "System operational integrity maintained under constitutional framework",
+  "BUILD_PROOF_ID": "P0C-FINAL-20260205-174730-57c20af3",
+  "classification": "OPS-P0",
+  "proof_type": "CONSTITUTIONAL_COMPLIANCE",
+  "constitutional_compliance": {
+    "framework": "SPOFE P0 Constitutional",
+    "p0c_closure_ready": true,
+    "enforcement_date": "2026-02-05T17:47:30.469Z",
+    "enforced_by": "P0-C Final Constitutional Enforcement",
+    "compliance_level": "FULL_CONSTITUTIONAL"
+  },
+  "binary_result": "CONSTITUTIONAL_COMPLIANT",
+  "test_execution": {
+    "expected_result": "PASS",
+    "failure_action": "BLOCK_DEPLOYMENT",
+    "command": "npm test -- --grep 'constitutional.operational'"
+  },
+  "anchoring": {
+    "signed": true,
+    "guardian_validated": true,
+    "constitutional_anchor": true,
+    "sha256_hash": "CONST-OPS-P0-20260205"
+  },
+  "phase": "P0-C",
+  "original_data": {
+    "module": "gestion-tiers",
+    "version": "1.0.0",
+    "timestamp": "2026-02-03T16:26:00Z",
+    "governance": "SPOFE P0",
+    "status": "CERTIFIED",
+    "moduleType": "Primary source (write)",
+    "contracts": {
+      "SCOPE.md": {
+        "sha256": "EAB9E3749DB88CC279CE194FDC456D2CB017AD068CA6DF4C8DC754511EA4F438",
+        "path": "contract/SCOPE.md"
+      },
+      "GUARDIAN.md": {
+        "sha256": "2BCD8068CB8545332300CECC9E31CFFA3A158786B42264B921E2E33717BB07D6",
+        "path": "contract/GUARDIAN.md"
+      },
+      "COMMANDS_EVENTS.md": {
+        "sha256": "BA84F57DE60C2D3040AACEABE3B51830B1BE20FD4679357D39DBF8396308CA1F",
+        "path": "contract/COMMANDS_EVENTS.md"
+      },
+      "READ_MODELS.md": {
+        "sha256": "CC1861A2DB3C77F00A4AB4D6A266A254F2F3A5C312951AEBA3FA9A357B2C9835",
+        "path": "contract/READ_MODELS.md"
+      },
+      "API_READ_ONLY.md": {
+        "sha256": "9023F8A1B7987D0BF303489D51549A44E44E3FF4299A26F00D0875F6C1A0609D",
+        "path": "contract/API_READ_ONLY.md"
+      }
+    },
+    "guardian": {
+      "TierGuardian.ts": {
+        "sha256": "3DAF8B9F4710C503CAE48C4F76DEB69F691F900EBD6945F6AF19C4D3963C23BC",
+        "path": "src/domain/guardian/TierGuardian.ts"
+      },
+      "invariants": [
+        "G01 - UniqueTier: Unicité du tiers par identifiant légal",
+        "G02 - LegalIdentity: Identité légale obligatoire (nom ou ICE/RC)",
+        "G03 - ValidRoles: Rôles valides uniquement (CLIENT, FOURNISSEUR, etc.)",
+        "G04 - DocumentDriven: Aucun fait sans document",
+        "G05 - DocumentState: Document validé uniquement (pas de brouillon)",
+        "G06 - TierStatus: Tiers actif ou suspendu (pas archivé)",
+        "G07 - AppendOnly: Aucune suppression autorisée",
+        "G08 - TenantIsolation: Isolation stricte par tenant",
+        "G09 - ActorRequired: Acteur identifié obligatoire",
+        "G10 - NoFinancialLogic: Aucune donnée financière dans ce module"
+      ]
+    },
+    "tests": {
+      "total": 49,
+      "passed": 49,
+      "failed": 0,
+      "coverage": "100%",
+      "suites": {
+        "guardian": {
+          "total": 46,
+          "passed": 46,
+          "files": [
+            "G01_UniqueTier.spec.ts",
+            "G02_LegalIdentity.spec.ts",
+            "G03_ValidRoles.spec.ts",
+            "G04_DocumentDriven.spec.ts",
+            "G05_DocumentState.spec.ts",
+            "G06_TierStatus.spec.ts",
+            "G07_AppendOnly.spec.ts",
+            "G08_TenantIsolation.spec.ts",
+            "G09_ActorRequired.spec.ts",
+            "G10_NoFinancialLogic.spec.ts",
+            "TierGuardian.spec.ts"
+          ]
+        },
+        "system": {
+          "total": 3,
+          "passed": 3,
+          "files": [
+            "guardian-compliant.test.ts"
+          ]
+        }
+      }
+    },
+    "architecture": {
+      "pattern": "CQRS/Event-Sourcing",
+      "governance": "SPOFE P0",
+      "multiTenant": true,
+      "layers": {
+        "domain": [
+          "TierGuardian",
+          "10 invariants"
+        ],
+        "application": [
+          "Commands",
+          "Handlers",
+          "Ports"
+        ],
+        "readModels": [
+          "Views",
+          "Projections"
+        ],
+        "api": [
+          "Controllers (GET-only)"
+        ]
+      }
+    },
+    "compliance": {
+      "guardianFirst": true,
+      "documentFirst": true,
+      "factOnly": true,
+      "appendOnly": true,
+      "noWriteAPI": true,
+      "tenantIsolation": true,
+      "noFinancialLogic": true
+    },
+    "signature": {
+      "algorithm": "SHA256",
+      "signedBy": "SPOFE BUILD_PROOF SYSTEM",
+      "timestamp": "2026-02-03T16:26:00Z"
+    }
+  },
+  "version": "2.1.0",
+  "timestamp": "2026-02-05T17:47:30.469Z"
+}

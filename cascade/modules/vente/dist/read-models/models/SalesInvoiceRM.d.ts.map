@@ -1,0 +1,1 @@
+{"version":3,"file":"SalesInvoiceRM.d.ts","sourceRoot":"","sources":["../../../src/read-models/models/SalesInvoiceRM.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC7B,QAAQ,EAAE,MAAM,CAAC;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,OAAO,EAAE,MAAM,CAAC;IAChB,cAAc,CAAC,EAAE,MAAM,CAAC;IACxB,MAAM,EAAE,OAAO,GAAG,WAAW,CAAC;IAC9B,QAAQ,CAAC,EAAE,MAAM,CAAC;CACnB"}

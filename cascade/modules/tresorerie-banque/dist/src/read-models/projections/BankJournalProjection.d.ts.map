@@ -1,0 +1,1 @@
+{"version":3,"file":"BankJournalProjection.d.ts","sourceRoot":"","sources":["../../../../src/read-models/projections/BankJournalProjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,0BAA0B,CAAC;AAE3D,qBAAa,qBAAqB;IAChC,OAAO,CAAC,KAAK,EAAE,GAAG,GAAG,eAAe;CAarC"}

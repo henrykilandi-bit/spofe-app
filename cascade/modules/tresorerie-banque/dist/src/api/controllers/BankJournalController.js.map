@@ -1,0 +1,1 @@
+{"version":3,"file":"BankJournalController.js","sourceRoot":"","sources":["../../../../src/api/controllers/BankJournalController.ts"],"names":[],"mappings":";;;AAEA,MAAa,qBAAqB;IAChC,YAA6B,QAAgC;QAAhC,aAAQ,GAAR,QAAQ,CAAwB;IAAG,CAAC;IAEjE,KAAK,CAAC,UAAU,CAAC,MAMhB;QACC,OAAO,IAAI,CAAC,QAAQ,CAAC,UAAU,CAAC,MAAM,CAAC,CAAC;IAC1C,CAAC;CACF;AAZD,sDAYC"}

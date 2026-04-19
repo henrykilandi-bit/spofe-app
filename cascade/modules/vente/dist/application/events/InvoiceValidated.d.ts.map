@@ -1,0 +1,1 @@
+{"version":3,"file":"InvoiceValidated.d.ts","sourceRoot":"","sources":["../../../src/application/events/InvoiceValidated.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,gBAAgB;IAC/B,SAAS,EAAE,kBAAkB,CAAC;IAC9B,QAAQ,EAAE,MAAM,CAAC;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,UAAU,EAAE,MAAM,CAAC;CACpB"}

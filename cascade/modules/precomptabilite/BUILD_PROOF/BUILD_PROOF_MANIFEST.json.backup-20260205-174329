@@ -1,0 +1,28 @@
+{
+  "module": "precomptabilite",
+  "version": "1.0.0",
+  "status": "CERTIFIED",
+  "level": "SPOFE_P0",
+  "dependencies": [],
+  "consumed_by": [
+    "budget",
+    "cost-structure",
+    "banque",
+    "comptabilite",
+    "coaching"
+  ],
+  "exports": [
+    "PreAccountingDocumentRM",
+    "PreAccountingStatusRM",
+    "PreAccountingAnalyticsRM",
+    "PreAccountingExposureRM"
+  ],
+  "api": {
+    "type": "READ_ONLY",
+    "methods": ["GET"]
+  },
+  "tests": {
+    "guardian": "100%",
+    "e2e": "PASS"
+  }
+}

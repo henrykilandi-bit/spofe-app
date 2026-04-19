@@ -1,0 +1,1 @@
+{"version":3,"file":"DocumentCreated.d.ts","sourceRoot":"","sources":["../../../../src/application/events/DocumentCreated.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,eAAe;IAC9B,IAAI,EAAE,iBAAiB,CAAC;IACxB,OAAO,EAAE;QACP,QAAQ,EAAE,MAAM,CAAC;QACjB,UAAU,EAAE,MAAM,CAAC;QACnB,YAAY,EAAE,MAAM,CAAC;QACrB,UAAU,EAAE,MAAM,CAAC;KACpB,CAAC;CACH"}

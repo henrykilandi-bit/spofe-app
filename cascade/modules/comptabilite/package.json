@@ -1,0 +1,20 @@
+{
+  "name": "@spofe/comptabilite",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "jest --config jest.config.cjs --runInBand",
+    "test:integration": "jest tests/system --config jest.config.cjs --runInBand",
+    "test:guardian": "jest tests/guardian --config jest.config.cjs --runInBand",
+    "build": "tsc -p tsconfig.json --noEmit",
+    "guardian": "npm run test:guardian"
+  },
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./domain": "./src/domain/index.ts",
+    "./guardian": "./src/guardian/index.ts",
+    "./read-models": "./src/read-models/index.ts"
+  }
+}

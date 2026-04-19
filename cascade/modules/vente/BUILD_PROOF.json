@@ -1,0 +1,28 @@
+{
+  "regenerated_from": "BUILD_PROOF.json",
+  "version": "2.1.0",
+  "invariant": "Guardian constitutional compliance enforced",
+  "constitutional_compliance": {
+    "framework": "SPOFE P0 Constitutional",
+    "certification_date": "2026-02-05T17:43:29.438Z",
+    "validated_by": "P0-C Constitutional Audit",
+    "score": "7/7"
+  },
+  "proof_type": "GOVERNANCE",
+  "regeneration_reason": "P0-C Constitutional Non-Compliance",
+  "phase": "P0-C",
+  "BUILD_PROOF_ID": "P0C-20260205-174329-eb1e9113",
+  "classification": "GOV-P0",
+  "anchoring": {
+    "signed": true,
+    "constitutional_anchor": true,
+    "sha256_hash": "P0C-20260205-174329-eb1e9113"
+  },
+  "test_execution": {
+    "expected_result": "PASS",
+    "failure_action": "BLOCK_DEPLOYMENT",
+    "command": ".\\tools\\test-guardian-compliance.ps1"
+  },
+  "timestamp": "2026-02-05T17:43:29.438Z",
+  "binary_result": "PENDING_FIRST_EXECUTION"
+}

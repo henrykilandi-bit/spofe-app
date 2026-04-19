@@ -1,0 +1,1 @@
+{"version":3,"file":"InvoiceCreated.d.ts","sourceRoot":"","sources":["../../../src/application/events/InvoiceCreated.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC7B,SAAS,EAAE,gBAAgB,CAAC;IAC5B,QAAQ,EAAE,MAAM,CAAC;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,UAAU,EAAE,MAAM,CAAC;CACpB"}

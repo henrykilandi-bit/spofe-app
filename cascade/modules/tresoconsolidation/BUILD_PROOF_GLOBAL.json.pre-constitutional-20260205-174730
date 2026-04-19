@@ -1,0 +1,191 @@
+{
+  "module": "tresoconsolidation",
+  "version": "1.0.0",
+  "timestamp": "2026-02-03T15:45:00Z",
+  "governance": "SPOFE P0",
+  "status": "CERTIFIED",
+  "moduleType": "Read-only transverse",
+  "contracts": {
+    "SCOPE.md": {
+      "sha256": "0A2D4CDAF01A54EF16D43D170AC1D7F77FAC94C28702417BBDE3C8332CA523F8",
+      "path": "contract/SCOPE.md"
+    },
+    "GUARDIAN.md": {
+      "sha256": "E72ED92888000F4EC5DB8B876716A3B3D97994AD322D3662BD972FC0D726DA18",
+      "path": "contract/GUARDIAN.md"
+    },
+    "READ_MODELS.md": {
+      "sha256": "DD7273732D270160608D28EF60E076E1DBDC60EB23A9F9432AB879A04DA1F74A",
+      "path": "contract/READ_MODELS.md"
+    },
+    "API_READ_ONLY.md": {
+      "sha256": "D17864091689CB1F13EB3A28915E7E7E5B8F830998F873D944D3E22EAE6A3B3A",
+      "path": "contract/API_READ_ONLY.md"
+    }
+  },
+  "guardian": {
+    "TresoconsolidationGuardian.ts": {
+      "sha256": "B7B0058FD72DD6E57EE29DF555E16024B2F5D55271836929CAA312FAC9EA379B",
+      "path": "src/guardian/TresoconsolidationGuardian.ts"
+    },
+    "TresoconsolidationGuardianErrors.ts": {
+      "sha256": "9FD55517073DDFE5505EA967E6EBFBA0F1D6400E8E63C001C5056F491E4EEB14",
+      "path": "src/guardian/TresoconsolidationGuardianErrors.ts"
+    },
+    "TresoconsolidationGuardian.types.ts": {
+      "sha256": "19C4C95F00F28FA32A76D0408800DD997B4F6B411639A47C6B28920BED57D3F9",
+      "path": "src/guardian/TresoconsolidationGuardian.types.ts"
+    },
+    "invariants": [
+      "G-TRESO-01: Read-only strict",
+      "G-TRESO-02: Sources autorisées uniquement",
+      "G-TRESO-03: Interdiction accès couches write",
+      "G-TRESO-04: Isolation multi-tenant",
+      "G-TRESO-05: Pas de logique métier",
+      "G-TRESO-06: Pas de logique comptable",
+      "G-TRESO-07: Agrégation déterministe",
+      "G-TRESO-08: Traçabilité de la source",
+      "G-TRESO-09: Données certifiées uniquement",
+      "G-TRESO-10: API GET uniquement"
+    ]
+  },
+  "application": {
+    "ports": {
+      "TresoconsolidationReadPort.ts": {
+        "sha256": "C46BD8D2ECF046C8FE8B361006EAC6124093638844D93336F844E9C7150EFBD3",
+        "path": "src/application/ports/TresoconsolidationReadPort.ts"
+      }
+    },
+    "handlers": {
+      "GetConsolidatedBalanceHandler.ts": {
+        "sha256": "752F0EE94530A1721C70DA45754B4F1208F346A4CA91328AA9DDC7980F8034DC",
+        "path": "src/application/handlers/GetConsolidatedBalanceHandler.ts"
+      },
+      "GetBalanceBySourceHandler.ts": {
+        "sha256": "0738C89B0E89C261A6CEF6334737DA8049AB382CC1DE5CC49D7A04577AFF7C92",
+        "path": "src/application/handlers/GetBalanceBySourceHandler.ts"
+      },
+      "GetBalanceByCaisseHandler.ts": {
+        "sha256": "F29D1CCAD8CF96706CFBCBE0CB68B3A6AE5E8D1E90B6549D20D2A6A34202F651",
+        "path": "src/application/handlers/GetBalanceByCaisseHandler.ts"
+      },
+      "GetBalanceByBankAccountHandler.ts": {
+        "sha256": "90A8C2D3C76824A90D660207E54E5ADF6ECF4CDA012DF3FD660492BCD797CD71",
+        "path": "src/application/handlers/GetBalanceByBankAccountHandler.ts"
+      },
+      "GetConsolidatedJournalHandler.ts": {
+        "sha256": "5058B602B2C897A60A0C514FE4A5542B4B26545ED9067169434CC67C93463211",
+        "path": "src/application/handlers/GetConsolidatedJournalHandler.ts"
+      }
+    }
+  },
+  "readModels": {
+    "ports": {
+      "CaisseReadModelPort.ts": {
+        "sha256": "6CE5D68F6CE6661A42873F46948405488F08F2A7D3E04E63C09B7D6B0F234747",
+        "path": "src/read-models/ports/CaisseReadModelPort.ts"
+      },
+      "BanqueReadModelPort.ts": {
+        "sha256": "2368DBDC7B632B18ABEEAEB14BF096392E21CEFBD84F51D0168DF133A887D94B",
+        "path": "src/read-models/ports/BanqueReadModelPort.ts"
+      }
+    },
+    "projections": {
+      "ConsolidatedTreasuryBalance.ts": {
+        "sha256": "7B45EA484F4C38294CF70FE2D30EF16FD20C556D5B04C42D59660F9F95648B0C",
+        "path": "src/read-models/projections/ConsolidatedTreasuryBalance.ts"
+      },
+      "TreasuryBalanceBySource.ts": {
+        "sha256": "FB3AE2458755B0D3B5C2E7424437708F67A42F8EB3383077A2EA1EC0BB3A1717",
+        "path": "src/read-models/projections/TreasuryBalanceBySource.ts"
+      },
+      "TreasuryBalanceByCaisse.ts": {
+        "sha256": "0AA66458FAA75AA701FCEEA9217D6A6F7261FC235AF2BA76BA03DEFC11B5FBCA",
+        "path": "src/read-models/projections/TreasuryBalanceByCaisse.ts"
+      },
+      "TreasuryBalanceByBankAccount.ts": {
+        "sha256": "9F844E89D00B7D4DD6302FDD0D537A7BBE8FFC0BF2BB064BA280F1F5E3D72601",
+        "path": "src/read-models/projections/TreasuryBalanceByBankAccount.ts"
+      },
+      "ConsolidatedTreasuryJournal.ts": {
+        "sha256": "D96E5F412C733FC3138691073E8A27D2639C79F3C786827E2E9878AB81638A88",
+        "path": "src/read-models/projections/ConsolidatedTreasuryJournal.ts"
+      }
+    },
+    "repository": {
+      "TresoconsolidationReadRepository.ts": {
+        "sha256": "DFB93D68820F4AF99C8458D75D53BA3831E9B769FEB3AD97F2343431B4E995A1",
+        "path": "src/read-models/TresoconsolidationReadRepository.ts"
+      }
+    }
+  },
+  "api": {
+    "TresoconsolidationApiWiring.ts": {
+      "sha256": "3D2219D5CC33A7CA56418C061082CDC8BF1D4AAE2EED1D20773ED6349E45F85E",
+      "path": "src/api/TresoconsolidationApiWiring.ts"
+    },
+    "TresoconsolidationController.ts": {
+      "sha256": "43C14893078BB2B6A8B1C5A5E5C196E75F940283DDD056AA315064DD16A7806C",
+      "path": "src/api/controllers/TresoconsolidationController.ts"
+    },
+    "TresoconsolidationController.types.ts": {
+      "sha256": "DA512EF4E141A5B47BD8AEF861A1AF45790BC40C7CF9A8A1BFD6D05D558E668F",
+      "path": "src/api/controllers/TresoconsolidationController.types.ts"
+    },
+    "HttpTypes.ts": {
+      "sha256": "6CD15703418CB5D971032A439D4EFFEBC13DCAA62CC45F23EFBBEE6428B407C2",
+      "path": "src/api/http/HttpTypes.ts"
+    },
+    "endpoints": [
+      "GET /api/tresoconsolidation/balance",
+      "GET /api/tresoconsolidation/balance/by-source",
+      "GET /api/tresoconsolidation/balance/by-caisse",
+      "GET /api/tresoconsolidation/balance/by-bank-account",
+      "GET /api/tresoconsolidation/journal"
+    ]
+  },
+  "tests": {
+    "framework": "vitest",
+    "total": 28,
+    "passed": 28,
+    "failed": 0,
+    "duration": "656ms",
+    "suites": {
+      "guardian": {
+        "file": "tests/guardian/TresoconsolidationGuardian.spec.ts",
+        "sha256": "CEFDF135E566BD2A2425AC0D6818AD39757FED5768F3C9082130FFC0C4573F76",
+        "tests": 21,
+        "passed": 21
+      },
+      "system": {
+        "file": "tests/system/Tresoconsolidation.e2e.spec.ts",
+        "sha256": "A4D2879062A7D72A162C69DF85A10C71D099B6CE364401C8BB3606EEADDD5501",
+        "tests": 7,
+        "passed": 7
+      }
+    }
+  },
+  "dependencies": {
+    "sources": [
+      {
+        "module": "tresorerie-caisse",
+        "type": "read-model",
+        "required": true,
+        "certified": true
+      },
+      {
+        "module": "tresorerie-banque",
+        "type": "read-model",
+        "required": true,
+        "certified": true
+      }
+    ]
+  },
+  "certification": {
+    "certified": true,
+    "certifiedAt": "2026-02-03T15:45:00Z",
+    "certifiedBy": "SPOFE BUILD_PROOF Certification",
+    "validUntil": "PERPETUAL",
+    "frozenAt": "2026-02-03T15:45:00Z"
+  }
+}

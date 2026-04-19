@@ -1,0 +1,55 @@
+{
+  "module": "amortissement",
+  "version": "1.0.0",
+  "timestamp": "2026-02-03T22:42:00Z",
+  "governance": "SPOFE P0",
+  "status": "CERTIFIED",
+  "type": "primary",
+  "domain": "asset-depreciation",
+  "contracts": {
+    "SCOPE.md": "contract/SCOPE.md",
+    "GUARDIAN.md": "contract/GUARDIAN.md",
+    "COMMANDS_EVENTS.md": "contract/COMMANDS_EVENTS.md",
+    "READ_MODELS.md": "contract/READ_MODELS.md",
+    "API_READ_ONLY.md": "contract/API_READ_ONLY.md"
+  },
+  "implementation": {
+    "guardian": "src/guardian/",
+    "application": "src/application/",
+    "readModels": "src/read-models/",
+    "api": "src/api/"
+  },
+  "tests": {
+    "framework": "vitest",
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "suites": {
+      "guardian": {
+        "total": 13,
+        "passed": 13
+      },
+      "system": {
+        "total": 5,
+        "passed": 5
+      }
+    }
+  },
+  "compliance": {
+    "guardianFirst": true,
+    "calculationsInGuardian": true,
+    "readOnlyApi": true,
+    "multiTenant": true,
+    "appendOnly": true,
+    "accountingAgnostic": true,
+    "decisionFree": true,
+    "fiscalFree": true
+  },
+  "certification": {
+    "certified": true,
+    "certifiedAt": "2026-02-03T22:42:00Z",
+    "certifiedBy": "SPOFE BUILD_PROOF Certification",
+    "frozenAt": "2026-02-03T22:42:00Z",
+    "validUntil": "PERPETUAL"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "certification": {
+    "module": "tresorerie-banque",
+    "version": "1.0.0",
+    "level": "SPOFE P0",
+    "status": "CERTIFIED",
+    "timestamp": "2025-01-29T00:00:00.000Z",
+    "frozen": true
+  },
+  "tests": {
+    "total": 27,
+    "passed": 27,
+    "failed": 0,
+    "coverage": "100%",
+    "suites": {
+      "guardian": {
+        "file": "tests/guardian/bank-guardian.spec.ts",
+        "tests": 24,
+        "passed": 24,
+        "status": "PASS"
+      },
+      "system": {
+        "file": "tests/system/tresorerie-banque.e2e.spec.ts",
+        "tests": 3,
+        "passed": 3,
+        "status": "PASS"
+      }
+    }
+  },
+  "hashes": {
+    "guardian": {
+      "BankGuardian.ts": "FA1D59FED3FC3726A878C52497F80A9ACA15F09DD59B6B413A8C19479D9603E3"
+    },
+    "contracts": {
+      "SCOPE.md": "A3CA3EB2B91C22A93B755104C7996877F4914F0737036E8E7820B16EDB39DB6E",
+      "GUARDIAN.md": "4FBB880599EFAF356F5459FE549A25A25E9857A7F81C365C39D747A9D1611B1C",
+      "COMMANDS_EVENTS.md": "8DE8A40E92EEA394D4B826A2E4B07B60D30FD6E53E4C5129F35C2CC89F26AEE0",
+      "READ_MODELS.md": "FF7B44EB910501C1DB5E535752BE14123D60F9F337342068E26255D6B5C56F7B",
+      "API_READ_ONLY.md": "49EFB0DB48442D7627392F3EB50E7F42BC65EA3904BF4605AB38C790090A3F4F"
+    },
+    "tests": {
+      "bank-guardian.spec.ts": "DAB0A5E65A8F9A8070AAA9DECF33813B9A04ADD1AF4581BEB1014B160F3C874B",
+      "tresorerie-banque.e2e.spec.ts": "C27DCA6669A83510F10C5F87EE46F036EBB52EFE3674F9012340058A21377586"
+    },
+    "application": {
+      "commands": {
+        "index.ts": "8EDA520D131C946B1DC4CDE8088730784A160E053A86A010DC53CA9E67B0E283",
+        "RecordBankBalanceSnapshotCommand.ts": "B636FC58D3155EDD1BF0EAC119DB66E3F43086D785242ED5632EA6D57CD726FA",
+        "RecordBankCreditCommand.ts": "E1C5485888FD60D5B3A4416B0C844296CEC151F79F9902D4F5CF5CE26399320C",
+        "RecordBankDebitCommand.ts": "1FCC4C3A9F8AA7C126C5551C7FD63EB3039CF4DD4B7B76F992259A461223B788",
+        "RegisterBankAccountCommand.ts": "8EA7D75DECF4685848F37E1383F99FCB5B87251842B1B4821FD144DE7E1A4CC2",
+        "RegisterBankDocumentCommand.ts": "0CD9EE99DED3030C91BEEA591A2B823BD71EF5A650F46CF7D21851F55B57144A"
+      },
+      "handlers": {
+        "index.ts": "8BDAFA4BC5749924F1F639578DF2482A48144D9BB018934B1E38E8ED4A56C9B3",
+        "RecordBankBalanceSnapshotHandler.ts": "AF72021720959580051ECF7F8713E0E3CE6924949C9D379ED5E2C2177536378E",
+        "RecordBankCreditHandler.ts": "66F6E6BEFE6E0193343E8902B6943A28D35BB8097EA2ED62FED83968AB65FC7A",
+        "RecordBankDebitHandler.ts": "17D36A8E1A5FF29FBE46EA4EBFE2E221AAFC5EA44CA79F8D3916B5690FD26CD0",
+        "RegisterBankAccountHandler.ts": "D9BC8CC80E9D9BB265B6D1D21F13EB966BBD03F2C1CD82DD218BC9926DB178BD",
+        "RegisterBankDocumentHandler.ts": "903050D88A192109835960E1E736C4A34EAC07451AD4E817B7FA765F3467D6D5"
+      },
+      "ports": {
+        "BankReadRepositoryPort.ts": "58C6913F566F8ED90332848376DDC3F6F43BD52E6F528C3F5165C756C4CA0302",
+        "BankRepositoryPort.ts": "18E95F11C1278711357A1564984BC213BE733ADF65DF8F6C063D0762EBF9B4FD",
+        "EventStorePort.ts": "EA07C070C24329B5E64D3F8CE103F3F6B65AE13C596A27D575BA659F6A49588C",
+        "index.ts": "66CCE4DB10F1E6520F29115A085EB4BCCAC3286BCE8220AAB5E803BDF6C3721F"
+      }
+    },
+    "readModels": {
+      "views": {
+        "BankAccountStateView.ts": "8A1BB971CB35F41ABFD5BB17DB8B24737FEDEB011EF194426787DEAB7CDD89A3",
+        "BankBalanceSnapshotView.ts": "BC47BA2BFEF7D102C1AB53D49BF299EA6F9CAD9C4377375B428B1C8AE170E501",
+        "BankDocumentView.ts": "83E72873C03A337017309A16D7DC2BF213F000DB8E12A0B47A8690946C01F85F",
+        "BankJournalView.ts": "F7E8B3FE6A7366CE97F528B9A814A63BC45C421A3CA9702141541A041ADB332A",
+        "BankMovementView.ts": "1DFE8B1F2BFD08A5666C79DE14635A93AC20BE36F01EE433729E3019B4BACCB6",
+        "index.ts": "5D1C59328435A1993FB88FB3E1028E715D49EA6401570B3505F94ECF0253D4E2"
+      },
+      "projections": {
+        "BankAccountStateProjection.ts": "E257E2F7EFD72C7E2461483698788D1FD4E4826DDFD53321F4A83593855083AE",
+        "BankBalanceSnapshotProjection.ts": "CD536F7BE62A8446CFA75ED6E97E83CA49751E0D29FF889338111E251C39708A",
+        "BankDocumentProjection.ts": "3F996B762286FDB30A1BE010A2159E29739B248D3FAEE193FB653E3AEB3283D0",
+        "BankJournalProjection.ts": "BC7F27467A2AE405E794C8C1C64EDA331668F151290C50C27EA8F822D4C77845",
+        "BankMovementProjection.ts": "AADD43A2D3EB14D85243485B91CAC7C93C0FE580B6CF317471658A9E10AAEAC3",
+        "index.ts": "022998021BDB0C3B4B370FB80DF5287E4747CE9D4AEEDA4D07F729E08AFCF524"
+      }
+    },
+    "api": {
+      "controllers": {
+        "BankAccountsController.ts": "58A00B7941B89E7F60600D105D9ED6D3A7D501CC01C289C05FD41306E82E0FB5",
+        "BankAccountStateController.ts": "0E84758DC286B3292F520FD480566E3546CDDE12C7798E32AE740A87B311652E",
+        "BankBalancesController.ts": "87FEACF97C4C2673DB284CBEA9461CB20A4CB517C38F2AA1FD67544257D73357",
+        "BankDocumentsController.ts": "13E4CB7F3B779AC1598CC9334887E3DE780D91A14E251D20BB3C78419D0D3118",
+        "BankJournalController.ts": "C1906BE942041CB91B2B82CC6C73231FBEF6D50B0D6726E0A62ED84695DC05B7",
+        "BankMovementsController.ts": "79369F0F0931DEDC21F126EF50E06D6ED450BE86B1071B098801CEF97B01EC10",
+        "index.ts": "B0593E81E389A946FD415ECE4FB882CD66D750FBCB6A6A58F1FD8EF5BF673655"
+      },
+      "dtos": {
+        "QueryParams.ts": "EA22F4FB8C0F979E856C78C8E8C2A0A563105FE5062A71CC58C6408386B09629",
+        "index.ts": "B223056542CDFDF67C2C4D6AD66174AFD0DAA33EDFF063F7FFAEBDF53B096178"
+      }
+    }
+  },
+  "invariants": {
+    "total": 12,
+    "list": [
+      "G01 - Existence compte bancaire",
+      "G02 - Existence banque",
+      "G03 - Isolation tenant",
+      "G04 - Document bancaire électronique valide",
+      "G05 - Immutabilité document",
+      "G06 - Fait observé uniquement",
+      "G07 - Pas d'interprétation",
+      "G08 - Unicité compte bancaire par document",
+      "G09 - Date bancaire valide",
+      "G10 - Solde factuel uniquement",
+      "G11 - Pas de dépendance inter-modules",
+      "G12 - Append-only"
+    ]
+  },
+  "architecture": {
+    "pattern": "CQRS/Event-Sourcing",
+    "governance": "SPOFE P0",
+    "accounting": "OHADA-first",
+    "multiTenant": true,
+    "layers": {
+      "domain": ["BankGuardian"],
+      "application": ["5 Commands", "5 Handlers", "3 Ports"],
+      "readModels": ["5 Views", "5 Projections"],
+      "api": ["6 Controllers (GET-only)", "DTOs"]
+    }
+  },
+  "compliance": {
+    "guardianFirst": true,
+    "documentFirst": true,
+    "factOnly": true,
+    "appendOnly": true,
+    "noWriteAPI": true,
+    "ohadaCompliant": true
+  },
+  "signature": {
+    "algorithm": "SHA256",
+    "signedBy": "SPOFE BUILD_PROOF SYSTEM",
+    "timestamp": "2025-01-29T00:00:00.000Z"
+  }
+}

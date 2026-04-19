@@ -1,0 +1,1 @@
+{"version":3,"file":"BankDocumentsController.js","sourceRoot":"","sources":["../../../../src/api/controllers/BankDocumentsController.ts"],"names":[],"mappings":";;;AAEA,MAAa,uBAAuB;IAClC,YAA6B,QAAgC;QAAhC,aAAQ,GAAR,QAAQ,CAAwB;IAAG,CAAC;IAEjE,KAAK,CAAC,YAAY,CAAC,MAIlB;QACC,OAAO,IAAI,CAAC,QAAQ,CAAC,YAAY,CAAC,MAAM,CAAC,CAAC;IAC5C,CAAC;CACF;AAVD,0DAUC"}

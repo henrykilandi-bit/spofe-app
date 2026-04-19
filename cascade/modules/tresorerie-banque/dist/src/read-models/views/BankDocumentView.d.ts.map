@@ -1,0 +1,1 @@
+{"version":3,"file":"BankDocumentView.d.ts","sourceRoot":"","sources":["../../../../src/read-models/views/BankDocumentView.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,gBAAgB;IAC/B,QAAQ,EAAE,MAAM,CAAC;IACjB,MAAM,EAAE,MAAM,CAAC;IACf,aAAa,EAAE,MAAM,CAAC;IACtB,UAAU,EAAE,MAAM,CAAC;IACnB,YAAY,EAAE,WAAW,GAAG,cAAc,GAAG,eAAe,CAAC;IAC7D,YAAY,EAAE,MAAM,CAAC;IACrB,YAAY,EAAE,MAAM,CAAC;CACtB"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"G04_DocumentDriven.d.ts","sourceRoot":"","sources":["../../../../../src/domain/guardian/invariants/G04_DocumentDriven.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,oBAAoB,CAAC;AAGrD,qBAAa,kBAAkB;IAC7B,QAAQ,CAAC,GAAG,EAAE,eAAe,GAAG,IAAI;CAQrC"}

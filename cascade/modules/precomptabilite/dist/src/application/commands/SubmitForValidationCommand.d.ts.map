@@ -1,0 +1,1 @@
+{"version":3,"file":"SubmitForValidationCommand.d.ts","sourceRoot":"","sources":["../../../../src/application/commands/SubmitForValidationCommand.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,0BAA0B;IACzC,SAAS,EAAE,MAAM,CAAC;IAClB,QAAQ,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,CAAC;IAEhB,UAAU,EAAE,MAAM,CAAC;IACnB,aAAa,EAAE,OAAO,CAAC;CACxB"}

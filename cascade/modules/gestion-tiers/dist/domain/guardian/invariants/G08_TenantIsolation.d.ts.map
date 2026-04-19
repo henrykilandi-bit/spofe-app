@@ -1,0 +1,1 @@
+{"version":3,"file":"G08_TenantIsolation.d.ts","sourceRoot":"","sources":["../../../../src/domain/guardian/invariants/G08_TenantIsolation.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,oBAAoB,CAAC;AAGrD,qBAAa,mBAAmB;IAC9B,QAAQ,CAAC,GAAG,EAAE,eAAe,GAAG,IAAI;CAWrC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"BankBalanceSnapshotProjection.d.ts","sourceRoot":"","sources":["../../../../src/read-models/projections/BankBalanceSnapshotProjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,uBAAuB,EAAE,MAAM,kCAAkC,CAAC;AAE3E,qBAAa,6BAA6B;IACxC,OAAO,CAAC,KAAK,EAAE,GAAG,GAAG,uBAAuB,GAAG,IAAI;CAapD"}

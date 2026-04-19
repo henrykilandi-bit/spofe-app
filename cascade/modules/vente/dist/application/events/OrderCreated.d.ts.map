@@ -1,0 +1,1 @@
+{"version":3,"file":"OrderCreated.d.ts","sourceRoot":"","sources":["../../../src/application/events/OrderCreated.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,YAAY;IAC3B,SAAS,EAAE,cAAc,CAAC;IAC1B,QAAQ,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,CAAC;IAChB,UAAU,EAAE,MAAM,CAAC;CACpB"}

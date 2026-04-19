@@ -1,0 +1,1 @@
+{"version":3,"file":"BankAccountsController.js","sourceRoot":"","sources":["../../../../src/api/controllers/BankAccountsController.ts"],"names":[],"mappings":";;;AAEA,MAAa,sBAAsB;IACjC,YAA6B,QAAgC;QAAhC,aAAQ,GAAR,QAAQ,CAAwB;IAAG,CAAC;IAEjE,KAAK,CAAC,WAAW,CAAC,KAIjB;QACC,OAAO,IAAI,CAAC,QAAQ,CAAC,WAAW,CAAC,KAAK,CAAC,CAAC;IAC1C,CAAC;CACF;AAVD,wDAUC"}

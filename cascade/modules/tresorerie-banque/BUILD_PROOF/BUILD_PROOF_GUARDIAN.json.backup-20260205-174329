@@ -1,0 +1,56 @@
+{
+  "buildProof": {
+    "module": "tresorerie-banque",
+    "scope": "guardian",
+    "version": "1.0.0",
+    "level": "SPOFE P0",
+    "timestamp": "2026-02-03T13:15:00.000Z",
+    "status": "CERTIFIED"
+  },
+  "guardian": {
+    "name": "BankGuardian",
+    "file": "src/domain/guardian/BankGuardian.ts",
+    "sha256": "FA1D59FED3FC3726A878C52497F80A9ACA15F09DD59B6B413A8C19479D9603E3",
+    "invariants": [
+      { "code": "G01", "name": "Compte bancaire obligatoire", "method": "assertBankAccountExists" },
+      { "code": "G02", "name": "Banque obligatoire", "method": "assertBankExists" },
+      { "code": "G03", "name": "Isolation par tenant", "method": "assertTenantIsolation" },
+      { "code": "G04", "name": "Document bancaire obligatoire", "method": "assertBankDocumentValid" },
+      { "code": "G05", "name": "Document bancaire immuable", "method": "assertDocumentImmutable" },
+      { "code": "G06", "name": "Faits constatés uniquement", "method": "assertFactIsObserved" },
+      { "code": "G07", "name": "Absence d'interprétation", "method": "assertNoInterpretation" },
+      { "code": "G08", "name": "Isolation par compte", "method": "assertSingleBankAccount" },
+      { "code": "G09", "name": "Temporalité bancaire", "method": "assertBankDateValid" },
+      { "code": "G10", "name": "Solde factuel uniquement", "method": "assertBalanceIsFactual" },
+      { "code": "G11", "name": "Aucune dépendance inter-module", "method": "assertNoInterModuleDependency" },
+      { "code": "G12", "name": "Append-only & traçabilité", "method": "assertAppendOnly" }
+    ]
+  },
+  "tests": {
+    "file": "tests/guardian/bank-guardian.spec.ts",
+    "sha256": "DAB0A5E65A8F9A8070AAA9DECF33813B9A04ADD1AF4581BEB1014B160F3C874B",
+    "total": 24,
+    "passed": 24,
+    "failed": 0,
+    "coverage": {
+      "G01": { "success": true, "reject": true },
+      "G02": { "success": true, "reject": true },
+      "G03": { "success": true, "reject": true },
+      "G04": { "success": true, "reject": true },
+      "G05": { "success": true, "reject": true },
+      "G06": { "success": true, "reject": true },
+      "G07": { "success": true, "reject": true },
+      "G08": { "success": true, "reject": true },
+      "G09": { "success": true, "reject": true },
+      "G10": { "success": true, "reject": true },
+      "G11": { "success": true, "reject": true },
+      "G12": { "success": true, "reject": true }
+    }
+  },
+  "certification": {
+    "guardian": "FROZEN",
+    "mutable": false,
+    "compliant": true,
+    "message": "Guardian Trésorerie Banque certifié SPOFE P0 — 24/24 tests PASS"
+  }
+}

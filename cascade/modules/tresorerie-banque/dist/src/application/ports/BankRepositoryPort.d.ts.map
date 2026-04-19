@@ -1,0 +1,1 @@
+{"version":3,"file":"BankRepositoryPort.d.ts","sourceRoot":"","sources":["../../../../src/application/ports/BankRepositoryPort.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,kBAAkB;IACjC,UAAU,CAAC,MAAM,EAAE,MAAM,GAAG,OAAO,CAAC,OAAO,CAAC,CAAC;IAC7C,iBAAiB,CAAC,aAAa,EAAE,MAAM,GAAG,OAAO,CAAC,OAAO,CAAC,CAAC;IAC3D,cAAc,CAAC,UAAU,EAAE,MAAM,GAAG,OAAO,CAAC,OAAO,CAAC,CAAC;CACtD"}

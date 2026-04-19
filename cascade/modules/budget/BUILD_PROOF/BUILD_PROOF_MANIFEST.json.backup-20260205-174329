@@ -1,0 +1,26 @@
+{
+  "module": "budget",
+  "version": "1.0.0",
+  "status": "CERTIFIED",
+  "level": "SPOFE_P0",
+  "dependencies": [
+    "cost-structure",
+    "amortissement",
+    "gestion-stocks"
+  ],
+  "exports": [
+    "BudgetObjectiveRM",
+    "BudgetCashflowRM",
+    "BudgetVarianceRM",
+    "BudgetTimelineRM",
+    "BudgetAlertRM"
+  ],
+  "api": {
+    "type": "READ_ONLY",
+    "methods": ["GET"]
+  },
+  "tests": {
+    "guardian": "100%",
+    "e2e": "PASS"
+  }
+}

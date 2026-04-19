@@ -1,0 +1,1 @@
+{"version":3,"file":"BankAccountStateProjection.d.ts","sourceRoot":"","sources":["../../../../src/read-models/projections/BankAccountStateProjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,+BAA+B,CAAC;AAErE,qBAAa,0BAA0B;IACrC,OAAO,CACL,OAAO,EAAE,oBAAoB,GAAG,IAAI,EACpC,KAAK,EAAE,GAAG,GACT,oBAAoB,GAAG,IAAI;CAqB/B"}

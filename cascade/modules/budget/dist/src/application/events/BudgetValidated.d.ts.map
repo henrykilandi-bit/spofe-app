@@ -1,0 +1,1 @@
+{"version":3,"file":"BudgetValidated.d.ts","sourceRoot":"","sources":["../../../../src/application/events/BudgetValidated.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,eAAe;IAC9B,IAAI,EAAE,iBAAiB,CAAC;IACxB,OAAO,EAAE;QACP,QAAQ,EAAE,MAAM,CAAC;QACjB,QAAQ,EAAE,MAAM,CAAC;QACjB,UAAU,EAAE,MAAM,CAAC;KACpB,CAAC;CACH"}

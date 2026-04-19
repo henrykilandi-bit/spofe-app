@@ -1,0 +1,18 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "roots": ["<rootDir>/tests"],
+  "testMatch": ["**/guardian/**/*.spec.ts"],
+  "collectCoverageFrom": [
+    "src/domain/guardian/**/*.ts",
+    "!src/domain/guardian/**/*.d.ts"
+  ],
+  "coverageDirectory": "coverage/guardian",
+  "coverageReporters": ["text", "lcov", "html"],
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "testTimeout": 5000,
+  "verbose": true
+}

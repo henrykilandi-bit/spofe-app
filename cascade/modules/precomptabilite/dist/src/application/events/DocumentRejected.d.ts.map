@@ -1,0 +1,1 @@
+{"version":3,"file":"DocumentRejected.d.ts","sourceRoot":"","sources":["../../../../src/application/events/DocumentRejected.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,gBAAgB;IAC/B,IAAI,EAAE,kBAAkB,CAAC;IACzB,OAAO,EAAE;QACP,QAAQ,EAAE,MAAM,CAAC;QACjB,UAAU,EAAE,MAAM,CAAC;QACnB,MAAM,CAAC,EAAE,MAAM,CAAC;QAChB,UAAU,EAAE,MAAM,CAAC;KACpB,CAAC;CACH"}

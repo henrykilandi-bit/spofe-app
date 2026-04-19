@@ -1,0 +1,1 @@
+{"version":3,"file":"G07_AppendOnly.js","sourceRoot":"","sources":["../../../../../src/domain/guardian/invariants/G07_AppendOnly.ts"],"names":[],"mappings":";;;AACA,oDAAiD;AAEjD,MAAa,cAAc;IACzB,QAAQ,CAAC,GAAoB;QAC3B,IAAI,GAAG,CAAC,WAAW,KAAK,QAAQ,EAAE,CAAC;YACjC,MAAM,IAAI,6BAAa,CACrB,sBAAsB,EACtB,6CAA6C,CAC9C,CAAC;QACJ,CAAC;IACH,CAAC;CACF;AATD,wCASC"}

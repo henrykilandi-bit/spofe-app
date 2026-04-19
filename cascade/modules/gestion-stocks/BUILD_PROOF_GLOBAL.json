@@ -1,0 +1,80 @@
+{
+  "invariant": "System operational integrity maintained under constitutional framework",
+  "BUILD_PROOF_ID": "P0C-FINAL-20260205-174730-486ff46a",
+  "classification": "OPS-P0",
+  "proof_type": "CONSTITUTIONAL_COMPLIANCE",
+  "constitutional_compliance": {
+    "framework": "SPOFE P0 Constitutional",
+    "p0c_closure_ready": true,
+    "enforcement_date": "2026-02-05T17:47:30.432Z",
+    "enforced_by": "P0-C Final Constitutional Enforcement",
+    "compliance_level": "FULL_CONSTITUTIONAL"
+  },
+  "binary_result": "CONSTITUTIONAL_COMPLIANT",
+  "test_execution": {
+    "expected_result": "PASS",
+    "failure_action": "BLOCK_DEPLOYMENT",
+    "command": "npm test -- --grep 'constitutional.operational'"
+  },
+  "anchoring": {
+    "signed": true,
+    "guardian_validated": true,
+    "constitutional_anchor": true,
+    "sha256_hash": "CONST-OPS-P0-20260205"
+  },
+  "phase": "P0-C",
+  "original_data": {
+    "module": "gestion-stocks",
+    "version": "1.0.0",
+    "timestamp": "2026-02-03T20:32:00Z",
+    "governance": "SPOFE P0",
+    "status": "CERTIFIED",
+    "type": "Primary source (write)",
+    "domain": "Physical stock truth",
+    "contracts": {
+      "SCOPE.md": "contract/SCOPE.md",
+      "GUARDIAN.md": "contract/GUARDIAN.md",
+      "COMMANDS_EVENTS.md": "contract/COMMANDS_EVENTS.md",
+      "READ_MODELS.md": "contract/READ_MODELS.md",
+      "API_READ_ONLY.md": "contract/API_READ_ONLY.md"
+    },
+    "implementation": {
+      "guardian": "src/guardian/",
+      "readModels": "src/read-models/",
+      "api": "src/api/"
+    },
+    "tests": {
+      "framework": "vitest",
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "suites": {
+        "guardian": {
+          "total": 15,
+          "passed": 15
+        },
+        "system": {
+          "total": 7,
+          "passed": 7
+        }
+      }
+    },
+    "compliance": {
+      "guardianFirst": true,
+      "documentFirst": true,
+      "readOnlyApi": true,
+      "multiTenant": true,
+      "appendOnly": true,
+      "accountingAgnostic": true
+    },
+    "certification": {
+      "certified": true,
+      "certifiedAt": "2026-02-03T20:32:00Z",
+      "certifiedBy": "SPOFE BUILD_PROOF Certification",
+      "frozenAt": "2026-02-03T20:32:00Z",
+      "validUntil": "PERPETUAL"
+    }
+  },
+  "version": "2.1.0",
+  "timestamp": "2026-02-05T17:47:30.432Z"
+}

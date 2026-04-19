@@ -1,0 +1,13 @@
+{
+  "name": "gestion-tiers",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc -p tsconfig.module.json",
+    "test": "jest",
+    "test:integration": "jest --config jest.guardian.config.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0"
+  }
+}

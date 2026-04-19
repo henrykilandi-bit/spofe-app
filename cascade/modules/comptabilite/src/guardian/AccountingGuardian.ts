@@ -49,7 +49,7 @@ export class AccountingGuardian {
       throw new Error('Only OPEN periods can be closed');
     }
 
-    const closedPeriod = {
+    const closedPeriod: AccountingPeriod = {
       ...period,
       status: 'CLOSED',
       auditTrail: [
